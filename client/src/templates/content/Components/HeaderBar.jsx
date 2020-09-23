@@ -27,7 +27,7 @@ const DesktopHeader = () => {
                         <img src={Logo} title='logo' alt="logo" className={classes.logo} /> 
                     </LogoButton>
                 </div>
-                <Typography variant={"body1"} > Bike Theft </Typography>
+                <Typography variant={"body1"} > Bike Bounty </Typography>
             </section>
         </section>
     );
