@@ -1,0 +1,54 @@
+service: service-forum
+
+plugins:
+  - serverless-offline
+  - serverless-domain-manager
+  - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: eu-west-2
+
+resources:
+  Resources:
+    AWSLambdaVPCAccessExecutionRole:
+      Type: AWS::IAM::ManagedPolicy
+      Properties:
+        Description: Creating policy for vpc connetion.
+        Roles:
+          - {"Ref": "IamRoleLambdaExecution"}
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - s3:*
+              Resource: "*"
+
+custom:
+  domains:
+    prod: api.someurl.com
+    dev: dev-api.someurl.com
+  customDomain:
+    domainName: ${self:custom.domains.${self:custom.stage}}
+    certificateName: '*.someurl.com'
+    basePath: 'forum'
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+  stage: ${opt:stage, self:provider.stage}
+  dotenv:
+    basePath: '../'
+    logging: false
+  cors:
+    origins:
+      - '*'
+
+functions:
+  get:
+    handler: forum.get
+    events:
+      - http:
+          path: me
+          method: POST
+          cors: {$self:custom.cors}
