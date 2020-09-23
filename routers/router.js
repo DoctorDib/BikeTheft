@@ -3,6 +3,7 @@
 module.exports = function(){
     return {
         setRouting: function(router){
+            router.get('/bike', this.Bike);
             router.get('/', this.Main);
             router.get('*', this.Error);
         },
@@ -10,6 +11,13 @@ module.exports = function(){
         Main: (req, res) => {
             res.render('index/Home.ejs', { 
                 title: 'Bike Bounty',
+                canonical: ''
+            });
+        },
+
+        Bike: (req, res) => {
+            res.render('index/Bike.ejs', { 
+                title: 'Bike Bounty | Bike',
                 canonical: ''
             });
         },

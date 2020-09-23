@@ -1,9 +1,12 @@
-const path = require('path'); const HtmlWebpackPlugin = require('html-webpack-plugin'); const BUILD_DIR = path.resolve(__dirname, 'client/public');
+const path = require('path'); 
+const HtmlWebpackPlugin = require('html-webpack-plugin'); 
+const BUILD_DIR = path.resolve(__dirname, 'client/public');
 const APP_DIR = path.resolve(__dirname, 'client/src'); 
 
 const config = {
     entry: {
         'homeIndex': ["@babel/polyfill", path.join(APP_DIR, 'templates/homeTemplate.jsx')],
+        'bikeIndex': ["@babel/polyfill", path.join(APP_DIR, 'templates/bikeTemplate.jsx')],
         'errorIndex': ["@babel/polyfill", path.join(APP_DIR, 'templates/errorTemplate.jsx')],
     },
     mode: 'development',
@@ -69,6 +72,11 @@ const config = {
         new HtmlWebpackPlugin({
             chunks: ['homeIndex'],
             filename: 'index/Home.ejs',
+            template: '!!html-loader!client/src/templates/template.ejs',
+        }),
+        new HtmlWebpackPlugin({
+            chunks: ['bikeIndex'],
+            filename: 'index/Bike.ejs',
             template: '!!html-loader!client/src/templates/template.ejs',
         }),
         new HtmlWebpackPlugin({
