@@ -9,14 +9,14 @@ module.exports = function(){
 
         Main: (req, res) => {
             res.render('index/Home.ejs', { 
-                title: 'Bike Theft',
+                title: 'Bike Bounty',
                 canonical: ''
             });
         },
 
         Error: (req, res) => {
             res.render('index/Error.ejs', { 
-                title: 'Bike Theft | 404 Error',
+                title: 'Bike Bounty | 404 Error',
                 canonical: ''
             });
         }
