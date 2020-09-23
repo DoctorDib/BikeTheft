@@ -32,7 +32,7 @@ const config = {
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
+                test: /\.(t|j)sx?$/,
                 use: 'ts-loader',
                 exclude: /node_modules/,
             },
