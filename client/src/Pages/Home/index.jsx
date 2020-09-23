@@ -15,7 +15,7 @@ export default props => {
             </section>
 
             <section className ={classes.mainContentGap}>
-                <Main className={classes.mainContentGap} />
+                <main className={classes.mainContentGap} />
             </section>
 
             <section className ={classes.mainContentGap}>
