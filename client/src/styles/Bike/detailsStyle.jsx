@@ -10,7 +10,12 @@ export default makeStyles (theme => ({
         justifyContent: 'center', 
         alignContent: 'center', 
         alignItems: 'center', 
-        width: '100%'
+        width: '100%',
+
+        ["& section:not(:first-child)"]: {
+            marginTop: '20px',
+            width: '100%'
+        }
     },
 
     topSection: {
@@ -37,6 +42,7 @@ export default makeStyles (theme => ({
         alignItems: 'center'
     },
 
-
-
+    titles: {
+        fontWeight: '600'
+    }
 }));

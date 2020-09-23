@@ -17,7 +17,7 @@ module.exports = function(){
 
         Bike: (req, res) => {
             res.render('index/Bike.ejs', { 
-                title: 'Bike Theft | Bike',
+                title: 'Bike Bounty | Bike',
                 canonical: ''
             });
         },

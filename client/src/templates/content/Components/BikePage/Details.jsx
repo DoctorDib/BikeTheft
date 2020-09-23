@@ -3,6 +3,9 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 import style from 'styles/Bike/detailsStyle';
 
@@ -60,6 +63,15 @@ const Main = props => {
         )
     });
 
+    const Damages = bike.damages.map(damage => {
+        
+        return (
+            <ListItem>
+                <ListItemText primary={damage} />
+            </ListItem>
+        )
+    });
+
     const stat = status(bike.status);
     
     return (
@@ -78,14 +90,22 @@ const Main = props => {
                 </section>
 
                 
-                    {layoutGrid}
+                <section>
+                    <Typography className={classes.titles}>Information</Typography>
+                    {layoutGrid}    
+                </section>
                 
+                <section>
+                    <Typography className={classes.titles}>Additional damages</Typography>
+                    <List dense={true}>
+                        {Damages}
+                    </List>
+                </section>
 
-                <Typography>Additional damages</Typography>
-                <Typography>Scratch on tank</Typography>
-
-                <Typography>Additional description</Typography>
-                <Typography>Really nice bike with red rims and frame</Typography>
+                <section>
+                    <Typography className={classes.titles}>Additional description</Typography>
+                    <Typography>{bike.other_description}</Typography>
+                </section>
             </section>
 
         </section>

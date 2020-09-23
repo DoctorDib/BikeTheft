@@ -21,8 +21,8 @@
             "secondary_colour": "Red"
         },
         "picture": "bike_1.jpg",
-        "damages": [ "Small scratch on the tank" ],
-        "other_description": ""
+        "damages": [ "Small scratch on the tank", "Dent in the tank", "Cracked rear tail light", "Paint coming off underside near rear tier" ],
+        "other_description": "The bike has red trims and is Mat Black. It was last seen in Central London near the Thames."
     },
 
     "forum": [ 
@@ -30,6 +30,12 @@
             "user_id": 123,
             "datetime": "12/07/2020 12:00:34", 
             "message": "Please help me find my lost bike"
+        },
+
+        {
+            "user_id": 666,
+            "datetime": "12/07/2020 12:00:34", 
+            "message": "Damn, sorry bro that must really suck to have your bike stolen, I think I actually saw it about an hour ago... let me go check for you :)"
         },
         
         {

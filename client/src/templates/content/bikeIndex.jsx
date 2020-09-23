@@ -6,6 +6,8 @@ import FooterComponent from './Components/Footer';
 import DetailsComponent from './Components/BikePage/Details';
 import ForumComponent from './Components/BikePage/Forum';
 
+import Divider from '@material-ui/core/Divider';
+
 import styles from 'styles/Bike/bikeStyle';
 
 const Template = () => {
@@ -19,6 +21,14 @@ const Template = () => {
 
             <section className ={classes.mainContentGap}>
                 <DetailsComponent />
+            </section>
+
+            <section className ={classes.mainContentGap}>
+                <Divider variant="middle" />
+            </section>
+
+            <section className ={classes.mainContentGap}>
+                <ForumComponent  />
             </section>
 
             <section className ={classes.mainContentGap}>
