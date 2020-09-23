@@ -1,2 +1,2 @@
-# BikeTheft
-The free way to find motorbikes
+# BikeBounty
+The free (and legal) way to find motorbikes
