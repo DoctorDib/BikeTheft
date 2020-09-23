@@ -1,16 +1,14 @@
 import React from 'react';
+import styles from './styles';
 
 import NavBarComponent from 'Components/Header';
 import FooterComponent from 'Components/Footer';
-
 import DetailsComponent from 'Components/BikeInfo';
 import ForumComponent from 'Components/Forum';
 
 import Divider from '@material-ui/core/Divider';
 
-import styles from './styles';
-
-const Template = () => {
+const Bike = () => {
     const classes = styles();
 
     return (
@@ -39,4 +37,4 @@ const Template = () => {
     );
 }
 
-export default Template;
+export default Bike;

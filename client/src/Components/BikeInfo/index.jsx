@@ -64,7 +64,6 @@ const Main = props => {
     });
 
     const Damages = bike.damages.map(damage => {
-
         return (
             <ListItem>
                 <ListItemText primary={damage} />

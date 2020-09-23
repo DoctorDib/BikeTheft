@@ -5,7 +5,7 @@ import NavBarComponent from "Components/Header";
 import FooterComponent from "Components/Footer";
 import CookiePopupComponent from "Components/CookiePopup";
 
-export default props => {
+const Home = () => {
     const classes = style();
 
     return (
@@ -15,14 +15,10 @@ export default props => {
             </section>
 
             <section className ={classes.mainContentGap}>
-                <main className={classes.mainContentGap} />
-            </section>
-
-            <section className ={classes.mainContentGap}>
                 <FooterComponent className={classes.mainContentGap} />
             </section>
-
-            <CookiePopupComponent />
         </section>
     );
 }
+
+export default Home;

@@ -16,8 +16,6 @@ const config = {
     },
     entry: {
         home: path.join(APP_DIR, 'Entry/Home.jsx'),
-        error: path.join(APP_DIR, 'Entry/Error.jsx'),
-        bike: path.join(APP_DIR, 'Entry/Bike.jsx'),
     },
     mode: 'development',
     output: {
@@ -61,17 +59,7 @@ const config = {
             chunks: ['home'],
             filename: 'home/index.html',
             template: '!!html-loader!src/templates/template.html',
-        }),
-        new HtmlWebpackPlugin({
-            chunks: ['bike'],
-            filename: 'bike/index.html',
-            template: '!!html-loader!src/templates/template.html',
-        }),
-        new HtmlWebpackPlugin({
-            chunks: ['error'],
-            filename: 'error/index.html',
-            template: '!!html-loader!src/templates/template.html',
-        }),
+        })
     ],
 };
 
