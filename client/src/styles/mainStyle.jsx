@@ -63,11 +63,15 @@ export default {
     },
 
     mainContentGap: {
-        marginTop: '5vh'
+        marginTop: '5vh',
+        width: '100%',
     },
 
     body: {
         margin: 0,
+        width: '75vw',
+        marginLeft: 'auto',
+        marginRight: 'auto',
         display: 'flex',
         flexDirection:  'column',
         alignItems: 'center'

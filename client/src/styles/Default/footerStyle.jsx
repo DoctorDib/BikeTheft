@@ -12,8 +12,10 @@ export default makeStyles (theme => ({
     footerParent: {
         paddingTop: '3vh',
         paddingBottom: '3vh',
-        width: '100vw', 
+        width: '100%', 
         display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
 
     copyrightParent: {
@@ -27,5 +29,9 @@ export default makeStyles (theme => ({
     copyrightSymbol: {
         left: '-15',
         position: 'absolute'
+    },
+
+    statusText: {
+        fontWight: 'bold'
     }
 }));
