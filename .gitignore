@@ -114,3 +114,4 @@ client/public
 
 .env.dev
 .env.prod
+client/.history

@@ -1,45 +1,76 @@
 import React from 'react';
-
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import {
+    Typography,
+    Grid,
+    List,
+    ListItem,
+    ListItemText
+} from '@material-ui/core';
 
 import style from './styles';
 
-import { Typography } from '@material-ui/core';
-
 // TODO - Remove when we have an operation database
-import data from 'tmp_bike_data.json';
+import data from '../../tmp_bike_data.json';
 
-const Main = props => {
-    const classes = style();
+// TODO move these interfaces to common place if needed
+interface IGrid {
+    number_plate: string;
+    vin: string;
+    make: string;
+    model: string;
+    primary_colour: string;
+    secondary_colour: string;
+}
 
-    const owner = data.owner;
-    const bike = data.bike;
+interface IBike {
+    status: number;
+    datetime_reported: string;
+    damages: ReadonlyArray<string>;
+    picture: string
+    other_description: string;
+    grid: IGrid;
+}
+
+interface IOwner {
+    user_id: number;
+    title: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    contact_no: string;
+} // TODO consistent naming
+
+interface IBikeInfoProps {
+
+}
+
+const Main = (props: IBikeInfoProps) => {
+    const classes: any = style();
+
+    const owner: IOwner = data.owner;
+    const bike: IBike = data.bike;
 
     // temp
-    const title = title_id => {
+    const title = (title_id: number): string | undefined => {
         if (title_id == 1) {
             return "Mr.";
         }
     };
 
-    const first_name = firstname => {
-        return firstname[0].toUpperCase() + ".";
+    const first_name = (firstName: string): string => {
+        return firstName[0].toUpperCase() + ".";
     };
 
-    const status = status_id => {
+    const status = (status_id: number): ReadonlyArray<string> => {
         switch(status_id){
             case 1: return ["Stolen", "red"];
             case 2: return ["Pending collection", "orange"];
             case 3: return ["Found and collected", "green"];
+            default: return [""];
         }
     };
 
-    const format_key = key => {
+    const format_key = (key: string): string => {
         let returnKey = key.split('_');
 
         for(let i=0; i<returnKey.length; i++) {
@@ -49,21 +80,21 @@ const Main = props => {
         return returnKey.join(' ');
     }
 
-    const layoutGrid = Object.keys(bike.grid).map(key => {
+    const layoutGrid = Object.entries(bike.grid).map((_, index: number) => {
+        const thisKey: string = Object.keys(bike.grid)[index];
         return (
             <Grid container>
                 <Grid item xs={6}>
-                    <Typography>{format_key(key)}</Typography>
+                    <Typography>{format_key(thisKey)}</Typography>
                 </Grid>
                 <Grid item xs={6}>
-
-                    <Typography> {bike.grid[key] == "" ? "N/A" : bike.grid[key]} </Typography>
+                    <Typography> {thisKey == "" ? "N/A" : thisKey} </Typography>
                 </Grid>
             </Grid>
         )
     });
 
-    const Damages = bike.damages.map(damage => {
+    const Damages = bike.damages.map((damage: string) => {
         return (
             <ListItem>
                 <ListItemText primary={damage} />
@@ -71,7 +102,7 @@ const Main = props => {
         )
     });
 
-    const stat = status(bike.status);
+    const stat: ReadonlyArray<string> = status(bike.status);
 
     return (
         <section className={classes.container}>

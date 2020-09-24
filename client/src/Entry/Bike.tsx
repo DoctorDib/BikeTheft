@@ -1,15 +1,13 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import mainTheme from 'templates/theme';
-
-import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
-import AppliedRoute from 'Components/Routing/Applied';
-
-import HomePage from 'Pages/Home';
-import BikePage from 'Pages/Bike';
-import ErrorPage from 'Pages/Error';
-
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
+
+import AppliedRoute from '../Components/Routing/Applied';
+import HomePage from '../Pages/Home';
+import BikePage from '../Pages/Bike';
+
+import mainTheme from '../templates/mainStyle';
 
 function App() {
     return (

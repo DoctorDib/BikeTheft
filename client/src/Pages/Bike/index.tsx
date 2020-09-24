@@ -1,18 +1,19 @@
 import React from 'react';
-import styles from './styles';
-
-import NavBarComponent from 'Components/Header';
-import FooterComponent from 'Components/Footer';
-import DetailsComponent from 'Components/BikeInfo';
-import ForumComponent from 'Components/Forum';
-
 import Divider from '@material-ui/core/Divider';
 
-const Bike = props => {
-    const classes = styles();
+import NavBarComponent from '../../Components/Header';
+import FooterComponent from '../../Components/Footer';
+import DetailsComponent from '../../Components/BikeInfo';
+import ForumComponent from '../../Components/Forum';
+
+
+import styles from './styles';
+
+const Template = () => {
+    const classes: any = styles();
 
     const bike_id = props.match.params.id;
-    
+
     return (
         <section className={classes.body}>
             <section id="menu" className={classes.menu}>
