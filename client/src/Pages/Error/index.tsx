@@ -8,12 +8,16 @@ import CookiePopupComponent from '../../Components/CookiePopup';
 
 import styles from './styles';
 
-export default () => {
+interface IErrorPageProps {
+
+}
+
+const ErrorPage: React.FC<IErrorPageProps> = () => {
     const classes: any = styles();
 
     const GoBack = () => {
         window.history.back();
-    }
+    };
 
     return (
         <section className={classes.body}>
@@ -21,31 +25,44 @@ export default () => {
                 <NavBarComponent />
             </section>
 
-            <section className={classes.mainContentContainer} style={{flexDirection: 'column', justifyContent: 'center', alignContent: 'center', alignItems: 'center', marginTop: '4vh'}}>
-                <section style={{width: '100%'}}>
-                    <Typography variant={"h3"} style={{fontWeight: 650}}> Error 404 </Typography>
+            <section
+                className={classes.mainContentContainer}
+                style={
+                    {
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                        marginTop: '4vh',
+                    }
+                }
+            >
+                <section style={{ width: '100%' }}>
+                    <Typography variant="h3" style={{ fontWeight: 650 }}> Error 404 </Typography>
                 </section>
 
                 <section className={classes.errorContentContainer}>
 
                     <section className={classes.sorryText}>
-                        <Typography variant={"h4"} style={{fontWeight: 650}}> Sorry! </Typography>
+                        <Typography variant="h4" style={{ fontWeight: 650 }}> Sorry! </Typography>
                     </section>
 
-                    <section style={{display: 'flex', justifyContent: 'space-between', marginTop: '5vh'}}>
-                        <Button style={{color: '#26844F'}} className={classes.menuButtons} onClick={() => GoBack()}> Go Back </Button>
-                        <Button style={{color: '#26844F'}} className={classes.menuButtons} href='/'> Go to the Home Page </Button>
+                    <section style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5vh' }}>
+                        <Button style={{ color: '#26844F' }} className={classes.menuButtons} onClick={() => GoBack()}> Go Back </Button>
+                        <Button style={{ color: '#26844F' }} className={classes.menuButtons} href="/"> Go to the Home Page </Button>
                     </section>
                 </section>
 
             </section>
 
-            <section className ={classes.mainContentGap}>
-                <FooterComponent/>
+            <section className={classes.mainContentGap}>
+                <FooterComponent />
             </section>
 
             <CookiePopupComponent />
 
         </section>
     );
-}
+};
+
+export default ErrorPage;

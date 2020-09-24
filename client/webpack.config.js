@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+// This isn't typescript so we don't care
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -13,7 +15,7 @@ const config = {
         lazy: true,
         inline: false,
         liveReload: false,
-        host: '0.0.0.0'
+        host: '0.0.0.0',
     },
     devtool: 'inline-source-map',
     entry: {
@@ -35,7 +37,7 @@ const config = {
                 loader: 'ts-loader',
                 exclude: /node_modules/,
                 options: {
-                    transpileOnly: true
+                    transpileOnly: true,
                 },
             },
             {
@@ -44,12 +46,14 @@ const config = {
                 loader: 'babel-loader',
                 query: {
                     presets: [
-                        '@babel/react', 
+                        '@babel/react',
                         '@babel/env',
-                        ['@babel/preset-typescript',
-                        {
-                            onlyRemoveTypeImports: true,
-                        }]
+                        [
+                            '@babel/preset-typescript',
+                            {
+                                onlyRemoveTypeImports: true,
+                            },
+                        ],
                     ],
                     plugins: ['@babel/plugin-proposal-class-properties'],
                 },
@@ -77,7 +81,7 @@ const config = {
             filename: 'home/index.html',
             template: '!!html-loader!src/templates/template.html',
         }),
-        new ForkTsCheckerWebpackPlugin()
+        new ForkTsCheckerWebpackPlugin(),
     ],
 };
 

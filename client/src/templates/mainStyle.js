@@ -5,43 +5,43 @@ export default {
     hideOnMobile: {
         display: 'block',
         [theme.breakpoints.down('md')]: {
-            display: 'none'
-        }
+            display: 'none',
+        },
     },
 
     hideOnMobileXLarge: {
         display: 'block',
         [theme.breakpoints.down('lg')]: {
-            display: 'none'
-        }
+            display: 'none',
+        },
     },
 
     hideOnMobileOnly: {
         display: 'block',
         [theme.breakpoints.down('sm')]: {
-            display: 'none'
-        }
+            display: 'none',
+        },
     },
 
     showOnMobileOnly: {
         display: 'none',
         [theme.breakpoints.down('sm')]: {
-            display: 'block'
-        }
+            display: 'block',
+        },
     },
 
     showOnMobileXLarge: {
         display: 'none',
         [theme.breakpoints.down('lg')]: {
-            display: 'block'
-        }
+            display: 'block',
+        },
     },
 
     showOnMobile: {
         display: 'none',
         [theme.breakpoints.down('md')]: {
-            display: 'block'
-        }
+            display: 'block',
+        },
     },
 
     unselectable: {
@@ -73,15 +73,15 @@ export default {
         marginLeft: 'auto',
         marginRight: 'auto',
         display: 'flex',
-        flexDirection:  'column',
-        alignItems: 'center'
+        flexDirection: 'column',
+        alignItems: 'center',
     },
 
     header: {
         overflow: 'hidden',
         maxHeight: '45vh',
         [theme.breakpoints.down('lg')]: {
-            maxHeight: '300'
+            maxHeight: '300',
         },
     },
 
@@ -95,7 +95,7 @@ export default {
     headerHome: {
         maxHeight: '75vh',
         [theme.breakpoints.down('lg')]: {
-            maxHeight: '350'
+            maxHeight: '350',
         },
     },
 
@@ -104,6 +104,6 @@ export default {
         backgroundColor: '#eaeaea',
         paddingLeft: '5em',
         paddingRight: '5em',
-        color: '#1b1b1b'
-    }
-}
+        color: '#1b1b1b',
+    },
+};

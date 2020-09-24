@@ -10,22 +10,26 @@ interface IFooterProps {
 const CopyRight = () => {
     const classes: any = styles();
 
-    return (<div className={classes.copyrightParent}>
-        <Typography variant={"body2"} component={'p'} className={classes.copyrightSymbol} > © </Typography>
-        <Typography variant={"body2"} component={'p'}>  Copyright (groupname) 2020 </Typography>
-    </div>);
-}
+    return (
+        <div className={classes.copyrightParent}>
+            <Typography variant="body2" component="p" className={classes.copyrightSymbol}> © </Typography>
+            <Typography variant="body2" component="p">  Copyright (groupname) 2020 </Typography>
+        </div>
+    );
+};
 
-const FooterComponent = (props: IFooterProps) => {
+// TODO these props should be used
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const FooterComponent: React.FC<IFooterProps> = (props: IFooterProps) => {
     const classes: any = styles();
 
     return (
-        <section style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}} className={classes.footerParent}>
+        <section style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} className={classes.footerParent}>
             <section>
                 {CopyRight()}
             </section>
         </section>
     );
-}
+};
 
 export default FooterComponent;

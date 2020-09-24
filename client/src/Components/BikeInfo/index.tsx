@@ -4,7 +4,7 @@ import {
     Grid,
     List,
     ListItem,
-    ListItemText
+    ListItemText,
 } from '@material-ui/core';
 
 import style from './styles';
@@ -40,67 +40,77 @@ interface IOwner {
     contact_no: string;
 } // TODO consistent naming
 
+interface IData {
+    owner: IOwner;
+    bike: IBike;
+}
+
 interface IBikeInfoProps {
 
 }
 
-const Main = (props: IBikeInfoProps) => {
+// TODO these props should be used
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const Main: React.FC<IBikeInfoProps> = (props: IBikeInfoProps) => {
     const classes: any = style();
 
-    const owner: IOwner = data.owner;
-    const bike: IBike = data.bike;
+    const { owner, bike } = data as IData;
 
     // temp
     const title = (title_id: number): string | undefined => {
-        if (title_id == 1) {
-            return "Mr.";
+        if (title_id === 1) {
+            return 'Mr.';
         }
+
+        return undefined;
     };
 
-    const first_name = (firstName: string): string => {
-        return firstName[0].toUpperCase() + ".";
-    };
+    const firstName = (x: string): string => `${x[0].toUpperCase()}.`;
 
     const status = (status_id: number): ReadonlyArray<string> => {
-        switch(status_id){
-            case 1: return ["Stolen", "red"];
-            case 2: return ["Pending collection", "orange"];
-            case 3: return ["Found and collected", "green"];
-            default: return [""];
+        switch (status_id) {
+            case 1: return ['Stolen', 'red'];
+            case 2: return ['Pending collection', 'orange'];
+            case 3: return ['Found and collected', 'green'];
+            default: return [''];
         }
     };
 
-    const format_key = (key: string): string => {
-        let returnKey = key.split('_');
+    const formatKey = (key: string): string => {
+        const returnKey = key.split('_');
 
-        for(let i=0; i<returnKey.length; i++) {
-            returnKey[i] = returnKey[i].charAt(0).toUpperCase()+ returnKey[i].substring(1)
+        // TODO fix this mess
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < returnKey.length; i++) {
+            returnKey[i] = returnKey[i].charAt(0).toUpperCase() + returnKey[i].substring(1);
         }
 
         return returnKey.join(' ');
-    }
+    };
 
     const layoutGrid = Object.entries(bike.grid).map((_, index: number) => {
         const thisKey: string = Object.keys(bike.grid)[index];
         return (
             <Grid container>
                 <Grid item xs={6}>
-                    <Typography>{format_key(thisKey)}</Typography>
+                    <Typography>{formatKey(thisKey)}</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                    <Typography> {thisKey == "" ? "N/A" : thisKey} </Typography>
+                    <Typography>
+                        {' '}
+                        {thisKey === '' ? 'N/A' : thisKey}
+                        {' '}
+                    </Typography>
                 </Grid>
             </Grid>
-        )
+        );
     });
 
-    const Damages = bike.damages.map((damage: string) => {
-        return (
-            <ListItem>
-                <ListItemText primary={damage} />
-            </ListItem>
-        )
-    });
+    const Damages = bike.damages.map((damage: string) => (
+        <ListItem>
+            <ListItemText primary={damage} />
+        </ListItem>
+    ));
 
     const stat: ReadonlyArray<string> = status(bike.status);
 
@@ -109,16 +119,31 @@ const Main = (props: IBikeInfoProps) => {
 
             <section className={classes.topSection}>
                 <section className={classes.imageContainer}>
-                    {/*temp*/}
-                    <img className={classes.image} src={require('static/img/bikes/' + bike.picture)} />
+                    {/* TODO find a better way to put images here ty */}
+                    {/* <img className={classes.image} src={require('../../static/img/bikes/' + bike.picture)} alt="bike" /> */}
                 </section>
 
                 <section className={classes.owner}>
-                    <Typography variant="h6"> {title(owner.title)} {first_name(owner.first_name)} {owner.last_name} </Typography>
-                    <Typography variant="caption"> {bike.datetime_reported} </Typography>
-                    <Typography variant="h5" style={{color: stat[1]}} className={classes.statusText}> {stat[0]} </Typography>
+                    <Typography variant="h6">
+                        {' '}
+                        {title(owner.title)}
+                        {' '}
+                        {firstName(owner.first_name)}
+                        {' '}
+                        {owner.last_name}
+                        {' '}
+                    </Typography>
+                    <Typography variant="caption">
+                        {' '}
+                        {bike.datetime_reported}
+                        {' '}
+                    </Typography>
+                    <Typography variant="h5" style={{ color: stat[1] }} className={classes.statusText}>
+                        {' '}
+                        {stat[0]}
+                        {' '}
+                    </Typography>
                 </section>
-
 
                 <section>
                     <Typography className={classes.titles}>Information</Typography>
@@ -127,7 +152,7 @@ const Main = (props: IBikeInfoProps) => {
 
                 <section>
                     <Typography className={classes.titles}>Additional damages</Typography>
-                    <List dense={true}>
+                    <List dense>
                         {Damages}
                     </List>
                 </section>
@@ -140,6 +165,6 @@ const Main = (props: IBikeInfoProps) => {
 
         </section>
     );
-}
+};
 
 export default Main;
