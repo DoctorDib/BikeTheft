@@ -7,6 +7,7 @@ import AppliedRoute from '../Components/Routing/Applied';
 
 import HomePage from '../Pages/Home';
 import BikePage from '../Pages/Bike';
+import AboutPage from '../Pages/About';
 import ErrorPage from '../Pages/Error';
 
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -18,8 +19,8 @@ function App() {
                 <Switch>
                     <AppliedRoute appProps={{}} exact path={'/'} component={HomePage}/>
                     <AppliedRoute appProps={{}} path={'/bike/:id'} component={BikePage}/>
+                    <AppliedRoute appProps={{}} path={'/about'} component={AboutPage}/>
                     <AppliedRoute appProps={{}} path={'/404'} component={ErrorPage}/>
-
                     <Redirect to="/404" />
                 </Switch>
             </ThemeProvider>
