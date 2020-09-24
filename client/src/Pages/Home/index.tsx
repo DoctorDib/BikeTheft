@@ -1,12 +1,16 @@
 import React from 'react';
 import style from './styles';
 
-import NavBarComponent from "Components/Header";
-import FooterComponent from "Components/Footer";
-import CookiePopupComponent from "Components/CookiePopup";
+import NavBarComponent from "../../Components/Header/index";
+import FooterComponent from "../../Components/Footer/index";
+import CookiePopupComponent from "../../Components/CookiePopup/index";
 
-export default props => {
-    const classes = style();
+interface IHomeProps {
+    
+}
+
+export default (props: IHomeProps) => {
+    const classes: any = style();
 
     return (
         <section className={classes.body}>

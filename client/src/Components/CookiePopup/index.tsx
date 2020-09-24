@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
+import Drawer from '@material-ui/core/Drawer';
+import { useCookie } from "@use-hook/use-cookie";
 
 import Desktop from './Desktop';
 import Mobile from './Mobile';
-
 import style from './styles';
 
-import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
-
-import { useCookie } from "@use-hook/use-cookie";
-
-
 const Index = () => {
-    const classes = style();
+    const classes: any = style();
 
     const [cookies, setCookie] = useCookie('CookiePrompt');
 

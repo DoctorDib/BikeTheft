@@ -14,10 +14,11 @@ const config = {
         liveReload: false,
         host: '0.0.0.0'
     },
+   devtool: 'inline-source-map',
     entry: {
-        home: path.join(APP_DIR, 'Entry/Home.jsx'),
-        error: path.join(APP_DIR, 'Entry/Error.jsx'),
-        bike: path.join(APP_DIR, 'Entry/Bike.jsx'),
+        home: path.join(APP_DIR, 'Entry/Home.tsx'),
+        error: path.join(APP_DIR, 'Entry/Error.tsx'),
+        bike: path.join(APP_DIR, 'Entry/Bike.tsx'),
     },
     mode: 'development',
     output: {
@@ -26,10 +27,15 @@ const config = {
     },
     resolve: {
         modules: ['node_modules', APP_DIR],
-        extensions: ['.web.js', '.mjs', '.js', '.json', '.web.jsx', '.jsx'],
+        extensions: ['.tsx', '.ts', '.web.js', '.mjs', '.js', '.json', '.web.jsx', '.jsx'],
     },
     module: {
         rules: [
+            {
+                test: /\.(t|j)sx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
             {
                 test: /\.jsx?$/,
                 include: APP_DIR,

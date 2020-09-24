@@ -1,10 +1,14 @@
 import React from 'react';
-import styles from './styles';
-
 import Typography from '@material-ui/core/Typography';
 
+import styles from './styles';
+
+interface IFooterProps {
+    className?: string;
+}
+
 const CopyRight = () => {
-    const classes = styles();
+    const classes: any = styles();
 
     return (<div className={classes.copyrightParent}>
         <Typography variant={"body2"} component={'p'} className={classes.copyrightSymbol} > © </Typography>
@@ -12,8 +16,8 @@ const CopyRight = () => {
     </div>);
 }
 
-export default () => {
-    const classes = styles();
+const FooterComponent = (props: IFooterProps) => {
+    const classes: any = styles();
 
     return (
         <section style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}} className={classes.footerParent}>
@@ -23,3 +27,5 @@ export default () => {
         </section>
     );
 }
+
+export default FooterComponent;

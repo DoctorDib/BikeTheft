@@ -1,9 +1,10 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import styles from './styles';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
-import Logo from 'static/img/Logo.png';
+
+import styles from './styles';
+import Logo from '../../static/img/Logo.png';
 
 const LogoButton = withStyles({
     root: {
@@ -17,7 +18,7 @@ const LogoButton = withStyles({
 })(Button);
 
 const DesktopHeader = () => {
-    const classes = styles();
+    const classes: any = styles();
 
     return (
         <section style={{boxShadow: 'rgba(0, 0, 0, 0.23) 0px .25px 1px 0px', width: '100vw', display: 'flex', justifyContent: 'center'}} >
