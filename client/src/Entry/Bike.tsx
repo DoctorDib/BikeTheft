@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import mainTheme from 'templates/mainStyle';
-import Indexer from 'Pages/Bike';
-
 import { ThemeProvider } from '@material-ui/core/styles';
 
+import mainTheme from '../templates/mainStyle';
+import Indexer from '../Pages/Bike';
 
 function App() {
     return (

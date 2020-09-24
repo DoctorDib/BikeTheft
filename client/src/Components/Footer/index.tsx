@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import styles from './styles';
 
 interface IFooterProps {
-    className: string;
+    className?: string;
 }
 
 const CopyRight = () => {

@@ -1,17 +1,16 @@
 import React from 'react';
-
-import NavBarComponent from 'Components/Header';
-import FooterComponent from 'Components/Footer';
-
-import DetailsComponent from 'Components/BikeInfo';
-import ForumComponent from 'Components/Forum';
-
 import Divider from '@material-ui/core/Divider';
+
+import NavBarComponent from '../../Components/Header';
+import FooterComponent from '../../Components/Footer';
+import DetailsComponent from '../../Components/BikeInfo';
+import ForumComponent from '../../Components/Forum';
+
 
 import styles from './styles';
 
 const Template = () => {
-    const classes = styles();
+    const classes: any = styles();
 
     return (
         <section className={classes.body}>

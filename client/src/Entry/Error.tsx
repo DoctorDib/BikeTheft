@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import mainTheme from 'templates/theme';
-import Indexer from 'Pages/Home';
-
 import { ThemeProvider } from '@material-ui/core/styles';
 
-function App() {
+import mainTheme from '../templates/theme';
+import Indexer from '../Pages/Error';
+
+const App = () => {
     return (
         <ThemeProvider theme={ mainTheme }>
             <Indexer />

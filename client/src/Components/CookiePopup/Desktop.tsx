@@ -1,12 +1,15 @@
 import React from 'react';
-
+import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 
 import style from './styles';
-import { Typography } from '@material-ui/core';
 
-const CookiePopup = props => {
-    const classes = style();
+interface ICookiePopupProps {
+    clickTrigger: () => void;
+}
+
+const CookiePopup = (props: ICookiePopupProps) => {
+    const classes: any = style();
 
     return (
         <section style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', alignItems: 'center'}}>
