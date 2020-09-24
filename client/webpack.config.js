@@ -16,9 +16,9 @@ const config = {
     },
    devtool: 'inline-source-map',
     entry: {
-        home: path.join(APP_DIR, 'Entry/Home.jsx'),
-        error: path.join(APP_DIR, 'Entry/Error.jsx'),
-        bike: path.join(APP_DIR, 'Entry/Bike.jsx'),
+        home: path.join(APP_DIR, 'Entry/Home.tsx'),
+        error: path.join(APP_DIR, 'Entry/Error.tsx'),
+        bike: path.join(APP_DIR, 'Entry/Bike.tsx'),
     },
     mode: 'development',
     output: {

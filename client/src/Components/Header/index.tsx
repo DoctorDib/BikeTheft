@@ -4,8 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
 
 import styles from './styles';
-
-const LOGO_IMAGE_SRC: string = '../../static/img/Logo.png';
+import Logo from '../../static/img/Logo.png';
 
 const LogoButton = withStyles({
     root: {
@@ -26,7 +25,7 @@ const DesktopHeader = () => {
             <section className={classes.headerContainer}>
                 <div className={classes.logoContainer}>
                     <LogoButton disableRipple={true} className={classes.menuButtons} href={'/'}>
-                        <img src={LOGO_IMAGE_SRC} title='logo' alt="logo" className={classes.logo} />
+                        <img src={Logo} title='logo' alt="logo" className={classes.logo} />
                     </LogoButton>
                 </div>
                 <Typography variant={"body1"} > Bike Bounty </Typography>

@@ -3,12 +3,9 @@ import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
 
 import style from './styles';
+import { ICookiePopupProps } from './Desktop';
 
-interface ICookiePopup {
-    clickTrigger: () => void;
-}
-
-const CookiePopup = (props: ICookiePopup) => {
+const CookiePopup = (props: ICookiePopupProps) => {
     const classes: any = style();
 
     return (
