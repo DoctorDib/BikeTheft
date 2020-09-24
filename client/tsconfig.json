@@ -20,6 +20,10 @@
       "moduleResolution": "node",
       "types" : ["material-ui"],
       "isolatedModules": true,
-      "resolveJsonModule": true
+      "resolveJsonModule": true,
+      "incremental": true,
+      "watch": true,
+      "forceConsistentCasingInFileNames": true,
+      "importsNotUsedAsValues": "preserve"
     }
 }
