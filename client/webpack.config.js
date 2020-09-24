@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const BUILD_DIR = path.resolve(__dirname, 'public');
 const APP_DIR = path.resolve(__dirname, 'src');
@@ -8,13 +9,13 @@ const config = {
     devServer: {
         historyApiFallback: true,
         contentBase: './public/home',
-        hot: false,
-        lazy: false,
+        hot: true,
+        lazy: true,
         inline: false,
         liveReload: false,
         host: '0.0.0.0'
     },
-   devtool: 'inline-source-map',
+    devtool: 'inline-source-map',
     entry: {
         home: path.join(APP_DIR, '/Entry/Home.tsx'),
     },
@@ -31,15 +32,25 @@ const config = {
         rules: [
             {
                 test: /\.(t|j)sx?$/,
-                use: 'ts-loader',
+                loader: 'ts-loader',
                 exclude: /node_modules/,
+                options: {
+                    transpileOnly: true
+                },
             },
             {
                 test: /\.jsx?$/,
                 include: APP_DIR,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['@babel/react', '@babel/env'],
+                    presets: [
+                        '@babel/react', 
+                        '@babel/env',
+                        ['@babel/preset-typescript',
+                        {
+                            onlyRemoveTypeImports: true,
+                        }]
+                    ],
                     plugins: ['@babel/plugin-proposal-class-properties'],
                 },
             },
@@ -65,7 +76,8 @@ const config = {
             chunks: ['home'],
             filename: 'home/index.html',
             template: '!!html-loader!src/templates/template.html',
-        })
+        }),
+        new ForkTsCheckerWebpackPlugin()
     ],
 };
 

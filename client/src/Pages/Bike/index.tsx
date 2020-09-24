@@ -16,7 +16,7 @@ interface IBikeProps {
 const Bike = (props: IBikeProps) => {
     const classes: any = styles();
 
-    const bike_id = props.match.params.id;
+    // const bike_id = props.match.params.id;
 
     return (
         <section className={classes.body}>
