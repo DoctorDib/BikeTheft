@@ -8,9 +8,11 @@ import ForumComponent from 'Components/Forum';
 
 import Divider from '@material-ui/core/Divider';
 
-const Bike = () => {
+const Bike = props => {
     const classes = styles();
 
+    const bike_id = props.match.params.id;
+    
     return (
         <section className={classes.body}>
             <section id="menu" className={classes.menu}>
@@ -32,7 +34,6 @@ const Bike = () => {
             <section className ={classes.mainContentGap}>
                 <FooterComponent />
             </section>
-
         </section>
     );
 }

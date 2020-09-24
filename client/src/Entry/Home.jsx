@@ -17,7 +17,7 @@ function App() {
             <ThemeProvider theme={ mainTheme }>
                 <Switch>
                     <AppliedRoute appProps={{}} exact path={'/'} component={HomePage}/>
-                    <AppliedRoute appProps={{}} path={'/bike'} component={BikePage}/>
+                    <AppliedRoute appProps={{}} path={'/bike/:id'} component={BikePage}/>
                     <AppliedRoute appProps={{}} path={'/404'} component={ErrorPage}/>
 
                     <Redirect to="/404" />
