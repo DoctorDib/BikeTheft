@@ -1,2 +1,2 @@
 # BikeBounty
-The free (and legal) way to find motorbikes
+The free (and legal) way to find vehicles
