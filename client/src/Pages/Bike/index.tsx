@@ -9,7 +9,11 @@ import ForumComponent from '../../Components/Forum';
 
 import styles from './styles';
 
-const Template = () => {
+interface IBikeProps {
+    match : any
+}
+
+const Bike = (props: IBikeProps) => {
     const classes: any = styles();
 
     const bike_id = props.match.params.id;

@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 interface IAppliedRouteProps {
     component: any; // TODO these need interfaces
     appProps: any;
+    exact?: any;
     path?: any;
 }
 
