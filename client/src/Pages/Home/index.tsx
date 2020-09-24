@@ -6,7 +6,7 @@ import FooterComponent from "../../Components/Footer/index";
 import CookiePopupComponent from "../../Components/CookiePopup/index";
 
 interface IHomeProps {
-    
+
 }
 
 export default (props: IHomeProps) => {
@@ -19,14 +19,8 @@ export default (props: IHomeProps) => {
             </section>
 
             <section className ={classes.mainContentGap}>
-                <main className={classes.mainContentGap} />
-            </section>
-
-            <section className ={classes.mainContentGap}>
                 <FooterComponent className={classes.mainContentGap} />
             </section>
-
-            <CookiePopupComponent />
         </section>
     );
 }
