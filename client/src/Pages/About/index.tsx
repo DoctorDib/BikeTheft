@@ -1,4 +1,5 @@
 import React from 'react';
+import { Typography } from '@material-ui/core';
 
 import NavBarComponent from '../../Components/Header';
 import FooterComponent from '../../Components/Footer';
@@ -6,9 +7,7 @@ import AboutInfoComponent from '../../Components/AboutInfo';
 
 import styles from './styles';
 
-import { Typography } from '@material-ui/core';
-
-const About = () => {
+const About: React.FC = () => {
     const classes: any = styles();
 
     return (
@@ -17,21 +16,21 @@ const About = () => {
                 <NavBarComponent />
             </section>
 
-            <section className ={classes.mainContentGap}>
+            <section className={classes.mainContentGap}>
                 <Typography variant="h4"> About us </Typography>
             </section>
-            
-            <section className ={classes.mainContentGap}>
+
+            <section className={classes.mainContentGap}>
                 <AboutInfoComponent />
             </section>
 
-            {/* TODO - Add another component for the policies information*/}
+            {/* TODO - Add another component for the policies information */}
 
-            <section className ={classes.mainContentGap}>
+            <section className={classes.mainContentGap}>
                 <FooterComponent />
             </section>
         </section>
     );
-}
+};
 
 export default About;

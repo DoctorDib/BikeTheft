@@ -6,14 +6,15 @@ import FooterComponent from '../../Components/Footer';
 import DetailsComponent from '../../Components/BikeInfo';
 import ForumComponent from '../../Components/Forum';
 
-
 import styles from './styles';
 
 interface IBikeProps {
-    match : any
+    match: any;
 }
 
-const Bike = (props: IBikeProps) => {
+// TODO these props should be used
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const BikePage: React.FC<IBikeProps> = (props: IBikeProps) => {
     const classes: any = styles();
 
     // const bike_id = props.match.params.id;
@@ -24,23 +25,23 @@ const Bike = (props: IBikeProps) => {
                 <NavBarComponent />
             </section>
 
-            <section className ={classes.mainContentGap}>
+            <section className={classes.mainContentGap}>
                 <DetailsComponent />
             </section>
 
-            <section className ={classes.mainContentGap}>
+            <section className={classes.mainContentGap}>
                 <Divider variant="middle" />
             </section>
 
-            <section className ={classes.mainContentGap}>
-                <ForumComponent  />
+            <section className={classes.mainContentGap}>
+                <ForumComponent />
             </section>
 
-            <section className ={classes.mainContentGap}>
+            <section className={classes.mainContentGap}>
                 <FooterComponent />
             </section>
         </section>
     );
-}
+};
 
-export default Bike;
+export default BikePage;

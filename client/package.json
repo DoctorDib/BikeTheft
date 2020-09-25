@@ -6,13 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "lint": "npx eslint . --ext .ts,.tsx"
   },
   "author": "The lads",
   "license": "",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/styles": "^4.10.0",
     "@use-hook/use-cookie": "^0.1.4",
     "core-js": "^3.6.5",
     "react": "^16.13.1",
@@ -33,8 +35,16 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@types/react-router-dom": "^5.1.5",
+    "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "@typescript-eslint/parser": "^4.2.0",
     "babel-loader": "^8.1.0",
     "css-loader": "^4.3.0",
+    "eslint": "^7.9.0",
+    "eslint-config-airbnb-typescript": "^10.0.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.21.1",
+    "eslint-plugin-react-hooks": "^4.1.2",
     "file-loader": "^6.1.0",
     "fork-ts-checker-webpack-plugin": "^5.2.0",
     "html-loader": "^1.3.1",
