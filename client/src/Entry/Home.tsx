@@ -8,6 +8,7 @@ import AppliedRoute from '../Components/Routing/Applied';
 
 import HomePage from '../Pages/Home';
 import BikePage from '../Pages/Bike';
+import AboutPage from '../Pages/About';
 import ErrorPage from '../Pages/Error';
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
                     <AppliedRoute appProps={{}} exact path="/" component={HomePage} />
                     <AppliedRoute appProps={{}} path="/bike/:id" component={BikePage} />
                     <AppliedRoute appProps={{}} path="/404" component={ErrorPage} />
-
+                    <AppliedRoute appProps={{}} path="/about" component={AboutPage} />
                     <Redirect to="/404" />
                 </Switch>
             </ThemeProvider>
