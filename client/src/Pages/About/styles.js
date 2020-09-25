@@ -4,13 +4,10 @@ import mainStyle from '../../templates/mainStyle';
 export default makeStyles(() => ({
     ...mainStyle,
 
-    clientLogosParent: {
-        display: 'flex',
-        justifyContent: 'center',
-    },
+    container: {
 
-    titleContainer: {
-        width: '100%',
-        marginBottom: '2vh',
+        '& section': {
+            margin: '20px 0 20px 0',
+        },
     },
 }));

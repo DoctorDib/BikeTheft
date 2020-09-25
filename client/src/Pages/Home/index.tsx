@@ -1,12 +1,18 @@
 import React from 'react';
 import style from './styles';
 
-import NavBarComponent from "../../Components/Header/index";
-import FooterComponent from "../../Components/Footer/index";
-import CookiePopupComponent from "../../Components/CookiePopup/index";
+import NavBarComponent from '../../Components/Header/index';
+import FooterComponent from '../../Components/Footer/index';
+// import CookiePopupComponent from "../../Components/CookiePopup/index";
 
-export default props => {
-    const classes = style();
+interface IHomeProps {
+
+}
+
+// TODO these props should be used
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const HomePage: React.FC<IHomeProps> = (props: IHomeProps) => {
+    const classes: any = style();
 
     return (
         <section className={classes.body}>
@@ -14,15 +20,11 @@ export default props => {
                 <NavBarComponent />
             </section>
 
-            <section className ={classes.mainContentGap}>
-                <main className={classes.mainContentGap} />
-            </section>
-
-            <section className ={classes.mainContentGap}>
+            <section className={classes.mainContentGap}>
                 <FooterComponent className={classes.mainContentGap} />
             </section>
-
-            <CookiePopupComponent />
         </section>
     );
-}
+};
+
+export default HomePage;

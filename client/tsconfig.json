@@ -2,12 +2,28 @@
     "compilerOptions": {
       "outDir": "./public/",
       "noImplicitAny": true,
-      "module": "es6",
-      "target": "es5",
+      "module": "es2020",
+      "target": "es6",
       "jsx": "react",
       "allowJs": true,
       "sourceMap": true,
       "allowSyntheticDefaultImports" : true,
-      "esModuleInterop" : true
+      "esModuleInterop" : true,
+      "lib": [
+        "es6", 
+        "dom",
+        "dom.iterable",
+      ],
+      "noImplicitThis": true,
+      "strictNullChecks": true,
+      "strict": true,
+      "moduleResolution": "node",
+      "types" : ["material-ui"],
+      "resolveJsonModule": true,
+      "incremental": true,
+      "watch": true,
+      "forceConsistentCasingInFileNames": true,
+      "importsNotUsedAsValues": "preserve",
+      "importHelpers": true,
     }
 }
