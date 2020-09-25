@@ -3,14 +3,14 @@ import { Typography } from '@material-ui/core';
 
 import style from './styles';
 
-const AboutInfo = () => {
+const AboutInfo: React.FC = () => {
     const classes: any = style();
 
     return (
         <section className={classes.container}>
             <section>
                 <Typography variant="h5"> Who are we? </Typography>
-                <Typography variant="body1"> We are a group of 4 developers that have recently graduated with a bachelor's degree in Software Engineering and Computer Science. Our main goal is to give the public a tool to freely report their own vehicles as stolen or have free access to a large database of stolen vehicles. This tool will mainly be aimed at those who find suspicious vehicles and want to check on our database if it has been classed as stolen, then with ease contact the rightful owner. </Typography>
+                <Typography variant="body1"> We are a group of 4 developers that have recently graduated with a bachelor&apos;s degree in Software Engineering and Computer Science. Our main goal is to give the public a tool to freely report their own vehicles as stolen or have free access to a large database of stolen vehicles. This tool will mainly be aimed at those who find suspicious vehicles and want to check on our database if it has been classed as stolen, then with ease contact the rightful owner. </Typography>
             </section>
 
             <section>
@@ -28,6 +28,6 @@ const AboutInfo = () => {
             </section>
         </section>
     );
-}
+};
 
 export default AboutInfo;
