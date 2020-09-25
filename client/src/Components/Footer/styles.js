@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
-import mainStyle from 'templates/mainStyle';
+import mainStyle from '../../templates/mainStyle';
 
-export default makeStyles (theme => ({
+export default makeStyles(() => ({
     ...mainStyle,
 
     root: {
@@ -15,7 +15,7 @@ export default makeStyles (theme => ({
         width: '100%',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
 
     copyrightParent: {
@@ -23,15 +23,15 @@ export default makeStyles (theme => ({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'baseline',
-        alignContent: 'baseline'
+        alignContent: 'baseline',
     },
 
     copyrightSymbol: {
         left: '-15',
-        position: 'absolute'
+        position: 'absolute',
     },
 
     statusText: {
-        fontWight: 'bold'
-    }
+        fontWight: 'bold',
+    },
 }));
