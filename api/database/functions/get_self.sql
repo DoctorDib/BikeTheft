@@ -1,9 +1,9 @@
-CREATE OR REPLACE FUNCTION bikebounty.get_self(api_parameters JSON) RETURNS JSON AS
+CREATE OR REPLACE FUNCTION motorwatch.get_self(api_parameters JSON) RETURNS JSON AS
 $$
 DECLARE
     member_var JSON;
 BEGIN
-    SET SEARCH_PATH = 'bikebounty', 'public';
+    SET SEARCH_PATH = 'motorwatch', 'public';
 
     SELECT row_to_json(SUB.*)::JSONB
     INTO member_var
