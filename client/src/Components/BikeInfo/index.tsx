@@ -91,7 +91,7 @@ const Main: React.FC<IBikeInfoProps> = (props: IBikeInfoProps) => {
     const layoutGrid = Object.entries(bike.grid).map((_, index: number) => {
         const thisKey: string = Object.keys(bike.grid)[index];
         return (
-            <Grid container>
+            <Grid container key={`bike - ${thisKey}`}>
                 <Grid item xs={6}>
                     <Typography>{formatKey(thisKey)}</Typography>
                 </Grid>
@@ -107,7 +107,7 @@ const Main: React.FC<IBikeInfoProps> = (props: IBikeInfoProps) => {
     });
 
     const Damages = bike.damages.map((damage: string) => (
-        <ListItem>
+        <ListItem key={`damages - ${damage}`}>
             <ListItemText primary={damage} />
         </ListItem>
     ));

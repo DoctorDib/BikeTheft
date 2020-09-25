@@ -81,7 +81,11 @@ const config = {
             filename: 'home/index.html',
             template: '!!html-loader!src/templates/template.html',
         }),
-        new ForkTsCheckerWebpackPlugin(),
+        new ForkTsCheckerWebpackPlugin({
+            eslint: {
+                files: './src/**/*.{ts,tsx,js,jsx}', // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
+            },
+        }),
     ],
 };
 

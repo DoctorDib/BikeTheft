@@ -10,10 +10,13 @@ module.exports = {
         'airbnb-typescript',
         'plugin:import/errors',
         'plugin:import/warnings',
-        'plugin:import/typescript'
+        'plugin:import/typescript',
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended"
     ],
     parserOptions: {
-        project: './tsconfig.json',
+        tsconfigRootDir: __dirname,
+        project: ['./tsconfig.json'],
     },
     rules: {
         "linebreak-style": 0,

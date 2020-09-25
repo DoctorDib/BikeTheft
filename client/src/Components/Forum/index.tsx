@@ -26,7 +26,7 @@ const Main: React.FC<IForumProps> = (props: IForumProps) => {
 
     // TODO provide interface/type for obj & remove 'any'
     const GetRecentComments = forum.reverse().map((obj: any) => (
-        <Paper className={classes.message} elevation={1}>
+        <Paper className={classes.message} elevation={1} key={obj.user_id}>
             <Avatar alt="Remy Sharp" src="">{obj.user_id}</Avatar>
             <Typography variant="caption">{obj.datetime}</Typography>
             <Typography>{obj.message}</Typography>
