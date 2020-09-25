@@ -1,16 +1,16 @@
 import { makeStyles } from '@material-ui/core/styles';
-import mainStyle from 'templates/mainStyle';
+import mainStyle from '../../templates/mainStyle';
 
-export default makeStyles(theme => ({
+export default makeStyles(() => ({
     ...mainStyle,
 
     logo: {
-        height: '50px'
+        height: '50px',
     },
 
     logoContainer: {
         padding: '10px',
-        paddingLeft: 0
+        paddingLeft: 0,
     },
 
     menuLogoContainer: {
@@ -20,6 +20,6 @@ export default makeStyles(theme => ({
 
     headerContainer: {
         display: 'flex',
-        alignItems: 'center'
-    }
+        alignItems: 'center',
+    },
 }));

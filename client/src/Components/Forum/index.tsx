@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {
+    useEffect,
+    useState,
+} from 'react';
 import {
     Paper,
     Avatar,
@@ -12,6 +15,11 @@ import style from './styles';
 // TODO - Remove when we have an operation database
 import data from '../../tmp_bike_data.json';
 
+interface IComment {
+    user_id: number;
+    datetime: string; // TODO change to datetime
+    message: string;
+}
 interface IForumProps {
 
 }
@@ -20,21 +28,34 @@ interface IForumProps {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Main: React.FC<IForumProps> = (props: IForumProps) => {
     const classes: any = style();
-    const [value, setValue] = React.useState<string>('');
+    const [value, setValue] = useState<string>('');
+    const [recentComments, setRecentComments] = useState<ReadonlyArray<IComment>>([]);
 
-    const { forum } = data;
+    const { forum: comments } = data;
 
-    // TODO provide interface/type for obj & remove 'any'
-    const GetRecentComments = forum.reverse().map((obj: any) => (
-        <Paper className={classes.message} elevation={1} key={obj.user_id}>
-            <Avatar alt="Remy Sharp" src="">{obj.user_id}</Avatar>
-            <Typography variant="caption">{obj.datetime}</Typography>
-            <Typography>{obj.message}</Typography>
-        </Paper>
-    ));
+    // TODO We need interfaces/types for all the data schema once we know what it is
+    // TODO essentially all of this is temporary until that is set in stone in the db
+    // TODO and then we map it to some local object
 
-    const handleChange = (event: any) => {
+    useEffect(() => {
+        // TODO temp, change to from db
+        setRecentComments(comments);
+    }, [classes.message, comments]);
+
+    const onChange = (event: any): void => {
         setValue(event.target.value);
+    };
+
+    const onSubmit = (): void => {
+        // User has clicked submit button
+        setRecentComments((prevState) => [
+            ...prevState,
+            {
+                user_id: Math.round(Math.random() * 100),
+                datetime: (new Date().toLocaleString()),
+                message: value,
+            },
+        ]);
     };
 
     return (
@@ -51,14 +72,29 @@ const Main: React.FC<IForumProps> = (props: IForumProps) => {
                 multiline
                 rowsMax={4}
                 value={value}
-                onChange={handleChange}
+                onChange={onChange}
                 variant="outlined"
             />
 
-            <Button variant="contained" color="primary" href="#post"> Post </Button>
+            <Button
+                variant="contained"
+                color="primary"
+                href="#post"
+                onClick={onSubmit}
+            >
+                Post
+            </Button>
 
             <section className={classes.messageContainer}>
-                {GetRecentComments}
+                {
+                    recentComments.map((comment: IComment) => (
+                        <Paper className={classes.message} elevation={1} key={comment.user_id}>
+                            <Avatar alt="Remy Sharp" src="">{comment.user_id}</Avatar>
+                            <Typography variant="caption">{comment.datetime}</Typography>
+                            <Typography>{comment.message}</Typography>
+                        </Paper>
+                    )).reverse()
+                }
             </section>
         </section>
     );

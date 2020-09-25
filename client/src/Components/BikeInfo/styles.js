@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
-import mainStyle from 'templates/mainStyle';
+import mainStyle from '../../templates/mainStyle';
 
-export default makeStyles (theme => ({
+export default makeStyles(() => ({
     ...mainStyle,
 
     container: {
@@ -12,10 +12,10 @@ export default makeStyles (theme => ({
         alignItems: 'center',
         width: '100%',
 
-        ["& section:not(:first-child)"]: {
+        '& section:not(:first-child)': {
             marginTop: '20px',
-            width: '100%'
-        }
+            width: '100%',
+        },
     },
 
     topSection: {
@@ -33,16 +33,16 @@ export default makeStyles (theme => ({
 
     image: {
         width: '100%',
-        maxHeight: '50vh'
+        maxHeight: '50vh',
     },
 
     owner: {
-        display:'flex',
+        display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
     },
 
     titles: {
-        fontWeight: '600'
-    }
+        fontWeight: '600',
+    },
 }));
