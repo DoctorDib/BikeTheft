@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/styles';
 
 import styles from './styles';
 import Logo from '../../static/img/Logo.png';
+import { IClasses } from '../../Common/Interfaces/IClasses';
 
 const LogoButton = withStyles({
     root: {
@@ -18,7 +19,7 @@ const LogoButton = withStyles({
 })(Button);
 
 const DesktopHeader: React.FC = () => {
-    const classes: any = styles();
+    const classes: IClasses = styles();
 
     return (
         <section style={{
