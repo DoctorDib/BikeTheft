@@ -6,10 +6,11 @@ import { Typography } from '@material-ui/core';
 
 import style from './styles';
 import { ICookiePopupProps } from './Desktop';
+import { IClasses } from '../../Common/Interfaces/IClasses';
 
 const CookiePopup: React.FC<ICookiePopupProps> = (props: ICookiePopupProps) => {
     const { clickTrigger } = props;
-    const classes: any = style();
+    const classes: IClasses = style();
 
     return (
         <section style={{

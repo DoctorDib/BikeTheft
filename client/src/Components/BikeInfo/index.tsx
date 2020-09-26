@@ -11,6 +11,7 @@ import style from './styles';
 
 // TODO - Remove when we have an operation database
 import data from '../../tmp_bike_data.json';
+import { IClasses } from '../../Common/Interfaces/IClasses';
 
 // TODO move these interfaces to common place if needed
 interface IGrid {
@@ -52,7 +53,7 @@ interface IBikeInfoProps {
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Main: React.FC<IBikeInfoProps> = (props: IBikeInfoProps) => {
-    const classes: any = style();
+    const classes: IClasses = style();
 
     const { owner, bike } = data as IData;
 

@@ -7,15 +7,16 @@ import DetailsComponent from '../../Components/BikeInfo';
 import ForumComponent from '../../Components/Forum';
 
 import styles from './styles';
+import { IClasses } from '../../Common/Interfaces/IClasses';
 
 interface IBikeProps {
-    match: any;
+    // match: any;
 }
 
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const BikePage: React.FC<IBikeProps> = (props: IBikeProps) => {
-    const classes: any = styles();
+    const classes: IClasses = styles();
 
     // const bike_id = props.match.params.id;
 

@@ -2,9 +2,10 @@ import React from 'react';
 import { Typography } from '@material-ui/core';
 
 import style from './styles';
+import { IClasses } from '../../Common/Interfaces/IClasses';
 
 const AboutInfo: React.FC = () => {
-    const classes: any = style();
+    const classes: IClasses = style();
 
     return (
         <section className={classes.container}>

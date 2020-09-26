@@ -4,11 +4,12 @@ import { Redirect } from 'react-router-dom';
 import AppliedRoute from './Applied';
 
 interface IPrivateRouteProps {
-    component: any; // TODO better types to fix below todos
-    authenticated: any;
-    appProps: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    component: any; // TODO better types
+    authenticated: boolean;
+    appProps: unknown;
     inverted: boolean;
-    location: any;
+    location: {pathname: string};
 }
 
 const PrivateRoute: React.FC<IPrivateRouteProps> = (props: IPrivateRouteProps) => {

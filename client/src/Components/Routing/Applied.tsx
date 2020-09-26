@@ -2,10 +2,11 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 
 interface IAppliedRouteProps {
-    component: any; // TODO these need interfaces
-    appProps: any;
-    exact?: any;
-    path?: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    component: any; // TODO better types
+    appProps: unknown;
+    exact?: boolean;
+    path?: string;
 }
 
 const AppliedRoute: React.FC<IAppliedRouteProps> = (props: IAppliedRouteProps) => {
