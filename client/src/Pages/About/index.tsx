@@ -6,9 +6,10 @@ import FooterComponent from '../../Components/Footer';
 import AboutInfoComponent from '../../Components/AboutInfo';
 
 import styles from './styles';
+import { IClasses } from '../../Common/Interfaces/IClasses';
 
 const About: React.FC = () => {
-    const classes: any = styles();
+    const classes: IClasses = styles();
 
     return (
         <section className={classes.body}>

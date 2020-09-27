@@ -5,9 +5,10 @@ import { useCookie } from '@use-hook/use-cookie';
 import Desktop from './Desktop';
 import Mobile from './Mobile';
 import style from './styles';
+import { IClasses } from '../../Common/Interfaces/IClasses';
 
 const Index: React.FC = () => {
-    const classes: any = style();
+    const classes: IClasses = style();
 
     const [cookies, setCookie] = useCookie('CookiePrompt');
 

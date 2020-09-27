@@ -4,6 +4,7 @@ import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 
 import style from './styles';
+import { IClasses } from '../../Common/Interfaces/IClasses';
 
 export interface ICookiePopupProps {
     clickTrigger?: () => void;
@@ -11,7 +12,7 @@ export interface ICookiePopupProps {
 
 const CookiePopup: React.FC<ICookiePopupProps> = (props: ICookiePopupProps) => {
     const { clickTrigger } = props;
-    const classes: any = style();
+    const classes: IClasses = style();
 
     return (
         <section style={{

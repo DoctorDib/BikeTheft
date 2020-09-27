@@ -7,13 +7,14 @@ import FooterComponent from '../../Components/Footer';
 import CookiePopupComponent from '../../Components/CookiePopup';
 
 import styles from './styles';
+import { IClasses } from '../../Common/Interfaces/IClasses';
 
 interface IErrorPageProps {
 
 }
 
 const ErrorPage: React.FC<IErrorPageProps> = () => {
-    const classes: any = styles();
+    const classes: IClasses = styles();
 
     const GoBack = () => {
         window.history.back();

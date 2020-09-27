@@ -2,13 +2,14 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 
 import styles from './styles';
+import { IClasses } from '../../Common/Interfaces/IClasses';
 
 interface IFooterProps {
     className?: string;
 }
 
-const CopyRight = () => {
-    const classes: any = styles();
+const Copyright = () => {
+    const classes: IClasses = styles();
 
     return (
         <div className={classes.copyrightParent}>
@@ -21,12 +22,12 @@ const CopyRight = () => {
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const FooterComponent: React.FC<IFooterProps> = (props: IFooterProps) => {
-    const classes: any = styles();
+    const classes = styles();
 
     return (
         <section style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} className={classes.footerParent}>
             <section>
-                {CopyRight()}
+                {Copyright()}
             </section>
         </section>
     );

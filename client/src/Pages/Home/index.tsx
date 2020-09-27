@@ -1,8 +1,9 @@
 import React from 'react';
-import style from './styles';
 
 import NavBarComponent from '../../Components/Header/index';
 import FooterComponent from '../../Components/Footer/index';
+import style from './styles';
+import { IClasses } from '../../Common/Interfaces/IClasses';
 // import CookiePopupComponent from "../../Components/CookiePopup/index";
 
 interface IHomeProps {
@@ -12,7 +13,7 @@ interface IHomeProps {
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const HomePage: React.FC<IHomeProps> = (props: IHomeProps) => {
-    const classes: any = style();
+    const classes: IClasses = style();
 
     return (
         <section className={classes.body}>

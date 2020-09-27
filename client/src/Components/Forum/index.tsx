@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 
 import style from './styles';
+import { IClasses } from '../../Common/Interfaces/IClasses';
 
 // TODO - Remove when we have an operation database
 import data from '../../tmp_bike_data.json';
@@ -26,12 +27,12 @@ interface IForumProps {
 
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Main: React.FC<IForumProps> = (props: IForumProps) => {
-    const classes: any = style();
+const Forum: React.FC<IForumProps> = (props: IForumProps) => {
+    const classes: IClasses = style();
     const [value, setValue] = useState<string>('');
     const [recentComments, setRecentComments] = useState<ReadonlyArray<IComment>>([]);
 
-    const { forum: comments } = data;
+    const comments: ReadonlyArray<IComment> = data.forum;
 
     // TODO We need interfaces/types for all the data schema once we know what it is
     // TODO essentially all of this is temporary until that is set in stone in the db
@@ -40,9 +41,9 @@ const Main: React.FC<IForumProps> = (props: IForumProps) => {
     useEffect(() => {
         // TODO temp, change to from db
         setRecentComments(comments);
-    }, [classes.message, comments]);
+    }, [comments]);
 
-    const onChange = (event: any): void => {
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setValue(event.target.value);
     };
 
@@ -100,4 +101,4 @@ const Main: React.FC<IForumProps> = (props: IForumProps) => {
     );
 };
 
-export default Main;
+export default Forum;
