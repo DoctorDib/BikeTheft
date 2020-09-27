@@ -9,7 +9,11 @@ BEGIN
 
     CASE WHEN api_parameters->>'method' IN ('get_self') THEN
             ret_var = get_self(api_parameters);
-         ELSE
+        WHEN api_parameters->>'method' IN ('get_user') THEN
+            ret_var = get_user(api_parameters);
+        WHEN api_parameters->>'method' IN ('create_thread') THEN
+            ret_var = create_thread(api_parameters);
+        ELSE
             RETURN json_build_object('error', 'unsupported method');
     END CASE;
 

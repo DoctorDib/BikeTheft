@@ -9,6 +9,15 @@ provider:
   name: aws
   runtime: nodejs10.x
   region: eu-west-2
+  profile: BTP
+  stage: prod
+  vpc:
+    securityGroupIds:
+      - sg-92c883f5
+    subnetIds:
+      - subnet-41ed773b
+      - subnet-653e9729
+      - subnet-ca7826a3
 
 resources:
   Resources:
@@ -28,13 +37,13 @@ resources:
 
 custom:
   domains:
-    prod: api.someurl.com
-    dev: dev-api.someurl.com
+    prod: api.lostmywheels.com
+    dev: dev-api.lostmywheels.com
   customDomain:
     domainName: ${self:custom.domains.${self:custom.stage}}
-    certificateName: '*.someurl.com'
+    certificateName: '*.lostmywheels.com'
     basePath: 'users'
-    stage: ${self:provider.stage}
+    stage: ${self:custom.stage}
     createRoute53Record: true
   stage: ${opt:stage, self:provider.stage}
   dotenv:
@@ -53,3 +62,10 @@ functions:
           method: POST
           cors: {$self:custom.cors}
           authorizer: aws_iam
+  get_user:
+    handler: user.get_user
+    events:
+      - http:
+          path: get_user
+          method: POST
+          cors: { $self:custom.cors }

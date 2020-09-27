@@ -15,7 +15,7 @@ BEGIN
     );
 
     -- Bike Base
-    CREATE TABLE IF NOT EXISTS motorwatch.vehicle(
+    CREATE TABLE IF NOT EXISTS motorwatch.vehicles(
         vehicle_id BIGSERIAL PRIMARY KEY,
         owner_id TEXT,
         location GEOMETRY(Linestring, 4326),
@@ -46,7 +46,7 @@ BEGIN
         CONSTRAINT thread_vehicle_id FOREIGN KEY(vehicle_id)
             REFERENCES motorwatch.vehicles (vehicle_id)
             MATCH SIMPLE ON DELETE CASCADE
-    )
+    );
 
     -- Posts
     CREATE TABLE IF NOT EXISTS motorwatch.posts (
@@ -61,8 +61,15 @@ BEGIN
             MATCH SIMPLE ON DELETE CASCADE,
         CONSTRAINT post_owner_id FOREIGN KEY(poster_id)
             REFERENCES motorwatch.members (member_id)
-            MATCH SIMPLE ON DELETE CASCADE,
-    )
+            MATCH SIMPLE ON DELETE CASCADE
+    );
+
+    --Log Messages
+    CREATE TABLE IF NOT EXISTS motorwatch.logs(
+        log_id          BIGSERIAL PRIMARY KEY,
+        log_timestamp   TIMESTAMP DEFAULT NOW(),
+        log_message     JSONB
+    );
 
 EXCEPTION WHEN OTHERS THEN
     RAISE NOTICE 'ERROR CREATING TABLES %', SQLERRM;

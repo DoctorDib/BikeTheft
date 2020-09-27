@@ -24,3 +24,18 @@ module.exports.me = (event, context, callback) => {
         callback(null, response);
     });
 };
+
+// This will just return a basic overview of any user
+module.exports.get_user = (event, context, callback) => {
+    const eBody = JSON.parse(event.body);
+    const body = {
+        method: 'get_user',
+        member_id: eBody.id,
+    };
+
+    API.call(body).then(data => {
+        response.body = JSON.stringify(data);
+        context.callbackWaitsForEmptyEventLoop = false;
+        callback(null, response);
+    });
+}
