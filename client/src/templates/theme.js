@@ -1,9 +1,7 @@
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
-import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
+import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
 
-const pxToRem = value => {
-    return `${value / 16}rem`;
-}
+// const pxToRem = (value) => `${value / 16}rem`;
 
 const breakpoints = createBreakpoints({});
 export default createMuiTheme({
@@ -24,13 +22,13 @@ export default createMuiTheme({
         fontSize: 16,
     },
     text: {
-        primary: "#ffffff",
-        secondary: "#00000",
-        subtitle: '#26844F'
+        primary: '#ffffff',
+        secondary: '#00000',
+        subtitle: '#26844F',
     },
     input: {
         backgroundColor: 'black',
         border: '1px solid #ced4da',
-    }, 
-    breakpoints
+    },
+    breakpoints,
 });

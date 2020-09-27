@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+// This isn't typescript so we don't care
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const BUILD_DIR = path.resolve(__dirname, 'public');
 const APP_DIR = path.resolve(__dirname, 'src');
@@ -8,17 +11,15 @@ const config = {
     devServer: {
         historyApiFallback: true,
         contentBase: './public/home',
-        hot: false,
-        lazy: false,
+        hot: true,
+        lazy: true,
         inline: false,
         liveReload: false,
-        host: '0.0.0.0'
+        host: '0.0.0.0',
     },
-   devtool: 'inline-source-map',
+    devtool: 'inline-source-map',
     entry: {
-        home: path.join(APP_DIR, 'Entry/Home.jsx'),
-        error: path.join(APP_DIR, 'Entry/Error.jsx'),
-        bike: path.join(APP_DIR, 'Entry/Bike.jsx'),
+        home: path.join(APP_DIR, '/Entry/Home.tsx'),
     },
     mode: 'development',
     output: {
@@ -33,15 +34,27 @@ const config = {
         rules: [
             {
                 test: /\.(t|j)sx?$/,
-                use: 'ts-loader',
+                loader: 'ts-loader',
                 exclude: /node_modules/,
+                options: {
+                    transpileOnly: true,
+                },
             },
             {
                 test: /\.jsx?$/,
                 include: APP_DIR,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['@babel/react', '@babel/env'],
+                    presets: [
+                        '@babel/react',
+                        '@babel/env',
+                        [
+                            '@babel/preset-typescript',
+                            {
+                                onlyRemoveTypeImports: true,
+                            },
+                        ],
+                    ],
                     plugins: ['@babel/plugin-proposal-class-properties'],
                 },
             },
@@ -68,15 +81,10 @@ const config = {
             filename: 'home/index.html',
             template: '!!html-loader!src/templates/template.html',
         }),
-        new HtmlWebpackPlugin({
-            chunks: ['bike'],
-            filename: 'bike/index.html',
-            template: '!!html-loader!src/templates/template.html',
-        }),
-        new HtmlWebpackPlugin({
-            chunks: ['error'],
-            filename: 'error/index.html',
-            template: '!!html-loader!src/templates/template.html',
+        new ForkTsCheckerWebpackPlugin({
+            eslint: {
+                files: './src/**/*.{ts,tsx,js,jsx}', // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
+            },
         }),
     ],
 };
