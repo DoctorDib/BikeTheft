@@ -12,7 +12,7 @@ const config = {
         historyApiFallback: true,
         contentBase: './public/home',
         hot: true,
-        lazy: true,
+        lazy: false,
         inline: false,
         liveReload: false,
         host: '0.0.0.0',

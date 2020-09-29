@@ -1,4 +1,5 @@
 import React from 'react';
+import { API } from 'aws-amplify';
 import {
     Typography,
     Grid,
@@ -47,12 +48,11 @@ interface IData {
 }
 
 interface IBikeInfoProps {
-
 }
 
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Main: React.FC<IBikeInfoProps> = (props: IBikeInfoProps) => {
+const Main: React.FC = (props: IBikeInfoProps) => {
     const classes: IClasses = style();
 
     const { owner, bike } = data as IData;
@@ -114,6 +114,13 @@ const Main: React.FC<IBikeInfoProps> = (props: IBikeInfoProps) => {
     ));
 
     const stat: ReadonlyArray<string> = status(bike.status);
+
+    API.post('base_endpoint', '/vehicles/ping', { 'Access-Control-Allow-Origin': '*' }).then((resp) => {
+        console.log(resp);
+    }).catch((e) => {
+        console.log('OMG, new error');
+        console.log(e);
+    });
 
     return (
         <section className={classes.container}>

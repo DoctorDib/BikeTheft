@@ -24,3 +24,8 @@ module.exports.get = (event, context, callback) => {
         callback(null, response);
     });
 };
+
+module.exports.ping = (event, context, callback) => {
+    response.body.message = "pong";
+    callback(null, response);
+};
