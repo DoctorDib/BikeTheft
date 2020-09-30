@@ -28,11 +28,11 @@ BEGIN
                 number_plate,
                 vehicle_make,
                 vehicle_model,
-                COALESCE(bike_attributes->>'vehicle_image', 'https://icon-library.com/images/vehicle-icon-png/vehicle-icon-png-29.jpg') as image_url,
-                COALESCE(bike_attributes->>'features', ARRAY[]) as features,
-                COALESCE(bike_attributes->>'description', '') as description
+				COALESCE(vehicle_attributes->>'vehicle_image', '') as image,
+				COALESCE(vehicle_attributes->>'features', '') as features,
+                COALESCE(vehicle_attributes->>'description', '') as description
          FROM vehicles
-    WHERE vehicle_id = api_parameters->>'vehicle_id'
+    WHERE vehicle_id = (api_parameters->>'vehicle_id')::INTEGER
     OR number_plate = api_parameters->>'number_plate') SUB;
 
     RETURN json_build_object('vehicle', vehicle_var);

@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { API } from 'aws-amplify';
+import { useParams } from 'react-router-dom';
 import {
     Typography,
     Grid,
     List,
     ListItem,
     ListItemText,
+    CardMedia,
 } from '@material-ui/core';
 
 import style from './styles';
@@ -52,10 +54,15 @@ interface IBikeInfoProps {
 
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Main: React.FC = (props: IBikeInfoProps) => {
+const Main: React.FC<IBikeInfoProps> = (props: IBikeInfoProps) => {
     const classes: IClasses = style();
 
+    const URLVehicleID = useParams().id;
+    console.log(URLVehicleID)
+
     const { owner, bike } = data as IData;
+
+    const [isShowingText, setIsShowingText] = useState(true);
 
     // temp
     const title = (title_id: number): string | undefined => {
@@ -115,20 +122,21 @@ const Main: React.FC = (props: IBikeInfoProps) => {
 
     const stat: ReadonlyArray<string> = status(bike.status);
 
-    API.post('base_endpoint', '/vehicles/ping', { 'Access-Control-Allow-Origin': '*' }).then((resp) => {
+    API.post('base_endpoint', '/vehicles/get_vehicle', { body: { id: URLVehicleID } }).then((resp) => {
         console.log(resp);
     }).catch((e) => {
         console.log('OMG, new error');
         console.log(e);
     });
 
+    const temp = 'bike_1.24c1b321.jpg';
+
     return (
         <section className={classes.container}>
 
             <section className={classes.topSection}>
                 <section className={classes.imageContainer}>
-                    {/* TODO find a better way to put images here ty */}
-                    {/* <img className={classes.image} src={require('../../static/img/bikes/' + bike.picture)} alt="bike" /> */}
+                    <CardMedia className={classes.image} component="img" image={`../static/media/${temp}`} />
                 </section>
 
                 <section className={classes.owner}>

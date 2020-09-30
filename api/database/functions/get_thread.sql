@@ -22,7 +22,7 @@ BEGIN
          SELECT
                 thread_id,
                 owner_id,
-                bike_id
+                vehicle_id
          FROM threads
     WHERE thread_id = api_parameters->>'thread_id') SUB;
 

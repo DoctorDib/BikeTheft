@@ -11,11 +11,11 @@ let response = {
     }
 };
 
-module.exports.get = (event, context, callback) => {
+module.exports.get_vehicle = (event, context, callback) => {
     const eBody = JSON.parse(event.body);
     const body = {
-        method: 'get_self',
-        forum_id: eBody.id,
+        method: 'get_vehicle',
+        vehicle_id: parseInt(eBody.id),
     };
 
     API.call(body).then(data => {
@@ -26,6 +26,6 @@ module.exports.get = (event, context, callback) => {
 };
 
 module.exports.ping = (event, context, callback) => {
-    response.body.message = "pong";
+    response.body = JSON.stringify({ message: 'pong' });
     callback(null, response);
 };
