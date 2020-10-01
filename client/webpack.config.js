@@ -8,11 +8,12 @@ const BUILD_DIR = path.resolve(__dirname, 'public');
 const APP_DIR = path.resolve(__dirname, 'src');
 
 const config = {
+    mode: 'development',
     devServer: {
         historyApiFallback: true,
         contentBase: './public/home',
         hot: true,
-        lazy: true,
+        lazy: false,
         inline: false,
         liveReload: false,
         host: '0.0.0.0',
@@ -20,8 +21,8 @@ const config = {
     devtool: 'inline-source-map',
     entry: {
         home: path.join(APP_DIR, '/Entry/Home.tsx'),
+        shared: ['react', 'react-dom'],
     },
-    mode: 'development',
     output: {
         path: BUILD_DIR,
         filename: '[name]/js/bundle.js',
