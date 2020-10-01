@@ -1,7 +1,7 @@
 import React, {
-    useEffect,
     useState,
 } from 'react';
+
 import {
     Paper,
     Avatar,
@@ -13,16 +13,13 @@ import {
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
-// TODO - Remove when we have an operation database
-import data from '../../tmp_bike_data.json';
+import {
+    IPosts,
+    IComment,
+} from '../../Common/Interfaces/interfaces';
 
-interface IComment {
-    user_id: number;
-    datetime: string; // TODO change to datetime
-    message: string;
-}
 interface IForumProps {
-
+    posts: IPosts
 }
 
 // TODO these props should be used
@@ -30,34 +27,28 @@ interface IForumProps {
 const Forum: React.FC<IForumProps> = (props: IForumProps) => {
     const classes: IClasses = style();
     const [value, setValue] = useState<string>('');
-    const [recentComments, setRecentComments] = useState<ReadonlyArray<IComment>>([]);
-
-    const comments: ReadonlyArray<IComment> = data.forum;
+    
+    const { posts } = props;
 
     // TODO We need interfaces/types for all the data schema once we know what it is
     // TODO essentially all of this is temporary until that is set in stone in the db
     // TODO and then we map it to some local object
-
-    useEffect(() => {
-        // TODO temp, change to from db
-        setRecentComments(comments);
-    }, [comments]);
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setValue(event.target.value);
     };
 
     const onSubmit = (): void => {
-        // User has clicked submit button
-        setRecentComments((prevState) => [
-            ...prevState,
-            {
-                user_id: Math.round(Math.random() * 100),
-                datetime: (new Date().toLocaleString()),
-                message: value,
-            },
-        ]);
+        
     };
+
+    const LayoutComments = posts.posts.map((comment: IComment) => (
+        <Paper className={classes.message} elevation={1} key={comment.display_name}>
+            <Avatar alt="Remy Sharp" src="">{comment.profile_image}</Avatar>
+            <Typography variant="caption">{comment.date_added}</Typography>
+            <Typography>{comment.post_attributes.message}</Typography>
+        </Paper>
+    ));
 
     return (
         <section style={{
@@ -87,15 +78,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
             </Button>
 
             <section className={classes.messageContainer}>
-                {
-                    recentComments.map((comment: IComment) => (
-                        <Paper className={classes.message} elevation={1} key={comment.user_id}>
-                            <Avatar alt="Remy Sharp" src="">{comment.user_id}</Avatar>
-                            <Typography variant="caption">{comment.datetime}</Typography>
-                            <Typography>{comment.message}</Typography>
-                        </Paper>
-                    )).reverse()
-                }
+                {LayoutComments}
             </section>
         </section>
     );

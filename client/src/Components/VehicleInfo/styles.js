@@ -45,4 +45,16 @@ export default makeStyles(() => ({
     titles: {
         fontWeight: '600',
     },
+
+    profileImageContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        height: '60px',
+        width: '60px',
+    },
+
+    profileImage: { 
+        height: '100%',
+        width: '100%',
+    },
 }));

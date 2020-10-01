@@ -32,7 +32,7 @@ const DesktopHeader: React.FC = () => {
                         <img src={Logo} title="logo" alt="logo" className={classes.logo} />
                     </LogoButton>
                 </div>
-                <Typography variant="body1"> Bike Bounty </Typography>
+                <Typography variant="body1"> Lost My Wheels </Typography>
             </section>
         </section>
     );

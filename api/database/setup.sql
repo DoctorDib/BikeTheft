@@ -14,7 +14,7 @@ BEGIN
         date_added          TIMESTAMP DEFAULT NOW()
     );
 
-    -- Bike Base
+    -- Vehicle Base
     CREATE TABLE IF NOT EXISTS motorwatch.vehicles(
         vehicle_id BIGSERIAL PRIMARY KEY,
         owner_id TEXT,

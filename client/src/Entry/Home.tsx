@@ -9,7 +9,7 @@ import AppliedRoute from '../Components/Routing/Applied';
 import * as constants from '../secrets/constants';
 
 import HomePage from '../Pages/Home';
-import BikePage from '../Pages/Bike';
+import PostPage from '../Pages/Post';
 import AboutPage from '../Pages/About';
 import ErrorPage from '../Pages/Error';
 
@@ -42,7 +42,7 @@ const App: React.FC = () => (
         <ThemeProvider theme={mainTheme}>
             <Switch>
                 <AppliedRoute appProps={{}} exact path="/" component={HomePage} />
-                <AppliedRoute appProps={{}} path="/bike/:id" component={BikePage} />
+                <AppliedRoute appProps={{}} path="/post/:id" component={PostPage} />
                 <AppliedRoute appProps={{}} path="/404" component={ErrorPage} />
                 <AppliedRoute appProps={{}} path="/about" component={AboutPage} />
                 <Redirect to="/404" />

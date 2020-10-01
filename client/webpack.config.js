@@ -3,6 +3,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const BUILD_DIR = path.resolve(__dirname, 'public');
 const APP_DIR = path.resolve(__dirname, 'src');
@@ -59,13 +60,11 @@ const config = {
                 },
             },
             {
-                test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-                loader: 'url-loader',
-                options: {
-                    limit: 100000,
-                    name: 'static/media/[name].[hash:8].[ext]',
-                },
-            },
+                //IMAGE LOADER
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                loader:'url-loader'
+              },
+
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader'],
@@ -86,6 +85,14 @@ const config = {
                 files: './src/**/*.{ts,tsx,js,jsx}', // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
             },
         }),
+        new CopyPlugin({
+            patterns: [
+              { 
+                  from: path.join(APP_DIR, '/static/img'), 
+                  to: path.join(BUILD_DIR, '/static/media/[name].[hash:8].[ext]'),
+                },
+            ],
+          }),
     ],
 };
 

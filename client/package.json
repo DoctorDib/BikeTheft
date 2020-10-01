@@ -1,5 +1,5 @@
 {
-  "name": "Bike-Bounty",
+  "name": "Lost-My-Wheels",
   "version": "0.0.1",
   "description": "",
   "main": "server.js",
@@ -18,7 +18,9 @@
     "@use-hook/use-cookie": "^0.1.4",
     "aws-amplify": "^3.3.2",
     "aws-sdk": "^2.761.0",
+    "copy-webpack-plugin": "^6.1.1",
     "core-js": "^3.6.5",
+    "file": "^0.2.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router": "^5.2.0",
