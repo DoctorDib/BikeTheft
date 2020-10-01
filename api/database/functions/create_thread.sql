@@ -15,7 +15,7 @@ BEGIN
             (api_parameters ->> 'vehicle_attributes')::JSONB
         RETURNING vehicle_id INTO vehicle_id_var;
 
-    INSERT INTO threads (owner_id, bike_id, thread_attributes)
+    INSERT INTO threads (owner_id, vehicle_id, thread_attributes)
         SELECT (api_parameters ->> 'member_id')::TEXT,
             vehicle_id_var,
             (api_parameters ->> 'thread_attributes')::JSONB

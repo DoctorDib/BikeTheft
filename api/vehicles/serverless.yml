@@ -62,6 +62,13 @@ functions:
           method: POST
           cors: {$self:custom.cors}
           authorizer: aws_iam
+  get_vehicle:
+    handler: vehicles.get_vehicle
+    events:
+      - http:
+          path: get_vehicle
+          method: POST
+          cors: {$self:custom.cors}
   ping:
     handler: vehicles.ping
     events:
