@@ -1,6 +1,14 @@
 module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',
+    parserOptions: {
+        tsconfigRootDir: __dirname,
+        project: ['./tsconfig.json'],
+        ecmaVersion: 2020,
+        ecmaFeatures: {
+            jsx: true,
+        },
+    },
     plugins: [
         '@typescript-eslint',
     ],
@@ -12,12 +20,8 @@ module.exports = {
         'plugin:import/warnings',
         'plugin:import/typescript',
         "plugin:react/recommended",
-        "plugin:react-hooks/recommended"
+        "plugin:react-hooks/recommended",
     ],
-    parserOptions: {
-        tsconfigRootDir: __dirname,
-        project: ['./tsconfig.json'],
-    },
     rules: {
         "linebreak-style": 0,
         "indent": "off",
@@ -41,5 +45,11 @@ module.exports = {
         "browser": true,
         "node": true,
         "commonjs": true,
-    }
+    },
+    settings: {
+        react: {
+            version: 'detect'
+        }
+    },
+
 };
