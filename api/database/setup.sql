@@ -37,6 +37,7 @@ BEGIN
         thread_id BIGSERIAL PRIMARY KEY,
         owner_id TEXT,
         vehicle_id BIGINT,
+        date_added TIMESTAMP DEFAULT NOW(),
         thread_attributes JSONB,
 
         CONSTRAINT thread_owner_id FOREIGN KEY(owner_id)

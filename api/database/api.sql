@@ -11,8 +11,12 @@ BEGIN
             ret_var = get_self(api_parameters);
         WHEN api_parameters->>'method' IN ('get_user') THEN
             ret_var = get_user(api_parameters);
-        WHEN api_parameters->>'method' IN ('create_thread') THEN
-            ret_var = create_thread(api_parameters);
+        WHEN api_parameters->>'method' IN ('get_vehicle') THEN
+            ret_var = get_vehicle(api_parameters);
+        WHEN api_parameters->>'method' IN ('get_thread') THEN
+            ret_var = get_thread(api_parameters);
+        WHEN api_parameters->>'method' IN ('get_forum') THEN
+            ret_var = get_forum(api_parameters);
         ELSE
             RETURN json_build_object('error', 'unsupported method');
     END CASE;

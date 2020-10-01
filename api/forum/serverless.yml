@@ -58,6 +58,6 @@ functions:
     handler: forum.get
     events:
       - http:
-          path: me
+          path: get
           method: POST
           cors: {$self:custom.cors}
