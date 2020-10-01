@@ -6,6 +6,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 
 import mainTheme from '../templates/theme';
 import AppliedRoute from '../Components/Routing/Applied';
+// TODO USE ENV FILE INSTEAD!
 import * as constants from '../secrets/constants';
 
 import HomePage from '../Pages/Home';

@@ -4,17 +4,17 @@ import Divider from '@material-ui/core/Divider';
 import { API } from 'aws-amplify';
 import { useParams } from 'react-router-dom';
 
+import { debug, error } from 'console';
 import NavBarComponent from '../../Components/Header';
 import FooterComponent from '../../Components/Footer';
 import PostInfoComponent from '../../Components/VehicleInfo';
-import ForumComponent from '../../Components/Forum';
+import PostsComponent from '../../Components/Posts';
 
 import {
     IData,
     IPosts,
     IVehicleInfo,
-    IParams,
-    IComment,
+    // IComment,
     IOwner,
 } from '../../Common/Interfaces/interfaces';
 
@@ -41,6 +41,7 @@ const defaultData: IVehicleInfo = {
 const defaultOwnerData: IOwner = {
     display_name: '',
     profile_image: '',
+    member_attributes: '',
 };
 
 const defaultPosts: IPosts = {
@@ -52,7 +53,7 @@ const defaultPosts: IPosts = {
             post_attributes: {
                 message: '',
             },
-        }
+        },
     ],
 };
 
@@ -61,10 +62,12 @@ const defaultPosts: IPosts = {
 const PostPage: React.FC<IPostProps> = (props: IPostProps) => {
     const classes: IClasses = styles();
 
+    interface IParams {
+        id: string;
+    }
     const { id } = useParams<IParams>();
 
-    const [vehicleID, setVehicleID] = useState(id);
-
+    const [vehicleID, setVehicleID] = useState<string>(id);
     const [memberData, setMemberData] = useState<IOwner>(defaultOwnerData);
     const [vehicleData, setVehicleData] = useState<IVehicleInfo>(defaultData);
     const [postData, setPostData] = useState<IPosts>(defaultPosts);
@@ -73,15 +76,13 @@ const PostPage: React.FC<IPostProps> = (props: IPostProps) => {
         try {
             const returnData: IData = await API.post('base_endpoint', '/forum/get', { body: { thread_id: vehicleInfoID } });
 
-            console.log(returnData);
+            debug(returnData);
 
-            const posts: any = { 'posts': returnData.posts };
-
-            setMemberData(returnData.owner.member_attributes);
+            setMemberData(returnData.owner);
             setVehicleData(returnData.vehicle);
-            setPostData(posts);
+            setPostData(returnData.posts);
         } catch (e) {
-            console.log(e);
+            error(e);
         }
     };
 
@@ -91,7 +92,7 @@ const PostPage: React.FC<IPostProps> = (props: IPostProps) => {
 
         // Grabbing vehicle information
         fetch(vehicleID);
-    }, [vehicleID]);
+    }, [id, vehicleID]);
 
     return (
         <section className={classes.body}>
@@ -108,7 +109,7 @@ const PostPage: React.FC<IPostProps> = (props: IPostProps) => {
             </section>
 
             <section className={classes.mainContentGap}>
-                <ForumComponent posts={postData} />
+                <PostsComponent posts={postData} />
             </section>
 
             <section className={classes.mainContentGap}>

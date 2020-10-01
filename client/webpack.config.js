@@ -61,11 +61,10 @@ const config = {
                 },
             },
             {
-                //IMAGE LOADER
+                // IMAGE LOADER
                 test: /\.(jpe?g|png|gif|svg)$/i,
-                loader:'url-loader'
-              },
-
+                loader: 'url-loader',
+            },
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader'],
@@ -88,12 +87,12 @@ const config = {
         }),
         new CopyPlugin({
             patterns: [
-              { 
-                  from: path.join(APP_DIR, '/static/img'), 
-                  to: path.join(BUILD_DIR, '/static/media/[name].[hash:8].[ext]'),
+                {
+                    from: path.join(APP_DIR, '/static/img'),
+                    to: path.join(BUILD_DIR, '/static/media/[name].[hash:8].[ext]'),
                 },
             ],
-          }),
+        }),
     ],
 };
 

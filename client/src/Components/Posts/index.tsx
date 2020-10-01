@@ -1,7 +1,6 @@
 import React, {
     useState,
 } from 'react';
-
 import {
     Paper,
     Avatar,
@@ -27,7 +26,6 @@ interface IForumProps {
 const Forum: React.FC<IForumProps> = (props: IForumProps) => {
     const classes: IClasses = style();
     const [value, setValue] = useState<string>('');
-    
     const { posts } = props;
 
     // TODO We need interfaces/types for all the data schema once we know what it is
@@ -39,7 +37,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
     };
 
     const onSubmit = (): void => {
-        
+        //
     };
 
     const LayoutComments = posts.posts.map((comment: IComment) => (

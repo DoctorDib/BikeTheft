@@ -53,7 +53,7 @@ export default makeStyles(() => ({
         width: '60px',
     },
 
-    profileImage: { 
+    profileImage: {
         height: '100%',
         width: '100%',
     },

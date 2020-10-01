@@ -26,6 +26,10 @@ export function getProperty<T, K extends keyof T>(o: T, propertyName: K): T[K] {
     return o[propertyName]; // o[propertyName] is of type T[K]
 }
 
+export function hasProperty(x: unknown, y: string | number | symbol): boolean {
+    return Object.prototype.hasOwnProperty.call(x, y);
+}
+
 export const FormatInfo = (data : IVehicleInfo) => infoKeys.map((key: string) => (
     <Grid container key={`prop - ${key}`}>
         <Grid item xs={6}>

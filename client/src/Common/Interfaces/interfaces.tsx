@@ -1,4 +1,4 @@
-import { IpOwner } from 'aws-sdk/clients/macie2';
+// import { IpOwner } from 'aws-sdk/clients/macie2';
 
 export interface IVehicleInfo {
     date_added: string,
@@ -16,12 +16,7 @@ export interface IVehicleInfo {
 export interface IOwner {
     display_name: string,
     profile_image: string,
-}
-
-export interface IData {
-    vehicle: IVehicleInfo;
-    owner: IOwner;
-    posts: IPosts;
+    member_attributes: string,
 }
 
 export interface IPosts {
@@ -37,6 +32,8 @@ export interface IComment {
     },
 }
 
-export interface IParams {
-    id: string;
+export interface IData {
+    vehicle: IVehicleInfo;
+    owner: IOwner;
+    posts: IPosts;
 }
