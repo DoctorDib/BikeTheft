@@ -87,6 +87,7 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
             setPostData(returnData);
         } catch (e) {
             console.error(e);
+            window.location.href = "/404";
         }
     };
 
