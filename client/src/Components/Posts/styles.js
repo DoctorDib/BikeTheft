@@ -57,5 +57,10 @@ export default makeStyles(() => ({
 
     postContainer: {
         padding: '15px',
+    },
+
+    profileImage: {
+        width: '55px',
+        height: '55px',
     }
 }));

@@ -56,13 +56,9 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         return (
             <section className={classes.postContainer}> 
                 <section className={classes.avatarContainer}>
-                    <Avatar 
-                    alt="Remy Sharp" 
-                    src={image}>
-                        {image}
-                    </Avatar>
+                    <Avatar alt="Remy Sharp" src={image} className={classes.profileImage}> {image} </Avatar>
                     <section className={classes.avatarText}> 
-                        <Typography variant="caption"> {name} </Typography> 
+                        <Typography variant="subtitle1"> {name} </Typography> 
                         <Typography variant="caption">{comment.date_added}</Typography>
                     </section>
                 </section>
@@ -77,8 +73,8 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 {/* TODO - ONLY MAKE IT ACCESSIBLE FOR THE OWNER OF THE THREAD */}
                 {/* Requires user accounts to be set up */}
                 <section className={classes.buttonContainer}>
-                    <Button className={classes.infoButton} variant="contained"> Confirm </Button>
-                    <Button className={classes.infoButton} variant="contained"> Deny </Button>
+                    <Button className={classes.infoButton} variant="contained" color="primary"> Confirm </Button>
+                    <Button className={classes.infoButton} variant="contained" color="primary"> Deny </Button>
                 </section>
             </section>
         );
@@ -99,7 +95,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
     return (
         <section className={classes.mainContainer}>
             <Typography variant="h5"> Activity </Typography>
-            <Typography variant="caption"> Found anything related to this bike? Every second counts! </Typography>
+            <Typography variant="caption"> Found anything related to this vehicle? Every second counts! </Typography>
 
             <TextField
                 id="outlined-multiline-flexible"

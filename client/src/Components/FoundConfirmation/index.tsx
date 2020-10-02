@@ -53,12 +53,12 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfi
 
                     <section className={classes.buttonContainer}>
                         <TextField id="outlined-basic" size="small" label="Upload image" variant="outlined" />
-                        <Button size="small" variant="contained"> Browse </Button>
+                        <Button size="small" variant="contained" color="primary"> Browse </Button>
                     </section>
 
                     <section className={classes.buttonContainer}>
-                        <Button variant="contained" startIcon={<CheckCircle />}> Confirm </Button>
-                        <Button variant="contained" startIcon={<Cancel />} onClick={close}> Cancel </Button>
+                        <Button variant="contained" startIcon={<CheckCircle />} color="primary"> Confirm </Button>
+                        <Button variant="contained" startIcon={<Cancel />} onClick={close} color="primary"> Cancel </Button>
                     </section>
                 </Paper>
             </Fade>

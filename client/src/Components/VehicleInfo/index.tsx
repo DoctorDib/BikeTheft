@@ -76,8 +76,8 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                 </section>
 
                 <section className={classes.buttonContainer}>
-                    <Button variant="contained" startIcon={<Check />} onClick={handleOpen}> Found </Button>
-                    <Button variant="contained" startIcon={<Report />}> Report </Button>
+                    <Button variant="contained" startIcon={<Check />} onClick={handleOpen} color="primary"> Found </Button>
+                    <Button variant="contained" startIcon={<Report />} color="primary"> Report </Button>
 
                     <FoundConfirmation close={() => { setOpen(false); }} open={open} />
                 </section>
