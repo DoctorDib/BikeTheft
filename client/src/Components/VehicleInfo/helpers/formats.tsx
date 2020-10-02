@@ -7,8 +7,9 @@ import {
 } from '@material-ui/core';
 
 import { IVehicleInfo } from '../../../Common/Interfaces/interfaces';
+import { isEmpty } from '../../../Common/Utils/Types';
 
-const infoKeys: Array<string> = ['number_plate', 'vehicle_make', 'vehicle_model'];
+const infoKeys: Array<keyof IVehicleInfo> = ['number_plate', 'vehicle_make', 'vehicle_model'];
 
 export const FormatInfoTitles = (key: string): string => {
     const returnKey = key.split('_');
@@ -30,7 +31,7 @@ export function hasProperty(x: unknown, y: string | number | symbol): boolean {
     return Object.prototype.hasOwnProperty.call(x, y);
 }
 
-export const FormatInfo = (data : IVehicleInfo) => infoKeys.map((key: string) => (
+export const FormatInfo = (data : IVehicleInfo) => infoKeys.map((key: keyof IVehicleInfo) => (
     <Grid container key={`prop - ${key}`}>
         <Grid item xs={6}>
             <Typography>{FormatInfoTitles(key)}</Typography>
@@ -38,7 +39,7 @@ export const FormatInfo = (data : IVehicleInfo) => infoKeys.map((key: string) =>
         <Grid item xs={6}>
             <Typography>
                 {' '}
-                {getProperty(data, key) === '' ? 'N/A' : getProperty(data, key)}
+                {isEmpty(getProperty(data, key)) ? 'N/A' : getProperty(data, key)}
                 {' '}
             </Typography>
         </Grid>
