@@ -1,4 +1,4 @@
-export function isNullOrUndefined(value: unknown): boolean {
+export function isNullOrUndefined(value: unknown): value is null | undefined {
     return isUndefined(value) || isNull(value);
 }
 
