@@ -105,7 +105,7 @@ dist
 .tern-port
 
 # Secret folder - shhh
-client/src/secrets
+secrets
 
 # Removing build folder
 client/public

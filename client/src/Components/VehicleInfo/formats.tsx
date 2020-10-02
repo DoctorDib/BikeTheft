@@ -6,10 +6,10 @@ import {
     ListItemText,
 } from '@material-ui/core';
 
-import { IVehicleInfo } from '../../../Common/Interfaces/interfaces';
-import { isEmpty } from '../../../Common/Utils/Types';
+import { IVehicleInfo } from '../../Common/Interfaces/interfaces';
+import { isEmpty } from '../../Common/Utils/Types';
 
-const infoKeys: Array<keyof IVehicleInfo> = ['number_plate', 'vehicle_make', 'vehicle_model'];
+const infoKeys: Array<string> = ['number_plate', 'vin', 'make', 'model', 'category'];
 
 export const FormatInfoTitles = (key: string): string => {
     const returnKey = key.split('_');
@@ -56,7 +56,8 @@ export const FormatStatusText = (currentStat: number) => {
     switch (currentStat) {
         case 1: return 'Stolen';
         case 2: return 'Pending collection';
-        default: return 'Found and collected';
+        case 3: return 'Found and collected';
+        default: return 'Loading...';
     }
 };
 
@@ -64,6 +65,7 @@ export const FormatStatusColour = (currentStat: number) => {
     switch (currentStat) {
         case 1: return 'red';
         case 2: return 'orange';
-        default: return 'green';
+        case 3: return 'green';
+        default: return 'gray';
     }
 };

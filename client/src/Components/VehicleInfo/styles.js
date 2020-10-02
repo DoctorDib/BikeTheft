@@ -28,7 +28,7 @@ export default makeStyles(() => ({
 
     imageContainer: {
         backgroundColor: 'black',
-        width: '100%',
+        width: '100vw',
     },
 
     image: {
@@ -55,6 +55,12 @@ export default makeStyles(() => ({
 
     profileImage: {
         height: '100%',
+        width: '100%',
+    },
+
+    buttonContainer: {
+        display: 'flex',
+        justifyContent: 'space-around',
         width: '100%',
     },
 }));

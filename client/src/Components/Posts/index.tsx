@@ -7,6 +7,7 @@ import {
     TextField,
     Typography,
     Button,
+    CardMedia ,
 } from '@material-ui/core';
 
 import style from './styles';
@@ -40,19 +41,63 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         //
     };
 
+    const FormatPostBackground = (styleID: number) => {
+        switch (styleID) {
+            case 1: return 'white';
+            case 2: return '#e3e3e3';
+            default: return 'black';
+        }
+    };
+
+    const FormatAvatar = (comment: IComment) => {
+        const image = comment.type === 1 ? `../static/media/${comment.member_attributes.profile_image}` : 'I';
+        const name = comment.type === 2 ? 'Info' : `${comment.member_attributes.display_name}`;
+
+        return (
+            <section className={classes.postContainer}> 
+                <section className={classes.avatarContainer}>
+                    <Avatar 
+                    alt="Remy Sharp" 
+                    src={image}>
+                        {image}
+                    </Avatar>
+                    <section className={classes.avatarText}> 
+                        <Typography variant="caption"> {name} </Typography> 
+                        <Typography variant="caption">{comment.date_added}</Typography>
+                    </section>
+                </section>
+            </section>
+        );
+    };
+
+    const AddInfoCardFeatures = (comment: IComment) => {
+        return (
+            <section>
+                <CardMedia className={classes.confirmationImg} component="img" image={`../static/media/${comment.post_attributes.confirmation_image}`} />
+                {/* TODO - ONLY MAKE IT ACCESSIBLE FOR THE OWNER OF THE THREAD */}
+                {/* Requires user accounts to be set up */}
+                <section className={classes.buttonContainer}>
+                    <Button className={classes.infoButton} variant="contained"> Confirm </Button>
+                    <Button className={classes.infoButton} variant="contained"> Deny </Button>
+                </section>
+            </section>
+        );
+    };
+
     const LayoutComments = posts.posts.map((comment: IComment) => (
-        <Paper className={classes.message} elevation={1} key={comment.display_name}>
-            <Avatar alt="Remy Sharp" src="">{comment.profile_image}</Avatar>
-            <Typography variant="caption">{comment.date_added}</Typography>
-            <Typography>{comment.post_attributes.message}</Typography>
+        <Paper className={classes.message} elevation={1} key={comment.member_attributes.display_name} 
+        style={{ backgroundColor: FormatPostBackground(comment.type) }}>
+            {FormatAvatar(comment)}
+            
+            {
+                comment.type === 2 ? AddInfoCardFeatures(comment) : ''
+            }
+            <section className={classes.postContainer}> <Typography>{comment.post_attributes.message}</Typography> </section>
         </Paper>
     ));
 
     return (
-        <section style={{
-            display: 'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', alignItems: 'center',
-        }}
-        >
+        <section className={classes.mainContainer}>
             <Typography variant="h5"> Activity </Typography>
             <Typography variant="caption"> Found anything related to this bike? Every second counts! </Typography>
 

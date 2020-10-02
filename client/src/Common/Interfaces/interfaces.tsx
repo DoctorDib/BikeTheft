@@ -9,14 +9,17 @@ export interface IVehicleInfo {
     number_plate: string,
     owner_id: string,
     status: number,
-    vehicle_make: string,
-    vehicle_model: string,
+    make: string,
+    model: string,
+    vin: string,
+    category: string,
 }
 
 export interface IOwner {
-    display_name: string,
-    profile_image: string,
-    member_attributes: string,
+    member_attributes: {
+        display_name: string,
+        profile_image: string,
+    },
 }
 
 export interface IPosts {
@@ -24,11 +27,15 @@ export interface IPosts {
 }
 
 export interface IComment {
-    display_name: string,
-    profile_image: string,
+    type: number,
     date_added: string,
+    member_attributes: {
+        profile_image: string,
+        display_name: string,
+    }
     post_attributes: {
         message: string,
+        confirmation_image: string,
     },
 }
 

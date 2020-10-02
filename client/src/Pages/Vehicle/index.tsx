@@ -5,21 +5,20 @@ import { useParams } from 'react-router-dom';
 
 import NavBarComponent from '../../Components/Header';
 import FooterComponent from '../../Components/Footer';
-import PostInfoComponent from '../../Components/VehicleInfo';
+import VehicleInfoComponent from '../../Components/VehicleInfo';
 import PostsComponent from '../../Components/Posts';
 
 import {
     IData,
     IPosts,
     IVehicleInfo,
-    // IComment,
     IOwner,
 } from '../../Common/Interfaces/interfaces';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
-interface IPostProps {
+interface IVehicleProps {
     // match: any;
 }
 
@@ -32,24 +31,31 @@ const defaultData: IVehicleInfo = {
     number_plate: '',
     owner_id: '',
     status: -1,
-    vehicle_make: '',
-    vehicle_model: '',
+    make: '',
+    model: '',
+    vin: '',
+    category: '',
 };
 
 const defaultOwnerData: IOwner = {
-    display_name: '',
-    profile_image: '',
-    member_attributes: '',
+    member_attributes: {
+        profile_image: '',
+        display_name: '',
+    },
 };
 
 const defaultPosts: IPosts = {
     posts: [
         {
-            display_name: '',
-            profile_image: '',
+            type: -1,
             date_added: '',
+            member_attributes: {
+                display_name: '',
+                profile_image: '',
+            },
             post_attributes: {
                 message: '',
+                confirmation_image: ''
             },
         },
     ],
@@ -57,7 +63,7 @@ const defaultPosts: IPosts = {
 
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const PostPage: React.FC<IPostProps> = (props: IPostProps) => {
+const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
     const classes: IClasses = styles();
 
     interface IParams {
@@ -78,7 +84,7 @@ const PostPage: React.FC<IPostProps> = (props: IPostProps) => {
 
             setMemberData(returnData.owner);
             setVehicleData(returnData.vehicle);
-            setPostData(returnData.posts);
+            setPostData(returnData);
         } catch (e) {
             console.error(e);
         }
@@ -98,8 +104,8 @@ const PostPage: React.FC<IPostProps> = (props: IPostProps) => {
                 <NavBarComponent />
             </section>
 
-            <section className={classes.mainContentGap}>
-                <PostInfoComponent owner={memberData} vehicle={vehicleData} />
+            <section style={{ width: '100%' }}>
+                <VehicleInfoComponent owner={memberData} vehicle={vehicleData} />
             </section>
 
             <section className={classes.mainContentGap}>
@@ -117,4 +123,4 @@ const PostPage: React.FC<IPostProps> = (props: IPostProps) => {
     );
 };
 
-export default PostPage;
+export default VehiclePage;

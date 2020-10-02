@@ -5,7 +5,10 @@ import {
     List,
     CardMedia,
     Avatar,
+    Button,
 } from '@material-ui/core';
+
+import { Check, Report } from '@material-ui/icons';
 
 import {
     IVehicleInfo,
@@ -17,9 +20,11 @@ import {
     FormatStatusText,
     FormatInfo,
     FormatFeatures,
-} from './helpers/formats';
+} from './formats';
 
 import { IClasses } from '../../Common/Interfaces/IClasses';
+
+import FoundConfirmation from '../FoundConfirmation';
 
 import style from './styles';
 
@@ -33,6 +38,12 @@ interface IVehicleInfoProps {
 const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
     const classes: IClasses = style();
 
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
     const { owner, vehicle } = props;
 
     return (
@@ -45,11 +56,11 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
 
                 <section className={classes.owner}>
                     <section className={classes.profileImageContainer}>
-                        <Avatar className={classes.profileImage} src={`../static/media/${owner.profile_image}`} />
+                        <Avatar className={classes.profileImage} src={`../static/media/${owner.member_attributes.profile_image}`} />
                     </section>
                     <Typography variant="h6">
                         {' '}
-                        {owner.display_name}
+                        {owner.member_attributes.display_name}
                         {' '}
                     </Typography>
                     <Typography variant="caption">
@@ -62,6 +73,13 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                         {FormatStatusText(vehicle.status)}
                         {' '}
                     </Typography>
+                </section>
+
+                <section className={classes.buttonContainer}>
+                    <Button variant="contained" startIcon={<Check />} onClick={handleOpen}> Found </Button>
+                    <Button variant="contained" startIcon={<Report />}> Report </Button>
+
+                    <FoundConfirmation close={() => { setOpen(false); }} open={open} />
                 </section>
 
                 <section>
