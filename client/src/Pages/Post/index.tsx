@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Divider from '@material-ui/core/Divider';
-
 import { API } from 'aws-amplify';
 import { useParams } from 'react-router-dom';
 
-import { debug, error } from 'console';
 import NavBarComponent from '../../Components/Header';
 import FooterComponent from '../../Components/Footer';
 import PostInfoComponent from '../../Components/VehicleInfo';
@@ -76,13 +74,13 @@ const PostPage: React.FC<IPostProps> = (props: IPostProps) => {
         try {
             const returnData: IData = await API.post('base_endpoint', '/forum/get', { body: { thread_id: vehicleInfoID } });
 
-            debug(returnData);
+            console.debug(returnData);
 
             setMemberData(returnData.owner);
             setVehicleData(returnData.vehicle);
             setPostData(returnData.posts);
         } catch (e) {
-            error(e);
+            console.error(e);
         }
     };
 
