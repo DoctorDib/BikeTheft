@@ -13,6 +13,7 @@ import {
     IPosts,
     IVehicleInfo,
     IOwner,
+    IData,
 } from '../../Common/Interfaces/interfaces';
 
 import styles from './styles';
@@ -77,11 +78,11 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
     const [postData, setPostData] = useState<IPosts>(defaultPosts);
 
     const fetch = (thread_ID: string) => {
-        const data = GetThread(thread_ID);
-
-        setMemberData(data.owner);
-        setVehicleData(data.vehicle);
-        setPostData(data);
+        GetThread(thread_ID, (data:IData) => {
+            setMemberData(data.owner);
+            setVehicleData(data.vehicle);
+            setPostData(data);
+        });
     };
 
     useEffect(() => {

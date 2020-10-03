@@ -9,6 +9,9 @@ import {
     CardMedia,
 } from '@material-ui/core';
 
+import { SQLStringProtection } from '../../Helpers/helper';
+import { SavePost } from '../../Helpers/DB_Helpers';
+
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
@@ -26,6 +29,7 @@ interface IForumProps {
 const Forum: React.FC<IForumProps> = (props: IForumProps) => {
     const classes: IClasses = style();
     const [value, setValue] = useState<string>('');
+    const [inputError, setInputError] = useState<boolean>(false);
     const { posts } = props;
 
     // TODO We need interfaces/types for all the data schema once we know what it is
@@ -37,7 +41,23 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
     };
 
     const onSubmit = (): void => {
-        //
+        if(value == '') {
+            setInputError(true);
+            return; 
+        } 
+
+        const message:string = SQLStringProtection(value);
+
+        // TODO - Change "1" to a user ID
+        const success = SavePost(1, "1", { "message": message }, 1);
+
+        if (!success) {
+            setInputError(true);
+            return
+        }
+
+        setInputError(false);
+        setValue('');
     };
 
     const FormatPostBackground = (styleID: number) => {
@@ -117,6 +137,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 value={value}
                 onChange={onChange}
                 variant="outlined"
+                error={inputError}
             />
 
             <Button
