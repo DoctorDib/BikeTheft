@@ -56,7 +56,10 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
 
                 <section className={classes.owner}>
                     <section className={classes.profileImageContainer}>
-                        <Avatar className={classes.profileImage} src={`../static/media/${owner.member_attributes.profile_image}`} />
+                        <Avatar
+                            className={classes.profileImage}
+                            src={`../static/media/${owner.member_attributes.profile_image}`}
+                        />
                     </section>
                     <Typography variant="h6">
                         {' '}

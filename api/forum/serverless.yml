@@ -61,3 +61,11 @@ functions:
           path: get
           method: POST
           cors: {$self:custom.cors}
+  set_post:
+    handler: forum.set_post
+    events:
+      - http:
+          path: set_post
+          method: POST
+          cors: {$self:custom.cors}
+

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Divider from '@material-ui/core/Divider';
-import { API } from 'aws-amplify';
 import { useParams } from 'react-router-dom';
 
 import NavBarComponent from '../../Components/Header';
@@ -8,8 +7,9 @@ import FooterComponent from '../../Components/Footer';
 import VehicleInfoComponent from '../../Components/VehicleInfo';
 import PostsComponent from '../../Components/Posts';
 
+import { GetThread } from '../../Helpers/DB_Helpers';
+
 import {
-    IData,
     IPosts,
     IVehicleInfo,
     IOwner,
@@ -55,7 +55,7 @@ const defaultPosts: IPosts = {
             },
             post_attributes: {
                 message: '',
-                confirmation_image: ''
+                confirmation_image: '',
             },
         },
     ],
@@ -71,33 +71,26 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
     }
     const { id } = useParams<IParams>();
 
-    const [vehicleID, setVehicleID] = useState<string>(id);
+    const [threadID, setThreadID] = useState<string>(id);
     const [memberData, setMemberData] = useState<IOwner>(defaultOwnerData);
     const [vehicleData, setVehicleData] = useState<IVehicleInfo>(defaultData);
     const [postData, setPostData] = useState<IPosts>(defaultPosts);
 
-    const fetch = async (vehicleInfoID: string) => {
-        try {
-            const returnData: IData = await API.post('base_endpoint', '/forum/get', { body: { thread_id: vehicleInfoID } });
+    const fetch = (thread_ID: string) => {
+        const data = GetThread(thread_ID);
 
-            console.debug(returnData);
-
-            setMemberData(returnData.owner);
-            setVehicleData(returnData.vehicle);
-            setPostData(returnData);
-        } catch (e) {
-            console.error(e);
-            window.location.href = "/404";
-        }
+        setMemberData(data.owner);
+        setVehicleData(data.vehicle);
+        setPostData(data);
     };
 
     useEffect(() => {
         // Setting ID
-        setVehicleID(id);
+        setThreadID(id);
 
         // Grabbing vehicle information
-        fetch(vehicleID);
-    }, [id, vehicleID]);
+        fetch(threadID);
+    }, [id, threadID]);
 
     return (
         <section className={classes.body}>

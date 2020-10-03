@@ -17,6 +17,10 @@ BEGIN
             ret_var = get_thread(api_parameters);
         WHEN api_parameters->>'method' IN ('get_forum') THEN
             ret_var = get_forum(api_parameters);
+        WHEN api_parameters->>'method' IN ('set_post') THEN
+            ret_var = set_post(api_parameters);
+        WHEN api_parameters->>'method' IN ('create_thread') THEN
+            ret_var = create_thread(api_parameters);
         ELSE
             RETURN json_build_object('error', 'unsupported method');
     END CASE;

@@ -1,15 +1,14 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { Rowing } from '@material-ui/icons';
 import mainStyle from '../../templates/mainStyle';
 
 export default makeStyles(() => ({
     ...mainStyle,
 
     mainContainer: {
-        display: 'flex', 
-        flexDirection: 'column', 
-        justifyContent: 'center', 
-        alignContent: 'center', 
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignContent: 'center',
         alignItems: 'center',
     },
 
@@ -26,7 +25,7 @@ export default makeStyles(() => ({
         flexDirection: 'column',
         justifyContent: 'space-around',
     },
-    
+
     confirmationImg: {
         maxHeight: '50%',
         width: '100%',
@@ -48,11 +47,11 @@ export default makeStyles(() => ({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginTop: '15px'
-    }, 
+        marginTop: '15px',
+    },
 
     infoButton: {
-        width: '35%'
+        width: '35%',
     },
 
     postContainer: {
@@ -62,5 +61,5 @@ export default makeStyles(() => ({
     profileImage: {
         width: '55px',
         height: '55px',
-    }
+    },
 }));

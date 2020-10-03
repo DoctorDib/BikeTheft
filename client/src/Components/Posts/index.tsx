@@ -1,13 +1,12 @@
-import React, {
-    useState,
-} from 'react';
+import React, { useState } from 'react';
+
 import {
     Paper,
     Avatar,
     TextField,
     Typography,
     Button,
-    CardMedia ,
+    CardMedia,
 } from '@material-ui/core';
 
 import style from './styles';
@@ -54,41 +53,54 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         const name = comment.type === 2 ? 'Info' : `${comment.member_attributes.display_name}`;
 
         return (
-            <section className={classes.postContainer}> 
+            <section className={classes.postContainer}>
                 <section className={classes.avatarContainer}>
-                    <Avatar alt="Remy Sharp" src={image} className={classes.profileImage}> {image} </Avatar>
-                    <section className={classes.avatarText}> 
-                        <Typography variant="subtitle1"> {name} </Typography> 
-                        <Typography variant="caption">{comment.date_added}</Typography>
+                    <Avatar alt="Remy Sharp" src={image} className={classes.profileImage}>
+                        {image}
+                    </Avatar>
+                    <section className={classes.avatarText}>
+                        <Typography variant="subtitle1">
+                            {name}
+                        </Typography>
+                        <Typography variant="caption">
+                            {comment.date_added}
+                        </Typography>
                     </section>
                 </section>
             </section>
         );
     };
 
-    const AddInfoCardFeatures = (comment: IComment) => {
-        return (
-            <section>
-                <CardMedia className={classes.confirmationImg} component="img" image={`../static/media/${comment.post_attributes.confirmation_image}`} />
-                {/* TODO - ONLY MAKE IT ACCESSIBLE FOR THE OWNER OF THE THREAD */}
-                {/* Requires user accounts to be set up */}
-                <section className={classes.buttonContainer}>
-                    <Button className={classes.infoButton} variant="contained" color="primary"> Confirm </Button>
-                    <Button className={classes.infoButton} variant="contained" color="primary"> Deny </Button>
-                </section>
+    const AddInfoCardFeatures = (comment: IComment) => (
+        <section>
+            <CardMedia
+                className={classes.confirmationImg}
+                component="img"
+                image={`../static/media/${comment.post_attributes.confirmation_image}`}
+            />
+            {/* TODO - ONLY MAKE IT ACCESSIBLE FOR THE OWNER OF THE THREAD */}
+            {/* Requires user accounts to be set up */}
+            <section className={classes.buttonContainer}>
+                <Button className={classes.infoButton} variant="contained" color="primary"> Confirm </Button>
+                <Button className={classes.infoButton} variant="contained" color="primary"> Deny </Button>
             </section>
-        );
-    };
+        </section>
+    );
 
     const LayoutComments = posts.posts.map((comment: IComment) => (
-        <Paper className={classes.message} elevation={1} key={comment.member_attributes.display_name} 
-        style={{ backgroundColor: FormatPostBackground(comment.type) }}>
-            {FormatAvatar(comment)}
-            
-            {
-                comment.type === 2 ? AddInfoCardFeatures(comment) : ''
-            }
-            <section className={classes.postContainer}> <Typography>{comment.post_attributes.message}</Typography> </section>
+        <Paper
+            className={classes.message}
+            elevation={1}
+            key={comment.member_attributes.display_name}
+            style={{ backgroundColor: FormatPostBackground(comment.type) }}
+        >
+            { FormatAvatar(comment) }
+            { comment.type === 2 ? AddInfoCardFeatures(comment) : '' }
+            <section className={classes.postContainer}>
+                <Typography>
+                    {comment.post_attributes.message}
+                </Typography>
+            </section>
         </Paper>
     ));
 
