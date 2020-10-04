@@ -8,6 +8,14 @@ export default makeStyles(() => ({
         height: '50px',
     },
 
+    main: {
+        boxShadow: 'rgba(0, 0, 0, 0.23) 0px .25px 1px 0px', 
+        width: '100vw', 
+        display: 'flex', 
+        justifyContent: 'center',
+        backgroundColor: 'white',
+    },
+
     logoContainer: {
         padding: '10px',
         paddingLeft: 0,

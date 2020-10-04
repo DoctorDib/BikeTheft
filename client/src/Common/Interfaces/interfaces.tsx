@@ -1,10 +1,11 @@
 // import { IpOwner } from 'aws-sdk/clients/macie2';
 
 export interface IVehicleInfo {
+    vehicle_id: number,
     date_added: string,
     description: string,
     features: Array<string>,
-    image: string,
+    images: Array<string>,
     location: string,
     number_plate: string,
     owner_id: string,
@@ -27,15 +28,17 @@ export interface IPosts {
 }
 
 export interface IComment {
+    post_id: number,
     type: number,
     date_added: string,
     member_attributes: {
         profile_image: string,
         display_name: string,
-    }
+    },
     post_attributes: {
         message: string,
         confirmation_image: string,
+        active_state: boolean,
     },
 }
 

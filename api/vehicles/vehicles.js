@@ -25,6 +25,21 @@ module.exports.get_vehicle = (event, context, callback) => {
     });
 };
 
+module.exports.update_vehicle_stat = (event, context, callback) => {
+    const eBody = JSON.parse(event.body);
+    const body = {
+        method: 'update_vehicle_stat',
+        vehicle_id: parseInt(eBody.vehicle_id),
+        status: eBody.status,
+    };
+
+    API.call(body).then(data => {
+        response.body = JSON.stringify(data);
+        context.callbackWaitsForEmptyEventLoop = false;
+        callback(null, response);
+    });
+};
+
 module.exports.ping = (event, context, callback) => {
     response.body = JSON.stringify({ message: 'pong' });
     callback(null, response);

@@ -24,10 +24,11 @@ interface IVehicleProps {
 }
 
 const defaultData: IVehicleInfo = {
+    vehicle_id: -1,
     date_added: '',
     description: '',
     features: [],
-    image: '',
+    images: [''],
     location: '',
     number_plate: '',
     owner_id: '',
@@ -48,6 +49,7 @@ const defaultOwnerData: IOwner = {
 const defaultPosts: IPosts = {
     posts: [
         {
+            post_id: -1,
             type: -1,
             date_added: '',
             member_attributes: {
@@ -57,6 +59,7 @@ const defaultPosts: IPosts = {
             post_attributes: {
                 message: '',
                 confirmation_image: '',
+                active_state: false,
             },
         },
     ],
@@ -74,6 +77,7 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
 
     const [threadID, setThreadID] = useState<string>(id);
     const [memberData, setMemberData] = useState<IOwner>(defaultOwnerData);
+    const [vehicleID, setVehicleID] = useState<number>(-1);
     const [vehicleData, setVehicleData] = useState<IVehicleInfo>(defaultData);
     const [postData, setPostData] = useState<IPosts>(defaultPosts);
 
@@ -81,6 +85,7 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
         GetThread(thread_ID, (data:IData) => {
             setMemberData(data.owner);
             setVehicleData(data.vehicle);
+            setVehicleID(data.vehicle.vehicle_id);
             setPostData(data);
         });
     };
@@ -108,7 +113,7 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
             </section>
 
             <section className={classes.mainContentGap}>
-                <PostsComponent posts={postData} />
+                <PostsComponent vehicle_id={vehicleID} posts={postData} />
             </section>
 
             <section className={classes.mainContentGap}>

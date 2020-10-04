@@ -35,3 +35,14 @@ module.exports.set_post = (event, context, callback) => {
         callback(null, response);
     });
 };
+
+module.exports.update_post = (event, context, callback) => {
+    const body = JSON.parse(event.body);
+    body.method = 'update_post',
+    
+    API.call(body).then(data => {
+        response.body = JSON.stringify(data);
+        context.callbackWaitsForEmptyEventLoop = false;
+        callback(null, response);
+    });
+};

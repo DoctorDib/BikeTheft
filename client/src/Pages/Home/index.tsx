@@ -13,6 +13,7 @@ interface IHomeProps {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const HomePage: React.FC<IHomeProps> = (props: IHomeProps) => {
     const classes: IClasses = style();
+    
     return (
         <section className={classes.body}>
             <section id="menu" className={classes.menu}>

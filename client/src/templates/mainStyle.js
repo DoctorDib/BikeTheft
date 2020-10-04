@@ -75,6 +75,13 @@ export default {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        [theme.breakpoints.up('md')]: {
+            padding: '0 20px 0 20px',
+            backgroundColor: '#fbfbfb',
+            webkitBoxShadow: '0 0 3px 0 rgb(200,200,200)',
+            mozBoxShadow: '0 0 3px 0 rgb(200,200,200)',
+            boxShadow: '0 0 3px 0 rgb(200,200,200)',
+        },
     },
 
     header: {

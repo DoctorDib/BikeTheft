@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import mainStyle from '../../templates/mainStyle';
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
     ...mainStyle,
 
     mainContainer: {
@@ -14,6 +14,8 @@ export default makeStyles(() => ({
 
     textBox: {
         width: '100%',
+        maxWidth: '75%',
+        padding: '10px 12px 10px',
     },
 
     message: {
@@ -24,6 +26,9 @@ export default makeStyles(() => ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
+        [theme.breakpoints.up('md')]: {
+            maxWidth: '50%'
+        }
     },
 
     confirmationImg: {
@@ -48,6 +53,12 @@ export default makeStyles(() => ({
         flexDirection: 'row',
         justifyContent: 'space-around',
         marginTop: '15px',
+    },
+
+    waitingText: {
+        color: 'red',
+        display: 'flex',
+        justifyContent: 'center',
     },
 
     infoButton: {

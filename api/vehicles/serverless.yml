@@ -76,3 +76,10 @@ functions:
           path: ping
           method: POST
           cors: {$self:custom.cors}
+  update_vehicle_stat:
+    handler: vehicles.update_vehicle_stat
+    events:
+      - http:
+          path: update_vehicle_stat
+          method: POST
+          cors: {$self:custom.cors}

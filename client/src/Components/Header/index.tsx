@@ -22,10 +22,7 @@ const DesktopHeader: React.FC = () => {
     const classes: IClasses = styles();
 
     return (
-        <section style={{
-            boxShadow: 'rgba(0, 0, 0, 0.23) 0px .25px 1px 0px', width: '100vw', display: 'flex', justifyContent: 'center',
-        }}
-        >
+        <section className={classes.main}>
             <section className={classes.headerContainer}>
                 <div className={classes.logoContainer}>
                     <LogoButton disableRipple className={classes.menuButtons} href="/">

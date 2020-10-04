@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
 
 import {
-    Paper,
-    Avatar,
-    TextField,
     Typography,
     Button,
+    TextField,
     CardMedia,
+    Paper
 } from '@material-ui/core';
 
+import ConfirmationComponent from '../../Components/Confirmation';
+
+import {
+    FormatAvatar,
+    FormatPostBackground,
+} from './helper';
+
 import { SQLStringProtection } from '../../Helpers/helper';
-import { SavePost } from '../../Helpers/DB_Helpers';
+import { SendPost, UpdatePost, UpdateVehicleStat } from '../../Helpers/DB_Helpers';
+
+import { Confirmation } from '../../Common/Enums/ConfirmationEnums';
 
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -21,16 +29,22 @@ import {
 } from '../../Common/Interfaces/interfaces';
 
 interface IForumProps {
-    posts: IPosts
+    posts: IPosts,
+    vehicle_id: number,
 }
 
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Forum: React.FC<IForumProps> = (props: IForumProps) => {
     const classes: IClasses = style();
+
     const [value, setValue] = useState<string>('');
     const [inputError, setInputError] = useState<boolean>(false);
-    const { posts } = props;
+    const [confirmation, setConfirmation] = useState(false)
+    const [confirmationMessage, setConfirmationMessage] = useState<number>(Confirmation.CANCEL);
+    const [selectedPost, setSelectedPost] = useState<IComment>();
+    
+    const { posts, vehicle_id } = props;
 
     // TODO We need interfaces/types for all the data schema once we know what it is
     // TODO essentially all of this is temporary until that is set in stone in the db
@@ -38,83 +52,127 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setValue(event.target.value);
-    };
 
-    const onSubmit = (): void => {
-        if(value == '') {
+        if (inputError) setInputError(false);
+    }
+
+    const onPostSubmit = (): void => {
+        if(value === '') {
             setInputError(true);
             return; 
-        } 
-
-        const message:string = SQLStringProtection(value);
-
-        // TODO - Change "1" to a user ID
-        const success = SavePost(1, "1", { "message": message }, 1);
-
-        if (!success) {
-            setInputError(true);
-            return
         }
 
-        setInputError(false);
-        setValue('');
-    };
+        setConfirmationMessage(Confirmation.CONFIRM_POST);
+        setConfirmation(true);
+    }
 
-    const FormatPostBackground = (styleID: number) => {
-        switch (styleID) {
-            case 1: return 'white';
-            case 2: return '#e3e3e3';
-            default: return 'black';
+    const onVehicleConfirm = (comment:IComment, userInput:boolean) => {
+        console.log(comment)
+        setSelectedPost(comment);
+
+        if (userInput) {
+            setConfirmationMessage(Confirmation.CONFIRM_VEHICLE);
+        } else {
+            setConfirmationMessage(Confirmation.CANCEL_VEHICLE);
         }
+        
+        setConfirmation(true);
+    }
+
+    const callback = (enumMessage:number, response:boolean) => {
+        setConfirmation(false);
+
+        switch(enumMessage) {
+            case Confirmation.CONFIRM_POST:
+                if (!response) return;
+                let postMessage = SQLStringProtection(value);
+                setValue('');
+                SendPost(1, "1", { "message": postMessage }, 1);
+                break;
+
+            case Confirmation.CONFIRM_VEHICLE:
+            case Confirmation.CANCEL_VEHICLE:
+
+                console.log(selectedPost);
+
+                let newAttributes: any = selectedPost.post_attributes;
+                newAttributes.active_state = false;
+
+                // Disabling the "found" post
+                UpdatePost(selectedPost.post_id, newAttributes);
+
+                console.log(response);
+                
+                if (!response) return;
+
+                let attributes = { message: '' };
+
+                if (Confirmation.CONFIRM_VEHICLE) {
+                    attributes.message = "Owner has confirmed vehicle and is planning to take action.";
+                } else {
+                    attributes.message = "Owner has declined founders request.";
+                }
+
+                console.log("ID", vehicle_id)
+
+                // Sending comment to notify other users of update
+                SendPost(1, "1", attributes, 2);
+
+                // Set to pending pickup
+                UpdateVehicleStat(vehicle_id, 2);
+                
+                break;
+        }
+
+        console.log("Hi");
     };
 
-    const FormatAvatar = (comment: IComment) => {
-        const image = comment.type === 1 ? `../static/media/${comment.member_attributes.profile_image}` : 'I';
-        const name = comment.type === 2 ? 'Info' : `${comment.member_attributes.display_name}`;
-
-        return (
-            <section className={classes.postContainer}>
-                <section className={classes.avatarContainer}>
-                    <Avatar alt="Remy Sharp" src={image} className={classes.profileImage}>
-                        {image}
-                    </Avatar>
-                    <section className={classes.avatarText}>
-                        <Typography variant="subtitle1">
-                            {name}
-                        </Typography>
-                        <Typography variant="caption">
-                            {comment.date_added}
-                        </Typography>
-                    </section>
-                </section>
+    const InfoComponent = (comment:IComment) => (
+        <section>
+            <section className={classes.waitingText}>
+                <Typography> Waiting for users response </Typography>
             </section>
-        );
-    };
+
+            {/* TODO - ONLY MAKE IT ACCESSIBLE FOR THE OWNER OF THE THREAD */}
+            {/* Requires user accounts to be set up */}
+            <section className={classes.buttonContainer}>
+                <Button
+                    className={classes.infoButton}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => { onVehicleConfirm(comment, true) }}
+                > Confirm </Button>
+                <Button
+                    className={classes.infoButton}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => { onVehicleConfirm(comment, false) }}
+                > Deny </Button>
+            </section>
+        </section>
+    )
 
     const AddInfoCardFeatures = (comment: IComment) => (
         <section>
+            { comment.post_attributes.hasOwnProperty('confirmation_image') ?
             <CardMedia
                 className={classes.confirmationImg}
                 component="img"
                 image={`../static/media/${comment.post_attributes.confirmation_image}`}
-            />
-            {/* TODO - ONLY MAKE IT ACCESSIBLE FOR THE OWNER OF THE THREAD */}
-            {/* Requires user accounts to be set up */}
-            <section className={classes.buttonContainer}>
-                <Button className={classes.infoButton} variant="contained" color="primary"> Confirm </Button>
-                <Button className={classes.infoButton} variant="contained" color="primary"> Deny </Button>
-            </section>
+            /> : ''
+            }
+            
+            { comment.post_attributes.active_state ?  InfoComponent(comment) : '' }
         </section>
     );
-
+    
     const LayoutComments = posts.posts.map((comment: IComment) => (
         <Paper
             className={classes.message}
             elevation={1}
-            key={comment.member_attributes.display_name}
             style={{ backgroundColor: FormatPostBackground(comment.type) }}
         >
-            { FormatAvatar(comment) }
+            { FormatAvatar(comment, classes) }
             { comment.type === 2 ? AddInfoCardFeatures(comment) : '' }
             <section className={classes.postContainer}>
                 <Typography>
@@ -143,11 +201,12 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
             <Button
                 variant="contained"
                 color="primary"
-                href="#post"
-                onClick={onSubmit}
+                onClick={onPostSubmit}
             >
                 Post
             </Button>
+
+            <ConfirmationComponent enumMessage={confirmationMessage} open={confirmation} callback={callback} />
 
             <section className={classes.messageContainer}>
                 {LayoutComments}

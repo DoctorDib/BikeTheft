@@ -4,6 +4,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const BUILD_DIR = path.resolve(__dirname, 'public');
 const APP_DIR = path.resolve(__dirname, 'src');
@@ -66,7 +67,7 @@ const config = {
                 loader: 'url-loader',
             },
             {
-                test: /\.css$/,
+                test: /\.s?css$/,
                 use: ['style-loader', 'css-loader'],
             },
         ],

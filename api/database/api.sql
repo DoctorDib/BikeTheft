@@ -19,6 +19,8 @@ BEGIN
             ret_var = get_forum(api_parameters);
         WHEN api_parameters->>'method' IN ('set_post') THEN
             ret_var = set_post(api_parameters);
+        WHEN api_parameters->>'method' IN ('update_post') THEN
+            ret_var = update_post(api_parameters);
         WHEN api_parameters->>'method' IN ('create_thread') THEN
             ret_var = create_thread(api_parameters);
         ELSE
