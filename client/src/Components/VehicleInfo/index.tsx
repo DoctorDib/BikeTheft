@@ -69,6 +69,10 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
         setOpen(true);
     };
 
+    const foundConfirmationResponse = () => {
+        setOpen(false);
+    };
+
     const { owner, vehicle } = props;
 
     return (
@@ -110,7 +114,7 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                         <Button variant="contained" startIcon={<Check />} onClick={handleOpen} color="primary" disabled={(vehicle.status !== 1)}> Found </Button>
                         <Button variant="contained" startIcon={<Report />} color="primary"> Report </Button>
 
-                        <FoundConfirmation close={() => { setOpen(false); }} open={open} />
+                        <FoundConfirmation close={foundConfirmationResponse} open={open} />
                     </section>
 
                     <section className={classes.gridStyle}>

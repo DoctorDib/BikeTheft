@@ -17,7 +17,7 @@ import { IClasses } from '../../Common/Interfaces/IClasses';
 
 interface IFoundConfirmationProps {
     open: boolean;
-    close: void;
+    close: () => void;
 }
 
 const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfirmationProps) => {
