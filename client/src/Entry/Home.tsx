@@ -9,7 +9,8 @@ import AppliedRoute from '../Components/Routing/Applied';
 import * as constants from '../../../secrets/constants';
 
 import HomePage from '../Pages/Home';
-import VehiclePage from '../Pages/Vehicle';
+import VehicleInfoPage from '../Pages/VehicleInfo';
+import VehicleUploadPage from '../Pages/VehicleUpload';
 import AboutPage from '../Pages/About';
 import ErrorPage from '../Pages/Error';
 
@@ -42,7 +43,8 @@ const App: React.FC = () => (
         <ThemeProvider theme={mainTheme}>
             <Switch>
                 <AppliedRoute appProps={{}} exact path="/" component={HomePage} />
-                <AppliedRoute appProps={{}} path="/post/:id" component={VehiclePage} />
+                <AppliedRoute appProps={{}} path="/post/upload" component={VehicleUploadPage} />
+                <AppliedRoute appProps={{}} path="/post/:id" component={VehicleInfoPage} />
                 <AppliedRoute appProps={{}} path="/404" component={ErrorPage} />
                 <AppliedRoute appProps={{}} path="/about" component={AboutPage} />
                 <Redirect to="/404" />
