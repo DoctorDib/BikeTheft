@@ -4,7 +4,7 @@ import { API } from 'aws-amplify';
 
 import ImageUploaderComponent from '../../Components/ImageUploader';
 
-import Secrets from '../../../../secrets/constants';
+import { DVLAAPIKEY } from '../../../../secrets/constants';
 
 import {
     TextField,
@@ -55,7 +55,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = (props: IImageUploade
             body: {
                 post: 443,
                 keyHead: 'x-api-key',
-                key: Secrets.DVLAAPIKEY,
+                key: DVLAAPIKEY,
                 number_plate: 'HX16 WFK',
             },
         };
