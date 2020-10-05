@@ -40,6 +40,20 @@ module.exports.update_vehicle_stat = (event, context, callback) => {
     });
 };
 
+module.exports.get_dvla_data = (event, context, callback) => {
+    const eBody = JSON.parse(event.body);
+    const body = {
+        method: 'get_dvla_data',
+        registrationNumber: eBody.number_plate,
+    };
+
+    API.callExternal('driver-vehicle-licensing.api.gov.uk', '/vehicle-enquiry/v1/vehicles', 'POST', body, eBody.keyHead, eBody.key).then(data => {
+        response.body = JSON.stringify(data);
+        context.callbackWaitsForEmptyEventLoop = false;
+        callback(null, response);
+    });
+};
+
 module.exports.ping = (event, context, callback) => {
     response.body = JSON.stringify({ message: 'pong' });
     callback(null, response);
