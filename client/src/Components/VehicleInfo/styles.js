@@ -17,7 +17,7 @@ export default makeStyles((theme) => ({
         width: '100vw',
         [theme.breakpoints.up('md')]: {
             width: '100%',
-        }
+        },
     },
 
     topSection: {
@@ -29,7 +29,7 @@ export default makeStyles((theme) => ({
         [theme.breakpoints.up('md')]: {
             flexDirection: 'row',
             overflow: 'auto',
-        }
+        },
     },
 
     rightSide: {
@@ -40,14 +40,14 @@ export default makeStyles((theme) => ({
         flexDirection: 'column',
         justifyContent: 'space-evenly',
 
-        ["& section:not(:first-child)"]: {
+        '& section:not(:first-child)': {
             marginTop: '20px',
         },
 
         [theme.breakpoints.up('md')]: {
             width: '75%',
             margin: '0 20px 0 20px',
-        }
+        },
     },
 
     gridStyle: {
@@ -55,21 +55,21 @@ export default makeStyles((theme) => ({
         width: '80%',
         margin: '0 auto 0 auto',
         textAlign: 'center',
-        ["& .MuiGrid-root.MuiGrid-container:nth-child(even)"]: {
+        '& .MuiGrid-root.MuiGrid-container:nth-child(even)': {
             backgroundColor: '#e1e1e1',
         },
-        ["& .MuiGrid-root.MuiGrid-container:nth-child(odd)"]: {
+        '& .MuiGrid-root.MuiGrid-container:nth-child(odd)': {
             backgroundColor: '#f2f2f2',
         },
-        ["& .MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-6:nth-child(even)"]: {
+        '& .MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-6:nth-child(even)': {
             textAlign: 'end',
             paddingRight: '15px',
         },
-        ["& .MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-6:nth-child(odd)"]: {
+        '& .MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-6:nth-child(odd)': {
             textAlign: 'initial',
             paddingLeft: '15px',
         },
-        ["& .MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-6"]: {
+        '& .MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-6': {
             padding: '5px',
         },
     },
@@ -78,16 +78,16 @@ export default makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        
-        ["& section"]: {
+
+        '& section': {
             padding: '20px',
         },
 
         [theme.breakpoints.up('md')]: {
             flexDirection: 'row',
-            ["& section"]: {
+            '& section': {
                 maxWidth: '50%',
-                margin: '0 auto 0 auto'
+                margin: '0 auto 0 auto',
             },
         },
     },
@@ -102,8 +102,8 @@ export default makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
         [theme.breakpoints.up('md')]: {
-            justifyContent: 'center'
-        }
+            justifyContent: 'center',
+        },
     },
 
     titles: {

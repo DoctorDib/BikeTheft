@@ -27,8 +27,8 @@ export default makeStyles((theme) => ({
         flexDirection: 'column',
         justifyContent: 'space-around',
         [theme.breakpoints.up('md')]: {
-            maxWidth: '50%'
-        }
+            maxWidth: '50%',
+        },
     },
 
     confirmationImg: {

@@ -9,15 +9,15 @@ import {
     DialogTitle,
 } from '@material-ui/core';
 
-import { Confirmation } from '../../Common/Enums/ConfirmationEnums';
+import Confirmation from '../../Common/Enums/ConfirmationEnums';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 interface IConfirmationProp {
-    enumMessage: any,
+    enumMessage: number,
     open: boolean,
-    callback: any,
+    callback: void,
 }
 
 const FoundConfirmation: React.FC<IConfirmationProp> = (props: IConfirmationProp) => {
@@ -49,9 +49,11 @@ const FoundConfirmation: React.FC<IConfirmationProp> = (props: IConfirmationProp
 
     const SetConfirmButton = () => {
         switch (enumMessage) {
-            case Confirmation.CONFIRM_POST: 
-            case Confirmation.CANCEL: return 'Yes';
-            default: return 'Confirm';
+            case Confirmation.CONFIRM_POST:
+            case Confirmation.CANCEL:
+                return 'Yes';
+            default:
+                return 'Confirm';
         }
     };
 
@@ -76,8 +78,12 @@ const FoundConfirmation: React.FC<IConfirmationProp> = (props: IConfirmationProp
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={deny} color="primary"> { SetCancelButton() } </Button>
-                <Button onClick={confirm} color="primary"> { SetConfirmButton() } </Button>
+                <Button onClick={deny} color="primary">
+                    { SetCancelButton() }
+                </Button>
+                <Button onClick={confirm} color="primary">
+                    { SetConfirmButton() }
+                </Button>
             </DialogActions>
         </Dialog>
     );

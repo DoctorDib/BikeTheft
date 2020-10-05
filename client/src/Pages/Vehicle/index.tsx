@@ -10,11 +10,17 @@ import PostsComponent from '../../Components/Posts';
 import { GetThread } from '../../Helpers/DB_Helpers';
 
 import {
-    IPosts,
     IVehicleInfo,
     IOwner,
     IData,
+    IComment,
 } from '../../Common/Interfaces/interfaces';
+
+import {
+    BlankVehicleData,
+    BlankOwner,
+    BlankComment,
+} from '../../Helpers/Blanks';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -22,48 +28,6 @@ import { IClasses } from '../../Common/Interfaces/IClasses';
 interface IVehicleProps {
     // match: any;
 }
-
-const defaultData: IVehicleInfo = {
-    vehicle_id: -1,
-    date_added: '',
-    description: '',
-    features: [],
-    images: [''],
-    location: '',
-    number_plate: '',
-    owner_id: '',
-    status: -1,
-    make: '',
-    model: '',
-    vin: '',
-    category: '',
-};
-
-const defaultOwnerData: IOwner = {
-    member_attributes: {
-        profile_image: '',
-        display_name: '',
-    },
-};
-
-const defaultPosts: IPosts = {
-    posts: [
-        {
-            post_id: -1,
-            type: -1,
-            date_added: '',
-            member_attributes: {
-                display_name: '',
-                profile_image: '',
-            },
-            post_attributes: {
-                message: '',
-                confirmation_image: '',
-                active_state: false,
-            },
-        },
-    ],
-};
 
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -76,18 +40,20 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
     const { id } = useParams<IParams>();
 
     const [threadID, setThreadID] = useState<string>(id);
-    const [memberData, setMemberData] = useState<IOwner>(defaultOwnerData);
+    const [memberData, setMemberData] = useState<IOwner>(BlankOwner);
     const [vehicleID, setVehicleID] = useState<number>(-1);
-    const [vehicleData, setVehicleData] = useState<IVehicleInfo>(defaultData);
-    const [postData, setPostData] = useState<IPosts>(defaultPosts);
+    const [vehicleData, setVehicleData] = useState<IVehicleInfo>(BlankVehicleData);
+    const [postData, setPostData] = useState<Array<IComment>>([BlankComment]);
 
-    const fetch = (thread_ID: string) => {
-        GetThread(thread_ID, (data:IData) => {
-            setMemberData(data.owner);
-            setVehicleData(data.vehicle);
-            setVehicleID(data.vehicle.vehicle_id);
-            setPostData(data);
-        });
+    const fetch = async (thread_ID: string) => {
+        const data:IData = await GetThread(thread_ID);
+
+        setMemberData(data.owner);
+        setVehicleData(data.vehicle);
+        setVehicleID(data.vehicle.vehicle_id);
+        setPostData(data.posts);
+
+        console.log(data.posts);
     };
 
     useEffect(() => {
@@ -113,7 +79,7 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
             </section>
 
             <section className={classes.mainContentGap}>
-                <PostsComponent vehicle_id={vehicleID} posts={postData} />
+                <PostsComponent vehicleID={vehicleID} posts={postData} />
             </section>
 
             <section className={classes.mainContentGap}>

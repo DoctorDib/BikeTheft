@@ -5,6 +5,9 @@ import {
     List,
     Avatar,
     Button,
+    Grid,
+    ListItem,
+    ListItemText,
 } from '@material-ui/core';
 
 import { Check, Report } from '@material-ui/icons';
@@ -17,8 +20,7 @@ import {
 import {
     FormatStatusColour,
     FormatStatusText,
-    FormatInfo,
-    FormatFeatures,
+    FormatInfoTitles,
 } from './formats';
 
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -28,10 +30,33 @@ import FoundConfirmation from '../FoundConfirmation';
 
 import style from './styles';
 
+const infoKeys: Array<string> = ['number_plate', 'vin', 'make', 'model', 'category'];
+
 interface IVehicleInfoProps {
     owner: IOwner;
     vehicle: IVehicleInfo;
 }
+
+const formatInfo = (data : IVehicleInfo) => infoKeys.map((indexKey: string) => (
+    <Grid container key={`prop - ${indexKey}`}>
+        <Grid item xs={6}>
+            <Typography>{FormatInfoTitles(indexKey)}</Typography>
+        </Grid>
+        <Grid item xs={6}>
+            <Typography>
+                {' '}
+                {indexKey === '' ? 'N/A' : data[indexKey]}
+                {' '}
+            </Typography>
+        </Grid>
+    </Grid>
+));
+
+const formatFeatures = (features: Array<string>) => features.map((damage: string) => (
+    <ListItem key={`damages - ${damage}`}>
+        <ListItemText primary={damage} />
+    </ListItem>
+));
 
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -48,7 +73,6 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
 
     return (
         <section className={classes.container}>
-
             <section className={classes.topSection}>
                 <section className={classes.imageContainer}>
                     <CarouselComponent images={vehicle.images} />
@@ -91,7 +115,7 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
 
                     <section className={classes.gridStyle}>
                         <Typography className={classes.titles} variant="body1"> Specifications </Typography>
-                        {FormatInfo(vehicle)}
+                        {formatInfo(vehicle)}
                     </section>
                 </section>
             </section>
@@ -105,7 +129,7 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                 <section>
                     <Typography className={classes.titles}>Additional damages</Typography>
                     <List dense>
-                        {FormatFeatures(vehicle.features)}
+                        {formatFeatures(vehicle.features)}
                     </List>
                 </section>
             </section>

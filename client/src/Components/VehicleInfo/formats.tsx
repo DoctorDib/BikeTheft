@@ -1,16 +1,3 @@
-import React from 'react';
-import {
-    Typography,
-    Grid,
-    ListItem,
-    ListItemText,
-} from '@material-ui/core';
-
-import { IVehicleInfo } from '../../Common/Interfaces/interfaces';
-import { isEmpty } from '../../Common/Utils/Types';
-
-const infoKeys: Array<string> = ['number_plate', 'vin', 'make', 'model', 'category'];
-
 export const FormatInfoTitles = (key: string): string => {
     const returnKey = key.split('_');
 
@@ -23,36 +10,11 @@ export const FormatInfoTitles = (key: string): string => {
     return returnKey.join(' ');
 };
 
-export function getProperty<T, K extends keyof T>(o: T, propertyName: K): T[K] {
-    return o[propertyName]; // o[propertyName] is of type T[K]
-}
-
-export function hasProperty(x: unknown, y: string | number | symbol): boolean {
+export function HasProperty(x: unknown, y: string | number | symbol): boolean {
     return Object.prototype.hasOwnProperty.call(x, y);
 }
 
-export const FormatInfo = (data : IVehicleInfo) => infoKeys.map((key: keyof IVehicleInfo) => (
-    <Grid container key={`prop - ${key}`}>
-        <Grid item xs={6}>
-            <Typography>{FormatInfoTitles(key)}</Typography>
-        </Grid>
-        <Grid item xs={6}>
-            <Typography>
-                {' '}
-                {isEmpty(getProperty(data, key)) ? 'N/A' : getProperty(data, key)}
-                {' '}
-            </Typography>
-        </Grid>
-    </Grid>
-));
-
-export const FormatFeatures = (features: Array<string>) => features.map((damage: string) => (
-    <ListItem key={`damages - ${damage}`}>
-        <ListItemText primary={damage} />
-    </ListItem>
-));
-
-export const FormatStatusText = (currentStat: number) => {
+export const FormatStatusText = (currentStat: number):string => {
     switch (currentStat) {
         case 1: return 'Stolen';
         case 2: return 'Pending collection';
@@ -61,7 +23,7 @@ export const FormatStatusText = (currentStat: number) => {
     }
 };
 
-export const FormatStatusColour = (currentStat: number) => {
+export const FormatStatusColour = (currentStat: number): string => {
     switch (currentStat) {
         case 1: return 'red';
         case 2: return 'orange';

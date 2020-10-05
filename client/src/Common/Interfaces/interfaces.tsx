@@ -14,36 +14,34 @@ export interface IVehicleInfo {
     model: string,
     vin: string,
     category: string,
+    [key: string]: string|number|Array<string>;
+}
+
+export interface IMemberAttributes {
+    display_name: string,
+    profile_image: string,
 }
 
 export interface IOwner {
-    member_attributes: {
-        display_name: string,
-        profile_image: string,
-    },
+    member_attributes: IMemberAttributes,
 }
 
-export interface IPosts {
-    posts: Array<IComment>;
+export interface IPostAttributes {
+    message: string,
+    confirmation_image: string,
+    active_state: boolean,
 }
 
 export interface IComment {
     post_id: number,
     type: number,
     date_added: string,
-    member_attributes: {
-        profile_image: string,
-        display_name: string,
-    },
-    post_attributes: {
-        message: string,
-        confirmation_image: string,
-        active_state: boolean,
-    },
+    member_attributes: IMemberAttributes,
+    post_attributes: IPostAttributes,
 }
 
 export interface IData {
     vehicle: IVehicleInfo;
     owner: IOwner;
-    posts: IPosts;
+    posts: Array<IComment>;
 }

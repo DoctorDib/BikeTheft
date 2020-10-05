@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
-
-import {
-    CardMedia,
-} from '@material-ui/core';
+import React from 'react';
 
 import ImageGallery from 'react-image-gallery';
-import "react-image-gallery/styles/css/image-gallery.css";
+import 'react-image-gallery/styles/css/image-gallery.css';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -30,14 +26,17 @@ const CarouselComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
         }
     ));
 
-    return <ImageGallery
-                items={mapImages}
-                showFullscreenButton={false}
-                useBrowserFullscreen={false}
-                showPlayButton={false}
-                showIndex={false}
-                autoPlay={false}
-            />
+    return (
+        <ImageGallery
+            items={mapImages}
+            showFullscreenButton={false}
+            useBrowserFullscreen={false}
+            showPlayButton={false}
+            showIndex={false}
+            autoPlay={false}
+            className={classes.main}
+        />
+    );
 };
 
 export default CarouselComponent;

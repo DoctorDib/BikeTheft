@@ -1,13 +1,10 @@
 import { makeStyles } from '@material-ui/core/styles';
 import mainStyle from '../../templates/mainStyle';
 
-export default makeStyles((theme) => ({
+export default makeStyles(() => ({
     ...mainStyle,
 
-    
-
-    image: {
-        width: '100%',
-        maxHeight: '50vh',
+    main: {
+        backgroundColor: 'black',
     },
 }));

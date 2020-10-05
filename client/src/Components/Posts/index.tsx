@@ -5,32 +5,34 @@ import {
     Button,
     TextField,
     CardMedia,
-    Paper
+    Paper,
 } from '@material-ui/core';
 
-import ConfirmationComponent from '../../Components/Confirmation';
+import ConfirmationComponent from '../Confirmation';
 
 import {
     FormatAvatar,
     FormatPostBackground,
 } from './helper';
 
+import { BlankPostAttributes, BlankComment } from '../../Helpers/Blanks';
+
 import { SQLStringProtection } from '../../Helpers/helper';
 import { SendPost, UpdatePost, UpdateVehicleStat } from '../../Helpers/DB_Helpers';
 
-import { Confirmation } from '../../Common/Enums/ConfirmationEnums';
+import Confirmation from '../../Common/Enums/ConfirmationEnums';
 
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 import {
-    IPosts,
     IComment,
+    IPostAttributes,
 } from '../../Common/Interfaces/interfaces';
 
 interface IForumProps {
-    posts: IPosts,
-    vehicle_id: number,
+    posts: Array<IComment>,
+    vehicleID: number,
 }
 
 // TODO these props should be used
@@ -40,11 +42,11 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
 
     const [value, setValue] = useState<string>('');
     const [inputError, setInputError] = useState<boolean>(false);
-    const [confirmation, setConfirmation] = useState(false)
+    const [confirmation, setConfirmation] = useState(false);
     const [confirmationMessage, setConfirmationMessage] = useState<number>(Confirmation.CANCEL);
-    const [selectedPost, setSelectedPost] = useState<IComment>();
-    
-    const { posts, vehicle_id } = props;
+    const [selectedPost, setSelectedPost] = useState<IComment>(BlankComment);
+
+    const { posts, vehicleID } = props;
 
     // TODO We need interfaces/types for all the data schema once we know what it is
     // TODO essentially all of this is temporary until that is set in stone in the db
@@ -54,20 +56,19 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         setValue(event.target.value);
 
         if (inputError) setInputError(false);
-    }
+    };
 
     const onPostSubmit = (): void => {
-        if(value === '') {
+        if (value === '') {
             setInputError(true);
-            return; 
+            return;
         }
 
         setConfirmationMessage(Confirmation.CONFIRM_POST);
         setConfirmation(true);
-    }
+    };
 
     const onVehicleConfirm = (comment:IComment, userInput:boolean) => {
-        console.log(comment)
         setSelectedPost(comment);
 
         if (userInput) {
@@ -75,19 +76,21 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         } else {
             setConfirmationMessage(Confirmation.CANCEL_VEHICLE);
         }
-        
+
         setConfirmation(true);
-    }
+    };
 
     const callback = (enumMessage:number, response:boolean) => {
         setConfirmation(false);
 
-        switch(enumMessage) {
+        let newPostAttributes: IPostAttributes = BlankPostAttributes;
+
+        switch (enumMessage) {
             case Confirmation.CONFIRM_POST:
                 if (!response) return;
-                let postMessage = SQLStringProtection(value);
+                newPostAttributes.message = SQLStringProtection(value);
                 setValue('');
-                SendPost(1, "1", { "message": postMessage }, 1);
+                SendPost(1, '1', newPostAttributes, 1);
                 break;
 
             case Confirmation.CONFIRM_VEHICLE:
@@ -95,36 +98,33 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
 
                 console.log(selectedPost);
 
-                let newAttributes: any = selectedPost.post_attributes;
-                newAttributes.active_state = false;
+                newPostAttributes = selectedPost.post_attributes;
+                newPostAttributes.active_state = false;
 
                 // Disabling the "found" post
-                UpdatePost(selectedPost.post_id, newAttributes);
+                UpdatePost(selectedPost.post_id, newPostAttributes);
 
-                console.log(response);
-                
                 if (!response) return;
 
-                let attributes = { message: '' };
+                // Prepping for a new post send thing
+                newPostAttributes = BlankPostAttributes;
 
                 if (Confirmation.CONFIRM_VEHICLE) {
-                    attributes.message = "Owner has confirmed vehicle and is planning to take action.";
+                    newPostAttributes.message = 'Owner has confirmed vehicle and is planning to take action.';
                 } else {
-                    attributes.message = "Owner has declined founders request.";
+                    newPostAttributes.message = 'Owner has declined founders request.';
                 }
 
-                console.log("ID", vehicle_id)
-
                 // Sending comment to notify other users of update
-                SendPost(1, "1", attributes, 2);
+                SendPost(1, '1', newPostAttributes, 2);
 
                 // Set to pending pickup
-                UpdateVehicleStat(vehicle_id, 2);
-                
+                UpdateVehicleStat(vehicleID, 2);
+
+                break;
+            default:
                 break;
         }
-
-        console.log("Hi");
     };
 
     const InfoComponent = (comment:IComment) => (
@@ -140,37 +140,43 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                     className={classes.infoButton}
                     variant="contained"
                     color="primary"
-                    onClick={() => { onVehicleConfirm(comment, true) }}
-                > Confirm </Button>
+                    onClick={() => { onVehicleConfirm(comment, true); }}
+                >
+                    Confirm
+                </Button>
                 <Button
                     className={classes.infoButton}
                     variant="contained"
                     color="primary"
-                    onClick={() => { onVehicleConfirm(comment, false) }}
-                > Deny </Button>
+                    onClick={() => { onVehicleConfirm(comment, false); }}
+                >
+                    Deny
+                </Button>
             </section>
         </section>
-    )
+    );
 
     const AddInfoCardFeatures = (comment: IComment) => (
         <section>
-            { comment.post_attributes.hasOwnProperty('confirmation_image') ?
-            <CardMedia
-                className={classes.confirmationImg}
-                component="img"
-                image={`../static/media/${comment.post_attributes.confirmation_image}`}
-            /> : ''
-            }
-            
-            { comment.post_attributes.active_state ?  InfoComponent(comment) : '' }
+            { Object.prototype.hasOwnProperty.call(comment.post_attributes, 'confirmation_image')
+                ? (
+                    <CardMedia
+                        className={classes.confirmationImg}
+                        component="img"
+                        image={`../static/media/${comment.post_attributes.confirmation_image}`}
+                    />
+                ) : '' }
+
+            { comment.post_attributes.active_state ? InfoComponent(comment) : '' }
         </section>
     );
-    
-    const LayoutComments = posts.posts.map((comment: IComment) => (
+
+    const LayoutComments = () => posts.map((comment: IComment) => (
         <Paper
             className={classes.message}
             elevation={1}
             style={{ backgroundColor: FormatPostBackground(comment.type) }}
+            key={comment.post_id}
         >
             { FormatAvatar(comment, classes) }
             { comment.type === 2 ? AddInfoCardFeatures(comment) : '' }
@@ -209,7 +215,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
             <ConfirmationComponent enumMessage={confirmationMessage} open={confirmation} callback={callback} />
 
             <section className={classes.messageContainer}>
-                {LayoutComments}
+                { LayoutComments() }
             </section>
         </section>
     );

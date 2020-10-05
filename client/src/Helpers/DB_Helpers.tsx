@@ -1,21 +1,31 @@
 import { API } from 'aws-amplify';
 
-import { GetDateTime, SQLStringProtection } from './helper';
+import {
+    GetDateTime,
+    SQLStringProtection,
+} from './helper';
 
-import { IData } from '../Common/Interfaces/interfaces';
+import {
+    IPostAttributes,
+    IData,
+} from '../Common/Interfaces/interfaces';
 
-export const SendPost = 
-    async (parent_id: number, poster_id:string, post_attributes:object, type:number) => {
+import {
+    BlankData,
+} from './Blanks';
 
-    post_attributes.message = SQLStringProtection(post_attributes.message);
-    
-    const body = { 
-        body: { 
-            parent_id: parent_id, 
-            poster_id: poster_id, 
-            date_added: GetDateTime(), 
-            post_attributes: post_attributes, 
-            type: type
+export const SendPost = async (parentID: number, posterID:string, postAttributes:IPostAttributes,
+    postType:number): Promise<boolean> => {
+    const postAttributesSetup: IPostAttributes = postAttributes;
+    postAttributesSetup.message = SQLStringProtection(postAttributes.message);
+
+    const body = {
+        body: {
+            parent_id: parentID,
+            poster_id: posterID,
+            date_added: GetDateTime(),
+            post_attributes: postAttributes,
+            type: postType,
         },
     };
 
@@ -29,23 +39,23 @@ export const SendPost =
     }
 };
 
-export const GetThread = async (thread_id: string, callback: any) => {
+export const GetThread = async (threadID: string): Promise<IData> => {
     try {
-        const returnData: IData = await API.post('base_endpoint', '/forum/get', { body: { thread_id: thread_id } });
+        const returnData: IData = await API.post('base_endpoint', '/forum/get', { body: { thread_id: threadID } });
 
         console.debug(returnData);
-        callback(returnData);
+        return returnData;
     } catch (e) {
         console.error(e);
-        callback(false);
+        return BlankData;
     }
 };
 
-export const UpdatePost = async (post_id: number, post_attributes:object) => {
-    const body = { 
-        body: { 
-            post_id: post_id,
-            post_attributes: post_attributes, 
+export const UpdatePost = async (postID: number, postAttributes:IPostAttributes): Promise<boolean> => {
+    const body = {
+        body: {
+            post_id: postID,
+            post_attributes: postAttributes,
         },
     };
 
@@ -57,13 +67,13 @@ export const UpdatePost = async (post_id: number, post_attributes:object) => {
         console.error(e);
         return false;
     }
-}
+};
 
-export const UpdateVehicleStat = async (vehicle_id: number, newStat:number) => {
-    const body = { 
-        body: { 
-            vehicle_id: vehicle_id,
-            status: newStat, 
+export const UpdateVehicleStat = async (vehicleID: number, newStat:number): Promise<boolean> => {
+    const body = {
+        body: {
+            vehicle_id: vehicleID,
+            status: newStat,
         },
     };
 
@@ -75,4 +85,4 @@ export const UpdateVehicleStat = async (vehicle_id: number, newStat:number) => {
         console.error(e);
         return false;
     }
-}
+};
