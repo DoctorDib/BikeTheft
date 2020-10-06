@@ -15,9 +15,9 @@ import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 interface IConfirmationProp {
-    enumMessage: number,
+    enumMessage: Confirmation,
     open: boolean,
-    callback: void,
+    callback: (enumMessage: Confirmation, response: boolean) => void,
 }
 
 const FoundConfirmation: React.FC<IConfirmationProp> = (props: IConfirmationProp) => {

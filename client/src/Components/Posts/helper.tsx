@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+    ReactElement,
+} from 'react';
 
 import {
     Avatar,
@@ -16,7 +18,7 @@ export const FormatPostBackground = (styleID: number):string => {
     }
 };
 
-export const FormatAvatar = (comment: IComment, classes:IClasses):React.FC => {
+export const FormatAvatar = (comment: IComment, classes:IClasses): ReactElement => {
     const image = comment.type === 1 ? `../static/media/${comment.member_attributes.profile_image}` : 'I';
     const name = comment.type === 2 ? 'Info' : `${comment.member_attributes.display_name}`;
     const avatarColour = comment.type === 2 ? '#ff8e15' : 'gray';

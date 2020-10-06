@@ -3,9 +3,6 @@ import React from 'react';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 
-import styles from './styles';
-import { IClasses } from '../../Common/Interfaces/IClasses';
-
 interface ICarouselProps {
     images: Array<string>
 }
@@ -13,8 +10,6 @@ interface ICarouselProps {
 // https://github.com/xiaolin/react-image-gallery
 
 const CarouselComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
-    const classes: IClasses = styles();
-
     const { images } = props;
 
     console.log(images);
@@ -34,7 +29,6 @@ const CarouselComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
             showPlayButton={false}
             showIndex={false}
             autoPlay={false}
-            className={classes.main}
         />
     );
 };
