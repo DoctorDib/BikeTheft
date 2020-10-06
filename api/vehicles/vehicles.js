@@ -42,12 +42,24 @@ module.exports.update_vehicle_stat = (event, context, callback) => {
 
 module.exports.get_dvla_data = (event, context, callback) => {
     const eBody = JSON.parse(event.body);
+    const key = process.env.dvla;
+    console.log('Attempting to grab DVLA data');
+
     const body = {
-        method: 'get_dvla_data',
         registrationNumber: eBody.number_plate,
     };
 
-    API.callExternal('driver-vehicle-licensing.api.gov.uk', '/vehicle-enquiry/v1/vehicles', 'POST', body, eBody.keyHead, eBody.key).then(data => {
+    API.callExternal({
+        hostname: 'driver-vehicle-licensing.api.gov.uk',
+        path: '/vehicle-enquiry/v1/vehicles',
+        method: 'POST',
+        body,
+        headers: {
+            'x-api-key': key,
+        }
+    }).then(data => {
+        console.log(data);
+
         response.body = JSON.stringify(data);
         context.callbackWaitsForEmptyEventLoop = false;
         callback(null, response);

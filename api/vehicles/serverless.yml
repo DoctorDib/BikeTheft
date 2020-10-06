@@ -83,3 +83,10 @@ functions:
           path: update_vehicle_stat
           method: POST
           cors: {$self:custom.cors}
+  get_dvla:
+    handler: vehicles.get_dvla_data
+    events:
+      - http:
+          path: dvla
+          method: POST
+          cors: { $self:custom.cors }
