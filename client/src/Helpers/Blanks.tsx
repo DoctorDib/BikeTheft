@@ -57,7 +57,7 @@ export const BlankData: IData = {
 export const BlankChip: IChip = {
     key: -1,
     value: '',
-}
+};
 
 export const BlankInputs: IInputFields = {
     numberPlate: '',

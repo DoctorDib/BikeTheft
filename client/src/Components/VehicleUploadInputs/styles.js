@@ -57,7 +57,6 @@ export default makeStyles(() => ({
     },
 
     chip: {
-        width: '100%',
         height: '100%',
         margin: '5px',
         padding: '5px',

@@ -80,7 +80,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         setConfirmation(true);
     };
 
-    const callback = (enumMessage:number, response:boolean) => {
+    const callback = (enumMessage:number, response:boolean):void => {
         setConfirmation(false);
 
         let newPostAttributes: IPostAttributes = BlankPostAttributes;

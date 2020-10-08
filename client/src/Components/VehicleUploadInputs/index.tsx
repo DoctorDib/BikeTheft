@@ -16,13 +16,12 @@ import { BlankInputs } from '../../Helpers/Blanks';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 import styles from './styles';
-import { TextFields } from '@material-ui/icons';
 
 interface IImageUploaderProps {
 
 }
 
-let index=0;
+let index = 0;
 
 const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     const classes: IClasses = styles();
@@ -47,10 +46,10 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
 
     const onChange = (event:React.ChangeEvent<HTMLInputElement>) => {
         const key = event.target.id;
-        const value = event.target.value;
+        const newValue = event.target.value;
 
         if (key === 'numberPlate') { setNumberPlateFlag(true); }
-        if (key === 'features' && value.includes(',')) { SetChipArray(value); return; }
+        if (key === 'features' && newValue.includes(',')) { SetChipArray(newValue); return; }
 
         // Setting values
         setInput({ ...input, [key]: event.target.value });
@@ -60,37 +59,35 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         const inputValue = value.replace(',', '');
 
         const newChip:IChip = {
-            key: index +=1,
+            key: index += 1,
             value: inputValue,
-        }
+        };
 
         setInput({
             ...input,
             features: '',
-            featuresArray: [ ...input.featuresArray, newChip ],
+            featuresArray: [...input.featuresArray, newChip],
         });
-    }
+    };
 
     const handleDelete = (chipData: IChip) => () => {
         let newFeatureArray = input.featuresArray;
-        newFeatureArray = newFeatureArray.filter((chip: IChip) => { return chip.key !== chipData.key; }); 
+        newFeatureArray = newFeatureArray.filter((chip: IChip) => (chip.key !== chipData.key));
         setInput({
             ...input,
             featuresArray: newFeatureArray,
-        })
+        });
     };
 
-    const SetChips = input.featuresArray.map((chipData) => {
-        return (
-            <Chip
-                key={chipData.key}
-                label={chipData.value}
-                color="secondary"
-                className={classes.chip}
-                onDelete={handleDelete(chipData)}
-            />
-        );
-    });
+    const SetChips = input.featuresArray.map((chipData:IChip) => (
+        <Chip
+            key={chipData.key}
+            label={chipData.value}
+            color="secondary"
+            className={classes.chip}
+            onDelete={handleDelete(chipData)}
+        />
+    ));
 
     const GetDVLAData = async (numberPlate:string) => {
         const body = {
@@ -132,7 +129,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         }
     };
 
-    const SetInputs = Object.keys(input).map((key:string) => {
+    const SetInputs = Object.keys(input).map((key:string):any => {
         switch (key) {
             case 'primaryColour':
             case 'secondaryColour':
@@ -195,7 +192,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
             case 'description':
                 return (
                     <section className={classes.inputContainers}>
-                        <TextFields
+                        <TextField
                             id={key}
                             size="small"
                             label={SetLabel(key)}
@@ -210,7 +207,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                     </section>
                 );
             default:
-                if (key === 'featuresArray') { return; }
+                if (key === 'featuresArray') { break; }
                 return (
                     <section className={classes.inputContainers}>
                         <TextField
@@ -225,12 +222,13 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                     </section>
                 );
         }
+
+        return undefined;
     });
 
     return (
         <section className={classes.mainContainer}>
             <ImageUploaderComponent />
-            
             {SetInputs}
         </section>
     );
