@@ -27,7 +27,7 @@ export default makeStyles(() => ({
     },
 
     copyrightSymbol: {
-        left: '-15',
+        left: '-15px',
         position: 'absolute',
     },
 

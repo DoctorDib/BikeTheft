@@ -1,6 +1,7 @@
 'use strict';
 const Database = require('./database');
 const https = require('https');
+const axios = require('axios');
 let client = null;
 
 module.exports.call = (packet) => new Promise((resolve, reject) => {
@@ -37,7 +38,74 @@ module.exports.callExternal = options => new Promise((resolve, reject) => {
         method: 'GET',
     };
 
+    console.log('START');
+
+    const optionser = {
+        headers: options.headers,
+        body: options.body,
+        method: 'POST',
+    };
+      
+    axios.post(options.hostname + options.path, {}, optionser).then(response => {
+        console.log("Response: ", response);
+        resolve(response);
+    }).catch(error=> {
+        console.log("ERROR: ", error);
+        reject(error);
+    });
+
+    console.log("FINISHED");
+
+
+    /*const req = https.request({...defaultOptions, ...options}, (response) => {
+        console.log('WORKING');
+        console.log('request made:', response);
+        let str = '';
+
+        response.on('data', (chunk) => {
+            console.log("rep:");
+            console.log(JSON.parse(chunk));
+            str += chunk;
+        });
+
+        response.on('end', function () {
+            if (response.statusCode === 200) {
+                try {
+                    const data = JSON.parse(str);
+                    // data is available here:
+                    resolve(data);
+                } catch (e) {
+                    console.log('Error parsing JSON!');
+                    reject("Error passing JSON!");
+                }
+            } else {
+                console.log('Status:', response.statusCode);
+                reject(response);
+            }
+        });
+    });
+
+    req.on('error', function (err) {
+        console.log('Error:', err);
+        reject(err);
+    });
+
+    req.end()*/
+});
+
+
+/*
+
+const defaultOptions = {
+        path: '/',
+        hostname: '',
+        method: 'GET',
+    };
+
+    console.log('START');
+
     const req = https.request({...defaultOptions, ...options}, (response) => {
+        console.log('WORKING');
         console.log('request made:', response);
         let str = '';
 
@@ -70,4 +138,4 @@ module.exports.callExternal = options => new Promise((resolve, reject) => {
     });
 
     req.end()
-});
+    */

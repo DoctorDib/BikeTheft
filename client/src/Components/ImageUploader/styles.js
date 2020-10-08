@@ -8,6 +8,7 @@ export default makeStyles(() => ({
         display: 'flex',
         flexWrap: 'wrap',
         backgroundColor: '#4f4f4f',
+        width: '100%',
     },
 
     container: {

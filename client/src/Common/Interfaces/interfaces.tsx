@@ -45,3 +45,21 @@ export interface IData {
     owner: IOwner;
     posts: Array<IComment>;
 }
+
+export interface IChip {
+    key: number,
+    value: string,
+}
+
+export interface IInputFields {
+    numberPlate: string,
+    vin: string,
+    make: string,
+    model: string,
+    primaryColour: string,
+    secondaryColour: string,
+    features: string,
+    featuresArray: Array<IChip>,
+    description: string,
+    [key: string]: string | Array<string> | Array<IChip>;
+}

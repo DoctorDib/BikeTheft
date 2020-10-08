@@ -11,29 +11,26 @@ let response = {
     }
 };
 
-module.exports.get_vehicle = (event, context, callback) => {
+module.exports.get_dvla_data = (event, context, callback) => {
     const eBody = JSON.parse(event.body);
+    const key = process.env.dvla;
+    console.log('Attempting to grab DVLA data');
+
     const body = {
-        method: 'get_vehicle',
-        vehicle_id: parseInt(eBody.id),
+        "registrationNumber": eBody.number_plate
     };
 
-    API.call(body).then(data => {
-        response.body = JSON.stringify(data);
-        context.callbackWaitsForEmptyEventLoop = false;
-        callback(null, response);
-    });
-};
+    API.call({
+        hostname: 'driver-vehicle-licensing.api.gov.uk',
+        path: '/vehicle-enquiry/v1/vehicles',
+        method: 'POST',
+        body,
+        headers: {
+            'x-api-key': eBody.key,
+        }
+    }).then(data => {
+        console.log(data);
 
-module.exports.update_vehicle_stat = (event, context, callback) => {
-    const eBody = JSON.parse(event.body);
-    const body = {
-        method: 'update_vehicle_stat',
-        vehicle_id: parseInt(eBody.vehicle_id),
-        status: eBody.status,
-    };
-
-    API.call(body).then(data => {
         response.body = JSON.stringify(data);
         context.callbackWaitsForEmptyEventLoop = false;
         callback(null, response);

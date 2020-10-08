@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import multer from 'multer';
+//import multer from 'multer';
 
 import {
     Paper,
@@ -18,14 +18,14 @@ interface IImageUploaderProps {
     
 }
 
-var storage = multer.diskStorage({
+/*var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, '../../static/img')
     },
     filename: function (req, file, cb) {
       cb(null, file.fieldname + '-' + Date.now())
     }
-  })
+  })*/
 
 const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps) => {
     const classes: IClasses = styles();
@@ -54,23 +54,21 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps
     }
 
     const saveImagesLocally = (image: string) => {
-        multer({})
+        //multer({})
     }
 
     return (
         <section className={classes.mainContainer}>
             { mapImages }
 
-            <input accept='image/*' onChange={handleChange} className={classes.input} id="icon-button-file" type="file" />
-            
             <label htmlFor="icon-button-file">
-                <IconButton aria-label="upload picture" component="span" style={{padding: 0}}>
+                <input accept='image/*' onChange={handleChange} className={classes.input} id="icon-button-file" type="file" />
+                <IconButton aria-label="upload picture" component="span" style={{ padding: '0' }}>
                     <Paper className={classes.container}>
                         <Add color="primary" />
                     </Paper>
                 </IconButton>
             </label>
-            
         </section>
     );
 };
