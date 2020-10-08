@@ -22,7 +22,7 @@ const VehicleUploadPage: React.FC<IHomeProps> = (props: IHomeProps) => {
                 <NavBarComponent />
             </section>
 
-            <section className={classes.mainContentGap}>
+            <section>
                 <VehicleUploadInputsComponent />
             </section>
 

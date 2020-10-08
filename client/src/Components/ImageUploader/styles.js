@@ -9,6 +9,7 @@ export default makeStyles(() => ({
         flexWrap: 'wrap',
         backgroundColor: '#4f4f4f',
         width: '100%',
+        borderRadius: '10px',
     },
 
     container: {

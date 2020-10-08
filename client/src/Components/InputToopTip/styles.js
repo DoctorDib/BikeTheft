@@ -40,7 +40,7 @@ export default makeStyles((theme) => ({
         width: '100%',
         margin:'10px',
         [theme.breakpoints.up('md')]: {
-            width: '75%',
+            width: '50%',
         },
     },
 
