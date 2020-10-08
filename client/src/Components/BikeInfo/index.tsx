@@ -107,8 +107,6 @@ const Main: React.FC<IBikeInfoProps> = (props: IBikeInfoProps) => {
         );
     });
 
-    // no worky
-
     const Damages = bike.damages.map((damage: string) => (
         <ListItem key={`damages - ${damage}`}>
             <ListItemText primary={damage} />
