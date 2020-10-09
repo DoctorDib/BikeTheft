@@ -22,6 +22,14 @@ const HomePage: React.FC<IHomeProps> = (props: IHomeProps) => {
             </section>
 
 
+
+
+
+
+
+
+
+
             {/* // test */}
 
             <section className={classes.mainContentGap}>
