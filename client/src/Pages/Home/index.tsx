@@ -21,6 +21,8 @@ const HomePage: React.FC<IHomeProps> = (props: IHomeProps) => {
                 <NavBarComponent />
             </section>
 
+            {/* blah */}
+
             <section className={classes.mainContentGap}>
                 <FooterComponent className={classes.mainContentGap} />
             </section>
