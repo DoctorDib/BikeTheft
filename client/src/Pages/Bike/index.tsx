@@ -38,8 +38,6 @@ const BikePage: React.FC<IBikeProps> = (props: IBikeProps) => {
                 <ForumComponent />
             </section>
 
-            {/* // bah */}
-
             <section className={classes.mainContentGap}>
                 <FooterComponent />
             </section>
