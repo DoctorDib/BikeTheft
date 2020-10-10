@@ -1,3 +1,5 @@
+import VehicleStatusEnum from '../../Common/Enums/VehicleStatusEnums';
+
 export const FormatInfoTitles = (key: string): string => {
     const returnKey = key.split('_');
 
@@ -16,18 +18,18 @@ export function HasProperty(x: unknown, y: string | number | symbol): boolean {
 
 export const FormatStatusText = (currentStat: number):string => {
     switch (currentStat) {
-        case 1: return 'Stolen';
-        case 2: return 'Pending collection';
-        case 3: return 'Found and collected';
+        case VehicleStatusEnum.STOLEN: return 'Stolen';
+        case VehicleStatusEnum.PENDING_COLLECTION: return 'Pending collection';
+        case VehicleStatusEnum.FOUND: return 'Found and collected';
         default: return 'Loading...';
     }
 };
 
 export const FormatStatusColour = (currentStat: number): string => {
     switch (currentStat) {
-        case 1: return 'red';
-        case 2: return 'orange';
-        case 3: return 'green';
+        case VehicleStatusEnum.STOLEN: return 'red';
+        case VehicleStatusEnum.PENDING_COLLECTION: return 'orange';
+        case VehicleStatusEnum.FOUND: return 'green';
         default: return 'gray';
     }
 };
