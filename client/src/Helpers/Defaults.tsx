@@ -9,7 +9,7 @@ import {
     IChip,
 } from '../Common/Interfaces/interfaces';
 
-export const BlankVehicleData: IVehicleInfo = {
+export const defaultVehicleData: IVehicleInfo = {
     vehicle_id: -1,
     date_added: '',
     description: '',
@@ -25,41 +25,41 @@ export const BlankVehicleData: IVehicleInfo = {
     category: '',
 };
 
-export const BlankMemberAttributes: IMemberAttributes = {
+export const defaultMemberAttributes: IMemberAttributes = {
     display_name: '',
     profile_image: '',
 };
 
-export const BlankPostAttributes: IPostAttributes = {
+export const defaultPostAttributes: IPostAttributes = {
     message: '',
     confirmation_image: '',
     active_state: false,
 };
 
-export const BlankOwner: IOwner = {
-    member_attributes: BlankMemberAttributes,
+export const defaultOwner: IOwner = {
+    member_attributes: defaultMemberAttributes,
 };
 
-export const BlankComment: IComment = {
+export const defaultComment: IComment = {
     post_id: -1,
     type: -1,
     date_added: '',
-    member_attributes: BlankMemberAttributes,
-    post_attributes: BlankPostAttributes,
+    member_attributes: defaultMemberAttributes,
+    post_attributes: defaultPostAttributes,
 };
 
-export const BlankData: IData = {
-    vehicle: BlankVehicleData,
-    owner: BlankOwner,
-    posts: [BlankComment],
+export const defaultData: IData = {
+    vehicle: defaultVehicleData,
+    owner: defaultOwner,
+    posts: [defaultComment],
 };
 
-export const BlankChip: IChip = {
+export const defaultChip: IChip = {
     key: -1,
     value: '',
 };
 
-export const BlankInputs: IInputFields = {
+export const defaultInputs: IInputFields = {
     numberPlate: '',
     vin: '',
     make: '',

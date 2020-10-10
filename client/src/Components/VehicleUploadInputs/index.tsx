@@ -22,7 +22,7 @@ import VehicleCategoryEnum from '../../Common/Enums/VehicleCatehoryEnum';
 import { AddNewVehicle } from '../../Helpers/DB_Helpers';
 import { DVLAAPIKEY } from '../../../../secrets/constants';
 import { IInputFields, IChip } from '../../Common/Interfaces/interfaces';
-import { BlankInputs } from '../../Helpers/Blanks';
+import { defaultInputs } from '../../Helpers/Defaults';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 import ImageUploaderComponent from '../ImageUploader';
@@ -45,7 +45,7 @@ interface IToolTipMessage {
 const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     const classes: IClasses = styles();
 
-    const [input, setInput] = useState<IInputFields>(BlankInputs);
+    const [input, setInput] = useState<IInputFields>(defaultInputs);
     const [dateStolen, setDateStolen] = useState<Date>(new Date());
     const [numberPlateError, setNumberPlateError] = useState<boolean>(false);
     // Flag to determine if number plate has changed
@@ -175,7 +175,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     };
 
     const ClearEverything = ():void => {
-        setInput(BlankInputs);
+        setInput(defaultInputs);
         setNumberPlateError(false);
     };
 

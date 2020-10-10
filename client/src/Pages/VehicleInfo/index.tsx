@@ -17,10 +17,10 @@ import {
 } from '../../Common/Interfaces/interfaces';
 
 import {
-    BlankVehicleData,
-    BlankOwner,
-    BlankComment,
-} from '../../Helpers/Blanks';
+    defaultVehicleData,
+    defaultOwner,
+    defaultComment,
+} from '../../Helpers/Defaults';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -40,10 +40,10 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
     const { id } = useParams<IParams>();
 
     const [threadID, setThreadID] = useState<string>(id);
-    const [memberData, setMemberData] = useState<IOwner>(BlankOwner);
+    const [memberData, setMemberData] = useState<IOwner>(defaultOwner);
     const [vehicleID, setVehicleID] = useState<number>(-1);
-    const [vehicleData, setVehicleData] = useState<IVehicleInfo>(BlankVehicleData);
-    const [postData, setPostData] = useState<Array<IComment>>([BlankComment]);
+    const [vehicleData, setVehicleData] = useState<IVehicleInfo>(defaultVehicleData);
+    const [postData, setPostData] = useState<Array<IComment>>([defaultComment]);
 
     const fetch = async (thread_ID: string) => {
         const data:IData = await GetThread(thread_ID);

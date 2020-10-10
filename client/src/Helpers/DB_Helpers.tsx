@@ -4,7 +4,7 @@ import {
     GetDateTime,
     SQLStringProtection,
     CheckSQLInObject,
-    SortFeaturesArray,
+    SortFeaturesArray as ExtractValue,
 } from './helper';
 
 import {
@@ -13,9 +13,7 @@ import {
     IInputFields,
 } from '../Common/Interfaces/interfaces';
 
-import {
-    BlankData,
-} from './Blanks';
+import { defaultData } from './Defaults';
 
 export const SendPost = async (parentID: number, posterID:string, postAttributes:IPostAttributes,
     postType:number): Promise<boolean> => {
@@ -50,7 +48,7 @@ export const GetThread = async (threadID: string): Promise<IData> => {
         return returnData;
     } catch (e) {
         console.error(e);
-        return BlankData;
+        return defaultData;
     }
 };
 
@@ -95,7 +93,7 @@ export const AddNewVehicle = async (ownerID:number, data: IInputFields): Promise
 
     // Extracting the string values from an array of objects
     // e.g. [{key: 1, value: "one"}, {key: 2, value: "two"}]
-    let featuresArray = SortFeaturesArray(data.featuresArray);
+    let featuresArray = ExtractValue(data.featuresArray);
     featuresArray = CheckSQLInObject(featuresArray);
 
     const body = {

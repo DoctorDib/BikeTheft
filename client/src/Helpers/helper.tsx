@@ -8,16 +8,16 @@ export const GetDateTime = ():string => {
 export const SQLStringProtection = (message:string):string => message.replace(/[\t\r\n]|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi, '');
 
 export const CheckSQLInObject = (object:any) => {
-    const cleanObject = object;
-    Object.keys(cleanObject).forEach((value) => {
-        const objectVal = cleanObject[value];
+    const newObject = object;
+    Object.keys(newObject).forEach((value) => {
+        const objectVal = newObject[value];
 
         if (typeof objectVal !== 'string') { return; }
 
-        cleanObject[value] = SQLStringProtection(objectVal);
+        newObject[value] = SQLStringProtection(objectVal);
     });
 
-    return cleanObject;
+    return newObject;
 };
 
 // fArrObj = Array of Object Features
