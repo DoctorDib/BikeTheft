@@ -5,6 +5,8 @@ import {
     IPostAttributes,
     IComment,
     IData,
+    IInputFields,
+    IChip,
 } from '../Common/Interfaces/interfaces';
 
 export const BlankVehicleData: IVehicleInfo = {
@@ -50,4 +52,24 @@ export const BlankData: IData = {
     vehicle: BlankVehicleData,
     owner: BlankOwner,
     posts: [BlankComment],
+};
+
+export const BlankChip: IChip = {
+    key: -1,
+    value: '',
+};
+
+export const BlankInputs: IInputFields = {
+    numberPlate: '',
+    vin: '',
+    make: '',
+    model: '',
+    primaryColour: '',
+    secondaryColour: '',
+    dateStolen: new Date(),
+    location: '',
+    features: '',
+    featuresArray: [],
+    description: '',
+    v5cVerificationYear: '',
 };

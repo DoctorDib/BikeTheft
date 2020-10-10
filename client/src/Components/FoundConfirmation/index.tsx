@@ -7,10 +7,11 @@ import {
     Paper,
     Typography,
     Button,
-    TextField,
 } from '@material-ui/core';
 
 import { CheckCircle, Cancel } from '@material-ui/icons';
+
+import ImageUploaderComponent from '../ImageUploader';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -51,10 +52,7 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfi
                         Please upload a picture of the vehicle for confirmation purposes.
                     </Typography>
 
-                    <section className={classes.buttonContainer}>
-                        <TextField id="outlined-basic" size="small" label="Upload image" variant="outlined" />
-                        <Button size="small" variant="contained" color="primary"> Browse </Button>
-                    </section>
+                    <ImageUploaderComponent />
 
                     <section className={classes.buttonContainer}>
                         <Button variant="contained" startIcon={<CheckCircle />} color="primary"> Confirm </Button>
