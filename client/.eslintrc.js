@@ -39,7 +39,8 @@ module.exports = {
             "ignoreComments": true,
             "ignoreStrings": true,
 
-        }]
+        }],
+        "no-console": 0,
     },
     env: {
         "browser": true,

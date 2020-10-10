@@ -11,7 +11,8 @@
   "devDependencies": {
     "serverless-bundle": "^3.1.0",
     "serverless-domain-manager": "^5.0.0",
-    "serverless-offline": "^5.3.3"
+    "serverless-dotenv-plugin": "^3.0.0",
+    "serverless-offline": "^5.12.1"
   },
   "dependencies": {
     "pg": "^8.3.3"

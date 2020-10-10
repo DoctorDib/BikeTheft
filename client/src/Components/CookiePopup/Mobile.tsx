@@ -40,7 +40,7 @@ const CookiePopup: React.FC<ICookiePopupProps> = (props: ICookiePopupProps) => {
                 width: '25%', display: 'flex', alignItems: 'center', alignContent: 'center', justifyContent: 'center', paddingTop: '1em',
             }}
             >
-                <Button onClick={clickTrigger} style={{ fontWeight: 650, color: '#26844F' }}> Accept </Button>
+                <Button onClick={clickTrigger} style={{ fontWeight: 650, color: '#26844F' }} color="primary"> Accept </Button>
             </section>
 
         </section>

@@ -1,4 +1,4 @@
-service: service-bikes
+service: service-vehicles
 
 plugins:
   - serverless-offline
@@ -9,6 +9,15 @@ provider:
   name: aws
   runtime: nodejs10.x
   region: eu-west-2
+  profile: BTP
+  stage: prod
+  vpc:
+    securityGroupIds:
+      - sg-92c883f5
+    subnetIds:
+      - subnet-41ed773b
+      - subnet-653e9729
+      - subnet-ca7826a3
 
 resources:
   Resources:
@@ -28,13 +37,13 @@ resources:
 
 custom:
   domains:
-    prod: api.someurl.com
-    dev: dev-api.someurl.com
+    prod: api.lostmywheels.com
+    dev: dev-api.lostmywheels.com
   customDomain:
     domainName: ${self:custom.domains.${self:custom.stage}}
-    certificateName: '*.someurl.com'
-    basePath: 'bikes'
-    stage: ${self:provider.stage}
+    certificateName: '*.lostmywheels.com'
+    basePath: 'vehicles'
+    stage: ${self:custom.stage}
     createRoute53Record: true
   stage: ${opt:stage, self:provider.stage}
   dotenv:
@@ -46,10 +55,31 @@ custom:
 
 functions:
   new:
-    handler: bikes.new
+    handler: vehicles.new
     events:
       - http:
           path: new
           method: POST
           cors: {$self:custom.cors}
           authorizer: aws_iam
+  get_vehicle:
+    handler: vehicles.get_vehicle
+    events:
+      - http:
+          path: get_vehicle
+          method: POST
+          cors: {$self:custom.cors}
+  ping:
+    handler: vehicles.ping
+    events:
+      - http:
+          path: ping
+          method: POST
+          cors: {$self:custom.cors}
+  update_vehicle_stat:
+    handler: vehicles.update_vehicle_stat
+    events:
+      - http:
+          path: update_vehicle_stat
+          method: POST
+          cors: {$self:custom.cors}

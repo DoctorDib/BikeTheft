@@ -14,10 +14,32 @@ let response = {
 module.exports.get = (event, context, callback) => {
     const eBody = JSON.parse(event.body);
     const body = {
-        method: 'get_self',
-        forum_id: eBody.id,
+        method: 'get_thread',
+        thread_id: eBody.thread_id,
     };
 
+    API.call(body).then(data => {
+        response.body = JSON.stringify(data);
+        context.callbackWaitsForEmptyEventLoop = false;
+        callback(null, response);
+    });
+};
+
+module.exports.set_post = (event, context, callback) => {
+    const body = JSON.parse(event.body);
+    body.method = 'set_post',
+    
+    API.call(body).then(data => {
+        response.body = JSON.stringify(data);
+        context.callbackWaitsForEmptyEventLoop = false;
+        callback(null, response);
+    });
+};
+
+module.exports.update_post = (event, context, callback) => {
+    const body = JSON.parse(event.body);
+    body.method = 'update_post',
+    
     API.call(body).then(data => {
         response.body = JSON.stringify(data);
         context.callbackWaitsForEmptyEventLoop = false;

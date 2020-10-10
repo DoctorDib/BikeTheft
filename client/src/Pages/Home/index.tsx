@@ -4,10 +4,8 @@ import NavBarComponent from '../../Components/Header/index';
 import FooterComponent from '../../Components/Footer/index';
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
-// import CookiePopupComponent from "../../Components/CookiePopup/index";
 
 interface IHomeProps {
-
 }
 
 // TODO these props should be used

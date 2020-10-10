@@ -6,14 +6,15 @@ import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
 const breakpoints = createBreakpoints({});
 export default createMuiTheme({
     palette: {
+        // https://color.adobe.com/Salmon-on-Ice-color-theme-2291686
         type: 'light',
         primary: {
-            light: '#000000',
-            main: '#000000',
+            light: '#7ECEFD',
+            main: '#2185C5',
         },
         secondary: {
-            light: '#ffffff',
-            main: '#ffffff',
+            light: '#FFF6E5',
+            main: '#3E454C',
         },
     },
     typography: {
@@ -22,9 +23,10 @@ export default createMuiTheme({
         fontSize: 16,
     },
     text: {
-        primary: '#ffffff',
-        secondary: '#00000',
-        subtitle: '#26844F',
+        primary: 'black',
+        secondary: 'white',
+        subtitle: '#2185C5',
+        link: '#FF7F66',
     },
     input: {
         backgroundColor: 'black',

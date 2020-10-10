@@ -4,19 +4,20 @@ import mainStyle from '../../templates/mainStyle';
 export default makeStyles(() => ({
     ...mainStyle,
 
-    textBox: {
-        width: '100%',
-    },
-
-    message: {
-        width: '100%',
-        padding: '5px',
-        margin: '20px 0 20px 0',
-    },
-
-    messageContainer: {
+    modal: {
         display: 'flex',
-        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    paper: {
+        padding: '20px',
+    },
+
+    buttonContainer: {
+        display: 'flex',
         justifyContent: 'space-around',
+        width: '100%',
+        margin: '20px 0 0 0',
     },
 }));

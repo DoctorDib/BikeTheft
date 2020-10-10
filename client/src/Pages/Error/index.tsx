@@ -49,8 +49,8 @@ const ErrorPage: React.FC<IErrorPageProps> = () => {
                     </section>
 
                     <section style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5vh' }}>
-                        <Button style={{ color: '#26844F' }} className={classes.menuButtons} onClick={() => GoBack()}> Go Back </Button>
-                        <Button style={{ color: '#26844F' }} className={classes.menuButtons} href="/"> Go to the Home Page </Button>
+                        <Button color="primary" style={{ color: '#26844F' }} className={classes.menuButtons} onClick={() => GoBack()}> Go Back </Button>
+                        <Button color="primary" style={{ color: '#26844F' }} className={classes.menuButtons} href="/"> Go to the Home Page </Button>
                     </section>
                 </section>
 

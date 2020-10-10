@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+      "experimentalDecorators": true,
       "outDir": "./public/",
       "noImplicitAny": true,
       "module": "es2020",
@@ -25,5 +26,5 @@
       "forceConsistentCasingInFileNames": true,
       "importsNotUsedAsValues": "preserve",
       "importHelpers": true,
-    }
+    },
 }

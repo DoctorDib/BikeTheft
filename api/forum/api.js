@@ -13,7 +13,7 @@ module.exports.call = (packet) => new Promise((resolve, reject) => {
 
     const call_api = () => {
         client = database.getClient();
-        let querySQL = 'SELECT bikebounty.api($1::JSON) AS response';
+        let querySQL = 'SELECT motorwatch.api($1::JSON) AS response';
 
         client.query(querySQL,[packet], async function(err,result){
             // database.endClient();
