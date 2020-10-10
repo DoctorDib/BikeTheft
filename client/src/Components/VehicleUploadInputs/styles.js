@@ -38,7 +38,7 @@ export default makeStyles((theme) => ({
 
     featuresInput: {
         width: '100%',
-        margin:'10px',
+        margin: '10px',
         [theme.breakpoints.up('md')]: {
             width: '75%',
         },
@@ -93,13 +93,12 @@ export default makeStyles((theme) => ({
 
     controlButtons: {
         display: 'flex',
-        flexDireciton: 'row',  
+        flexDireciton: 'row',
         marginTop: '2em',
         width: '50%',
         justifyContent: 'space-evenly',
-
         '& button': {
             width: '120px',
-        }
+        },
     },
 }));

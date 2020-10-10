@@ -66,7 +66,10 @@ export const BlankInputs: IInputFields = {
     model: '',
     primaryColour: '',
     secondaryColour: '',
+    dateStolen: new Date(),
+    location: '',
     features: '',
     featuresArray: [],
     description: '',
+    v5cVerificationYear: '',
 };

@@ -1,5 +1,3 @@
-// import { IpOwner } from 'aws-sdk/clients/macie2';
-
 export interface IVehicleInfo {
     vehicle_id: number,
     date_added: string,
@@ -58,8 +56,11 @@ export interface IInputFields {
     model: string,
     primaryColour: string,
     secondaryColour: string,
+    dateStolen: Date,
+    location: string,
     features: string,
-    featuresArray: Array<IChip>,
     description: string,
-    [key: string]: string | Array<string> | Array<IChip>;
+    featuresArray: Array<IChip>,
+    v5cVerificationYear: string,
+    [key: string]: string | Array<string> | Array<IChip> | Date;
 }

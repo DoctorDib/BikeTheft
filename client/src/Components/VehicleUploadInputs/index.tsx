@@ -12,7 +12,10 @@ import {
     Button,
 } from '@material-ui/core';
 
-import InputToolTip from '../InputToopTip';
+import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
+import DateFnsUtils from '@date-io/date-fns';
+
+import InputToolTip from '../ToopTip';
 
 import { DVLAAPIKEY } from '../../../../secrets/constants';
 import { IInputFields, IChip } from '../../Common/Interfaces/interfaces';
@@ -28,6 +31,14 @@ interface IImageUploaderProps {
 
 let index = 0;
 
+interface IToolTipMessage {
+    primaryColour: string,
+    secondaryColour: string,
+    features: string,
+    description: string,
+    [key: string]: string;
+}
+
 const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     const classes: IClasses = styles();
 
@@ -37,12 +48,12 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     // if changed then we can make a call to DVLA
     const [numberPlateFlag, setNumberPlateFlag] = useState<boolean>(false);
 
-    const toolTipMessages = {
+    const toolTipMessages:IToolTipMessage = {
         primaryColour: 'The main Colour of your vehicle',
         secondaryColour: 'The second main colour of your vehicle',
         features: 'Write down identifiable features of your vehicle, seperate using commans: e.g "single black door, red wheels"',
         description: 'Write a short description of your vehicle, more information the better.',
-    }
+    };
 
     const onLeave = (event:React.FocusEvent<HTMLInputElement>) => {
         // Ensuring that we're only calling api if id is numberPlate
@@ -137,21 +148,20 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
             case 'secondaryColour': return 'Secondary Colour';
             case 'features': return 'Features';
             case 'description': return 'Description';
+            case 'location': return 'Location';
             default: return 'Key not found...';
         }
     };
 
-    const GetToolTip = (key:string) => {
-        if (!toolTipMessages.hasOwnProperty(key)) { return false; }
+    const GetToolTip = (key:string):string|boolean => {
+        if (!Object.prototype.hasOwnProperty.call(toolTipMessages, key)) { return false; }
         return toolTipMessages[key];
+    };
 
-        // InputProps={{ endAdornment: ( <InputToolTip message={toolTipMessages[key]} />), }}
-    }
-
-    const ClearEverything = () => { 
+    const ClearEverything = ():void => {
         setInput(BlankInputs);
         setNumberPlateError(false);
-    }
+    };
 
     const SetInputs = Object.keys(input).map((key:string):any => {
         switch (key) {
@@ -167,9 +177,26 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                             value={input[key]}
                             onChange={onChange}
                             className={classes.input}
-                            InputProps={{ endAdornment: ( <InputToolTip message={GetToolTip(key)} />), }}
+                            InputProps={{ endAdornment: (<InputToolTip message={GetToolTip(key)} />) }}
                         />
                         <section className={classes.colour} style={{ backgroundColor: input[key] }}> </section>
+                    </Grid>
+                );
+            case 'dateStolen':
+                return (
+                    <Grid item md={6} xs={12} className={classes.inputContainers}>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <DateTimePicker
+                                variant="outlined"
+                                label="Date Stolen"
+                                disableFuture
+                                value={input[key]}
+                                onChange={onChange}
+                                autoOk
+                                ampm={false}
+                                className={classes.input}
+                            />
+                        </MuiPickersUtilsProvider>
                     </Grid>
                 );
             case 'numberPlate':
@@ -196,7 +223,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                 );
             case 'features':
                 return (
-                    <section className={classes.inputContainers}>
+                    <Grid item md={12} className={classes.inputContainers}>
                         <section className={classes.featureContainer}>
                             { SetChips }
                         </section>
@@ -210,13 +237,13 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                             value={input[key]}
                             className={classNames(classes.input, classes.featuresInput)}
                             multiline
-                            InputProps={{ endAdornment: ( <InputToolTip message={GetToolTip(key)} />), }}
+                            InputProps={{ endAdornment: (<InputToolTip message={GetToolTip(key)} />) }}
                         />
-                    </section>
+                    </Grid>
                 );
             case 'description':
                 return (
-                    <section className={classNames(classes.inputContainers, classes.descriptionContainer)}>
+                    <Grid item md={12} className={classNames(classes.inputContainers, classes.descriptionContainer)}>
                         <TextField
                             id={key}
                             size="small"
@@ -228,12 +255,14 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                             className={classes.input}
                             multiline
                             rows={6}
-                            InputProps={{ endAdornment: ( <InputToolTip message={GetToolTip(key)} />), }}
+                            InputProps={{ endAdornment: (<InputToolTip message={GetToolTip(key)} />) }}
                         />
-                    </section>
+                    </Grid>
                 );
             default:
-                if (key === 'featuresArray') { break; }
+                // featuresArray should be a hidden value
+                if (key === 'featuresArray' || key === 'v5cVerificationYear') { break; }
+
                 return (
                     <Grid item md={6} xs={12} className={classes.inputContainers}>
                         <TextField
@@ -244,7 +273,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                             onChange={onChange}
                             value={input[key]}
                             className={classes.input}
-                            InputProps={{ endAdornment: ( <InputToolTip message={GetToolTip(key)} />), }}
+                            InputProps={{ endAdornment: (<InputToolTip message={GetToolTip(key)} />) }}
                         />
                     </Grid>
                 );
@@ -268,7 +297,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
             </Grid>
 
             <section className={classes.controlButtons}>
-                <Button variant="contained" color="primary" > Upload </Button>
+                <Button variant="contained" color="primary"> Upload </Button>
                 <Button variant="contained" color="primary" onClick={ClearEverything}> Clear </Button>
             </section>
         </section>
