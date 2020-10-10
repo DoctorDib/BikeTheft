@@ -5,13 +5,17 @@ import {
     Typography,
 } from '@material-ui/core';
 
+import PostTypeEnum from '../../Common/Enums/PostTypeEnums';
+
 import { IComment } from '../../Common/Interfaces/interfaces';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 export const FormatPostBackground = (styleID: number):string => {
     switch (styleID) {
-        case 1: return 'white';
-        case 2: return '#e3e3e3';
+        case PostTypeEnum.OWNER:
+        case PostTypeEnum.USER:
+            return 'white';
+        case PostTypeEnum.INFO: return '#e3e3e3';
         default: return 'black';
     }
 };
