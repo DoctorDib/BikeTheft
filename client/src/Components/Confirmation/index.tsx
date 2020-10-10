@@ -15,7 +15,7 @@ import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 interface IConfirmationProp {
-    enumMessage: number,
+    enumMessage: Confirmation,
     open: boolean,
     callback: (arg0:number, arg1:boolean)=>void,
 }
