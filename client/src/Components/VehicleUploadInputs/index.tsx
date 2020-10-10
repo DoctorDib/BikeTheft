@@ -17,9 +17,12 @@ import DateFnsUtils from '@date-io/date-fns';
 
 import InputToolTip from '../ToopTip';
 
+import VehicleCategoryEnum from '../../Common/Enums/VehicleCatehoryEnum';
+
+import { AddNewVehicle } from '../../Helpers/DB_Helpers';
 import { DVLAAPIKEY } from '../../../../secrets/constants';
 import { IInputFields, IChip } from '../../Common/Interfaces/interfaces';
-import { BlankInputs } from '../../Helpers/Blanks';
+import { defaultInputs } from '../../Helpers/Defaults';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 import ImageUploaderComponent from '../ImageUploader';
@@ -42,7 +45,8 @@ interface IToolTipMessage {
 const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     const classes: IClasses = styles();
 
-    const [input, setInput] = useState<IInputFields>(BlankInputs);
+    const [input, setInput] = useState<IInputFields>(defaultInputs);
+    const [dateStolen, setDateStolen] = useState<Date>(new Date());
     const [numberPlateError, setNumberPlateError] = useState<boolean>(false);
     // Flag to determine if number plate has changed
     // if changed then we can make a call to DVLA
@@ -112,6 +116,16 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         />
     ));
 
+    const SetCategory = (wheelPlan:string):number => {
+        const wPStr = wheelPlan.toLowerCase();
+
+        if (wPStr.includes('2') && wPStr.includes('wheel')) { return VehicleCategoryEnum.MOTORBIKE; }
+        if (wPStr.includes('2') && wPStr.includes('axle')) { return VehicleCategoryEnum.CAR; }
+        if (wPStr.includes('3') && wPStr.includes('axle')) { return VehicleCategoryEnum.TRUCK; }
+
+        return VehicleCategoryEnum.NONE;
+    };
+
     const GetDVLAData = async (numberPlate:string) => {
         const body = {
             body: {
@@ -129,6 +143,8 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                     ...input,
                     make: response.make,
                     primaryColour: response.colour,
+                    category: SetCategory(response.wheelplan),
+                    v5cVerificationDate: response.dateOfLastV5CIssued,
                 });
             })
             .catch(() => {
@@ -159,9 +175,31 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     };
 
     const ClearEverything = ():void => {
-        setInput(BlankInputs);
+        setInput(defaultInputs);
         setNumberPlateError(false);
     };
+
+    const UploadData = ():void => {
+        input.dateStolen = dateStolen;
+        // Turning string capture into int
+
+        // TODO - Will need to change the owner_id when login is setup
+        AddNewVehicle(1, input);
+    };
+
+    const SetCategoryOptions = Object.keys(VehicleCategoryEnum).map(
+        (key:string) => {
+            const intKey = parseInt(key, 10);
+            const value = VehicleCategoryEnum[intKey];
+
+            if (Number.isNaN(intKey)) { return; }
+            return (
+                <option key={key} value={intKey}>
+                    {value}
+                </option>
+            );
+        },
+    );
 
     const SetInputs = Object.keys(input).map((key:string):any => {
         switch (key) {
@@ -187,16 +225,34 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                     <Grid item md={6} xs={12} className={classes.inputContainers}>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <DateTimePicker
+                                id={key}
                                 variant="outlined"
                                 label="Date Stolen"
                                 disableFuture
-                                value={input[key]}
-                                onChange={onChange}
+                                value={dateStolen}
+                                onChange={setDateStolen}
                                 autoOk
                                 ampm={false}
                                 className={classes.input}
                             />
                         </MuiPickersUtilsProvider>
+                    </Grid>
+                );
+            case 'category':
+                return (
+                    <Grid item xs={12} className={classes.inputContainers}>
+                        <TextField
+                            id={key}
+                            select
+                            label="Vehicle Category"
+                            value={input[key]}
+                            onChange={onChange}
+                            SelectProps={{ native: true }}
+                            helperText="Please select your vehicle category"
+                            variant="outlined"
+                        >
+                            {SetCategoryOptions}
+                        </TextField>
                     </Grid>
                 );
             case 'numberPlate':
@@ -261,7 +317,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                 );
             default:
                 // featuresArray should be a hidden value
-                if (key === 'featuresArray' || key === 'v5cVerificationYear') { break; }
+                if (key === 'featuresArray' || key === 'v5cVerificationDate') { break; }
 
                 return (
                     <Grid item md={6} xs={12} className={classes.inputContainers}>
@@ -297,7 +353,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
             </Grid>
 
             <section className={classes.controlButtons}>
-                <Button variant="contained" color="primary"> Upload </Button>
+                <Button variant="contained" color="primary" onClick={UploadData}> Upload </Button>
                 <Button variant="contained" color="primary" onClick={ClearEverything}> Clear </Button>
             </section>
         </section>

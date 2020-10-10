@@ -1,3 +1,5 @@
+import VehicleCategories from '../Enums/VehicleCatehoryEnum';
+
 export interface IVehicleInfo {
     vehicle_id: number,
     date_added: string,
@@ -58,9 +60,10 @@ export interface IInputFields {
     secondaryColour: string,
     dateStolen: Date,
     location: string,
+    category: VehicleCategories,
     features: string,
     description: string,
     featuresArray: Array<IChip>,
-    v5cVerificationYear: string,
-    [key: string]: string | Array<string> | Array<IChip> | Date;
+    v5cVerificationDate: string,
+    [key: string]: string | Array<string> | Array<IChip> | Date | number;
 }

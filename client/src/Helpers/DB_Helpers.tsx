@@ -3,16 +3,17 @@ import { API } from 'aws-amplify';
 import {
     GetDateTime,
     SQLStringProtection,
+    CheckSQLInObject,
+    SortFeaturesArray as ExtractValue,
 } from './helper';
 
 import {
     IPostAttributes,
     IData,
+    IInputFields,
 } from '../Common/Interfaces/interfaces';
 
-import {
-    BlankData,
-} from './Blanks';
+import { defaultData } from './Defaults';
 
 export const SendPost = async (parentID: number, posterID:string, postAttributes:IPostAttributes,
     postType:number): Promise<boolean> => {
@@ -47,7 +48,7 @@ export const GetThread = async (threadID: string): Promise<IData> => {
         return returnData;
     } catch (e) {
         console.error(e);
-        return BlankData;
+        return defaultData;
     }
 };
 
@@ -80,6 +81,48 @@ export const UpdateVehicleStat = async (vehicleID: number, newStat:number): Prom
     try {
         const returnData: IData = await API.post('base_endpoint', '/vehicles/update_vehicle_stat', body);
         console.debug(returnData);
+        return true;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+};
+
+export const AddNewVehicle = async (ownerID:number, data: IInputFields): Promise<boolean> => {
+    const cleanData = CheckSQLInObject(data);
+
+    // Extracting the string values from an array of objects
+    // e.g. [{key: 1, value: "one"}, {key: 2, value: "two"}]
+    let featuresArray = ExtractValue(data.featuresArray);
+    featuresArray = CheckSQLInObject(featuresArray);
+
+    const body = {
+        body: {
+            owner_id: ownerID,
+            // TODO - Set up location / geometry
+            location: null,
+            // for now we're defaulting vehicles that get uploaded to
+            // automatically be assumed as stolen
+            status: 1,
+            number_plate: cleanData.number_plate,
+            make: cleanData.make,
+            model: cleanData.model,
+            category: cleanData.category,
+            vehicle_attributes: {
+                primary_colour: cleanData.primary_colour,
+                secondary_colour: cleanData.secondary_colour,
+                features: featuresArray,
+                description: cleanData.description,
+                v5c_verification_date: cleanData.v5cVerificationDate,
+                date_stolen: data.dateStolen,
+            },
+            vin: cleanData.vin,
+        },
+    };
+
+    try {
+        const response = await API.post('base_endpoint', '/vehicles/set_vehicle', body);
+        console.debug(response);
         return true;
     } catch (e) {
         console.error(e);

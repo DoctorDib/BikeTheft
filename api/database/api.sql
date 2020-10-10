@@ -1,5 +1,3 @@
-CREATE OR REPLACE FUNCTION motorwatch.api(api_parameters JSON) RETURNS JSON AS
-$$
 DECLARE
     ret_var JSON;
     f8 TEXT;
@@ -23,6 +21,8 @@ BEGIN
             ret_var = update_post(api_parameters);
         WHEN api_parameters->>'method' IN ('create_thread') THEN
             ret_var = create_thread(api_parameters);
+        WHEN api_parameters->>'method' IN ('set_vehicle') THEN
+            ret_var = set_vehicle(api_parameters);
         ELSE
             RETURN json_build_object('error', 'unsupported method');
     END CASE;
@@ -32,4 +32,3 @@ EXCEPTION WHEN OTHERS THEN
     GET STACKED DIAGNOSTICS f8 = PG_EXCEPTION_DETAIL;
     RETURN json_build_object('error', 'api error', 'log_id', motorwatch.log(jsonb_build_object('error', SQLERRM ||' '||f8)));
 END;
-$$ LANGUAGE PLPGSQL;

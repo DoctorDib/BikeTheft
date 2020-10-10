@@ -15,7 +15,7 @@ import {
     FormatPostBackground,
 } from './helper';
 
-import { BlankPostAttributes, BlankComment } from '../../Helpers/Blanks';
+import { defaultPostAttributes, defaultComment } from '../../Helpers/Defaults';
 
 import { SQLStringProtection } from '../../Helpers/helper';
 import { SendPost, UpdatePost, UpdateVehicleStat } from '../../Helpers/DB_Helpers';
@@ -44,7 +44,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
     const [inputError, setInputError] = useState<boolean>(false);
     const [confirmation, setConfirmation] = useState(false);
     const [confirmationMessage, setConfirmationMessage] = useState<number>(Confirmation.CANCEL);
-    const [selectedPost, setSelectedPost] = useState<IComment>(BlankComment);
+    const [selectedPost, setSelectedPost] = useState<IComment>(defaultComment);
 
     const { posts, vehicleID } = props;
 
@@ -83,7 +83,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
     const callback = (enumMessage:number, response:boolean):void => {
         setConfirmation(false);
 
-        let newPostAttributes: IPostAttributes = BlankPostAttributes;
+        let newPostAttributes: IPostAttributes = defaultPostAttributes;
 
         switch (enumMessage) {
             case Confirmation.CONFIRM_POST:
@@ -107,7 +107,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 if (!response) return;
 
                 // Prepping for a new post send thing
-                newPostAttributes = BlankPostAttributes;
+                newPostAttributes = defaultPostAttributes;
 
                 if (Confirmation.CONFIRM_VEHICLE) {
                     newPostAttributes.message = 'Owner has confirmed vehicle and is planning to take action.';
