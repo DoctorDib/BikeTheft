@@ -117,16 +117,14 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     ));
 
     const SetCategory = (wheelPlan:string):number => {
-        wheelPlan = wheelPlan.toLowerCase();
+        const wPStr = wheelPlan.toLowerCase();
 
-        console.log(wheelPlan)
-
-        if (wheelPlan.includes("2") && wheelPlan.includes("wheel")) { return VehicleCategoryEnum.MOTORBIKE; }
-        if (wheelPlan.includes("2") && wheelPlan.includes("axle")) { return VehicleCategoryEnum.CAR; }
-        if (wheelPlan.includes("3") && wheelPlan.includes("axle")) { return VehicleCategoryEnum.TRUCK; }
+        if (wPStr.includes('2') && wPStr.includes('wheel')) { return VehicleCategoryEnum.MOTORBIKE; }
+        if (wPStr.includes('2') && wPStr.includes('axle')) { return VehicleCategoryEnum.CAR; }
+        if (wPStr.includes('3') && wPStr.includes('axle')) { return VehicleCategoryEnum.TRUCK; }
 
         return VehicleCategoryEnum.NONE;
-    }
+    };
 
     const GetDVLAData = async (numberPlate:string) => {
         const body = {
@@ -184,21 +182,24 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     const UploadData = ():void => {
         input.dateStolen = dateStolen;
         // Turning string capture into int
-        console.log(input.category)
 
         // TODO - Will need to change the owner_id when login is setup
         AddNewVehicle(1, input);
     };
 
-    const SetCategoryOptions = Object.keys(VehicleCategoryEnum).map((key:string, index:number) => {
-        if (isNaN(Number(VehicleCategoryEnum[key]))) { return; }
-        console.log("Adding: ", key)
-        return (
-            <option key={index} value={VehicleCategoryEnum[key]}>
-                {key}
-            </option>
-        );
-    });
+    const SetCategoryOptions = Object.keys(VehicleCategoryEnum).map(
+        (key:string) => {
+            const intKey = parseInt(key, 10);
+            const value = VehicleCategoryEnum[intKey];
+
+            if (Number.isNaN(intKey)) { return; }
+            return (
+                <option key={key} value={intKey}>
+                    {value}
+                </option>
+            );
+        },
+    );
 
     const SetInputs = Object.keys(input).map((key:string):any => {
         switch (key) {
@@ -246,7 +247,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                             label="Vehicle Category"
                             value={input[key]}
                             onChange={onChange}
-                            SelectProps={{ native: true, }}
+                            SelectProps={{ native: true }}
                             helperText="Please select your vehicle category"
                             variant="outlined"
                         >

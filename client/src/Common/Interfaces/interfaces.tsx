@@ -1,3 +1,5 @@
+import VehicleCategories from '../Enums/VehicleCatehoryEnum';
+
 export interface IVehicleInfo {
     vehicle_id: number,
     date_added: string,
@@ -48,8 +50,6 @@ export interface IChip {
     key: number,
     value: string,
 }
-
-import VehicleCategories from '../Enums/VehicleCatehoryEnum';
 
 export interface IInputFields {
     numberPlate: string,

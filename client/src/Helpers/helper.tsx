@@ -7,16 +7,18 @@ export const GetDateTime = ():string => {
 
 export const SQLStringProtection = (message:string):string => message.replace(/[\t\r\n]|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi, '');
 
-export const CheckSQLInObject = (object):object => {
-    Object.keys(object).forEach(value => {
-        let objectVal = object[value];
+export const CheckSQLInObject = (object:any) => {
+    const cleanObject = object;
+    Object.keys(cleanObject).forEach((value) => {
+        const objectVal = cleanObject[value];
 
-        if (typeof objectVal !== "string") { return; }
+        if (typeof objectVal !== 'string') { return; }
 
-        object[value] = SQLStringProtection(objectVal);
+        cleanObject[value] = SQLStringProtection(objectVal);
     });
 
-    return object;
+    return cleanObject;
 };
 
-export const SortFeaturesArray = (featuresArrayObject) => featuresArrayObject.map(object => object.value);
+// fArrObj = Array of Object Features
+export const SortFeaturesArray = (fArrObj:Array<any>):Array<string> => fArrObj.map((object:any) => object.value);

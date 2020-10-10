@@ -90,7 +90,7 @@ export const UpdateVehicleStat = async (vehicleID: number, newStat:number): Prom
     }
 };
 
-export const AddNewVehicle = async (ownerID:number, data: IInputFields): Promise<boolean> => {    
+export const AddNewVehicle = async (ownerID:number, data: IInputFields): Promise<boolean> => {
     const cleanData = CheckSQLInObject(data);
 
     // Extracting the string values from an array of objects
@@ -103,9 +103,9 @@ export const AddNewVehicle = async (ownerID:number, data: IInputFields): Promise
             owner_id: ownerID,
             // TODO - Set up location / geometry
             location: null,
-            // for now we're defaulting vehicles that get uploaded to 
+            // for now we're defaulting vehicles that get uploaded to
             // automatically be assumed as stolen
-            status: 1, 
+            status: 1,
             number_plate: cleanData.number_plate,
             make: cleanData.make,
             model: cleanData.model,
@@ -129,5 +129,5 @@ export const AddNewVehicle = async (ownerID:number, data: IInputFields): Promise
     } catch (e) {
         console.error(e);
         return false;
-    }    
+    }
 };
