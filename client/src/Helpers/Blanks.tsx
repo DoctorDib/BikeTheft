@@ -64,6 +64,7 @@ export const BlankInputs: IInputFields = {
     vin: '',
     make: '',
     model: '',
+    category: 0,
     primaryColour: '',
     secondaryColour: '',
     dateStolen: new Date(),
@@ -71,5 +72,5 @@ export const BlankInputs: IInputFields = {
     features: '',
     featuresArray: [],
     description: '',
-    v5cVerificationYear: '',
+    v5cVerificationDate: '',
 };

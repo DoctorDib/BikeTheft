@@ -54,14 +54,6 @@ custom:
       - '*'
 
 functions:
-  new:
-    handler: vehicles.new
-    events:
-      - http:
-          path: new
-          method: POST
-          cors: {$self:custom.cors}
-          authorizer: aws_iam
   get_vehicle:
     handler: vehicles.get_vehicle
     events:
@@ -81,5 +73,12 @@ functions:
     events:
       - http:
           path: update_vehicle_stat
+          method: POST
+          cors: {$self:custom.cors}
+  set_vehicle:
+    handler: vehicles.set_vehicle
+    events:
+      - http:
+          path: set_vehicle
           method: POST
           cors: {$self:custom.cors}

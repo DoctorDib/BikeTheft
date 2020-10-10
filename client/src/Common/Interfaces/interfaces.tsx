@@ -49,6 +49,8 @@ export interface IChip {
     value: string,
 }
 
+import VehicleCategories from '../Enums/VehicleCatehoryEnum';
+
 export interface IInputFields {
     numberPlate: string,
     vin: string,
@@ -58,9 +60,10 @@ export interface IInputFields {
     secondaryColour: string,
     dateStolen: Date,
     location: string,
+    category: VehicleCategories,
     features: string,
     description: string,
     featuresArray: Array<IChip>,
-    v5cVerificationYear: string,
-    [key: string]: string | Array<string> | Array<IChip> | Date;
+    v5cVerificationDate: string,
+    [key: string]: string | Array<string> | Array<IChip> | Date | number;
 }

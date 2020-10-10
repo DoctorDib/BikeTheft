@@ -40,6 +40,17 @@ module.exports.update_vehicle_stat = (event, context, callback) => {
     });
 };
 
+module.exports.set_vehicle = (event, context, callback) => {
+    const body = JSON.parse(event.body);
+    body.method = 'set_vehicle';
+    
+    API.call(body).then(data => {
+        response.body = JSON.stringify(data);
+        context.callbackWaitsForEmptyEventLoop = false;
+        callback(null, response);
+    });
+};
+
 module.exports.ping = (event, context, callback) => {
     response.body = JSON.stringify({ message: 'pong' });
     callback(null, response);

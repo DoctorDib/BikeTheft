@@ -27,7 +27,7 @@ module.exports.get = (event, context, callback) => {
 
 module.exports.set_post = (event, context, callback) => {
     const body = JSON.parse(event.body);
-    body.method = 'set_post',
+    body.method = 'set_post';
     
     API.call(body).then(data => {
         response.body = JSON.stringify(data);
@@ -38,7 +38,7 @@ module.exports.set_post = (event, context, callback) => {
 
 module.exports.update_post = (event, context, callback) => {
     const body = JSON.parse(event.body);
-    body.method = 'update_post',
+    body.method = 'update_post';
     
     API.call(body).then(data => {
         response.body = JSON.stringify(data);
