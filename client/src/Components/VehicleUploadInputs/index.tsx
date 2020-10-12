@@ -25,9 +25,16 @@ import { IInputFields, IChip } from '../../Common/Interfaces/interfaces';
 import { defaultInputs } from '../../Helpers/Defaults';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
+import PopupTypeEnums from '../../Common/Enums/PopupEnums';
+import PopupComponent from '../Popup';
+
 import ImageUploaderComponent from '../ImageUploader';
 
 import styles from './styles';
+import PopupTypeEnum from '../../Common/Enums/PopupEnums';
+
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface IImageUploaderProps {
 }
@@ -42,8 +49,32 @@ interface IToolTipMessage {
     [key: string]: string;
 }
 
+const SetCategoryOptions = Object.keys(VehicleCategoryEnum).map(
+    (key:string) => {
+        const intKey = parseInt(key, 10);
+        const value = VehicleCategoryEnum[intKey];
+
+        console.log(value);
+
+        if (Number.isNaN(intKey)) { return; }
+        return (
+            <option key={key} value={intKey}>
+                {value}
+            </option>
+        );
+    },
+);
+
 const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     const classes: IClasses = styles();
+
+    const [popup, setPopup] = useState<boolean>(false);
+    const [popupType, setPopupType] = useState<PopupTypeEnum>(PopupTypeEnums.INFO);
+    const [popupMessage, setPopupMessage] = useState<string>("");
+
+    const [backdrop, setBackDrop] = useState<boolean>(false);
+
+    const [uploadButton, setDisableUploadButton] = useState<boolean>(false);
 
     const [input, setInput] = useState<IInputFields>(defaultInputs);
     const [dateStolen, setDateStolen] = useState<Date>(new Date());
@@ -67,6 +98,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         if (!numberPlateFlag) { return; }
 
         setNumberPlateFlag(false);
+        setDisableUploadButton(false);
 
         GetDVLAData(event.target.value);
     };
@@ -74,6 +106,8 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     const onChange = (event:React.ChangeEvent<HTMLInputElement>) => {
         const key = event.target.id;
         const newValue = event.target.value;
+
+        setDisableUploadButton(false);
 
         if (key === 'numberPlate') { setNumberPlateFlag(true); }
         if (key === 'features' && newValue.includes(',')) { SetChipArray(newValue); return; }
@@ -177,29 +211,37 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     const ClearEverything = ():void => {
         setInput(defaultInputs);
         setNumberPlateError(false);
+        setDisableUploadButton(true);
     };
 
     const UploadData = ():void => {
+        if (numberPlateError || input.numberPlate === '') {
+            setNumberPlateError(true);
+            setPopupType(PopupTypeEnums.ERROR);
+            setPopupMessage("Please ensure that you have selected the correct numberplate.");
+            setPopup(true);
+            return;
+        }
+
+        setDisableUploadButton(true);
+        setBackDrop(true);
+
         input.dateStolen = dateStolen;
         // Turning string capture into int
 
         // TODO - Will need to change the owner_id when login is setup
-        AddNewVehicle(1, input);
+        const success = AddNewVehicle(1, input);
+        setBackDrop(false);
+
+        if (success) { return; }
+
+        // Error uploading
+        setPopupType(PopupTypeEnums.ERROR);
+        setPopupMessage("There was an unexpected error while uploading, please try again. If this problem persists, then contact us for support.");
+        setPopup(true);
+
+        setDisableUploadButton(false);
     };
-
-    const SetCategoryOptions = Object.keys(VehicleCategoryEnum).map(
-        (key:string) => {
-            const intKey = parseInt(key, 10);
-            const value = VehicleCategoryEnum[intKey];
-
-            if (Number.isNaN(intKey)) { return; }
-            return (
-                <option key={key} value={intKey}>
-                    {value}
-                </option>
-            );
-        },
-    );
 
     const SetInputs = Object.keys(input).map((key:string):any => {
         switch (key) {
@@ -259,6 +301,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                 return (
                     <Grid item md={6} xs={12} className={classes.inputContainers}>
                         <TextField
+                            required
                             error={numberPlateError}
                             id={key}
                             size="small"
@@ -353,9 +396,20 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
             </Grid>
 
             <section className={classes.controlButtons}>
-                <Button variant="contained" color="primary" onClick={UploadData}> Upload </Button>
+                <Button variant="contained" color="primary" onClick={UploadData} disabled={uploadButton}> Upload </Button>
                 <Button variant="contained" color="primary" onClick={ClearEverything}> Clear </Button>
             </section>
+
+            <Backdrop open={backdrop}>
+                <CircularProgress color="primary" />
+            </Backdrop>
+
+            <PopupComponent 
+                open={popup} 
+                handleClose={() => setPopup(false)} 
+                popupType={popupType} 
+                popupMessage={popupMessage} 
+            />
         </section>
     );
 };
