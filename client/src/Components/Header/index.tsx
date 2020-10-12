@@ -27,7 +27,7 @@ const DesktopHeader: React.FC = () => {
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);;
+        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     const MainComponent = () => (
