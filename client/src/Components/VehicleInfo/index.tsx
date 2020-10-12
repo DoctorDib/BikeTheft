@@ -58,8 +58,6 @@ const formatFeatures = (features: Array<string>) => features.map((damage: string
     </ListItem>
 ));
 
-// TODO these props should be used
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
     const classes: IClasses = style();
 

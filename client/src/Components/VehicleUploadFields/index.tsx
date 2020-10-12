@@ -1,9 +1,7 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import React, { useState } from 'react';
-
 import { API } from 'aws-amplify';
-
 import classNames from 'classnames';
-
 import {
     TextField,
     Typography,
@@ -11,28 +9,24 @@ import {
     Grid,
     Button,
 } from '@material-ui/core';
-
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
 import InputToolTip from '../ToopTip';
-
-import VehicleCategoryEnum from '../../Common/Enums/VehicleCatehoryEnum';
-
-import { AddNewVehicle } from '../../Helpers/DB_Helpers';
+import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
+import ImageUploaderComponent from '../ImageUploader';
 import { DVLAAPIKEY } from '../../../../secrets/constants';
 import { IInputFields, IChip } from '../../Common/Interfaces/interfaces';
-import { defaultInputs } from '../../Helpers/Defaults';
 import { IClasses } from '../../Common/Interfaces/IClasses';
-
-import ImageUploaderComponent from '../ImageUploader';
-
 import styles from './styles';
+import { isNullOrUndefinedOrEmpty } from '../../Common/Utils/Types';
+import { defaultInputs } from '../../Common/Helpers/Defaults';
+import { AddNewVehicle } from '../../Common/Helpers/DB_Helpers';
 
 interface IImageUploaderProps {
 }
 
-let index = 0;
+let chipIndex = 0;
 
 interface IToolTipMessage {
     primaryColour: string,
@@ -86,7 +80,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         const inputValue = value.replace(',', '');
 
         const newChip:IChip = {
-            key: index += 1,
+            key: chipIndex += 1,
             value: inputValue,
         };
 
@@ -187,17 +181,17 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         AddNewVehicle(1, input);
     };
 
-    const SetCategoryOptions = Object.keys(VehicleCategoryEnum).map(
-        (key:string) => {
-            const intKey = parseInt(key, 10);
-            const value = VehicleCategoryEnum[intKey];
+    // eslint-disable-next-line no-undef
+    const SetCategoryOptions: ReadonlyArray<JSX.Element | undefined> = Object.keys(VehicleCategoryEnum).map(
+        // eslint-disable-next-line no-undef
+        (key: string, i: number): JSX.Element | undefined => {
+            const value = VehicleCategoryEnum[i];
 
-            if (Number.isNaN(intKey)) { return; }
-            return (
-                <option key={key} value={intKey}>
+            return !isNullOrUndefinedOrEmpty(value) ? (
+                <option key={key} value={i}>
                     {value}
                 </option>
-            );
+            ) : undefined;
         },
     );
 
