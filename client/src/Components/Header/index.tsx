@@ -25,7 +25,10 @@ const DesktopHeader: React.FC = () => {
     const [scrolled, setScrolled] = React.useState(false);
     const handleScroll = () => setScrolled(window.scrollY > 100);
 
-    useEffect(() => window.addEventListener('scroll', handleScroll), []);
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);;
+    }, []);
 
     const MainComponent = () => (
         <section className={classes.main}>
