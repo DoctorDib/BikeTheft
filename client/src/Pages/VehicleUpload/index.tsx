@@ -3,7 +3,7 @@ import React from 'react';
 import NavBarComponent from '../../Components/Header';
 import FooterComponent from '../../Components/Footer';
 
-import VehicleUploadInputsComponent from '../../Components/VehicleUploadInputs';
+import VehicleUploadFieldsComponent from '../../Components/VehicleUploadFields';
 
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -23,7 +23,7 @@ const VehicleUploadPage: React.FC<IHomeProps> = (props: IHomeProps) => {
             </section>
 
             <section>
-                <VehicleUploadInputsComponent />
+                <VehicleUploadFieldsComponent />
             </section>
 
             <section className={classes.mainContentGap}>

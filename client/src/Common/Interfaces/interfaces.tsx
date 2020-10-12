@@ -1,4 +1,4 @@
-import VehicleCategories from '../Enums/VehicleCatehoryEnum';
+import VehicleCategories from '../Enums/VehicleCategoryEnum';
 
 export interface IVehicleInfo {
     vehicle_id: number,

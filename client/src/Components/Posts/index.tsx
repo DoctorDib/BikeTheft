@@ -15,11 +15,6 @@ import {
     FormatPostBackground,
 } from './helper';
 
-import { defaultPostAttributes, defaultComment } from '../../Helpers/Defaults';
-
-import { SQLStringProtection } from '../../Helpers/helper';
-import { SendPost, UpdatePost, UpdateVehicleStat } from '../../Helpers/DB_Helpers';
-
 import Confirmation from '../../Common/Enums/ConfirmationEnums';
 
 import style from './styles';
@@ -29,6 +24,9 @@ import {
     IComment,
     IPostAttributes,
 } from '../../Common/Interfaces/interfaces';
+import { defaultComment, defaultPostAttributes } from '../../Common/Helpers/Defaults';
+import { SQLStringProtection } from '../../Common/Helpers/helper';
+import { SendPost, UpdatePost, UpdateVehicleStat } from '../../Common/Helpers/DB_Helpers';
 
 interface IForumProps {
     posts: Array<IComment>,

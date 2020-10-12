@@ -7,8 +7,6 @@ import FooterComponent from '../../Components/Footer';
 import VehicleInfoComponent from '../../Components/VehicleInfo';
 import PostsComponent from '../../Components/Posts';
 
-import { GetThread } from '../../Helpers/DB_Helpers';
-
 import {
     IVehicleInfo,
     IOwner,
@@ -16,14 +14,10 @@ import {
     IComment,
 } from '../../Common/Interfaces/interfaces';
 
-import {
-    defaultVehicleData,
-    defaultOwner,
-    defaultComment,
-} from '../../Helpers/Defaults';
-
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
+import { defaultComment, defaultOwner, defaultVehicleData } from '../../Common/Helpers/Defaults';
+import { GetThread } from '../../Common/Helpers/DB_Helpers';
 
 interface IVehicleProps {
     // match: any;
