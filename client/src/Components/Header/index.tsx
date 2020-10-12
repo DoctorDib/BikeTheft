@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-import { Button } from '@material-ui/core';
+import { Button, Slide } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 
 import styles from './styles';
-
-import Slide from '@material-ui/core/Slide';
 
 // TODO - Will need to change to S3 Bucket link when set up
 import Logo from '../../static/img/Logo-Header.png';
@@ -24,11 +22,11 @@ const LogoButton = withStyles({
 const DesktopHeader: React.FC = () => {
     const classes: IClasses = styles();
 
-    const [scrolled,setScrolled] = React.useState(false);
-    const handleScroll = () => setScrolled(window.scrollY>100);
+    const [scrolled, setScrolled] = React.useState(false);
+    const handleScroll = () => setScrolled(window.scrollY > 100);
 
     useEffect(() => {
-        window.addEventListener('scroll',handleScroll)
+        window.addEventListener('scroll', handleScroll);
     });
 
     const MainComponent = () => (
@@ -44,14 +42,14 @@ const DesktopHeader: React.FC = () => {
     );
 
     const ScrolledComponent = () => (
-        <Slide direction="down" in={true} mountOnEnter unmountOnExit>
+        <Slide direction="down" in mountOnEnter unmountOnExit>
             <section className={classes.fixedMain}>
                 {MainComponent()}
             </section>
         </Slide>
     );
 
-    return !scrolled ?  MainComponent() : ScrolledComponent();
+    return !scrolled ? MainComponent() : ScrolledComponent();
 };
 
 export default DesktopHeader;
