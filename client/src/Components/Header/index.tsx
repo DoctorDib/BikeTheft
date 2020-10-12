@@ -1,10 +1,11 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 
 import styles from './styles';
-import Logo from '../../static/img/Logo.png';
+
+// TODO - Will need to change to S3 Bucket link when set up
+import Logo from '../../static/img/Logo-Header.png';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 const LogoButton = withStyles({
@@ -29,7 +30,6 @@ const DesktopHeader: React.FC = () => {
                         <img src={Logo} title="logo" alt="logo" className={classes.logo} />
                     </LogoButton>
                 </div>
-                <Typography variant="body1"> Lost My Wheels </Typography>
             </section>
         </section>
     );

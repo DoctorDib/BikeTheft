@@ -1,7 +1,7 @@
 import React from 'react';
 
-import NavBarComponent from '../../Components/Header/index';
-import FooterComponent from '../../Components/Footer/index';
+import LogoComponent from '../../Components/MainLogo';
+import FooterComponent from '../../Components/Footer';
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
@@ -15,8 +15,8 @@ const HomePage: React.FC<IHomeProps> = (props: IHomeProps) => {
 
     return (
         <section className={classes.body}>
-            <section id="menu" className={classes.menu}>
-                <NavBarComponent />
+            <section className={classes.mainContentGap}>
+                <LogoComponent />
             </section>
 
             <section className={classes.mainContentGap}>
