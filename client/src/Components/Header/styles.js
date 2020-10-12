@@ -16,6 +16,12 @@ export default makeStyles(() => ({
         backgroundColor: 'white',
     },
 
+    fixedMain: {
+        position: 'fixed',
+        left: 0,
+        zIndex: '10',
+    },
+
     logoContainer: {
         padding: '10px',
         paddingLeft: 0,
