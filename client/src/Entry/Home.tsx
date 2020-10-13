@@ -6,7 +6,6 @@ import { ThemeProvider } from '@material-ui/core/styles';
 
 import mainTheme from '../templates/theme';
 import AppliedRoute from '../Components/Routing/Applied';
-import * as constants from '../../../secrets/constants';
 
 import HomePage from '../Pages/Home';
 import VehicleInfoPage from '../Pages/VehicleInfo';
@@ -16,23 +15,24 @@ import ErrorPage from '../Pages/Error';
 
 Amplify.configure({
     // OPTIONAL - if your API requires authentication
+    // TODO ensure none of these secret keys end up on the client
     Auth: {
         mandatorySignIn: true,
         // REQUIRED - Amazon Cognito Identity Pool ID
-        identityPoolId: constants.IDENTITYPOOLID,
+        identityPoolId: process.env.IDENTITYPOOLID,
         // REQUIRED - Amazon Cognito Region
-        region: constants.REGION,
+        region: process.env.REGION,
         // OPTIONAL - Amazon Cognito User Pool ID
-        userPoolId: constants.USERPOOLID,
+        userPoolId: process.env.USERPOOLID,
         // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-        userPoolWebClientId: constants.CLIENTID,
+        userPoolWebClientId: process.env.CLIENTID,
     },
     API: {
         endpoints: [
             {
                 name: 'base_endpoint',
-                endpoint: constants.APIENDPOINT,
-                region: constants.REGION,
+                endpoint: process.env.APIENDPOINT,
+                region: process.env.REGION,
             },
         ],
     },

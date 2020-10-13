@@ -24,17 +24,22 @@ import {
     IComment,
     IPostAttributes,
 } from '../../Common/Interfaces/interfaces';
-import { defaultComment, defaultPostAttributes } from '../../Common/Helpers/Defaults';
+import {
+    defaultComment,
+    defaultPostAttributes,
+} from '../../Common/Helpers/Defaults';
 import { SQLStringProtection } from '../../Common/Helpers/helper';
-import { SendPost, UpdatePost, UpdateVehicleStat } from '../../Common/Helpers/DB_Helpers';
+import {
+    sendPost,
+    updatePost,
+    updateVehicleStat,
+} from '../../Common/Helpers/DB_Helpers';
 
 interface IForumProps {
     posts: Array<IComment>,
     vehicleID: number,
 }
 
-// TODO these props should be used
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Forum: React.FC<IForumProps> = (props: IForumProps) => {
     const classes: IClasses = style();
 
@@ -78,7 +83,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         setConfirmation(true);
     };
 
-    const callback = (enumMessage:number, response:boolean):void => {
+    const confirmationCallback = (enumMessage:number, response:boolean):void => {
         setConfirmation(false);
 
         let newPostAttributes: IPostAttributes = defaultPostAttributes;
@@ -88,7 +93,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 if (!response) return;
                 newPostAttributes.message = SQLStringProtection(value);
                 setValue('');
-                SendPost(1, '1', newPostAttributes, 1);
+                sendPost(1, '1', newPostAttributes, 1);
                 break;
 
             case Confirmation.CONFIRM_VEHICLE:
@@ -100,7 +105,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 newPostAttributes.active_state = false;
 
                 // Disabling the "found" post
-                UpdatePost(selectedPost.post_id, newPostAttributes);
+                updatePost(selectedPost.post_id, newPostAttributes);
 
                 if (!response) return;
 
@@ -114,10 +119,10 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 }
 
                 // Sending comment to notify other users of update
-                SendPost(1, '1', newPostAttributes, 2);
+                sendPost(1, '1', newPostAttributes, 2);
 
                 // Set to pending pickup
-                UpdateVehicleStat(vehicleID, 2);
+                updateVehicleStat(vehicleID, 2);
 
                 break;
             default:
@@ -210,7 +215,11 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 Post
             </Button>
 
-            <ConfirmationComponent enumMessage={confirmationMessage} open={confirmation} callback={callback} />
+            <ConfirmationComponent
+                enumMessage={confirmationMessage}
+                open={confirmation}
+                callback={confirmationCallback}
+            />
 
             <section className={classes.messageContainer}>
                 { LayoutComments() }

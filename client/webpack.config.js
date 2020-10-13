@@ -4,6 +4,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const BUILD_DIR = path.resolve(__dirname, 'public');
 const APP_DIR = path.resolve(__dirname, 'src');
@@ -85,7 +86,7 @@ const config = {
                 files: './src/**/*.{ts,tsx,js,jsx}', // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
             },
         }),
-        new CopyPlugin({
+        new CopyPlugin({ // needed for moving images into build
             patterns: [
                 {
                     from: path.join(APP_DIR, '/static/img'),
@@ -93,6 +94,7 @@ const config = {
                 },
             ],
         }),
+        new Dotenv(), // Loads our secrets
     ],
 };
 
