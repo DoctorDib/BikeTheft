@@ -1,6 +1,11 @@
 import theme from './theme';
 
 export default {
+    '@global': {
+        '.MuiInputBase-root': {
+            backgroundColor: 'white',
+        },
+    },
 
     hideOnMobile: {
         display: 'block',

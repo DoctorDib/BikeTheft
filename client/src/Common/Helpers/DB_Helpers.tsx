@@ -1,10 +1,10 @@
 import { API } from 'aws-amplify';
 
 import {
-    GetDateTime,
+    getDateTimeString,
     SQLStringProtection,
-    CheckSQLInObject,
-    SortFeaturesArray as ExtractValue,
+    checkSQLInObject,
+    sortFeaturesArray as ExtractValue,
 } from './helper';
 
 import {
@@ -15,7 +15,7 @@ import {
 
 import { defaultData } from './Defaults';
 
-export const SendPost = async (parentID: number, posterID:string, postAttributes:IPostAttributes,
+export const sendPost = async (parentID: number, posterID:string, postAttributes:IPostAttributes,
     postType:number): Promise<boolean> => {
     const postAttributesSetup: IPostAttributes = postAttributes;
     postAttributesSetup.message = SQLStringProtection(postAttributes.message);
@@ -24,7 +24,7 @@ export const SendPost = async (parentID: number, posterID:string, postAttributes
         body: {
             parent_id: parentID,
             poster_id: posterID,
-            date_added: GetDateTime(),
+            date_added: getDateTimeString(),
             post_attributes: postAttributes,
             type: postType,
         },
@@ -40,7 +40,7 @@ export const SendPost = async (parentID: number, posterID:string, postAttributes
     }
 };
 
-export const GetThread = async (threadID: string): Promise<IData> => {
+export const getThread = async (threadID: string): Promise<IData> => {
     try {
         const returnData: IData = await API.post('base_endpoint', '/forum/get', { body: { thread_id: threadID } });
 
@@ -52,7 +52,7 @@ export const GetThread = async (threadID: string): Promise<IData> => {
     }
 };
 
-export const UpdatePost = async (postID: number, postAttributes:IPostAttributes): Promise<boolean> => {
+export const updatePost = async (postID: number, postAttributes:IPostAttributes): Promise<boolean> => {
     const body = {
         body: {
             post_id: postID,
@@ -70,7 +70,7 @@ export const UpdatePost = async (postID: number, postAttributes:IPostAttributes)
     }
 };
 
-export const UpdateVehicleStat = async (vehicleID: number, newStat:number): Promise<boolean> => {
+export const updateVehicleStat = async (vehicleID: number, newStat:number): Promise<boolean> => {
     const body = {
         body: {
             vehicle_id: vehicleID,
@@ -88,13 +88,13 @@ export const UpdateVehicleStat = async (vehicleID: number, newStat:number): Prom
     }
 };
 
-export const AddNewVehicle = async (ownerID:number, data: IInputFields): Promise<boolean> => {
-    const cleanData = CheckSQLInObject(data);
+export const addNewVehicle = async (ownerID:number, data: IInputFields): Promise<boolean> => {
+    const cleanData = checkSQLInObject(data);
 
     // Extracting the string values from an array of objects
     // e.g. [{key: 1, value: "one"}, {key: 2, value: "two"}]
-    let featuresArray = ExtractValue(data.featuresArray);
-    featuresArray = CheckSQLInObject(featuresArray);
+    let featuresArray: any = ExtractValue(data.featuresArray);
+    featuresArray = checkSQLInObject(featuresArray);
 
     const body = {
         body: {

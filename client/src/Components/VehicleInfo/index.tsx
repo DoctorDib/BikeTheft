@@ -9,25 +9,23 @@ import {
     ListItem,
     ListItemText,
 } from '@material-ui/core';
-
-import { Check, Report } from '@material-ui/icons';
+import {
+    Check,
+    Report,
+} from '@material-ui/icons';
 
 import {
     IVehicleInfo,
     IOwner,
 } from '../../Common/Interfaces/interfaces';
-
 import {
     FormatStatusColour,
     FormatStatusText,
     FormatInfoTitles,
 } from './formats';
-
 import { IClasses } from '../../Common/Interfaces/IClasses';
-
 import CarouselComponent from '../Carousel';
 import FoundConfirmation from '../FoundConfirmation';
-
 import style from './styles';
 
 const infoKeys: Array<string> = ['number_plate', 'vin', 'make', 'model', 'category'];

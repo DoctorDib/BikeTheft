@@ -17,7 +17,7 @@ import {
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import { defaultComment, defaultOwner, defaultVehicleData } from '../../Common/Helpers/Defaults';
-import { GetThread } from '../../Common/Helpers/DB_Helpers';
+import { getThread } from '../../Common/Helpers/DB_Helpers';
 
 interface IVehicleProps {
     // match: any;
@@ -40,7 +40,7 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
     const [postData, setPostData] = useState<Array<IComment>>([defaultComment]);
 
     const fetch = async (thread_ID: string) => {
-        const data:IData = await GetThread(thread_ID);
+        const data:IData = await getThread(thread_ID);
 
         setMemberData(data.owner);
         setVehicleData(data.vehicle);
