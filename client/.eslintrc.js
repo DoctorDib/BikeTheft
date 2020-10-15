@@ -40,6 +40,7 @@ module.exports = {
             "ignoreStrings": true,
 
         }],
+        "react/jsx-props-no-spreading": "off",
         "no-console": 0,
     },
     env: {
