@@ -2,7 +2,9 @@
 import React, { useState } from 'react';
 import { API } from 'aws-amplify';
 import classNames from 'classnames';
-import { TextField, Typography, Chip, Grid, Button } from '@material-ui/core';
+import {
+    TextField, Typography, Chip, Grid, Button,
+} from '@material-ui/core';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
@@ -158,7 +160,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
             })
             .catch((error) => {
                 // Only use for debugging
-                console.log("DVLA API Error: ", error);
+                console.log('DVLA API Error: ', error);
                 setNumberPlateInError(true);
             });
     };
@@ -428,7 +430,8 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
 
             <Typography>
                 {' '}
-                The images you upload will be uploaded to an S3 bucket yo{' '}
+                The images you upload will be uploaded to an S3 bucket yo
+                {' '}
             </Typography>
 
             <Grid container spacing={3} className={classes.gridContainer}>
@@ -442,7 +445,8 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                     onClick={uploadData}
                 >
                     {' '}
-                    Upload{' '}
+                    Upload
+                    {' '}
                 </Button>
                 <Button
                     variant="contained"
@@ -450,7 +454,8 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                     onClick={clearEverything}
                 >
                     {' '}
-                    Clear{' '}
+                    Clear
+                    {' '}
                 </Button>
             </section>
         </section>

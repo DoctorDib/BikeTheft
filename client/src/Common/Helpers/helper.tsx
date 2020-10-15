@@ -5,8 +5,7 @@ export function getDateTimeString(): string {
     return `${date} ${time}`;
 }
 
-export const SQLStringProtection = (message: string): string =>
-    message.replace(/[\t\r\n]|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi, '');
+export const SQLStringProtection = (message: string): string => message.replace(/[\t\r\n]|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi, '');
 
 export function checkSQLInObject(object: any): Record<string, unknown> {
     const newObject = object;

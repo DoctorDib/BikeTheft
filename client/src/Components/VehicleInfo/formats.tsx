@@ -6,8 +6,7 @@ export const FormatInfoTitles = (key: string): string => {
     // TODO fix this mess
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < returnKey.length; i++) {
-        returnKey[i] =
-            returnKey[i].charAt(0).toUpperCase() + returnKey[i].substring(1);
+        returnKey[i] = returnKey[i].charAt(0).toUpperCase() + returnKey[i].substring(1);
     }
 
     return returnKey.join(' ');

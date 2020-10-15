@@ -111,11 +111,9 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 newPostAttributes = defaultPostAttributes;
 
                 if (Confirmation.CONFIRM_VEHICLE) {
-                    newPostAttributes.message =
-                        'Owner has confirmed vehicle and is planning to take action.';
+                    newPostAttributes.message = 'Owner has confirmed vehicle and is planning to take action.';
                 } else {
-                    newPostAttributes.message =
-                        'Owner has declined founders request.';
+                    newPostAttributes.message = 'Owner has declined founders request.';
                 }
 
                 // Sending comment to notify other users of update
@@ -169,41 +167,41 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 comment.post_attributes,
                 'confirmation_image',
             ) ? (
-                <CardMedia
-                    className={classes.confirmationImg}
-                    component="img"
-                    image={`../static/media/${comment.post_attributes.confirmation_image}`}
-                />
-            ) : (
-                ''
-            )}
+                    <CardMedia
+                        className={classes.confirmationImg}
+                        component="img"
+                        image={`../static/media/${comment.post_attributes.confirmation_image}`}
+                    />
+                ) : (
+                    ''
+                )}
 
             {comment.post_attributes.active_state ? InfoComponent(comment) : ''}
         </section>
     );
 
-    const LayoutComments = () =>
-        posts.map((comment: IComment) => (
-            <Paper
-                className={classes.message}
-                elevation={1}
-                style={{ backgroundColor: FormatPostBackground(comment.type) }}
-                key={comment.post_id}
-            >
-                {FormatAvatar(comment, classes)}
-                {comment.type === 2 ? AddInfoCardFeatures(comment) : ''}
-                <section className={classes.postContainer}>
-                    <Typography>{comment.post_attributes.message}</Typography>
-                </section>
-            </Paper>
-        ));
+    const LayoutComments = () => posts.map((comment: IComment) => (
+        <Paper
+            className={classes.message}
+            elevation={1}
+            style={{ backgroundColor: FormatPostBackground(comment.type) }}
+            key={comment.post_id}
+        >
+            {FormatAvatar(comment, classes)}
+            {comment.type === 2 ? AddInfoCardFeatures(comment) : ''}
+            <section className={classes.postContainer}>
+                <Typography>{comment.post_attributes.message}</Typography>
+            </section>
+        </Paper>
+    ));
 
     return (
         <section className={classes.mainContainer}>
             <Typography variant="h5"> Activity </Typography>
             <Typography variant="caption">
                 {' '}
-                Found anything related to this vehicle? Every second counts!{' '}
+                Found anything related to this vehicle? Every second counts!
+                {' '}
             </Typography>
 
             <TextField

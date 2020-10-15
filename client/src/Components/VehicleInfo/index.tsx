@@ -37,27 +37,26 @@ interface IVehicleInfoProps {
     vehicle: IVehicleInfo;
 }
 
-const formatInfo = (data: IVehicleInfo) =>
-    infoKeys.map((indexKey: string) => (
-        <Grid container key={`prop - ${indexKey}`}>
-            <Grid item xs={6}>
-                <Typography>{FormatInfoTitles(indexKey)}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-                <Typography>
-                    {' '}
-                    {indexKey === '' ? 'N/A' : data[indexKey]}{' '}
-                </Typography>
-            </Grid>
+const formatInfo = (data: IVehicleInfo) => infoKeys.map((indexKey: string) => (
+    <Grid container key={`prop - ${indexKey}`}>
+        <Grid item xs={6}>
+            <Typography>{FormatInfoTitles(indexKey)}</Typography>
         </Grid>
-    ));
+        <Grid item xs={6}>
+            <Typography>
+                {' '}
+                {indexKey === '' ? 'N/A' : data[indexKey]}
+                {' '}
+            </Typography>
+        </Grid>
+    </Grid>
+));
 
-const formatFeatures = (features: Array<string>) =>
-    features.map((damage: string) => (
-        <ListItem key={`damages - ${damage}`}>
-            <ListItemText primary={damage} />
-        </ListItem>
-    ));
+const formatFeatures = (features: Array<string>) => features.map((damage: string) => (
+    <ListItem key={`damages - ${damage}`}>
+        <ListItemText primary={damage} />
+    </ListItem>
+));
 
 const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
     const classes: IClasses = style();
@@ -91,11 +90,13 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                         </section>
                         <Typography variant="h6">
                             {' '}
-                            {owner.member_attributes.display_name}{' '}
+                            {owner.member_attributes.display_name}
+                            {' '}
                         </Typography>
                         <Typography variant="caption">
                             {' '}
-                            {vehicle.date_added}{' '}
+                            {vehicle.date_added}
+                            {' '}
                         </Typography>
                     </section>
 
@@ -108,7 +109,8 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                             className={classes.statusText}
                         >
                             {' '}
-                            {FormatStatusText(vehicle.status)}{' '}
+                            {FormatStatusText(vehicle.status)}
+                            {' '}
                         </Typography>
                     </section>
 
@@ -121,7 +123,8 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                             disabled={vehicle.status !== 1}
                         >
                             {' '}
-                            Found{' '}
+                            Found
+                            {' '}
                         </Button>
                         <Button
                             variant="contained"
@@ -129,7 +132,8 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                             color="primary"
                         >
                             {' '}
-                            Report{' '}
+                            Report
+                            {' '}
                         </Button>
 
                         <FoundConfirmation
@@ -141,7 +145,8 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                     <section className={classes.gridStyle}>
                         <Typography className={classes.titles} variant="body1">
                             {' '}
-                            Specifications{' '}
+                            Specifications
+                            {' '}
                         </Typography>
                         {formatInfo(vehicle)}
                     </section>

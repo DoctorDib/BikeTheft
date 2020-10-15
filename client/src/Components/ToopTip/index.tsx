@@ -30,11 +30,11 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = (
                 cursor: 'context-menu',
                 display: !message ? 'none' : 'block',
             }}
-            title={
+            title={(
                 <>
                     <Typography color="inherit">{message}</Typography>
                 </>
-            }
+            )}
         >
             <HelpOutline color="primary" />
         </HtmlTooltip>

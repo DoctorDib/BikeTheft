@@ -19,11 +19,13 @@ const Copyright = () => {
                 className={classes.copyrightSymbol}
             >
                 {' '}
-                ©{' '}
+                ©
+                {' '}
             </Typography>
             <Typography variant="body2" component="p">
                 {' '}
-                Copyright (groupname) 2020{' '}
+                Copyright (groupname) 2020
+                {' '}
             </Typography>
         </div>
     );

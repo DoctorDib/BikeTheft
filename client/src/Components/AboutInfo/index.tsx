@@ -20,7 +20,8 @@ const AboutInfo: React.FC = () => {
                     access to a large database of stolen vehicles. This tool
                     will mainly be aimed at those who find suspicious vehicles
                     and want to check on our database if it has been classed as
-                    stolen, then with ease contact the rightful owner.{' '}
+                    stolen, then with ease contact the rightful owner.
+                    {' '}
                 </Typography>
             </section>
 
@@ -31,7 +32,8 @@ const AboutInfo: React.FC = () => {
                     Simple answer, we do not make any profit from this. This
                     project is completely funded from the money out of our own
                     pockets as well as a few nice donations from you users while
-                    running additional ads to help keep the servers on.{' '}
+                    running additional ads to help keep the servers on.
+                    {' '}
                 </Typography>
             </section>
 
@@ -42,7 +44,8 @@ const AboutInfo: React.FC = () => {
                     Yes, your data is securely stored on a database. We do not
                     and never will think about selling your data onto third
                     party companies and you are free to request to either view
-                    or remove your data from our database.{' '}
+                    or remove your data from our database.
+                    {' '}
                 </Typography>
             </section>
 

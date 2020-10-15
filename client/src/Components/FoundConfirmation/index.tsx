@@ -63,7 +63,8 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (
                             color="primary"
                         >
                             {' '}
-                            Confirm{' '}
+                            Confirm
+                            {' '}
                         </Button>
                         <Button
                             variant="contained"
@@ -72,7 +73,8 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (
                             color="primary"
                         >
                             {' '}
-                            Cancel{' '}
+                            Cancel
+                            {' '}
                         </Button>
                     </section>
                 </Paper>
