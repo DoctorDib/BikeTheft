@@ -137,7 +137,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         const body = {
             body: {
                 post: 443,
-                key: process.env.DVLAAPIKEY,
+                key: import.meta.env.SNOWPACK_PUBLIC_DVLAAPIKEY,
                 number_plate: numberPlate,
             },
         };
@@ -156,9 +156,9 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                     v5cVerificationDate: response.dateOfLastV5CIssued,
                 });
             })
-            .catch(() => {
+            .catch((error) => {
                 // Only use for debugging
-                // console.log("DVLA API Error: ", error);
+                console.log("DVLA API Error: ", error);
                 setNumberPlateInError(true);
             });
     };

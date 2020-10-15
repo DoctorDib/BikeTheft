@@ -115,3 +115,7 @@ client/public
 .env.dev
 .env.prod
 client/.history
+
+.build
+build
+web_modules
