@@ -3,7 +3,7 @@ import React from 'react';
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
-// TODO - Will need to change to S3 Bucket link when set up
+// Logo can be static
 import Logo from '../../static/img/Logo-Main.png';
 
 interface IMainLogoProps {}

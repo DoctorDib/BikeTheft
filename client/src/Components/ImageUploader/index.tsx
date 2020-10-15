@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Paper, IconButton, CardMedia } from '@material-ui/core';
+import { Paper, IconButton, CardMedia, Typography } from '@material-ui/core';
 
 import { Add } from '@material-ui/icons';
 
