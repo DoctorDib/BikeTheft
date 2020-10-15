@@ -6,8 +6,7 @@ import { IClasses } from '../../Common/Interfaces/IClasses';
 // TODO - Will need to change to S3 Bucket link when set up
 import Logo from '../../static/img/Logo-Main.png';
 
-interface IMainLogoProps {
-}
+interface IMainLogoProps {}
 
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

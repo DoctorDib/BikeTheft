@@ -9,9 +9,7 @@ import CookiePopupComponent from '../../Components/CookiePopup';
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
-interface IErrorPageProps {
-
-}
+interface IErrorPageProps {}
 
 const ErrorPage: React.FC<IErrorPageProps> = () => {
     const classes: IClasses = styles();
@@ -28,32 +26,56 @@ const ErrorPage: React.FC<IErrorPageProps> = () => {
 
             <section
                 className={classes.mainContentContainer}
-                style={
-                    {
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignContent: 'center',
-                        alignItems: 'center',
-                        marginTop: '4vh',
-                    }
-                }
+                style={{
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    alignItems: 'center',
+                    marginTop: '4vh',
+                }}
             >
                 <section style={{ width: '100%' }}>
-                    <Typography variant="h3" style={{ fontWeight: 650 }}> Error 404 </Typography>
+                    <Typography variant="h3" style={{ fontWeight: 650 }}>
+                        {' '}
+                        Error 404{' '}
+                    </Typography>
                 </section>
 
                 <section className={classes.errorContentContainer}>
-
                     <section className={classes.sorryText}>
-                        <Typography variant="h4" style={{ fontWeight: 650 }}> Sorry! </Typography>
+                        <Typography variant="h4" style={{ fontWeight: 650 }}>
+                            {' '}
+                            Sorry!{' '}
+                        </Typography>
                     </section>
 
-                    <section style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5vh' }}>
-                        <Button color="primary" style={{ color: '#26844F' }} className={classes.menuButtons} onClick={() => GoBack()}> Go Back </Button>
-                        <Button color="primary" style={{ color: '#26844F' }} className={classes.menuButtons} href="/"> Go to the Home Page </Button>
+                    <section
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            marginTop: '5vh',
+                        }}
+                    >
+                        <Button
+                            color="primary"
+                            style={{ color: '#26844F' }}
+                            className={classes.menuButtons}
+                            onClick={() => GoBack()}
+                        >
+                            {' '}
+                            Go Back{' '}
+                        </Button>
+                        <Button
+                            color="primary"
+                            style={{ color: '#26844F' }}
+                            className={classes.menuButtons}
+                            href="/"
+                        >
+                            {' '}
+                            Go to the Home Page{' '}
+                        </Button>
                     </section>
                 </section>
-
             </section>
 
             <section className={classes.mainContentGap}>
@@ -61,7 +83,6 @@ const ErrorPage: React.FC<IErrorPageProps> = () => {
             </section>
 
             <CookiePopupComponent />
-
         </section>
     );
 };

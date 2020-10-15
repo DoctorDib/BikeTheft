@@ -1,15 +1,12 @@
 import React from 'react';
 
-import {
-    Tooltip,
-    Typography,
-} from '@material-ui/core';
+import { Tooltip, Typography } from '@material-ui/core';
 
 import { HelpOutline } from '@material-ui/icons';
 import { withStyles } from '@material-ui/styles';
 
 interface IImageUploaderProps {
-    message:string|boolean,
+    message: string | boolean;
 }
 
 const HtmlTooltip = withStyles(() => ({
@@ -22,19 +19,22 @@ const HtmlTooltip = withStyles(() => ({
     },
 }))(Tooltip);
 
-const VehicleUploadInputs: React.FC<IImageUploaderProps> = (props: IImageUploaderProps) => {
+const VehicleUploadInputs: React.FC<IImageUploaderProps> = (
+    props: IImageUploaderProps,
+) => {
     const { message } = props;
 
     return (
         <HtmlTooltip
-            style={{ cursor: 'context-menu', display: (!message ? 'none' : 'block') }}
-            title={(
+            style={{
+                cursor: 'context-menu',
+                display: !message ? 'none' : 'block',
+            }}
+            title={
                 <>
-                    <Typography color="inherit">
-                        { message }
-                    </Typography>
+                    <Typography color="inherit">{message}</Typography>
                 </>
-            )}
+            }
         >
             <HelpOutline color="primary" />
         </HtmlTooltip>

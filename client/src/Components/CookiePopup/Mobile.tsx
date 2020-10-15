@@ -13,36 +13,65 @@ const CookiePopup: React.FC<ICookiePopupProps> = (props: ICookiePopupProps) => {
     const classes: IClasses = style();
 
     return (
-        <section style={{
-            display: 'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center', alignItems: 'center',
-        }}
+        <section
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignContent: 'center',
+                alignItems: 'center',
+            }}
         >
             <section
                 className={classes.mainContentContainer}
                 style={{
-                    display: 'flex', backgroundColor: 'white', alignContent: 'center', alignItems: 'center',
+                    display: 'flex',
+                    backgroundColor: 'white',
+                    alignContent: 'center',
+                    alignItems: 'center',
                 }}
             >
                 <section style={{ width: '100%' }}>
                     <Typography>
-                        This website uses cookies. By navigating around this site you consent to cookies being stored on your machine;
-                        <Typography component="a" href="/PrivacyPolicy"> Click here for more information </Typography>.
+                        This website uses cookies. By navigating around this
+                        site you consent to cookies being stored on your
+                        machine;
+                        <Typography component="a" href="/PrivacyPolicy">
+                            {' '}
+                            Click here for more information{' '}
+                        </Typography>
+                        .
                     </Typography>
 
                     <Typography>
                         Please read our
-                        <Typography component="a" href="/TermsAndConditions"> Terms and Conditions </Typography>
+                        <Typography component="a" href="/TermsAndConditions">
+                            {' '}
+                            Terms and Conditions{' '}
+                        </Typography>
                     </Typography>
                 </section>
             </section>
 
-            <section style={{
-                width: '25%', display: 'flex', alignItems: 'center', alignContent: 'center', justifyContent: 'center', paddingTop: '1em',
-            }}
+            <section
+                style={{
+                    width: '25%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    alignContent: 'center',
+                    justifyContent: 'center',
+                    paddingTop: '1em',
+                }}
             >
-                <Button onClick={clickTrigger} style={{ fontWeight: 650, color: '#26844F' }} color="primary"> Accept </Button>
+                <Button
+                    onClick={clickTrigger}
+                    style={{ fontWeight: 650, color: '#26844F' }}
+                    color="primary"
+                >
+                    {' '}
+                    Accept{' '}
+                </Button>
             </section>
-
         </section>
     );
 };

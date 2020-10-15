@@ -15,19 +15,17 @@ import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 interface IConfirmationProp {
-    enumMessage: Confirmation,
-    open: boolean,
-    callback: (arg0:number, arg1:boolean)=>void,
+    enumMessage: Confirmation;
+    open: boolean;
+    callback: (arg0: number, arg1: boolean) => void;
 }
 
-const FoundConfirmation: React.FC<IConfirmationProp> = (props: IConfirmationProp) => {
+const FoundConfirmation: React.FC<IConfirmationProp> = (
+    props: IConfirmationProp,
+) => {
     const classes: IClasses = styles();
 
-    const {
-        enumMessage,
-        callback,
-        open,
-    } = props;
+    const { enumMessage, callback, open } = props;
 
     const confirm = () => {
         callback(enumMessage, true);
@@ -39,11 +37,16 @@ const FoundConfirmation: React.FC<IConfirmationProp> = (props: IConfirmationProp
 
     const SetMessage = () => {
         switch (enumMessage) {
-            case Confirmation.CONFIRM_POST: return 'Are you sure you wish to post?';
-            case Confirmation.CANCEL: return 'Are you sure you wish to cancel?';
-            case Confirmation.CONFIRM_VEHICLE: return 'Are you sure you wish to confirm vehicle?';
-            case Confirmation.CANCEL_VEHICLE: return 'Are you sure you wish to cancel vehicle?';
-            default: return 'Confirmation';
+            case Confirmation.CONFIRM_POST:
+                return 'Are you sure you wish to post?';
+            case Confirmation.CANCEL:
+                return 'Are you sure you wish to cancel?';
+            case Confirmation.CONFIRM_VEHICLE:
+                return 'Are you sure you wish to confirm vehicle?';
+            case Confirmation.CANCEL_VEHICLE:
+                return 'Are you sure you wish to cancel vehicle?';
+            default:
+                return 'Confirmation';
         }
     };
 
@@ -59,30 +62,25 @@ const FoundConfirmation: React.FC<IConfirmationProp> = (props: IConfirmationProp
 
     const SetCancelButton = () => {
         switch (enumMessage) {
-            case Confirmation.CANCEL_VEHICLE: return 'No';
-            default: return 'Cancel';
+            case Confirmation.CANCEL_VEHICLE:
+                return 'No';
+            default:
+                return 'Cancel';
         }
     };
 
     return (
-        <Dialog
-            open={open}
-            keepMounted
-            onClose={deny}
-            className={classes.main}
-        >
+        <Dialog open={open} keepMounted onClose={deny} className={classes.main}>
             <DialogTitle> Confirmation </DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    { SetMessage() }
-                </DialogContentText>
+                <DialogContentText>{SetMessage()}</DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button onClick={deny} color="primary">
-                    { SetCancelButton() }
+                    {SetCancelButton()}
                 </Button>
                 <Button onClick={confirm} color="primary">
-                    { SetConfirmButton() }
+                    {SetConfirmButton()}
                 </Button>
             </DialogActions>
         </Dialog>

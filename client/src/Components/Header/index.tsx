@@ -34,8 +34,17 @@ const DesktopHeader: React.FC = () => {
         <section className={classes.main}>
             <section className={classes.headerContainer}>
                 <div className={classes.logoContainer}>
-                    <LogoButton disableRipple className={classes.menuButtons} href="/">
-                        <img src={Logo} title="logo" alt="logo" className={classes.logo} />
+                    <LogoButton
+                        disableRipple
+                        className={classes.menuButtons}
+                        href="/"
+                    >
+                        <img
+                            src={Logo}
+                            title="logo"
+                            alt="logo"
+                            className={classes.logo}
+                        />
                     </LogoButton>
                 </div>
             </section>
@@ -44,9 +53,7 @@ const DesktopHeader: React.FC = () => {
 
     const ScrolledComponent = () => (
         <Slide direction="down" in mountOnEnter unmountOnExit>
-            <section className={classes.fixedMain}>
-                {MainComponent()}
-            </section>
+            <section className={classes.fixedMain}>{MainComponent()}</section>
         </Slide>
     );
 

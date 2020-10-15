@@ -5,7 +5,6 @@ export default makeStyles(() => ({
     ...mainStyle,
 
     container: {
-
         '& section': {
             margin: '20px 0 20px 0',
         },

@@ -5,8 +5,7 @@ import FooterComponent from '../../Components/Footer';
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
-interface IHomeProps {
-}
+interface IHomeProps {}
 
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
