@@ -22,6 +22,8 @@ import CarouselComponent from '../Carousel';
 import FoundConfirmation from '../FoundConfirmation';
 import style from './styles';
 
+const UserImages = import.meta.env.SNOWPACK_PUBLIC_USERIMAGES;
+
 const infoKeys: Array<string> = [
     'number_plate',
     'vin',
@@ -84,7 +86,7 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                         <section className={classes.profileImageContainer}>
                             <Avatar
                                 className={classes.profileImage}
-                                src={`../static/media/${owner.member_attributes.profile_image}`}
+                                src={`${UserImages}${owner.member_attributes.profile_image}`}
                             />
                         </section>
                         <Typography variant="h6">

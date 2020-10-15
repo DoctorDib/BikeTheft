@@ -7,6 +7,8 @@ import PostTypeEnum from '../../Common/Enums/PostTypeEnums';
 import { IComment } from '../../Common/Interfaces/interfaces';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
+const UserImages = import.meta.env.SNOWPACK_PUBLIC_USERIMAGES;
+
 export const FormatPostBackground = (styleID: number): string => {
     switch (styleID) {
         case PostTypeEnum.OWNER:
@@ -22,7 +24,7 @@ export const FormatPostBackground = (styleID: number): string => {
 export const FormatAvatar = (comment: IComment, classes: IClasses): any => {
     const image =
         comment.type === 1
-            ? `../static/media/${comment.member_attributes.profile_image}`
+            ? `${UserImages}${comment.member_attributes.profile_image}`
             : 'I';
     const name =
         comment.type === 2
