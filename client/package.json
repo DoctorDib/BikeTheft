@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "snowpack dev --polyfill-node",
+    "start": "snowpack dev",
     "build": "snowpack build",
     "test": "jest",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
