@@ -67,3 +67,9 @@ export interface IInputFields {
     v5cVerificationDate: string;
     [key: string]: string | Array<string> | Array<IChip> | Date | number;
 }
+
+export interface IImageHolder {
+    name: string,
+    local: string,
+    file: object,
+}

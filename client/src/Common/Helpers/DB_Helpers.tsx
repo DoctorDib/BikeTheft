@@ -115,6 +115,7 @@ export const updateVehicleStat = async (
 export const addNewVehicle = async (
     ownerID: number,
     data: IInputFields,
+    images: Array<object>,
 ): Promise<boolean> => {
     const cleanData = checkSQLInObject(data);
 
@@ -122,6 +123,9 @@ export const addNewVehicle = async (
     // e.g. [{key: 1, value: "one"}, {key: 2, value: "two"}]
     let featuresArray: any = ExtractValue(data.featuresArray);
     featuresArray = checkSQLInObject(featuresArray);
+
+    console.log("here images")
+    console.log(images)
 
     const body = {
         body: {
@@ -144,6 +148,7 @@ export const addNewVehicle = async (
                 date_stolen: data.dateStolen,
             },
             vin: cleanData.vin,
+            S3ImageUploads: images,
         },
     };
 

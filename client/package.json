@@ -36,6 +36,7 @@
     "material-ui-pickers": "^2.2.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-image-crop": "^8.6.6",
     "react-image-gallery": "^1.0.8",
     "react-material-ui-carousel": "^2.0.0",
     "react-responsive-carousel": "^3.2.10",

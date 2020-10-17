@@ -1,32 +1,65 @@
 import React, { useState } from 'react';
 
-import { Paper, IconButton, CardMedia } from '@material-ui/core';
+import { Paper, IconButton, CardMedia, Button } from '@material-ui/core';
 
-import { Add } from '@material-ui/icons';
+import { Add, Crop } from '@material-ui/icons';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
-interface IImageUploaderProps {}
+import ImageCropperComponent  from '../ImageCropper';
 
-const ImageUploader: React.FC<IImageUploaderProps> = () => {
+interface IImageUploaderProps {
+    images: Array<object>,
+    setImages: any,
+}
+
+const ImageUploader: React.FC<IImageUploaderProps> = (props:IImageUploaderProps) => {
     const classes: IClasses = styles();
 
-    const [images, setImages] = useState<Array<string>>([]);
+    const { images, setImages } = props;
 
-    const mapImages = images.map((image: string) => (
-        <Paper key={image} className={classes.container}>
-            <CardMedia component="img" image={`${image}`} />
+    const [ imageCropSrc, setImageCropSrc ] = useState<string>('');
+    const [ cropDialog, setCropDialog ] = useState<boolean>(false);
+
+    const [ showCropIcon, setCropIcon ] = useState<boolean>(false);
+
+    const cropImage = (imgSrc:string) => {
+        setImageCropSrc(imgSrc);
+        setCropDialog(true);
+    };
+
+    const setOpacityTrue = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+        console.log("hover")
+        event.currentTarget.style.opacity = '.75';
+    };
+    
+    const setOpacityFalse = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+        event.currentTarget.style.opacity = '0';
+    };
+
+    const mapImages = images.map((image: object) => (
+        <Paper className={classes.container}>
+            <Button onClick={() => cropImage(URL.createObjectURL(image))}>
+                <Crop 
+                    className={classes.icon} 
+                    style={{ opacity: 0 }} 
+                    onMouseOver={setOpacityTrue }
+                    onMouseOut={setOpacityFalse}
+                />
+                <CardMedia component="img" image={URL.createObjectURL(image)} />    
+            </Button>
         </Paper>
     ));
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const image: string = event.target.value;
+        const image: object = event.target.files[0];
 
-        console.log(image);
+        console.log(URL.createObjectURL(image));
+
+        console.log(event.target.files[0]);
+
         setImages([...images, image]);
-
-        console.log(images);
     };
 
     return (
@@ -51,6 +84,8 @@ const ImageUploader: React.FC<IImageUploaderProps> = () => {
                     </Paper>
                 </IconButton>
             </label>
+
+            <ImageCropperComponent imageSrc={imageCropSrc} open={cropDialog} handleClose={() => setCropDialog(false)}/>
         </section>
     );
 };

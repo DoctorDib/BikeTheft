@@ -11,7 +11,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import InputToolTip from '../ToopTip';
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
 import ImageUploaderComponent from '../ImageUploader';
-import { IInputFields, IChip } from '../../Common/Interfaces/interfaces';
+import { IInputFields, IChip, IImageHolder } from '../../Common/Interfaces/interfaces';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import styles from './styles';
 import { isNullOrUndefinedOrEmpty } from '../../Common/Utils/Types';
@@ -33,11 +33,11 @@ interface IToolTipMessage {
 const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     const classes: IClasses = styles();
 
+    const [images, setImages] = useState<Array<object>>([]);
+
     const [inputFields, setInputFields] = useState<IInputFields>(defaultInputs);
     const [dateStolen, setDateStolen] = useState<Date>(new Date());
-    const [numberPlateInError, setNumberPlateInError] = useState<boolean>(
-        false,
-    );
+    const [numberPlateInError, setNumberPlateInError] = useState<boolean>(false);
     // Flag to determine if number plate has changed
     // if changed then we can make a call to DVLA
     const [numberPlateFlag, setNumberPlateFlag] = useState<boolean>(false);
@@ -207,7 +207,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         // Turning string capture into int
 
         // TODO - Will need to change the owner_id when login is setup
-        addNewVehicle(1, inputFields);
+        addNewVehicle(1, inputFields, images);
     };
 
     // eslint-disable-next-line no-undef
@@ -426,7 +426,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                 <Typography variant="h5"> Vehicle Upload </Typography>
             </section>
 
-            <ImageUploaderComponent />
+            <ImageUploaderComponent images={images} setImages={setImages} />
 
             <Typography>
                 {' '}

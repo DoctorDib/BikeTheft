@@ -20,9 +20,19 @@ export default makeStyles(() => ({
         alignItems: 'center',
         alignContent: 'center',
         margin: '12px',
+        overflow: 'hidden',
     },
 
     input: {
         display: 'none',
     },
+
+    icon: {
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        backgroundColor: 'black',
+        transition: 'opacity .15s ease-in-out',
+        color: 'white'
+    }
 }));
