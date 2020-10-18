@@ -11,12 +11,13 @@ import DateFnsUtils from '@date-io/date-fns';
 import InputToolTip from '../ToopTip';
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
 import ImageUploaderComponent from '../ImageUploader';
-import { IInputFields, IChip, IImageHolder } from '../../Common/Interfaces/interfaces';
+import { IInputFields, IChip, IImageSettings } from '../../Common/Interfaces/interfaces';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import styles from './styles';
 import { isNullOrUndefinedOrEmpty } from '../../Common/Utils/Types';
 import { defaultInputs } from '../../Common/Helpers/Defaults';
-import { addNewVehicle } from '../../Common/Helpers/DB_Helpers';
+import { createNewThread } from '../../Common/Helpers/DB_Helpers';
+import { uploadImagesToS3 } from '../../Common/Helpers/helper';
 
 interface IImageUploaderProps {}
 
@@ -33,7 +34,7 @@ interface IToolTipMessage {
 const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     const classes: IClasses = styles();
 
-    const [images, setImages] = useState<Array<object>>([]);
+    const [images, setImages] = useState<Array<IImageSettings>>([]);
 
     const [inputFields, setInputFields] = useState<IInputFields>(defaultInputs);
     const [dateStolen, setDateStolen] = useState<Date>(new Date());
@@ -206,8 +207,11 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         inputFields.dateStolen = dateStolen;
         // Turning string capture into int
 
+        // currently static upload to vehicles folder only
+        uploadImagesToS3('1', images, 'vehicles');
+
         // TODO - Will need to change the owner_id when login is setup
-        addNewVehicle(1, inputFields, images);
+        createNewThread('1', inputFields, images);
     };
 
     // eslint-disable-next-line no-undef

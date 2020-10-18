@@ -54,7 +54,7 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (
                         purposes.
                     </Typography>
 
-                    <ImageUploaderComponent />
+                    {/* <ImageUploaderComponent images={} setImages={} /> */}
 
                     <section className={classes.buttonContainer}>
                         <Button

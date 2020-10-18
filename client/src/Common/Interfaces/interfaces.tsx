@@ -5,7 +5,7 @@ export interface IVehicleInfo {
     date_added: string;
     description: string;
     features: Array<string>;
-    images: Array<string>;
+    images: Array<IImageSettings>;
     location: string;
     number_plate: string;
     owner_id: string;
@@ -14,7 +14,7 @@ export interface IVehicleInfo {
     model: string;
     vin: string;
     category: string;
-    [key: string]: string | number | Array<string>;
+    [key: string]: string | number | Array<string> | Array<IImageSettings>;
 }
 
 export interface IMemberAttributes {
@@ -23,6 +23,7 @@ export interface IMemberAttributes {
 }
 
 export interface IOwner {
+    owner_id: string;
     member_attributes: IMemberAttributes;
 }
 
@@ -72,4 +73,25 @@ export interface IImageHolder {
     name: string,
     local: string,
     file: object,
+}
+
+export interface IImageSettings {
+    id: number,
+    // Ensuring a unique value based on name and Date.now()
+    name: string,
+    is_main_image: boolean,
+    type: string,
+    data64: string,
+    crop: {
+        original: string,
+        crop_info: ICropSettings,
+    },
+}
+
+export interface ICropSettings {
+    unit: string,
+    width: number,
+    height: number,
+    x: number,
+    y: number,
 }

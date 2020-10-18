@@ -7,7 +7,12 @@ import {
     sortFeaturesArray as ExtractValue,
 } from './helper';
 
-import { IPostAttributes, IData, IInputFields } from '../Interfaces/interfaces';
+import { 
+    IPostAttributes,
+    IData,
+    IInputFields,
+    IImageSettings,
+} from '../Interfaces/interfaces';
 
 import { defaultData } from './Defaults';
 
@@ -112,20 +117,26 @@ export const updateVehicleStat = async (
     }
 };
 
-export const addNewVehicle = async (
-    ownerID: number,
-    data: IInputFields,
-    images: Array<object>,
-): Promise<boolean> => {
-    const cleanData = checkSQLInObject(data);
+const stripData64 = (images:Array<IImageSettings>) => images.map(data => ({ 
+    name: data.name,
+    is_main_image: data.is_main_image,
+    type: data.type,
+    crop: {
+        crop_info: data.crop.crop_info,
+    },
+}));
 
+export const createNewThread = async (
+    ownerID: string,
+    data: IInputFields,
+    images: Array<IImageSettings>,
+): Promise<boolean> => {
+
+    const cleanData = checkSQLInObject(data);
     // Extracting the string values from an array of objects
     // e.g. [{key: 1, value: "one"}, {key: 2, value: "two"}]
     let featuresArray: any = ExtractValue(data.featuresArray);
     featuresArray = checkSQLInObject(featuresArray);
-
-    console.log("here images")
-    console.log(images)
 
     const body = {
         body: {
@@ -146,22 +157,22 @@ export const addNewVehicle = async (
                 description: cleanData.description,
                 v5c_verification_date: cleanData.v5cVerificationDate,
                 date_stolen: data.dateStolen,
+                vehicle_images: stripData64(images),
             },
             vin: cleanData.vin,
-            S3ImageUploads: images,
         },
     };
 
     try {
         const response = await API.post(
             'base_endpoint',
-            '/vehicles/set_vehicle',
+            '/forum/create_thread',
             body,
         );
         console.debug(response);
-        return true;
+        return response;
     } catch (e) {
         console.error(e);
         return false;
     }
-};
+}

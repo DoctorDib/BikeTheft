@@ -77,7 +77,7 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
         <section className={classes.container}>
             <section className={classes.topSection}>
                 <section className={classes.imageContainer}>
-                    <CarouselComponent images={vehicle.images} />
+                    <CarouselComponent owner={owner.owner_id} images={vehicle.images} />
                 </section>
 
                 <section className={classes.rightSide}>

@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import mainStyle from '../../templates/mainStyle';
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
     ...mainStyle,
 
     mainContainer: {
@@ -13,14 +13,15 @@ export default makeStyles(() => ({
     },
 
     container: {
-        width: '100px',
-        height: '100px',
+        width: '200px',
+        height: '200px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         alignContent: 'center',
         margin: '12px',
         overflow: 'hidden',
+        position: 'relative',
     },
 
     input: {
@@ -28,11 +29,59 @@ export default makeStyles(() => ({
     },
 
     icon: {
+        borderRadius: '100%',
+        backgroundColor: 'white',
+        padding: '2px',
+        '&:hover': {
+            backgroundColor: '#dfdfdf',
+        },
+    },
+
+    cropButton: {
+        height: '100%',
         width: '100%',
+    },
+
+    smallIconButton: {
+        padding: '0',
+        margin: '2px',
+        backgroundColor: 'white',
+    },
+
+    iconButtonContainer: {
+        zIndex: '1',
+        top: 0,
+        right: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'absolute',
+    },
+
+    speedDialContainer: {
         height: '100%',
         position: 'absolute',
-        backgroundColor: 'black',
-        transition: 'opacity .15s ease-in-out',
-        color: 'white'
-    }
+        width: '100%',
+        transform: 'translateZ(0px)',
+        flexGrow: 1,
+    },
+
+    speedDial: {
+        position: 'absolute',
+        height: '100%',
+        right: 0,
+        top: 0,
+        '& .MuiSpeedDial-actions': {
+            margin: 0,
+            padding: 0,
+        },
+        '& .MuiSpeedDial-fab': {
+            width: '40px',
+            height: '40px',
+        },
+    },
+
+    smallIcon: {
+        height: '25px',
+        width: '25px',
+    },
 }));

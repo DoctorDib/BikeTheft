@@ -1,8 +1,12 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
-import ReactCrop from "react-image-crop";
-import "react-image-crop/dist/ReactCrop.css";
+import React, {
+    useState, useCallback, useRef, useEffect,
+} from 'react';
+import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 
 import { Dialog, Button } from '@material-ui/core';
+
+import { IImageSettings, ICropSettings } from '../../Common/Interfaces/interfaces';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -12,12 +16,16 @@ const pixelRatio = window.devicePixelRatio || 1;
 
 // We resize the canvas down when saving on retina devices otherwise the image
 // will be double or triple the preview size.
-const getResizedCanvas = (canvas, newWidth, newHeight)  => {
-    const tmpCanvas = document.createElement("canvas");
+const getResizedCanvas = (canvas:HTMLCanvasElement, newWidth:number, newHeight:number) => {
+    const tmpCanvas = document.createElement('canvas');
+
     tmpCanvas.width = newWidth;
     tmpCanvas.height = newHeight;
 
-    const ctx = tmpCanvas.getContext("2d");
+    const ctx = tmpCanvas.getContext('2d');
+
+    if (!ctx) { return; }
+
     ctx.drawImage(
         canvas,
         0,
@@ -27,86 +35,97 @@ const getResizedCanvas = (canvas, newWidth, newHeight)  => {
         0,
         0,
         newWidth,
-        newHeight
+        newHeight,
     );
 
     return tmpCanvas;
+};
+
+interface IImageCropProps {
+    open: boolean;
+    handleClose: () => void;
+    imageSrc: string;
+    crop: ICropSettings;
+    saveCroppedData: (string:string, asdf:ICropSettings) => void;
+    setCrop: () => void;
 }
 
-const generateDownload = (previewCanvas, crop) => {
-    if (!crop || !previewCanvas) { return; }
-
-    console.log("=======");
-    console.log(previewCanvas);
-    console.log(crop);
-
-    const canvas = getResizedCanvas(previewCanvas, crop.width, crop.height);
-
-    var dataURL = canvas.toDataURL("image/png");
-    console.log(dataURL)
-
-}
-
-const ImageCropped = (props) => {
+const ImageCropped:React.FC<IImageCropProps> = (props: IImageCropProps) => {
     const classes: IClasses = styles();
 
-    const imgRef = useRef(null);
-    const previewCanvasRef = useRef(null);
-    const [crop, setCrop] = useState({ unit: "%", width: 1, height: 1, x: 50, y: 50 });
-    const [completedCrop, setCompletedCrop] = useState(null);
+    const imgRef = useRef<HTMLCanvasElement>();
+    const previewCanvasRef = useRef<HTMLCanvasElement>(null);
 
-    const { open, handleClose, imageSrc } = props;
+    const [completedCrop, setCompletedCrop] = useState<ICropSettings>();
+
+    const {
+        open, handleClose, imageSrc, saveCroppedData, crop, setCrop,
+    } = props;
 
     const onLoad = useCallback((img) => { imgRef.current = img; }, []);
+
+    const generateDownload = () => {
+        const previewCanvas = previewCanvasRef.current;
+
+        if (!completedCrop || !previewCanvas) { return; }
+
+        const canvas = getResizedCanvas(previewCanvas, completedCrop.width, completedCrop.height);
+
+        if (!canvas) { return; }
+
+        const dataURL = canvas.toDataURL('image/png');
+
+        saveCroppedData(dataURL, completedCrop);
+        handleClose();
+    };
 
     useEffect(() => {
         if (!completedCrop || !previewCanvasRef.current || !imgRef.current) { return; }
 
         const image = imgRef.current;
         const canvas = previewCanvasRef.current;
-        const crop = completedCrop;
+        if (image === null || canvas === null) { return; }
 
-        const scaleX = image.naturalWidth / image.width;
-        const scaleY = image.naturalHeight / image.height;
-        const ctx = canvas.getContext("2d");
+        const scaleX = image.width / image.width; // natural width
+        const scaleY = image.height / image.height; // natural height
+        const ctx = canvas.getContext('2d');
 
-        canvas.width = crop.width * pixelRatio;
-        canvas.height = crop.height * pixelRatio;
+        if (ctx == null) { return; }
+
+        canvas.width = completedCrop.width * pixelRatio;
+        canvas.height = completedCrop.height * pixelRatio;
 
         ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-        ctx.imageSmoothingQuality = "high";
+        ctx.imageSmoothingQuality = 'high';
 
         ctx.drawImage(
             image,
-            crop.x * scaleX,
-            crop.y * scaleY,
-            crop.width * scaleX,
-            crop.height * scaleY,
+            completedCrop.x * scaleX,
+            completedCrop.y * scaleY,
+            completedCrop.width * scaleX,
+            completedCrop.height * scaleY,
             0,
             0,
-            crop.width,
-            crop.height
+            completedCrop.width,
+            completedCrop.height,
         );
     }, [completedCrop]);
 
     return (
         <Dialog onClose={handleClose} aria-labelledby="image-cropper" open={open}>
             <section className={classes.imageHolder}>
-                <section className={classes.container}>
-                    <ReactCrop
-                        src={imageSrc}
-                        onImageLoaded={onLoad}
-                        crop={crop}
-                        onChange={(c) => setCrop(c)}
-                        onComplete={(c) => setCompletedCrop(c)}
-                    />
-                </section>
-
-                <section className={classes.container}>
+                <ReactCrop
+                    src={imageSrc}
+                    onImageLoaded={onLoad}
+                    crop={crop}
+                    onChange={(c) => setCrop(c)}
+                    onComplete={(c) => setCompletedCrop(c)}
+                />
+                <section style={{ display: 'none' }}>
                     <canvas
                         ref={previewCanvasRef}
                         // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
-                        style={{width:'100%'}}
+                        style={{ width: '100%' }}
                     />
                 </section>
             </section>
@@ -115,17 +134,25 @@ const ImageCropped = (props) => {
                 <Button
                     variant="outlined"
                     disabled={!completedCrop?.width || !completedCrop?.height}
-                    onClick={() => generateDownload(previewCanvasRef.current, completedCrop)}
+                    onClick={() => generateDownload()}
                     className={classes.button}
-                > Confirm </Button>
+                >
+                    {' '}
+Confirm
+                    {' '}
+                </Button>
                 <Button
                     variant="outlined"
                     onClick={handleClose}
                     className={classes.button}
-                > Cancel </Button>
+                >
+                    {' '}
+Cancel
+                    {' '}
+                </Button>
             </section>
         </Dialog>
     );
-}
+};
 
 export default ImageCropped;

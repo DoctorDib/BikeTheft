@@ -17,7 +17,7 @@ Amplify.configure({
     // OPTIONAL - if your API requires authentication
     // TODO ensure none of these secret keys end up on the client
     Auth: {
-        mandatorySignIn: true,
+        mandatorySignIn: false,
         // REQUIRED - Amazon Cognito Identity Pool ID
         identityPoolId: import.meta.env.SNOWPACK_PUBLIC_IDENTITYPOOLID,
         // REQUIRED - Amazon Cognito Region
@@ -35,6 +35,13 @@ Amplify.configure({
                 region: import.meta.env.SNOWPACK_PUBLIC_REGION,
             },
         ],
+    },
+    Storage: {
+        AWSS3: {
+            bucket: import.meta.env.SNOWPACK_PUBLIC_S3BUCKET,
+            region: import.meta.env.SNOWPACK_PUBLIC_REGION,
+            identityPoolId: import.meta.env.SNOWPACK_PUBLIC_IDENTITYPOOLID,
+        },
     },
 });
 
