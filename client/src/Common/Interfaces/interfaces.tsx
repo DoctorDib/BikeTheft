@@ -84,7 +84,7 @@ export interface IImageSettings {
     data64: string,
     crop: {
         original: string,
-        crop_info: ICropSettings,
+        crop_info: ICropSettings | null,
     },
 }
 

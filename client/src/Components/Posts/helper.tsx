@@ -21,7 +21,7 @@ export const FormatPostBackground = (styleID: number): string => {
     }
 };
 
-export const FormatAvatar = (comment: IComment, classes: IClasses): any => {
+export const FormatAvatar = (comment: IComment, classes: IClasses):React.FC => {
     const image = comment.type === 1
         ? `${UserImages}${comment.member_attributes.profile_image}`
         : 'I';

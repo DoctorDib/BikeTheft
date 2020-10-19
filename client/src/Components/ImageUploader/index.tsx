@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
     Paper, IconButton, CardMedia, Backdrop,
 } from '@material-ui/core';
@@ -9,6 +9,7 @@ import {
 } from '@material-ui/icons';
 
 import { IImageSettings, ICropSettings } from '../../Common/Interfaces/interfaces';
+import { defaultCropSettings } from '../../Common/Helpers/Defaults';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -17,32 +18,34 @@ import ImageCropperComponent from '../ImageCropper';
 
 interface IImageUploaderProps {
     images: Array<IImageSettings>,
-    setImages: any,
+    setImages: (x:Array<IImageSettings>) => void,
 }
 
-const fileToBase64 = (file:any) => new Promise((resolve) => {
+const fileToBase64 = (file:File):Promise<string | ArrayBuffer | null> => new Promise((resolve) => {
     const reader = new FileReader(); // Read file content on file loaded event
 
     reader.onload = () => {
-        resolve(reader.result);
+        const results = reader.result;
+
+        if (results === undefined) { resolve(null); }
+
+        resolve(results);
     };
 
     reader.readAsDataURL(file);
 });
 
-const defaultCropSettings:ICropSettings = {
-    unit: '%', width: 1, height: 1, x: 50, y: 50,
-};
-
 const ImageUploader: React.FC<IImageUploaderProps> = (props:IImageUploaderProps) => {
     const classes: IClasses = styles();
 
     const { images, setImages } = props;
-    const [speedOpen, setSpeedOpen] = React.useState(true);
+    const [speedOpen, setSpeedOpen] = useState(true);
     const [imageCropSrc, setImageCropSrc] = useState<string>('');
     const [cropDialog, setCropDialog] = useState<boolean>(false);
     const [croppingIndex, setCroppingIndex] = useState<number>(-1);
+
     const [crop, setCrop] = useState<ICropSettings>(defaultCropSettings);
+
     const [picIndex, setPicIndex] = useState<number>(0);
 
     const handleOpen = () => { setSpeedOpen(true); };
@@ -51,7 +54,7 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props:IImageUploaderProps)
     const cropImage = (id:number, imgSrc:string, cropInfo:ICropSettings) => {
         setCroppingIndex(id);
         setImageCropSrc(imgSrc);
-        setCrop(cropInfo ?? defaultCropSettings);
+        setCrop(cropInfo);
         setCropDialog(true);
         handleClose();
     };
@@ -108,8 +111,7 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props:IImageUploaderProps)
         setImages(newImages);
         handleClose();
     };
-
-    const MAPIMAGES = () => images.map((image: IImageSettings) => (
+    const mapImages = images.map((image: IImageSettings) => (
         <Paper key={image.id} className={classes.container} style={{ border: image.is_main_image ? '3px solid rgb(204, 204, 4)' : '0' }}>
 
             <section className={classes.speedDialContainer}>
@@ -133,7 +135,11 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props:IImageUploaderProps)
                         key="crop"
                         icon={<Crop color="primary" className={classes.smallIcon} />}
                         tooltipTitle="Crop image"
-                        onClick={() => cropImage(image.id, image.crop.original, image.crop.crop_info)}
+                        onClick={() => cropImage(
+                            image.id,
+                            image.crop.original,
+                            image.crop.crop_info ?? defaultCropSettings,
+                        )}
                     />
                     {
                         !image.is_main_image ? (
@@ -152,7 +158,9 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props:IImageUploaderProps)
         </Paper>
     ));
 
-    useEffect(() => { MAPIMAGES(); }, [images]);
+    const remapImages = useCallback(() => mapImages, [mapImages]);
+
+    useEffect(() => { remapImages(); }, [remapImages]);
 
     const hashString = (stringToHash:string) => {
         const newString = stringToHash + Date.now();
@@ -173,10 +181,12 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props:IImageUploaderProps)
         const fileImage = event.target.files[0];
 
         fileToBase64(fileImage)
-            .then((image) => {
+            .then((image:string | ArrayBuffer | null):boolean => {
                 const imageDetails = fileImage.name.split('.');
 
-                const newImage = {
+                if (image === null || image instanceof ArrayBuffer) { return false; }
+
+                const newImage:IImageSettings = {
                     id: picIndex,
                     // Ensuring a unique value based on name and Date.now()
                     name: hashString(imageDetails[0]),
@@ -193,6 +203,7 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props:IImageUploaderProps)
                 setPicIndex(picIndex + 1);
 
                 setImages([...images, newImage]);
+                return true;
             }).catch((error) => {
                 console.log('error');
                 console.log(error);
@@ -201,7 +212,7 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props:IImageUploaderProps)
 
     return (
         <section className={classes.mainContainer}>
-            {MAPIMAGES()}
+            {mapImages}
 
             <label htmlFor="icon-button-file">
                 <input
@@ -227,7 +238,7 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props:IImageUploaderProps)
                 open={cropDialog}
                 handleClose={() => setCropDialog(false)}
                 crop={crop}
-                setCrop={() => setCrop}
+                setCrop={setCrop}
                 saveCroppedData={(data64:string, cropInfo:ICropSettings) => saveCroppedData(data64, cropInfo)}
             />
         </section>

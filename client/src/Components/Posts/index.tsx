@@ -22,7 +22,7 @@ import {
     defaultComment,
     defaultPostAttributes,
 } from '../../Common/Helpers/Defaults';
-import { SQLStringProtection } from '../../Common/Helpers/helper';
+
 import {
     sendPost,
     updatePost,
@@ -90,7 +90,6 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         switch (enumMessage) {
             case Confirmation.CONFIRM_POST:
                 if (!response) return;
-                newPostAttributes.message = SQLStringProtection(value);
                 setValue('');
                 sendPost(1, '1', newPostAttributes, 1);
                 break;

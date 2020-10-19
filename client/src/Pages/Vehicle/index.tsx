@@ -52,8 +52,6 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
         setVehicleData(data.vehicle);
         setVehicleID(data.vehicle.vehicle_id);
         setPostData(data.posts);
-
-        console.log(data.posts);
     };
 
     useEffect(() => {

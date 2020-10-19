@@ -2,9 +2,7 @@ import { API } from 'aws-amplify';
 
 import {
     getDateTimeString,
-    SQLStringProtection,
-    checkSQLInObject,
-    sortFeaturesArray as ExtractValue,
+    sortFeaturesArray,
 } from './helper';
 
 import {
@@ -22,9 +20,6 @@ export const sendPost = async (
     postAttributes: IPostAttributes,
     postType: number,
 ): Promise<boolean> => {
-    const postAttributesSetup: IPostAttributes = postAttributes;
-    postAttributesSetup.message = SQLStringProtection(postAttributes.message);
-
     const body = {
         body: {
             parent_id: parentID,
@@ -131,11 +126,10 @@ export const createNewThread = async (
     data: IInputFields,
     images: Array<IImageSettings>,
 ): Promise<boolean> => {
-    const cleanData = checkSQLInObject(data);
     // Extracting the string values from an array of objects
     // e.g. [{key: 1, value: "one"}, {key: 2, value: "two"}]
-    let featuresArray: any = ExtractValue(data.featuresArray);
-    featuresArray = checkSQLInObject(featuresArray);
+    // is now ["one", "two"]
+    const featuresArray: Array<string> = sortFeaturesArray(data.featuresArray);
 
     const body = {
         body: {
@@ -145,20 +139,20 @@ export const createNewThread = async (
             // for now we're defaulting vehicles that get uploaded to
             // automatically be assumed as stolen
             status: 1,
-            number_plate: cleanData.number_plate,
-            make: cleanData.make,
-            model: cleanData.model,
-            category: cleanData.category,
+            number_plate: data.number_plate,
+            make: data.make,
+            model: data.model,
+            category: data.category,
             vehicle_attributes: {
-                primary_colour: cleanData.primary_colour,
-                secondary_colour: cleanData.secondary_colour,
+                primary_colour: data.primary_colour,
+                secondary_colour: data.secondary_colour,
                 features: featuresArray,
-                description: cleanData.description,
-                v5c_verification_date: cleanData.v5cVerificationDate,
+                description: data.description,
+                v5c_verification_date: data.v5cVerificationDate,
                 date_stolen: data.dateStolen,
                 vehicle_images: stripData64(images),
             },
-            vin: cleanData.vin,
+            vin: data.vin,
         },
     };
 

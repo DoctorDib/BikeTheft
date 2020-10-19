@@ -1,5 +1,5 @@
 import { Storage } from 'aws-amplify';
-import { IImageSettings } from '../Interfaces/interfaces';
+import { IImageSettings, IChip } from '../Interfaces/interfaces';
 
 export function getDateTimeString(): string {
     const currentdate = new Date();
@@ -8,29 +8,12 @@ export function getDateTimeString(): string {
     return `${date} ${time}`;
 }
 
-export const SQLStringProtection = (message: string): string => message.replace(/[\t\r\n]|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi, '');
-
-export function checkSQLInObject(object: any): Record<string, unknown> {
-    const newObject = object;
-    Object.keys(newObject).forEach((value) => {
-        const objectVal = newObject[value];
-
-        if (typeof objectVal !== 'string') {
-            return;
-        }
-
-        newObject[value] = SQLStringProtection(objectVal);
-    });
-
-    return newObject;
-}
-
 // fArrObj = Array of Object Features
-export function sortFeaturesArray(fArrObj: Array<any>): Array<any> {
-    return fArrObj.map((object: any) => object.value);
+export function sortFeaturesArray(fArrObj: Array<IChip>): Array<string> {
+    return fArrObj.map((object: IChip) => object.value);
 }
 
-const uploadImageToS3 = async (userId:string, imgObj:any, storageType:string) => {
+const uploadImageToS3 = async (userId:string, imgObj:IImageSettings, storageType:string) => {
     const storagePutLink = `${userId}/${storageType}/${imgObj.name}.${imgObj.type}`;
 
     await Storage.put(`${storagePutLink}`, dataURItoBlob(imgObj.data64), {
@@ -48,7 +31,11 @@ const dataURItoBlob = (dataURI:string) => {
     return new Blob([new Uint8Array(array)], { type: 'image/jpeg' });
 };
 
-export const uploadImagesToS3 = (userId:string, imageArray:Array<IImageSettings>, storageType:string) => {
+export const uploadImagesToS3 = (
+    userId:string,
+    imageArray:Array<IImageSettings>,
+    storageType:string,
+):Promise<boolean> => {
     const promises = [];
 
     const imageArrayLength = imageArray.length;
@@ -56,9 +43,11 @@ export const uploadImagesToS3 = (userId:string, imageArray:Array<IImageSettings>
         promises.push(uploadImageToS3(userId, imageArray[index], storageType));
     }
 
-    Promise.all(promises).then(() => {
+    return Promise.all(promises).then(() => {
         console.log('Done');
+        return true;
     }).catch((err) => {
         console.log('ERROR:', err);
+        return false;
     });
 };

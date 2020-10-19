@@ -6,10 +6,12 @@ import 'react-image-crop/dist/ReactCrop.css';
 
 import { Dialog, Button } from '@material-ui/core';
 
-import { ICropSettings } from '../../Common/Interfaces/interfaces';
+import { defaultCropSettings } from '../../Common/Helpers/Defaults';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
+
+import { ICropSettings } from '../../Common/Interfaces/interfaces';
 
 // Increase pixel density for crop preview quality on retina screens.
 const pixelRatio = window.devicePixelRatio || 1;
@@ -18,7 +20,6 @@ const pixelRatio = window.devicePixelRatio || 1;
 // will be double or triple the preview size.
 const getResizedCanvas = (canvas:HTMLCanvasElement, newWidth:number, newHeight:number):HTMLCanvasElement => {
     const tmpCanvas = document.createElement('canvas');
-
     tmpCanvas.width = newWidth;
     tmpCanvas.height = newHeight;
 
@@ -46,20 +47,20 @@ interface IImageCropProps {
     handleClose: () => void;
     imageSrc: string;
     crop: ICropSettings;
-    saveCroppedData: (string:string, asdf:ICropSettings) => void;
-    setCrop: () => void;
+    saveCroppedData: (x:string, y:ICropSettings) => void;
+    setCrop: (x:ICropSettings) => void;
 }
 
 const ImageCropped:React.FC<IImageCropProps> = (props: IImageCropProps) => {
     const classes: IClasses = styles();
 
-    const imgRef = useRef<HTMLCanvasElement>();
+    const imgRef = useRef<HTMLImageElement>();
     const previewCanvasRef = useRef<HTMLCanvasElement>(null);
 
-    const [completedCrop, setCompletedCrop] = useState<ICropSettings>();
+    const [completedCrop, setCompletedCrop] = useState<ICropSettings>(defaultCropSettings);
 
     const {
-        open, handleClose, imageSrc, saveCroppedData, crop, setCrop,
+        open, handleClose, imageSrc, saveCroppedData, setCrop, crop,
     } = props;
 
     const onLoad = useCallback((img) => { imgRef.current = img; }, []);
@@ -100,14 +101,14 @@ const ImageCropped:React.FC<IImageCropProps> = (props: IImageCropProps) => {
 
         ctx.drawImage(
             image,
-            completedCrop.x * scaleX,
-            completedCrop.y * scaleY,
-            completedCrop.width * scaleX,
-            completedCrop.height * scaleY,
+            completedCrop.x * scaleX || 1,
+            completedCrop.y * scaleY || 1,
+            completedCrop.width * scaleX || 1,
+            completedCrop.height * scaleY || 1,
             0,
             0,
-            completedCrop.width,
-            completedCrop.height,
+            completedCrop.width || 1,
+            completedCrop.height || 1,
         );
     }, [completedCrop]);
 

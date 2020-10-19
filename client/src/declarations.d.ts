@@ -3,7 +3,7 @@ declare module '*.png';
 
 declare global {
     interface ImportMeta {
-        [propertyName: string]: any;
+        [propertyName: string]: string | number;
     }
 }
 

@@ -230,7 +230,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         },
     );
 
-    const inputComponents = Object.keys(inputFields).map((key: string): any => {
+    const inputComponents = Object.keys(inputFields).map((key: string):React.ReactNode => {
         switch (key) {
             case 'primaryColour':
             case 'secondaryColour':
