@@ -7,7 +7,7 @@ import {
     sortFeaturesArray as ExtractValue,
 } from './helper';
 
-import { 
+import {
     IPostAttributes,
     IData,
     IInputFields,
@@ -117,7 +117,7 @@ export const updateVehicleStat = async (
     }
 };
 
-const stripData64 = (images:Array<IImageSettings>) => images.map(data => ({ 
+const stripData64 = (images:Array<IImageSettings>) => images.map((data) => ({
     name: data.name,
     is_main_image: data.is_main_image,
     type: data.type,
@@ -131,7 +131,6 @@ export const createNewThread = async (
     data: IInputFields,
     images: Array<IImageSettings>,
 ): Promise<boolean> => {
-
     const cleanData = checkSQLInObject(data);
     // Extracting the string values from an array of objects
     // e.g. [{key: 1, value: "one"}, {key: 2, value: "two"}]
@@ -175,4 +174,4 @@ export const createNewThread = async (
         console.error(e);
         return false;
     }
-}
+};

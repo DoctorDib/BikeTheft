@@ -30,10 +30,14 @@ export function sortFeaturesArray(fArrObj: Array<any>): Array<any> {
     return fArrObj.map((object: any) => object.value);
 }
 
-const uploadImageToS3 = async (userId:string, imgObj:any, storageType:string) => await Storage.put(`${userId}/${storageType}/${imgObj.name}.${imgObj.type}`, dataURItoBlob(imgObj.data64), {
-    ContentEncoding: 'base64',
-    ContentType: `image/${imgObj.type}`,
-});
+const uploadImageToS3 = async (userId:string, imgObj:any, storageType:string) => {
+    const storagePutLink = `${userId}/${storageType}/${imgObj.name}.${imgObj.type}`;
+
+    await Storage.put(`${storagePutLink}`, dataURItoBlob(imgObj.data64), {
+        ContentEncoding: 'base64',
+        ContentType: `image/${imgObj.type}`,
+    });
+};
 
 const dataURItoBlob = (dataURI:string) => {
     const binary = atob(dataURI.split(',')[1]);

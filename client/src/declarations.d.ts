@@ -10,4 +10,4 @@ declare global {
 // Prevents errors in the @snowpack/plugin-typescript
 // any fixes  / solutions are welcome!
 
-import.meta.env; // errors occur when removed
+// import.meta.env; // errors occur when removed

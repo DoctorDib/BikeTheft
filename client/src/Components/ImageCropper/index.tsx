@@ -6,7 +6,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 
 import { Dialog, Button } from '@material-ui/core';
 
-import { IImageSettings, ICropSettings } from '../../Common/Interfaces/interfaces';
+import { ICropSettings } from '../../Common/Interfaces/interfaces';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -16,7 +16,7 @@ const pixelRatio = window.devicePixelRatio || 1;
 
 // We resize the canvas down when saving on retina devices otherwise the image
 // will be double or triple the preview size.
-const getResizedCanvas = (canvas:HTMLCanvasElement, newWidth:number, newHeight:number) => {
+const getResizedCanvas = (canvas:HTMLCanvasElement, newWidth:number, newHeight:number):HTMLCanvasElement => {
     const tmpCanvas = document.createElement('canvas');
 
     tmpCanvas.width = newWidth;
@@ -24,7 +24,7 @@ const getResizedCanvas = (canvas:HTMLCanvasElement, newWidth:number, newHeight:n
 
     const ctx = tmpCanvas.getContext('2d');
 
-    if (!ctx) { return; }
+    if (!ctx) { return tmpCanvas; }
 
     ctx.drawImage(
         canvas,
@@ -86,8 +86,8 @@ const ImageCropped:React.FC<IImageCropProps> = (props: IImageCropProps) => {
         const canvas = previewCanvasRef.current;
         if (image === null || canvas === null) { return; }
 
-        const scaleX = image.width / image.width; // natural width
-        const scaleY = image.height / image.height; // natural height
+        const scaleX = image.naturalWidth / image.width; // natural width
+        const scaleY = image.naturalHeight / image.height; // natural height
         const ctx = canvas.getContext('2d');
 
         if (ctx == null) { return; }

@@ -15,8 +15,6 @@ interface ICarouselProps {
 const CarouselComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
     const { owner, images } = props;
 
-    console.log(images);
-
     const mapImages = images.map((image: IImageSettings) => ({
         original: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,
         thumbnail: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,

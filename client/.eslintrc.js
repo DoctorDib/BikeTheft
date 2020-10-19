@@ -42,6 +42,10 @@ module.exports = {
         }],
         "react/jsx-props-no-spreading": "off",
         "no-console": 0,
+        "no-plusplus": ["error", {
+            "allowForLoopAfterthoughts": true,
+        }],
+        "no-continue": 0,
     },
     env: {
         "browser": true,
@@ -50,8 +54,8 @@ module.exports = {
     },
     settings: {
         react: {
-            version: 'detect'
-        }
+            version: 'detect',
+        },
     },
 
 };

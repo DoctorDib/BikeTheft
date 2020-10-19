@@ -11,7 +11,8 @@ import {
 
 import { CheckCircle, Cancel } from '@material-ui/icons';
 
-import ImageUploaderComponent from '../ImageUploader';
+// Temp disabled
+// import ImageUploaderComponent from '../ImageUploader';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';

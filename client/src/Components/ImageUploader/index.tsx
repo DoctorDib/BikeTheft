@@ -53,12 +53,12 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props:IImageUploaderProps)
         setImageCropSrc(imgSrc);
         setCrop(cropInfo ?? defaultCropSettings);
         setCropDialog(true);
-        handleClose;
+        handleClose();
     };
 
     const onImgRemove = (keyToRemove:number) => {
         setImages(images.filter((data) => data.id !== keyToRemove));
-        handleClose;
+        handleClose();
     };
 
     const saveCroppedData = (newImageData64:string, newCropInfo:ICropSettings) => {
@@ -66,8 +66,8 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props:IImageUploaderProps)
 
         const newImages = images;
 
-        const imageLength = newImages.length;
-        for (let index = 0; index < imageLength; index += 1) {
+        const imageLength:number = newImages.length;
+        for (let index = 0; index < imageLength; index++) {
             const imageData = newImages[index];
             if (imageData.id !== croppingIndex) { continue; }
 
@@ -91,8 +91,8 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props:IImageUploaderProps)
         let newImages = [...images];
         let chosenIndex = -1;
 
-        const newImagesLength = images.length;
-        for (let index = 0; index < newImagesLength; index += 1) {
+        const newImagesLength:number = images.length;
+        for (let index = 0; index < newImagesLength; index++) {
             const imageData = newImages[index];
 
             if (imageData.id === id) { chosenIndex = index; }
@@ -106,11 +106,11 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props:IImageUploaderProps)
         newImages = moveItemInArray(newImages, chosenIndex, 0);
 
         setImages(newImages);
-        handleClose;
+        handleClose();
     };
 
     const MAPIMAGES = () => images.map((image: IImageSettings) => (
-        <Paper className={classes.container} style={{ border: image.is_main_image ? '3px solid rgb(204, 204, 4)' : '0' }}>
+        <Paper key={image.id} className={classes.container} style={{ border: image.is_main_image ? '3px solid rgb(204, 204, 4)' : '0' }}>
 
             <section className={classes.speedDialContainer}>
                 <Backdrop open={speedOpen} />
@@ -159,7 +159,7 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props:IImageUploaderProps)
         const newStringLength = newString.length;
         const range = Array(newStringLength);
 
-        for (let i = 0; i < newStringLength; i += 1) { range[i] = i; }
+        for (let i = 0; i < newStringLength; i++) { range[i] = i; }
 
         return Array.prototype.map.call(range, (i) => newString
             .charCodeAt(i)

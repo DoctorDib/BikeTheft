@@ -72,7 +72,7 @@ export interface IInputFields {
 export interface IImageHolder {
     name: string,
     local: string,
-    file: object,
+    file: HTMLInputElement & EventTarget,
 }
 
 export interface IImageSettings {

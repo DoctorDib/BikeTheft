@@ -180,23 +180,20 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         </section>
     );
 
-    const LayoutComments = () => {
-        if (posts === null) { return; }
-        return posts.map((comment: IComment) => (
-            <Paper
-                className={classes.message}
-                elevation={1}
-                style={{ backgroundColor: FormatPostBackground(comment.type) }}
-                key={comment.post_id}
-            >
-                {FormatAvatar(comment, classes)}
-                {comment.type === 2 ? AddInfoCardFeatures(comment) : ''}
-                <section className={classes.postContainer}>
-                    <Typography>{comment.post_attributes.message}</Typography>
-                </section>
-            </Paper>
-        ));
-    };
+    const LayoutComments = () => posts.map((comment: IComment) => (
+        <Paper
+            className={classes.message}
+            elevation={1}
+            style={{ backgroundColor: FormatPostBackground(comment.type) }}
+            key={comment.post_id}
+        >
+            {FormatAvatar(comment, classes)}
+            {comment.type === 2 ? AddInfoCardFeatures(comment) : ''}
+            <section className={classes.postContainer}>
+                <Typography>{comment.post_attributes.message}</Typography>
+            </section>
+        </Paper>
+    ));
 
     return (
         <section className={classes.mainContainer}>
@@ -229,7 +226,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
             />
 
             <section className={classes.messageContainer}>
-                {LayoutComments()}
+                {posts !== null ? LayoutComments() : ''}
             </section>
         </section>
     );
