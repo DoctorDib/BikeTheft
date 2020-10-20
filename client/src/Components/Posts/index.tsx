@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-
 import { Typography, Button, TextField, CardMedia, Paper } from '@material-ui/core';
 
 import ConfirmationComponent from '../Confirmation';
 
 import { FormatAvatar, FormatPostBackground } from './helper';
-
 import Confirmation from '../../Common/Enums/ConfirmationEnums';
 
 import style from './styles';
@@ -110,6 +108,8 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         }
     };
 
+    const commentConfirmationClick = (comment: IComment, response: boolean) => (() => onVehicleConfirm(comment, response));
+
     const InfoComponent = (comment: IComment) => (
         <section>
             <section className={classes.waitingText}>
@@ -123,7 +123,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                     className={classes.infoButton}
                     variant="contained"
                     color="primary"
-                    onClick={() => onVehicleConfirm(comment, true)}
+                    onClick={commentConfirmationClick(comment, true)}
                 >
                     Confirm
                 </Button>
@@ -131,7 +131,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                     className={classes.infoButton}
                     variant="contained"
                     color="primary"
-                    onClick={() => onVehicleConfirm(comment, false)}
+                    onClick={commentConfirmationClick(comment, false)}
                 >
                     Deny
                 </Button>
