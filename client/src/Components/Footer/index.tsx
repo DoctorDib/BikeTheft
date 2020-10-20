@@ -14,14 +14,10 @@ const Copyright = () => {
     return (
         <div className={classes.copyrightParent}>
             <Typography variant="body2" component="p" className={classes.copyrightSymbol}>
-                {' '}
                 ©
-                {' '}
             </Typography>
             <Typography variant="body2" component="p">
-                {' '}
                 Copyright (groupname) 2020
-                {' '}
             </Typography>
         </div>
     );

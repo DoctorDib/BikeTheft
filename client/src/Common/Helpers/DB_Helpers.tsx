@@ -1,8 +1,6 @@
 import { API } from 'aws-amplify';
 
-import {
-    getDateTimeString, SQLStringProtection, checkSQLInObject, sortFeaturesArray as ExtractValue,
-} from './helper';
+import { getDateTimeString, SQLStringProtection, checkSQLInObject, sortFeaturesArray as ExtractValue } from './helper';
 
 import { IPostAttributes, IData, IInputFields } from '../Interfaces/interfaces';
 

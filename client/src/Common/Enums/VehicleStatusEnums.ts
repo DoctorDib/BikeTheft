@@ -1,7 +1,7 @@
 enum VehicleStatus {
     STOLEN,
     PENDING_COLLECTION,
-    FOUND
+    FOUND,
 }
 
 export default VehicleStatus;

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-    Typography, Button, TextField, CardMedia, Paper,
-} from '@material-ui/core';
+import { Typography, Button, TextField, CardMedia, Paper } from '@material-ui/core';
 
 import ConfirmationComponent from '../Confirmation';
 
@@ -125,9 +123,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                     className={classes.infoButton}
                     variant="contained"
                     color="primary"
-                    onClick={() => {
-                        onVehicleConfirm(comment, true);
-                    }}
+                    onClick={() => onVehicleConfirm(comment, true)}
                 >
                     Confirm
                 </Button>
@@ -135,9 +131,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                     className={classes.infoButton}
                     variant="contained"
                     color="primary"
-                    onClick={() => {
-                        onVehicleConfirm(comment, false);
-                    }}
+                    onClick={() => onVehicleConfirm(comment, false)}
                 >
                     Deny
                 </Button>
@@ -153,28 +147,27 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                     component="img"
                     image={`../static/media/${comment.post_attributes.confirmation_image}`}
                 />
-            ) : (
-                ''
-            )}
+            ) : null}
 
-            {comment.post_attributes.active_state ? InfoComponent(comment) : ''}
+            {comment.post_attributes.active_state ? InfoComponent(comment) : null}
         </section>
     );
 
-    const LayoutComments = () => posts.map((comment: IComment) => (
-        <Paper
-            className={classes.message}
-            elevation={1}
-            style={{ backgroundColor: FormatPostBackground(comment.type) }}
-            key={comment.post_id}
-        >
-            {FormatAvatar(comment, classes)}
-            {comment.type === 2 ? AddInfoCardFeatures(comment) : ''}
-            <section className={classes.postContainer}>
-                <Typography>{comment.post_attributes.message}</Typography>
-            </section>
-        </Paper>
-    ));
+    const LayoutComments = () =>
+        posts.map((comment: IComment) => (
+            <Paper
+                className={classes.message}
+                elevation={1}
+                style={{ backgroundColor: FormatPostBackground(comment.type) }}
+                key={comment.post_id}
+            >
+                {FormatAvatar(comment, classes)}
+                {comment.type === 2 ? AddInfoCardFeatures(comment) : null}
+                <section className={classes.postContainer}>
+                    <Typography>{comment.post_attributes.message}</Typography>
+                </section>
+            </Paper>
+        ));
 
     return (
         <section className={classes.mainContainer}>

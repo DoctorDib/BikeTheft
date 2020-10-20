@@ -2,9 +2,7 @@
 import React, { useState } from 'react';
 import { API } from 'aws-amplify';
 import classNames from 'classnames';
-import {
-    TextField, Typography, Chip, Grid, Button,
-} from '@material-ui/core';
+import { TextField, Typography, Chip, Grid, Button } from '@material-ui/core';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
@@ -115,15 +113,15 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     ));
 
     const setCategory = (wheelPlan: string): number => {
-        const wPStr = wheelPlan.toLowerCase();
+        const wheelPlanLowerCase: string = wheelPlan.toLowerCase();
 
-        if (wPStr.includes('2') && wPStr.includes('wheel')) {
+        if (wheelPlanLowerCase.includes('2') && wheelPlanLowerCase.includes('wheel')) {
             return VehicleCategoryEnum.MOTORBIKE;
         }
-        if (wPStr.includes('2') && wPStr.includes('axle')) {
+        if (wheelPlanLowerCase.includes('2') && wheelPlanLowerCase.includes('axle')) {
             return VehicleCategoryEnum.CAR;
         }
-        if (wPStr.includes('3') && wPStr.includes('axle')) {
+        if (wheelPlanLowerCase.includes('3') && wheelPlanLowerCase.includes('axle')) {
             return VehicleCategoryEnum.TRUCK;
         }
 
@@ -237,9 +235,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                                 endAdornment: <InputToolTip message={getToolTip(key)} />,
                             }}
                         />
-                        <section className={classes.colour} style={{ backgroundColor: inputFields[key] }}>
-                            {' '}
-                        </section>
+                        <section className={classes.colour} style={{ backgroundColor: inputFields[key] }}></section>
                     </Grid>
                 );
             case 'dateStolen':
@@ -385,14 +381,10 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
 
             <section className={classes.controlButtons}>
                 <Button variant="contained" color="primary" onClick={uploadData}>
-                    {' '}
                     Upload
-                    {' '}
                 </Button>
                 <Button variant="contained" color="primary" onClick={clearEverything}>
-                    {' '}
                     Clear
-                    {' '}
                 </Button>
             </section>
         </section>

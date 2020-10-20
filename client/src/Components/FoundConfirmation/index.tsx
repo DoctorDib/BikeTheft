@@ -1,8 +1,6 @@
 import React from 'react';
 
-import {
-    Modal, Backdrop, Fade, Paper, Typography, Button,
-} from '@material-ui/core';
+import { Modal, Backdrop, Fade, Paper, Typography, Button } from '@material-ui/core';
 
 import { CheckCircle, Cancel } from '@material-ui/icons';
 
@@ -47,14 +45,10 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfi
 
                     <section className={classes.buttonContainer}>
                         <Button variant="contained" startIcon={<CheckCircle />} color="primary">
-                            {' '}
                             Confirm
-                            {' '}
                         </Button>
                         <Button variant="contained" startIcon={<Cancel />} onClick={close} color="primary">
-                            {' '}
                             Cancel
-                            {' '}
                         </Button>
                     </section>
                 </Paper>
