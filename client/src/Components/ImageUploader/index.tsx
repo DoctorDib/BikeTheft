@@ -41,11 +41,7 @@ const ImageUploader: React.FC<IImageUploaderProps> = () => {
                     id="icon-button-file"
                     type="file"
                 />
-                <IconButton
-                    aria-label="upload picture"
-                    component="span"
-                    style={{ padding: '0' }}
-                >
+                <IconButton aria-label="upload picture" component="span" style={{ padding: '0' }}>
                     <Paper className={classes.container}>
                         <Add color="primary" />
                     </Paper>

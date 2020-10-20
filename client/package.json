@@ -1,4 +1,13 @@
 {
+  "name": "Lost-My-Wheels",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server.js",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "author": "The lads",
+  "license": "",
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",

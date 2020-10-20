@@ -1,36 +1,18 @@
 import React, { useState } from 'react';
 
 import {
-    Typography,
-    List,
-    Avatar,
-    Button,
-    Grid,
-    ListItem,
-    ListItemText,
+    Typography, List, Avatar, Button, Grid, ListItem, ListItemText,
 } from '@material-ui/core';
 import { Check, Report } from '@material-ui/icons';
 
 import { IVehicleInfo, IOwner } from '../../Common/Interfaces/interfaces';
-import {
-    FormatStatusColour,
-    FormatStatusText,
-    FormatInfoTitles,
-} from './formats';
+import { FormatStatusColour, FormatStatusText, FormatInfoTitles } from './formats';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import CarouselComponent from '../Carousel';
 import FoundConfirmation from '../FoundConfirmation';
 import style from './styles';
 
-const UserImages = import.meta.env.SNOWPACK_PUBLIC_USERIMAGES;
-
-const infoKeys: Array<string> = [
-    'number_plate',
-    'vin',
-    'make',
-    'model',
-    'category',
-];
+const infoKeys: Array<string> = ['number_plate', 'vin', 'make', 'model', 'category'];
 
 interface IVehicleInfoProps {
     owner: IOwner;
@@ -83,10 +65,7 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                 <section className={classes.rightSide}>
                     <section className={classes.owner}>
                         <section className={classes.profileImageContainer}>
-                            <Avatar
-                                className={classes.profileImage}
-                                src={`${UserImages}${owner.member_attributes.profile_image}`}
-                            />
+                            <Avatar className={classes.profileImage} src={`${owner.member_attributes.profile_image}`} />
                         </section>
                         <Typography variant="h6">
                             {' '}
@@ -126,20 +105,13 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                             Found
                             {' '}
                         </Button>
-                        <Button
-                            variant="contained"
-                            startIcon={<Report />}
-                            color="primary"
-                        >
+                        <Button variant="contained" startIcon={<Report />} color="primary">
                             {' '}
                             Report
                             {' '}
                         </Button>
 
-                        <FoundConfirmation
-                            close={foundConfirmationResponse}
-                            open={open}
-                        />
+                        <FoundConfirmation close={foundConfirmationResponse} open={open} />
                     </section>
 
                     <section className={classes.gridStyle}>
@@ -155,16 +127,12 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
 
             <section className={classes.descriptionContainer}>
                 <section>
-                    <Typography className={classes.titles}>
-                        Additional description
-                    </Typography>
+                    <Typography className={classes.titles}>Additional description</Typography>
                     <Typography>{vehicle.description}</Typography>
                 </section>
 
                 <section>
-                    <Typography className={classes.titles}>
-                        Additional damages
-                    </Typography>
+                    <Typography className={classes.titles}>Additional damages</Typography>
                     <List dense>{formatFeatures(vehicle.features)}</List>
                 </section>
             </section>

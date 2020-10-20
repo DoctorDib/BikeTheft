@@ -68,12 +68,7 @@ const ErrorPage: React.FC<IErrorPageProps> = () => {
                             Go Back
                             {' '}
                         </Button>
-                        <Button
-                            color="primary"
-                            style={{ color: '#26844F' }}
-                            className={classes.menuButtons}
-                            href="/"
-                        >
+                        <Button color="primary" style={{ color: '#26844F' }} className={classes.menuButtons} href="/">
                             {' '}
                             Go to the Home Page
                             {' '}

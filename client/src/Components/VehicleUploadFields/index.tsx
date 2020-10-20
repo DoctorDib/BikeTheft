@@ -35,9 +35,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
 
     const [inputFields, setInputFields] = useState<IInputFields>(defaultInputs);
     const [dateStolen, setDateStolen] = useState<Date>(new Date());
-    const [numberPlateInError, setNumberPlateInError] = useState<boolean>(
-        false,
-    );
+    const [numberPlateInError, setNumberPlateInError] = useState<boolean>(false);
     // Flag to determine if number plate has changed
     // if changed then we can make a call to DVLA
     const [numberPlateFlag, setNumberPlateFlag] = useState<boolean>(false);
@@ -47,8 +45,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         secondaryColour: 'The second main colour of your vehicle',
         features:
             'Write down identifiable features of your vehicle, seperate using commans: e.g "single black door, red wheels"',
-        description:
-            'Write a short description of your vehicle, more information the better.',
+        description: 'Write a short description of your vehicle, more information the better.',
     };
 
     const onLeave = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -100,9 +97,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
 
     const handleDelete = (chipData: IChip) => () => {
         let newFeatureArray = inputFields.featuresArray;
-        newFeatureArray = newFeatureArray.filter(
-            (chip: IChip) => chip.key !== chipData.key,
-        );
+        newFeatureArray = newFeatureArray.filter((chip: IChip) => chip.key !== chipData.key);
         setInputFields({
             ...inputFields,
             featuresArray: newFeatureArray,
@@ -211,9 +206,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     };
 
     // eslint-disable-next-line no-undef
-    const categoryOptions: ReadonlyArray<JSX.Element | undefined> = Object.keys(
-        VehicleCategoryEnum,
-    ).map(
+    const categoryOptions: ReadonlyArray<JSX.Element | undefined> = Object.keys(VehicleCategoryEnum).map(
         // eslint-disable-next-line no-undef
         (key: string, i: number): JSX.Element | undefined => {
             const value = VehicleCategoryEnum[i];
@@ -231,12 +224,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
             case 'primaryColour':
             case 'secondaryColour':
                 return (
-                    <Grid
-                        item
-                        md={6}
-                        xs={12}
-                        className={classes.inputContainers}
-                    >
+                    <Grid item md={6} xs={12} className={classes.inputContainers}>
                         <TextField
                             id={key}
                             size="small"
@@ -246,27 +234,17 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                             onChange={onChange}
                             className={classes.input}
                             InputProps={{
-                                endAdornment: (
-                                    <InputToolTip message={getToolTip(key)} />
-                                ),
+                                endAdornment: <InputToolTip message={getToolTip(key)} />,
                             }}
                         />
-                        <section
-                            className={classes.colour}
-                            style={{ backgroundColor: inputFields[key] }}
-                        >
+                        <section className={classes.colour} style={{ backgroundColor: inputFields[key] }}>
                             {' '}
                         </section>
                     </Grid>
                 );
             case 'dateStolen':
                 return (
-                    <Grid
-                        item
-                        md={6}
-                        xs={12}
-                        className={classes.inputContainers}
-                    >
+                    <Grid item md={6} xs={12} className={classes.inputContainers}>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <DateTimePicker
                                 id={key}
@@ -301,12 +279,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                 );
             case 'numberPlate':
                 return (
-                    <Grid
-                        item
-                        md={6}
-                        xs={12}
-                        className={classes.inputContainers}
-                    >
+                    <Grid item md={6} xs={12} className={classes.inputContainers}>
                         <TextField
                             error={numberPlateInError}
                             id={key}
@@ -325,17 +298,14 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                                 color: 'red',
                             }}
                         >
-                            Unknown number plate, please make sure you have
-                            entered it correctly!
+                            Unknown number plate, please make sure you have entered it correctly!
                         </Typography>
                     </Grid>
                 );
             case 'features':
                 return (
                     <Grid item md={12} className={classes.inputContainers}>
-                        <section className={classes.featureContainer}>
-                            {setChips}
-                        </section>
+                        <section className={classes.featureContainer}>{setChips}</section>
                         <TextField
                             id={key}
                             size="small"
@@ -344,29 +314,17 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                             onChange={onChange}
                             onBlur={onLeave}
                             value={inputFields[key]}
-                            className={classNames(
-                                classes.input,
-                                classes.featuresInput,
-                            )}
+                            className={classNames(classes.input, classes.featuresInput)}
                             multiline
                             InputProps={{
-                                endAdornment: (
-                                    <InputToolTip message={getToolTip(key)} />
-                                ),
+                                endAdornment: <InputToolTip message={getToolTip(key)} />,
                             }}
                         />
                     </Grid>
                 );
             case 'description':
                 return (
-                    <Grid
-                        item
-                        md={12}
-                        className={classNames(
-                            classes.inputContainers,
-                            classes.descriptionContainer,
-                        )}
-                    >
+                    <Grid item md={12} className={classNames(classes.inputContainers, classes.descriptionContainer)}>
                         <TextField
                             id={key}
                             size="small"
@@ -379,9 +337,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                             multiline
                             rows={6}
                             InputProps={{
-                                endAdornment: (
-                                    <InputToolTip message={getToolTip(key)} />
-                                ),
+                                endAdornment: <InputToolTip message={getToolTip(key)} />,
                             }}
                         />
                     </Grid>
@@ -393,12 +349,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                 }
 
                 return (
-                    <Grid
-                        item
-                        md={6}
-                        xs={12}
-                        className={classes.inputContainers}
-                    >
+                    <Grid item md={6} xs={12} className={classes.inputContainers}>
                         <TextField
                             id={key}
                             size="small"
@@ -408,9 +359,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                             value={inputFields[key]}
                             className={classes.input}
                             InputProps={{
-                                endAdornment: (
-                                    <InputToolTip message={getToolTip(key)} />
-                                ),
+                                endAdornment: <InputToolTip message={getToolTip(key)} />,
                             }}
                         />
                     </Grid>
@@ -428,31 +377,19 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
 
             <ImageUploaderComponent />
 
-            <Typography>
-                {' '}
-                The images you upload will be uploaded to an S3 bucket yo
-                {' '}
-            </Typography>
+            <Typography> The images you upload will be uploaded to an S3 bucket yo </Typography>
 
             <Grid container spacing={3} className={classes.gridContainer}>
                 {inputComponents}
             </Grid>
 
             <section className={classes.controlButtons}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={uploadData}
-                >
+                <Button variant="contained" color="primary" onClick={uploadData}>
                     {' '}
                     Upload
                     {' '}
                 </Button>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={clearEverything}
-                >
+                <Button variant="contained" color="primary" onClick={clearEverything}>
                     {' '}
                     Clear
                     {' '}

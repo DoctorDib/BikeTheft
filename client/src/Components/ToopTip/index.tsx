@@ -19,9 +19,7 @@ const HtmlTooltip = withStyles(() => ({
     },
 }))(Tooltip);
 
-const VehicleUploadInputs: React.FC<IImageUploaderProps> = (
-    props: IImageUploaderProps,
-) => {
+const VehicleUploadInputs: React.FC<IImageUploaderProps> = (props: IImageUploaderProps) => {
     const { message } = props;
 
     return (

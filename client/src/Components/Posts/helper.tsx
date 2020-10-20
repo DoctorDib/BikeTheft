@@ -22,12 +22,8 @@ export const FormatPostBackground = (styleID: number): string => {
 };
 
 export const FormatAvatar = (comment: IComment, classes: IClasses): any => {
-    const image = comment.type === 1
-        ? `${UserImages}${comment.member_attributes.profile_image}`
-        : 'I';
-    const name = comment.type === 2
-        ? 'Info'
-        : `${comment.member_attributes.display_name}`;
+    const image = comment.type === 1 ? `${UserImages}${comment.member_attributes.profile_image}` : 'I';
+    const name = comment.type === 2 ? 'Info' : `${comment.member_attributes.display_name}`;
     const avatarColour = comment.type === 2 ? '#ff8e15' : 'gray';
 
     return (
@@ -43,9 +39,7 @@ export const FormatAvatar = (comment: IComment, classes: IClasses): any => {
                 </Avatar>
                 <section className={classes.avatarText}>
                     <Typography variant="subtitle1">{name}</Typography>
-                    <Typography variant="caption">
-                        {comment.date_added}
-                    </Typography>
+                    <Typography variant="caption">{comment.date_added}</Typography>
                 </section>
             </section>
         </section>

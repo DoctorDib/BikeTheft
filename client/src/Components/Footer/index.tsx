@@ -13,11 +13,7 @@ const Copyright = () => {
 
     return (
         <div className={classes.copyrightParent}>
-            <Typography
-                variant="body2"
-                component="p"
-                className={classes.copyrightSymbol}
-            >
+            <Typography variant="body2" component="p" className={classes.copyrightSymbol}>
                 {' '}
                 ©
                 {' '}

@@ -1,10 +1,7 @@
 import { API } from 'aws-amplify';
 
 import {
-    getDateTimeString,
-    SQLStringProtection,
-    checkSQLInObject,
-    sortFeaturesArray as ExtractValue,
+    getDateTimeString, SQLStringProtection, checkSQLInObject, sortFeaturesArray as ExtractValue,
 } from './helper';
 
 import { IPostAttributes, IData, IInputFields } from '../Interfaces/interfaces';
@@ -31,11 +28,7 @@ export const sendPost = async (
     };
 
     try {
-        const returnData: IData = await API.post(
-            'base_endpoint',
-            '/forum/set_post',
-            body,
-        );
+        const returnData: IData = await API.post('base_endpoint', '/forum/set_post', body);
         console.debug(returnData);
         return true;
     } catch (e) {
@@ -46,13 +39,9 @@ export const sendPost = async (
 
 export const getThread = async (threadID: string): Promise<IData> => {
     try {
-        const returnData: IData = await API.post(
-            'base_endpoint',
-            '/forum/get',
-            {
-                body: { thread_id: threadID },
-            },
-        );
+        const returnData: IData = await API.post('base_endpoint', '/forum/get', {
+            body: { thread_id: threadID },
+        });
 
         console.debug(returnData);
         return returnData;
@@ -62,10 +51,7 @@ export const getThread = async (threadID: string): Promise<IData> => {
     }
 };
 
-export const updatePost = async (
-    postID: number,
-    postAttributes: IPostAttributes,
-): Promise<boolean> => {
+export const updatePost = async (postID: number, postAttributes: IPostAttributes): Promise<boolean> => {
     const body = {
         body: {
             post_id: postID,
@@ -74,11 +60,7 @@ export const updatePost = async (
     };
 
     try {
-        const returnData: IData = await API.post(
-            'base_endpoint',
-            '/forum/update_post',
-            body,
-        );
+        const returnData: IData = await API.post('base_endpoint', '/forum/update_post', body);
         console.debug(returnData);
         return true;
     } catch (e) {
@@ -87,10 +69,7 @@ export const updatePost = async (
     }
 };
 
-export const updateVehicleStat = async (
-    vehicleID: number,
-    newStat: number,
-): Promise<boolean> => {
+export const updateVehicleStat = async (vehicleID: number, newStat: number): Promise<boolean> => {
     const body = {
         body: {
             vehicle_id: vehicleID,
@@ -99,11 +78,7 @@ export const updateVehicleStat = async (
     };
 
     try {
-        const returnData: IData = await API.post(
-            'base_endpoint',
-            '/vehicles/update_vehicle_stat',
-            body,
-        );
+        const returnData: IData = await API.post('base_endpoint', '/vehicles/update_vehicle_stat', body);
         console.debug(returnData);
         return true;
     } catch (e) {
@@ -112,10 +87,7 @@ export const updateVehicleStat = async (
     }
 };
 
-export const addNewVehicle = async (
-    ownerID: number,
-    data: IInputFields,
-): Promise<boolean> => {
+export const addNewVehicle = async (ownerID: number, data: IInputFields): Promise<boolean> => {
     const cleanData = checkSQLInObject(data);
 
     // Extracting the string values from an array of objects
@@ -148,11 +120,7 @@ export const addNewVehicle = async (
     };
 
     try {
-        const response = await API.post(
-            'base_endpoint',
-            '/vehicles/set_vehicle',
-            body,
-        );
+        const response = await API.post('base_endpoint', '/vehicles/set_vehicle', body);
         console.debug(response);
         return true;
     } catch (e) {
