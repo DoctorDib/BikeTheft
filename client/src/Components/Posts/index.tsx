@@ -1,23 +1,16 @@
 import React, { useState } from 'react';
-
-import {
-    Typography,
-    Button,
-    TextField,
-    CardMedia,
-    Paper,
-} from '@material-ui/core';
+import { Typography, Button, TextField, CardMedia, Paper } from '@material-ui/core';
 
 import ConfirmationComponent from '../Confirmation';
 
 import { FormatAvatar, FormatPostBackground } from './helper';
-
 import Confirmation from '../../Common/Enums/ConfirmationEnums';
 
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 import { IComment, IPostAttributes } from '../../Common/Interfaces/interfaces';
+
 import {
     defaultComment,
     defaultPostAttributes,
@@ -40,9 +33,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
     const [value, setValue] = useState<string>('');
     const [inputError, setInputError] = useState<boolean>(false);
     const [confirmation, setConfirmation] = useState(false);
-    const [confirmationMessage, setConfirmationMessage] = useState<number>(
-        Confirmation.CANCEL,
-    );
+    const [confirmationMessage, setConfirmationMessage] = useState<number>(Confirmation.CANCEL);
     const [selectedPost, setSelectedPost] = useState<IComment>(defaultComment);
 
     const { posts, vehicleID } = props;
@@ -79,10 +70,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         setConfirmation(true);
     };
 
-    const confirmationCallback = (
-        enumMessage: number,
-        response: boolean,
-    ): void => {
+    const confirmationCallback = (enumMessage: number, response: boolean): void => {
         setConfirmation(false);
 
         let newPostAttributes: IPostAttributes = defaultPostAttributes;
@@ -127,6 +115,8 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         }
     };
 
+    const commentConfirmationClick = (comment: IComment, response: boolean) => (() => onVehicleConfirm(comment, response));
+
     const InfoComponent = (comment: IComment) => (
         <section>
             <section className={classes.waitingText}>
@@ -140,9 +130,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                     className={classes.infoButton}
                     variant="contained"
                     color="primary"
-                    onClick={() => {
-                        onVehicleConfirm(comment, true);
-                    }}
+                    onClick={commentConfirmationClick(comment, true)}
                 >
                     Confirm
                 </Button>
@@ -150,9 +138,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                     className={classes.infoButton}
                     variant="contained"
                     color="primary"
-                    onClick={() => {
-                        onVehicleConfirm(comment, false);
-                    }}
+                    onClick={commentConfirmationClick(comment, false)}
                 >
                     Deny
                 </Button>
@@ -162,46 +148,38 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
 
     const AddInfoCardFeatures = (comment: IComment) => (
         <section>
-            {Object.prototype.hasOwnProperty.call(
-                comment.post_attributes,
-                'confirmation_image',
-            ) ? (
-                    <CardMedia
-                        className={classes.confirmationImg}
-                        component="img"
-                        image={`../static/media/${comment.post_attributes.confirmation_image}`}
-                    />
-                ) : (
-                    ''
-                )}
+            {Object.prototype.hasOwnProperty.call(comment.post_attributes, 'confirmation_image') ? (
+                <CardMedia
+                    className={classes.confirmationImg}
+                    component="img"
+                    image={`../static/media/${comment.post_attributes.confirmation_image}`}
+                />
+            ) : null}
 
-            {comment.post_attributes.active_state ? InfoComponent(comment) : ''}
+            {comment.post_attributes.active_state ? InfoComponent(comment) : null}
         </section>
     );
 
-    const LayoutComments = () => posts.map((comment: IComment) => (
-        <Paper
-            className={classes.message}
-            elevation={1}
-            style={{ backgroundColor: FormatPostBackground(comment.type) }}
-            key={comment.post_id}
-        >
-            {FormatAvatar(comment, classes)}
-            {comment.type === 2 ? AddInfoCardFeatures(comment) : ''}
-            <section className={classes.postContainer}>
-                <Typography>{comment.post_attributes.message}</Typography>
-            </section>
-        </Paper>
-    ));
+    const LayoutComments = () =>
+        posts.map((comment: IComment) => (
+            <Paper
+                className={classes.message}
+                elevation={1}
+                style={{ backgroundColor: FormatPostBackground(comment.type) }}
+                key={comment.post_id}
+            >
+                {FormatAvatar(comment, classes)}
+                {comment.type === 2 ? AddInfoCardFeatures(comment) : null}
+                <section className={classes.postContainer}>
+                    <Typography>{comment.post_attributes.message}</Typography>
+                </section>
+            </Paper>
+        ));
 
     return (
         <section className={classes.mainContainer}>
             <Typography variant="h5"> Activity </Typography>
-            <Typography variant="caption">
-                {' '}
-                Found anything related to this vehicle? Every second counts!
-                {' '}
-            </Typography>
+            <Typography variant="caption"> Found anything related to this vehicle? Every second counts! </Typography>
 
             <TextField
                 id="outlined-multiline-flexible"
@@ -223,7 +201,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 open={confirmation}
                 callback={confirmationCallback}
             />
-
+        
             <section className={classes.messageContainer}>
                 {posts !== null ? LayoutComments() : ''}
             </section>

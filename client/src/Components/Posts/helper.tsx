@@ -43,9 +43,7 @@ export const FormatAvatar = (comment: IComment, classes: IClasses):React.FC => {
                 </Avatar>
                 <section className={classes.avatarText}>
                     <Typography variant="subtitle1">{name}</Typography>
-                    <Typography variant="caption">
-                        {comment.date_added}
-                    </Typography>
+                    <Typography variant="caption">{comment.date_added}</Typography>
                 </section>
             </section>
         </section>

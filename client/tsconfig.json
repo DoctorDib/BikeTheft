@@ -31,6 +31,6 @@
         "skipLibCheck": true,
         /* noEmit - Snowpack builds (emits) files, not tsc. */
         "noEmit": true,
-        "baseUrl": "./",
-    },
+        "baseUrl": "./"
+    }
 }

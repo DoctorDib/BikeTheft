@@ -33,12 +33,10 @@ const CookiePopup: React.FC<ICookiePopupProps> = (props: ICookiePopupProps) => {
             >
                 <section style={{ width: '100%' }}>
                     <Typography>
-                        This website uses cookies. By navigating around this
-                        site you consent to cookies being stored on your
-                        machine;
+                        This website uses cookies. By navigating around this site you consent to cookies being stored on
+                        your machine;
                         <Typography component="a" href="/PrivacyPolicy">
-                            {' '}
-                            Click here for more information{' '}
+                            Click here for more information
                         </Typography>
                         .
                     </Typography>
@@ -46,8 +44,7 @@ const CookiePopup: React.FC<ICookiePopupProps> = (props: ICookiePopupProps) => {
                     <Typography>
                         Please read our
                         <Typography component="a" href="/TermsAndConditions">
-                            {' '}
-                            Terms and Conditions{' '}
+                            Terms and Conditions
                         </Typography>
                     </Typography>
                 </section>
@@ -63,13 +60,8 @@ const CookiePopup: React.FC<ICookiePopupProps> = (props: ICookiePopupProps) => {
                     paddingTop: '1em',
                 }}
             >
-                <Button
-                    onClick={clickTrigger}
-                    style={{ fontWeight: 650, color: '#26844F' }}
-                    color="primary"
-                >
-                    {' '}
-                    Accept{' '}
+                <Button onClick={clickTrigger} style={{ fontWeight: 650, color: '#26844F' }} color="primary">
+                    Accept
                 </Button>
             </section>
         </section>

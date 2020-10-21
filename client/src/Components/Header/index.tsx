@@ -34,17 +34,8 @@ const DesktopHeader: React.FC = () => {
         <section className={classes.main}>
             <section className={classes.headerContainer}>
                 <div className={classes.logoContainer}>
-                    <LogoButton
-                        disableRipple
-                        className={classes.menuButtons}
-                        href="/"
-                    >
-                        <img
-                            src={Logo}
-                            title="logo"
-                            alt="logo"
-                            className={classes.logo}
-                        />
+                    <LogoButton disableRipple className={classes.menuButtons} href="/">
+                        <img src={Logo} title="logo" alt="logo" className={classes.logo} />
                     </LogoButton>
                 </div>
             </section>

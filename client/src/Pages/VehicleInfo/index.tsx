@@ -7,20 +7,11 @@ import FooterComponent from '../../Components/Footer';
 import VehicleInfoComponent from '../../Components/VehicleInfo';
 import PostsComponent from '../../Components/Posts';
 
-import {
-    IVehicleInfo,
-    IOwner,
-    IData,
-    IComment,
-} from '../../Common/Interfaces/interfaces';
+import { IVehicleInfo, IOwner, IData, IComment } from '../../Common/Interfaces/interfaces';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
-import {
-    defaultComment,
-    defaultOwner,
-    defaultVehicleData,
-} from '../../Common/Helpers/Defaults';
+import { defaultComment, defaultOwner, defaultVehicleData } from '../../Common/Helpers/Defaults';
 import { getThread } from '../../Common/Helpers/DB_Helpers';
 
 interface IVehicleProps {
@@ -40,9 +31,7 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
     const [threadID, setThreadID] = useState<string>(id);
     const [memberData, setMemberData] = useState<IOwner>(defaultOwner);
     const [vehicleID, setVehicleID] = useState<number>(-1);
-    const [vehicleData, setVehicleData] = useState<IVehicleInfo>(
-        defaultVehicleData,
-    );
+    const [vehicleData, setVehicleData] = useState<IVehicleInfo>(defaultVehicleData);
     const [postData, setPostData] = useState<Array<IComment>>([defaultComment]);
 
     const fetch = async (thread_ID: string) => {
@@ -69,10 +58,7 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
             </section>
 
             <section style={{ width: '100%' }}>
-                <VehicleInfoComponent
-                    owner={memberData}
-                    vehicle={vehicleData}
-                />
+                <VehicleInfoComponent owner={memberData} vehicle={vehicleData} />
             </section>
 
             <section className={classes.mainContentGap}>

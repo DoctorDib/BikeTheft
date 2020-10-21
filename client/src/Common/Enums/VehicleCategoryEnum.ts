@@ -3,7 +3,7 @@ enum VehicleCategories {
     MOTORBIKE,
     CAR,
     TRUCK,
-    BICYCLE
+    BICYCLE,
 }
 
 export default VehicleCategories;

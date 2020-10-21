@@ -14,10 +14,7 @@ const AppliedRoute: React.FC<IAppliedRouteProps> = (props: IAppliedRouteProps) =
 
     return (
         // eslint-disable-next-line react/jsx-props-no-spreading
-        <Route
-            {...rest}
-            render={(routeProps) => <C {...routeProps} {...appProps} />}
-        />
+        <Route {...rest} render={(routeProps) => <C {...routeProps} {...appProps} />} />
     );
 };
 

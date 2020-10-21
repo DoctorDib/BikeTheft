@@ -1,13 +1,6 @@
 import React from 'react';
 
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-} from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 
 import Confirmation from '../../Common/Enums/ConfirmationEnums';
 

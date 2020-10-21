@@ -1,13 +1,6 @@
 import React from 'react';
 
-import {
-    Modal,
-    Backdrop,
-    Fade,
-    Paper,
-    Typography,
-    Button,
-} from '@material-ui/core';
+import { Modal, Backdrop, Fade, Paper, Typography, Button } from '@material-ui/core';
 
 import { CheckCircle, Cancel } from '@material-ui/icons';
 
@@ -22,9 +15,7 @@ interface IFoundConfirmationProps {
     close: () => void;
 }
 
-const FoundConfirmation: React.FC<IFoundConfirmationProps> = (
-    props: IFoundConfirmationProps,
-) => {
+const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfirmationProps) => {
     const classes: IClasses = styles();
 
     const { open, close } = props;
@@ -46,36 +37,19 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (
                 <Paper className={classes.paper} elevation={0}>
                     <Typography variant="h5">Confirmation</Typography>
                     <Typography>
-                        This will send a message to the owner requesting a
-                        confirmation that you have found their bike.
+                        This will send a message to the owner requesting a confirmation that you have found their bike.
                     </Typography>
 
-                    <Typography>
-                        Please upload a picture of the vehicle for confirmation
-                        purposes.
-                    </Typography>
+                    <Typography>Please upload a picture of the vehicle for confirmation purposes.</Typography>
 
                     {/* <ImageUploaderComponent images={} setImages={} /> */}
 
                     <section className={classes.buttonContainer}>
-                        <Button
-                            variant="contained"
-                            startIcon={<CheckCircle />}
-                            color="primary"
-                        >
-                            {' '}
+                        <Button variant="contained" startIcon={<CheckCircle />} color="primary">
                             Confirm
-                            {' '}
                         </Button>
-                        <Button
-                            variant="contained"
-                            startIcon={<Cancel />}
-                            onClick={close}
-                            color="primary"
-                        >
-                            {' '}
+                        <Button variant="contained" startIcon={<Cancel />} onClick={close} color="primary">
                             Cancel
-                            {' '}
                         </Button>
                     </section>
                 </Paper>

@@ -36,18 +36,14 @@ const ErrorPage: React.FC<IErrorPageProps> = () => {
             >
                 <section style={{ width: '100%' }}>
                     <Typography variant="h3" style={{ fontWeight: 650 }}>
-                        {' '}
                         Error 404
-                        {' '}
                     </Typography>
                 </section>
 
                 <section className={classes.errorContentContainer}>
                     <section className={classes.sorryText}>
                         <Typography variant="h4" style={{ fontWeight: 650 }}>
-                            {' '}
                             Sorry!
-                            {' '}
                         </Typography>
                     </section>
 
@@ -64,19 +60,10 @@ const ErrorPage: React.FC<IErrorPageProps> = () => {
                             className={classes.menuButtons}
                             onClick={() => GoBack()}
                         >
-                            {' '}
                             Go Back
-                            {' '}
                         </Button>
-                        <Button
-                            color="primary"
-                            style={{ color: '#26844F' }}
-                            className={classes.menuButtons}
-                            href="/"
-                        >
-                            {' '}
+                        <Button color="primary" style={{ color: '#26844F' }} className={classes.menuButtons} href="/">
                             Go to the Home Page
-                            {' '}
                         </Button>
                     </section>
                 </section>

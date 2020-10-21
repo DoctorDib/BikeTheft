@@ -12,9 +12,7 @@ interface IPrivateRouteProps {
     location: { pathname: string };
 }
 
-const PrivateRoute: React.FC<IPrivateRouteProps> = (
-    props: IPrivateRouteProps,
-) => {
+const PrivateRoute: React.FC<IPrivateRouteProps> = (props: IPrivateRouteProps) => {
     const {
         // TODO fix this later on
         // eslint-disable-next-line react/prop-types
@@ -33,9 +31,7 @@ const PrivateRoute: React.FC<IPrivateRouteProps> = (
     ) : (
         // TODO fix this
         // eslint-disable-next-line react/prop-types
-        <Redirect
-            to={`/login?redirect=${encodeURIComponent(location.pathname)}`}
-        />
+        <Redirect to={`/login?redirect=${encodeURIComponent(location.pathname)}`} />
     );
 };
 
