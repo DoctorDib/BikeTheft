@@ -14,8 +14,7 @@ export default makeStyles((theme) => ({
 
     textBox: {
         width: '100%',
-        maxWidth: '75%',
-        padding: '10px 12px 10px',
+        margin: '10px 0 10px',
     },
 
     message: {
@@ -26,8 +25,33 @@ export default makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
+        width: '100%',
         [theme.breakpoints.up('md')]: {
-            maxWidth: '50%',
+            width: '50%',
+        },
+    },
+
+    textBoxContainer: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        [theme.breakpoints.up('md')]: {
+            maxWidth: '75%',
+        },
+    },
+
+    postButtonControls: {
+        display: 'flex',
+        justifyContent: 'space-around',
+        '& .MuiButtonBase-root': {
+            width: '30vw',
+        },
+        [theme.breakpoints.up('md')]: {
+            justifyContent: 'flex-end',
+            '& .MuiButtonBase-root': {
+                width: '10vw',
+                marginLeft: '10px',
+            },
         },
     },
 

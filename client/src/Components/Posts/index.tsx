@@ -41,6 +41,8 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         if (inputError) setInputError(false);
     };
 
+    const onClearClick = (): void => setValue('');
+
     const onPostSubmit = (): void => {
         if (value === '') {
             setInputError(true);
@@ -175,20 +177,29 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
             <Typography variant="h5"> Activity </Typography>
             <Typography variant="caption"> Found anything related to this vehicle? Every second counts! </Typography>
 
-            <TextField
-                id="outlined-multiline-flexible"
-                className={classes.textBox}
-                multiline
-                rowsMax={4}
-                value={value}
-                onChange={onChange}
-                variant="outlined"
-                error={inputError}
-            />
+            <section className={classes.textBoxContainer}>
+                <TextField
+                    id="outlined-multiline-flexible"
+                    className={classes.textBox}
+                    multiline
+                    rows={4}
+                    rowsMax={10}
+                    value={value}
+                    onChange={onChange}
+                    variant="outlined"
+                    error={inputError}
+                />
 
-            <Button variant="contained" color="primary" onClick={onPostSubmit}>
-                Post
-            </Button>
+                <section className={classes.postButtonControls}>
+                    <Button variant="contained" color="primary" onClick={onClearClick}>
+                        Clear
+                    </Button>
+
+                    <Button variant="contained" color="primary" onClick={onPostSubmit}>
+                        Post
+                    </Button>
+                </section>
+            </section>
 
             <ConfirmationComponent
                 enumMessage={confirmationMessage}
