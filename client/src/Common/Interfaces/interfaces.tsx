@@ -70,28 +70,28 @@ export interface IInputFields {
 }
 
 export interface IImageHolder {
-    name: string,
-    local: string,
-    file: HTMLInputElement & EventTarget,
+    name: string;
+    local: string;
+    file: HTMLInputElement & EventTarget;
 }
 
 export interface IImageSettings {
-    id: number,
+    id: number;
     // Ensuring a unique value based on name and Date.now()
-    name: string,
-    is_main_image: boolean,
-    type: string,
-    data64: string,
+    name: string;
+    is_main_image: boolean;
+    type: string;
+    data64: string;
     crop: {
-        original: string,
-        crop_info: ICropSettings | null,
-    },
+        original: string;
+        crop_info: ICropSettings | null;
+    };
 }
 
 export interface ICropSettings {
-    unit: string,
-    width: number,
-    height: number,
-    x: number,
-    y: number,
+    unit: string;
+    width: number;
+    height: number;
+    x: number;
+    y: number;
 }

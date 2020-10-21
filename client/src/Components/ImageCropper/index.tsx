@@ -1,6 +1,4 @@
-import React, {
-    useState, useCallback, useRef, useEffect,
-} from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
@@ -18,26 +16,18 @@ const pixelRatio = window.devicePixelRatio || 1;
 
 // We resize the canvas down when saving on retina devices otherwise the image
 // will be double or triple the preview size.
-const getResizedCanvas = (canvas:HTMLCanvasElement, newWidth:number, newHeight:number):HTMLCanvasElement => {
+const getResizedCanvas = (canvas: HTMLCanvasElement, newWidth: number, newHeight: number): HTMLCanvasElement => {
     const tmpCanvas = document.createElement('canvas');
     tmpCanvas.width = newWidth;
     tmpCanvas.height = newHeight;
 
     const ctx = tmpCanvas.getContext('2d');
 
-    if (!ctx) { return tmpCanvas; }
+    if (!ctx) {
+        return tmpCanvas;
+    }
 
-    ctx.drawImage(
-        canvas,
-        0,
-        0,
-        canvas.width,
-        canvas.height,
-        0,
-        0,
-        newWidth,
-        newHeight,
-    );
+    ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, newWidth, newHeight);
 
     return tmpCanvas;
 };
@@ -47,11 +37,11 @@ interface IImageCropProps {
     handleClose: () => void;
     imageSrc: string;
     crop: ICropSettings;
-    saveCroppedData: (x:string, y:ICropSettings) => void;
-    setCrop: (x:ICropSettings) => void;
+    saveCroppedData: (x: string, y: ICropSettings) => void;
+    setCrop: (x: ICropSettings) => void;
 }
 
-const ImageCropped:React.FC<IImageCropProps> = (props: IImageCropProps) => {
+const ImageCropped: React.FC<IImageCropProps> = (props: IImageCropProps) => {
     const classes: IClasses = styles();
 
     const imgRef = useRef<HTMLImageElement>();
@@ -59,20 +49,24 @@ const ImageCropped:React.FC<IImageCropProps> = (props: IImageCropProps) => {
 
     const [completedCrop, setCompletedCrop] = useState<ICropSettings>(defaultCropSettings);
 
-    const {
-        open, handleClose, imageSrc, saveCroppedData, setCrop, crop,
-    } = props;
+    const { open, handleClose, imageSrc, saveCroppedData, setCrop, crop } = props;
 
-    const onLoad = useCallback((img) => { imgRef.current = img; }, []);
+    const onLoad = useCallback((img) => {
+        imgRef.current = img;
+    }, []);
 
     const generateDownload = () => {
         const previewCanvas = previewCanvasRef.current;
 
-        if (!completedCrop || !previewCanvas) { return; }
+        if (!completedCrop || !previewCanvas) {
+            return;
+        }
 
         const canvas = getResizedCanvas(previewCanvas, completedCrop.width, completedCrop.height);
 
-        if (!canvas) { return; }
+        if (!canvas) {
+            return;
+        }
 
         const dataURL = canvas.toDataURL('image/png');
 
@@ -81,17 +75,23 @@ const ImageCropped:React.FC<IImageCropProps> = (props: IImageCropProps) => {
     };
 
     useEffect(() => {
-        if (!completedCrop || !previewCanvasRef.current || !imgRef.current) { return; }
+        if (!completedCrop || !previewCanvasRef.current || !imgRef.current) {
+            return;
+        }
 
         const image = imgRef.current;
         const canvas = previewCanvasRef.current;
-        if (image === null || canvas === null) { return; }
+        if (image === null || canvas === null) {
+            return;
+        }
 
         const scaleX = image.naturalWidth / image.width; // natural width
         const scaleY = image.naturalHeight / image.height; // natural height
         const ctx = canvas.getContext('2d');
 
-        if (ctx == null) { return; }
+        if (ctx == null) {
+            return;
+        }
 
         canvas.width = completedCrop.width * pixelRatio;
         canvas.height = completedCrop.height * pixelRatio;
@@ -139,17 +139,11 @@ const ImageCropped:React.FC<IImageCropProps> = (props: IImageCropProps) => {
                     className={classes.button}
                 >
                     {' '}
-Confirm
-                    {' '}
+                    Confirm{' '}
                 </Button>
-                <Button
-                    variant="outlined"
-                    onClick={handleClose}
-                    className={classes.button}
-                >
+                <Button variant="outlined" onClick={handleClose} className={classes.button}>
                     {' '}
-Cancel
-                    {' '}
+                    Cancel{' '}
                 </Button>
             </section>
         </Dialog>

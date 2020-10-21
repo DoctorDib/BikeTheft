@@ -1,16 +1,8 @@
 import { API } from 'aws-amplify';
 
-import {
-    getDateTimeString,
-    sortFeaturesArray,
-} from './helper';
+import { getDateTimeString, sortFeaturesArray } from './helper';
 
-import {
-    IPostAttributes,
-    IData,
-    IInputFields,
-    IImageSettings,
-} from '../Interfaces/interfaces';
+import { IPostAttributes, IData, IInputFields, IImageSettings } from '../Interfaces/interfaces';
 
 import { defaultData } from './Defaults';
 
@@ -90,14 +82,15 @@ export const updateVehicleStat = async (vehicleID: number, newStat: number): Pro
     }
 };
 
-const stripData64 = (images:Array<IImageSettings>) => images.map((data) => ({
-    name: data.name,
-    is_main_image: data.is_main_image,
-    type: data.type,
-    crop: {
-        crop_info: data.crop.crop_info,
-    },
-}));
+const stripData64 = (images: Array<IImageSettings>) =>
+    images.map((data) => ({
+        name: data.name,
+        is_main_image: data.is_main_image,
+        type: data.type,
+        crop: {
+            crop_info: data.crop.crop_info,
+        },
+    }));
 
 export const createNewThread = async (
     ownerID: string,
@@ -135,11 +128,7 @@ export const createNewThread = async (
     };
 
     try {
-        const response = await API.post(
-            'base_endpoint',
-            '/forum/create_thread',
-            body,
-        );
+        const response = await API.post('base_endpoint', '/forum/create_thread', body);
         return response;
     } catch (e) {
         console.error(e);

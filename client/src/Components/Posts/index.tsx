@@ -11,16 +11,9 @@ import { IClasses } from '../../Common/Interfaces/IClasses';
 
 import { IComment, IPostAttributes } from '../../Common/Interfaces/interfaces';
 
-import {
-    defaultComment,
-    defaultPostAttributes,
-} from '../../Common/Helpers/Defaults';
+import { defaultComment, defaultPostAttributes } from '../../Common/Helpers/Defaults';
 
-import {
-    sendPost,
-    updatePost,
-    updateVehicleStat,
-} from '../../Common/Helpers/DB_Helpers';
+import { sendPost, updatePost, updateVehicleStat } from '../../Common/Helpers/DB_Helpers';
 
 interface IForumProps {
     posts: Array<IComment>;
@@ -115,7 +108,8 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         }
     };
 
-    const commentConfirmationClick = (comment: IComment, response: boolean) => (() => onVehicleConfirm(comment, response));
+    const commentConfirmationClick = (comment: IComment, response: boolean) => () =>
+        onVehicleConfirm(comment, response);
 
     const InfoComponent = (comment: IComment) => (
         <section>
@@ -201,10 +195,8 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 open={confirmation}
                 callback={confirmationCallback}
             />
-        
-            <section className={classes.messageContainer}>
-                {posts !== null ? LayoutComments() : ''}
-            </section>
+
+            <section className={classes.messageContainer}>{posts !== null ? LayoutComments() : ''}</section>
         </section>
     );
 };

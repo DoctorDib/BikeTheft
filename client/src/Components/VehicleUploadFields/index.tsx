@@ -223,153 +223,159 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         },
     );
 
-    const inputComponents = Object.keys(inputFields).map((key: string):React.ReactNode => {
-        switch (key) {
-            case 'primaryColour':
-            case 'secondaryColour':
-                return (
-                    <Grid item md={6} xs={12} className={classes.inputContainers}>
-                        <TextField
-                            id={key}
-                            size="small"
-                            label={setLabel(key)}
-                            variant="outlined"
-                            value={inputFields[key]}
-                            onChange={onChange}
-                            className={classes.input}
-                            InputProps={{
-                                endAdornment: <InputToolTip message={getToolTip(key)} />,
-                            }}
-                        />
-                        <section className={classes.colour} style={{ backgroundColor: inputFields[key] }}></section>
-                    </Grid>
-                );
-            case 'dateStolen':
-                return (
-                    <Grid item md={6} xs={12} className={classes.inputContainers}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <DateTimePicker
+    const inputComponents = Object.keys(inputFields).map(
+        (key: string): React.ReactNode => {
+            switch (key) {
+                case 'primaryColour':
+                case 'secondaryColour':
+                    return (
+                        <Grid item md={6} xs={12} className={classes.inputContainers}>
+                            <TextField
                                 id={key}
+                                size="small"
+                                label={setLabel(key)}
                                 variant="outlined"
-                                label="Date Stolen"
-                                disableFuture
-                                value={dateStolen}
-                                onChange={setDateStolen}
-                                autoOk
-                                ampm={false}
+                                value={inputFields[key]}
+                                onChange={onChange}
+                                className={classes.input}
+                                InputProps={{
+                                    endAdornment: <InputToolTip message={getToolTip(key)} />,
+                                }}
+                            />
+                            <section className={classes.colour} style={{ backgroundColor: inputFields[key] }} />
+                        </Grid>
+                    );
+                case 'dateStolen':
+                    return (
+                        <Grid item md={6} xs={12} className={classes.inputContainers}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <DateTimePicker
+                                    id={key}
+                                    variant="outlined"
+                                    label="Date Stolen"
+                                    disableFuture
+                                    value={dateStolen}
+                                    onChange={setDateStolen}
+                                    autoOk
+                                    ampm={false}
+                                    className={classes.input}
+                                />
+                            </MuiPickersUtilsProvider>
+                        </Grid>
+                    );
+                case 'category':
+                    return (
+                        <Grid item xs={12} className={classes.inputContainers}>
+                            <TextField
+                                id={key}
+                                select
+                                label="Vehicle Category"
+                                value={inputFields[key]}
+                                onChange={onChange}
+                                SelectProps={{ native: true }}
+                                helperText="Please select your vehicle category"
+                                variant="outlined"
+                            >
+                                {categoryOptions}
+                            </TextField>
+                        </Grid>
+                    );
+                case 'numberPlate':
+                    return (
+                        <Grid item md={6} xs={12} className={classes.inputContainers}>
+                            <TextField
+                                error={numberPlateInError}
+                                id={key}
+                                size="small"
+                                label={setLabel(key)}
+                                variant="outlined"
+                                onChange={onChange}
+                                onBlur={onLeave}
+                                value={inputFields[key]}
                                 className={classes.input}
                             />
-                        </MuiPickersUtilsProvider>
-                    </Grid>
-                );
-            case 'category':
-                return (
-                    <Grid item xs={12} className={classes.inputContainers}>
-                        <TextField
-                            id={key}
-                            select
-                            label="Vehicle Category"
-                            value={inputFields[key]}
-                            onChange={onChange}
-                            SelectProps={{ native: true }}
-                            helperText="Please select your vehicle category"
-                            variant="outlined"
+                            <Typography
+                                variant="caption"
+                                style={{
+                                    display: numberPlateInError ? 'block' : 'none',
+                                    color: 'red',
+                                }}
+                            >
+                                Unknown number plate, please make sure you have entered it correctly!
+                            </Typography>
+                        </Grid>
+                    );
+                case 'features':
+                    return (
+                        <Grid item md={12} className={classes.inputContainers}>
+                            <section className={classes.featureContainer}>{setChips}</section>
+                            <TextField
+                                id={key}
+                                size="small"
+                                label={setLabel(key)}
+                                variant="outlined"
+                                onChange={onChange}
+                                onBlur={onLeave}
+                                value={inputFields[key]}
+                                className={classNames(classes.input, classes.featuresInput)}
+                                multiline
+                                InputProps={{
+                                    endAdornment: <InputToolTip message={getToolTip(key)} />,
+                                }}
+                            />
+                        </Grid>
+                    );
+                case 'description':
+                    return (
+                        <Grid
+                            item
+                            md={12}
+                            className={classNames(classes.inputContainers, classes.descriptionContainer)}
                         >
-                            {categoryOptions}
-                        </TextField>
-                    </Grid>
-                );
-            case 'numberPlate':
-                return (
-                    <Grid item md={6} xs={12} className={classes.inputContainers}>
-                        <TextField
-                            error={numberPlateInError}
-                            id={key}
-                            size="small"
-                            label={setLabel(key)}
-                            variant="outlined"
-                            onChange={onChange}
-                            onBlur={onLeave}
-                            value={inputFields[key]}
-                            className={classes.input}
-                        />
-                        <Typography
-                            variant="caption"
-                            style={{
-                                display: numberPlateInError ? 'block' : 'none',
-                                color: 'red',
-                            }}
-                        >
-                            Unknown number plate, please make sure you have entered it correctly!
-                        </Typography>
-                    </Grid>
-                );
-            case 'features':
-                return (
-                    <Grid item md={12} className={classes.inputContainers}>
-                        <section className={classes.featureContainer}>{setChips}</section>
-                        <TextField
-                            id={key}
-                            size="small"
-                            label={setLabel(key)}
-                            variant="outlined"
-                            onChange={onChange}
-                            onBlur={onLeave}
-                            value={inputFields[key]}
-                            className={classNames(classes.input, classes.featuresInput)}
-                            multiline
-                            InputProps={{
-                                endAdornment: <InputToolTip message={getToolTip(key)} />,
-                            }}
-                        />
-                    </Grid>
-                );
-            case 'description':
-                return (
-                    <Grid item md={12} className={classNames(classes.inputContainers, classes.descriptionContainer)}>
-                        <TextField
-                            id={key}
-                            size="small"
-                            label={setLabel(key)}
-                            variant="outlined"
-                            onChange={onChange}
-                            onBlur={onLeave}
-                            value={inputFields[key]}
-                            className={classes.input}
-                            multiline
-                            rows={6}
-                            InputProps={{
-                                endAdornment: <InputToolTip message={getToolTip(key)} />,
-                            }}
-                        />
-                    </Grid>
-                );
-            default:
-                // featuresArray should be a hidden value
-                if (key === 'featuresArray' || key === 'v5cVerificationDate') {
-                    break;
-                }
+                            <TextField
+                                id={key}
+                                size="small"
+                                label={setLabel(key)}
+                                variant="outlined"
+                                onChange={onChange}
+                                onBlur={onLeave}
+                                value={inputFields[key]}
+                                className={classes.input}
+                                multiline
+                                rows={6}
+                                InputProps={{
+                                    endAdornment: <InputToolTip message={getToolTip(key)} />,
+                                }}
+                            />
+                        </Grid>
+                    );
+                default:
+                    // featuresArray should be a hidden value
+                    if (key === 'featuresArray' || key === 'v5cVerificationDate') {
+                        break;
+                    }
 
-                return (
-                    <Grid item md={6} xs={12} className={classes.inputContainers}>
-                        <TextField
-                            id={key}
-                            size="small"
-                            label={setLabel(key)}
-                            variant="outlined"
-                            onChange={onChange}
-                            value={inputFields[key]}
-                            className={classes.input}
-                            InputProps={{
-                                endAdornment: <InputToolTip message={getToolTip(key)} />,
-                            }}
-                        />
-                    </Grid>
-                );
-        }
+                    return (
+                        <Grid item md={6} xs={12} className={classes.inputContainers}>
+                            <TextField
+                                id={key}
+                                size="small"
+                                label={setLabel(key)}
+                                variant="outlined"
+                                onChange={onChange}
+                                value={inputFields[key]}
+                                className={classes.input}
+                                InputProps={{
+                                    endAdornment: <InputToolTip message={getToolTip(key)} />,
+                                }}
+                            />
+                        </Grid>
+                    );
+            }
 
-        return undefined;
-    });
+            return undefined;
+        },
+    );
 
     return (
         <section className={classes.mainContainer}>
