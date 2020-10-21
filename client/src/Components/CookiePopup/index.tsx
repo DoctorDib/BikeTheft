@@ -22,18 +22,20 @@ const Index: React.FC = () => {
     };
 
     return (
-
         <Drawer anchor="top" open={cookieState}>
             <section style={{ padding: 10 }}>
                 <section className={classes.hideOnMobileOnly}>
-                    <Desktop clickTrigger={() => { saveCookie(); }} />
+                    <Desktop
+                        clickTrigger={() => {
+                            saveCookie();
+                        }}
+                    />
                 </section>
 
                 <section className={classes.showOnMobileOnly}>
                     <Mobile />
                 </section>
             </section>
-
         </Drawer>
     );
 };

@@ -13,7 +13,7 @@ let response = {
 
 module.exports.get_dvla_data = (event, context, callback) => {
     const eBody = JSON.parse(event.body);
-    const key = process.env.dvla;
+    // const key = import.meta.env.SNOWPACK_DVLAAPIKEY;
     console.log('Attempting to grab DVLA data');
 
     const body = {

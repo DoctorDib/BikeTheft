@@ -7,12 +7,7 @@ import FooterComponent from '../../Components/Footer';
 import VehicleInfoComponent from '../../Components/VehicleInfo';
 import PostsComponent from '../../Components/Posts';
 
-import {
-    IVehicleInfo,
-    IOwner,
-    IData,
-    IComment,
-} from '../../Common/Interfaces/interfaces';
+import { IVehicleInfo, IOwner, IData, IComment } from '../../Common/Interfaces/interfaces';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -40,7 +35,7 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
     const [postData, setPostData] = useState<Array<IComment>>([defaultComment]);
 
     const fetch = async (thread_ID: string) => {
-        const data:IData = await getThread(thread_ID);
+        const data: IData = await getThread(thread_ID);
 
         setMemberData(data.owner);
         setVehicleData(data.vehicle);

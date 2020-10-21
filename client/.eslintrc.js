@@ -35,11 +35,12 @@ module.exports = {
         "no-use-before-define": 0,
         "@typescript-eslint/no-use-before-define": 0,
         "max-len": ["error", { 
-            "code": 120,
+            "code": 150,
             "ignoreComments": true,
             "ignoreStrings": true,
 
         }],
+        "react/jsx-props-no-spreading": "off",
         "no-console": 0,
     },
     env: {

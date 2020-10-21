@@ -4,14 +4,14 @@ import Amplify from 'aws-amplify';
 import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 
-import mainTheme from '../templates/theme';
-import AppliedRoute from '../Components/Routing/Applied';
+import mainTheme from './templates/theme';
+import AppliedRoute from './Components/Routing/Applied';
 
-import HomePage from '../Pages/Home';
-import VehicleInfoPage from '../Pages/VehicleInfo';
-import VehicleUploadPage from '../Pages/VehicleUpload';
-import AboutPage from '../Pages/About';
-import ErrorPage from '../Pages/Error';
+import HomePage from './Pages/Home';
+import VehicleInfoPage from './Pages/VehicleInfo';
+import VehicleUploadPage from './Pages/VehicleUpload';
+import AboutPage from './Pages/About';
+import ErrorPage from './Pages/Error';
 
 Amplify.configure({
     // OPTIONAL - if your API requires authentication
@@ -19,20 +19,20 @@ Amplify.configure({
     Auth: {
         mandatorySignIn: true,
         // REQUIRED - Amazon Cognito Identity Pool ID
-        identityPoolId: process.env.IDENTITYPOOLID,
+        identityPoolId: import.meta.env.SNOWPACK_PUBLIC_IDENTITYPOOLID,
         // REQUIRED - Amazon Cognito Region
-        region: process.env.REGION,
+        region: import.meta.env.SNOWPACK_PUBLIC_REGION,
         // OPTIONAL - Amazon Cognito User Pool ID
-        userPoolId: process.env.USERPOOLID,
+        userPoolId: import.meta.env.SNOWPACK_PUBLIC_USERPOOLID,
         // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-        userPoolWebClientId: process.env.CLIENTID,
+        userPoolWebClientId: import.meta.env.SNOWPACK_PUBLIC_CLIENTID,
     },
     API: {
         endpoints: [
             {
                 name: 'base_endpoint',
-                endpoint: process.env.APIENDPOINT,
-                region: process.env.REGION,
+                endpoint: import.meta.env.SNOWPACK_PUBLIC_APIENDPOINT,
+                region: import.meta.env.SNOWPACK_PUBLIC_REGION,
             },
         ],
     },

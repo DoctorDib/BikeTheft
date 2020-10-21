@@ -13,8 +13,12 @@ const Copyright = () => {
 
     return (
         <div className={classes.copyrightParent}>
-            <Typography variant="body2" component="p" className={classes.copyrightSymbol}> © </Typography>
-            <Typography variant="body2" component="p">  Copyright (groupname) 2020 </Typography>
+            <Typography variant="body2" component="p" className={classes.copyrightSymbol}>
+                ©
+            </Typography>
+            <Typography variant="body2" component="p">
+                Copyright (groupname) 2020
+            </Typography>
         </div>
     );
 };
@@ -25,10 +29,15 @@ const FooterComponent: React.FC<IFooterProps> = (props: IFooterProps) => {
     const classes = styles();
 
     return (
-        <section style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} className={classes.footerParent}>
-            <section>
-                {Copyright()}
-            </section>
+        <section
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+            }}
+            className={classes.footerParent}
+        >
+            <section>{Copyright()}</section>
         </section>
     );
 };

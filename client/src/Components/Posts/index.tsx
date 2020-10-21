@@ -1,43 +1,22 @@
 import React, { useState } from 'react';
-
-import {
-    Typography,
-    Button,
-    TextField,
-    CardMedia,
-    Paper,
-} from '@material-ui/core';
+import { Typography, Button, TextField, CardMedia, Paper } from '@material-ui/core';
 
 import ConfirmationComponent from '../Confirmation';
 
-import {
-    FormatAvatar,
-    FormatPostBackground,
-} from './helper';
-
+import { FormatAvatar, FormatPostBackground } from './helper';
 import Confirmation from '../../Common/Enums/ConfirmationEnums';
 
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
-import {
-    IComment,
-    IPostAttributes,
-} from '../../Common/Interfaces/interfaces';
-import {
-    defaultComment,
-    defaultPostAttributes,
-} from '../../Common/Helpers/Defaults';
+import { IComment, IPostAttributes } from '../../Common/Interfaces/interfaces';
+import { defaultComment, defaultPostAttributes } from '../../Common/Helpers/Defaults';
 import { SQLStringProtection } from '../../Common/Helpers/helper';
-import {
-    sendPost,
-    updatePost,
-    updateVehicleStat,
-} from '../../Common/Helpers/DB_Helpers';
+import { sendPost, updatePost, updateVehicleStat } from '../../Common/Helpers/DB_Helpers';
 
 interface IForumProps {
-    posts: Array<IComment>,
-    vehicleID: number,
+    posts: Array<IComment>;
+    vehicleID: number;
 }
 
 const Forum: React.FC<IForumProps> = (props: IForumProps) => {
@@ -71,7 +50,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         setConfirmation(true);
     };
 
-    const onVehicleConfirm = (comment:IComment, userInput:boolean) => {
+    const onVehicleConfirm = (comment: IComment, userInput: boolean) => {
         setSelectedPost(comment);
 
         if (userInput) {
@@ -83,7 +62,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         setConfirmation(true);
     };
 
-    const confirmationCallback = (enumMessage:number, response:boolean):void => {
+    const confirmationCallback = (enumMessage: number, response: boolean): void => {
         setConfirmation(false);
 
         let newPostAttributes: IPostAttributes = defaultPostAttributes;
@@ -98,7 +77,6 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
 
             case Confirmation.CONFIRM_VEHICLE:
             case Confirmation.CANCEL_VEHICLE:
-
                 console.log(selectedPost);
 
                 newPostAttributes = selectedPost.post_attributes;
@@ -130,7 +108,9 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         }
     };
 
-    const InfoComponent = (comment:IComment) => (
+    const commentConfirmationClick = (comment: IComment, response: boolean) => (() => onVehicleConfirm(comment, response));
+
+    const InfoComponent = (comment: IComment) => (
         <section>
             <section className={classes.waitingText}>
                 <Typography> Waiting for users response </Typography>
@@ -143,7 +123,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                     className={classes.infoButton}
                     variant="contained"
                     color="primary"
-                    onClick={() => { onVehicleConfirm(comment, true); }}
+                    onClick={commentConfirmationClick(comment, true)}
                 >
                     Confirm
                 </Button>
@@ -151,7 +131,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                     className={classes.infoButton}
                     variant="contained"
                     color="primary"
-                    onClick={() => { onVehicleConfirm(comment, false); }}
+                    onClick={commentConfirmationClick(comment, false)}
                 >
                     Deny
                 </Button>
@@ -161,35 +141,33 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
 
     const AddInfoCardFeatures = (comment: IComment) => (
         <section>
-            { Object.prototype.hasOwnProperty.call(comment.post_attributes, 'confirmation_image')
-                ? (
-                    <CardMedia
-                        className={classes.confirmationImg}
-                        component="img"
-                        image={`../static/media/${comment.post_attributes.confirmation_image}`}
-                    />
-                ) : '' }
+            {Object.prototype.hasOwnProperty.call(comment.post_attributes, 'confirmation_image') ? (
+                <CardMedia
+                    className={classes.confirmationImg}
+                    component="img"
+                    image={`../static/media/${comment.post_attributes.confirmation_image}`}
+                />
+            ) : null}
 
-            { comment.post_attributes.active_state ? InfoComponent(comment) : '' }
+            {comment.post_attributes.active_state ? InfoComponent(comment) : null}
         </section>
     );
 
-    const LayoutComments = () => posts.map((comment: IComment) => (
-        <Paper
-            className={classes.message}
-            elevation={1}
-            style={{ backgroundColor: FormatPostBackground(comment.type) }}
-            key={comment.post_id}
-        >
-            { FormatAvatar(comment, classes) }
-            { comment.type === 2 ? AddInfoCardFeatures(comment) : '' }
-            <section className={classes.postContainer}>
-                <Typography>
-                    {comment.post_attributes.message}
-                </Typography>
-            </section>
-        </Paper>
-    ));
+    const LayoutComments = () =>
+        posts.map((comment: IComment) => (
+            <Paper
+                className={classes.message}
+                elevation={1}
+                style={{ backgroundColor: FormatPostBackground(comment.type) }}
+                key={comment.post_id}
+            >
+                {FormatAvatar(comment, classes)}
+                {comment.type === 2 ? AddInfoCardFeatures(comment) : null}
+                <section className={classes.postContainer}>
+                    <Typography>{comment.post_attributes.message}</Typography>
+                </section>
+            </Paper>
+        ));
 
     return (
         <section className={classes.mainContainer}>
@@ -207,11 +185,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 error={inputError}
             />
 
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={onPostSubmit}
-            >
+            <Button variant="contained" color="primary" onClick={onPostSubmit}>
                 Post
             </Button>
 
@@ -221,9 +195,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 callback={confirmationCallback}
             />
 
-            <section className={classes.messageContainer}>
-                { LayoutComments() }
-            </section>
+            <section className={classes.messageContainer}>{LayoutComments()}</section>
         </section>
     );
 };

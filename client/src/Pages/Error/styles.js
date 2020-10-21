@@ -5,10 +5,14 @@ export default makeStyles(() => ({
     ...mainStyle,
 
     errorContentContainer: {
-        width: '50%', display: 'flex', justifyContent: 'center', flexDirection: 'column',
+        width: '50%',
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
     },
 
     sorryText: {
-        marginTop: '5vh', marginBottom: '4vh',
+        marginTop: '5vh',
+        marginBottom: '4vh',
     },
 }));

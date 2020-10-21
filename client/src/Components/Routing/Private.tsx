@@ -9,24 +9,29 @@ interface IPrivateRouteProps {
     authenticated: boolean;
     appProps: unknown;
     inverted: boolean;
-    location: {pathname: string};
+    location: { pathname: string };
 }
 
 const PrivateRoute: React.FC<IPrivateRouteProps> = (props: IPrivateRouteProps) => {
     const {
         // TODO fix this later on
         // eslint-disable-next-line react/prop-types
-        component: C, authenticated, appProps, inverted = false, location, ...extraProps
+        component: C,
+        authenticated,
+        appProps,
+        inverted = false,
+        location,
+        ...extraProps
     } = props;
 
     const allow = inverted ? !authenticated : authenticated;
 
-    return (
-        allow
-            ? <AppliedRoute component={C} {...extraProps} appProps={appProps} />
-            // TODO fix this
-            // eslint-disable-next-line react/prop-types
-            : <Redirect to={`/login?redirect=${encodeURIComponent(location.pathname)}`} />
+    return allow ? (
+        <AppliedRoute component={C} {...extraProps} appProps={appProps} />
+    ) : (
+        // TODO fix this
+        // eslint-disable-next-line react/prop-types
+        <Redirect to={`/login?redirect=${encodeURIComponent(location.pathname)}`} />
     );
 };
 

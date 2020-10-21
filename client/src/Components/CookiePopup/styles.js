@@ -3,5 +3,4 @@ import mainStyle from '../../templates/mainStyle';
 
 export default makeStyles(() => ({
     ...mainStyle,
-
 }));

@@ -44,9 +44,7 @@ const DesktopHeader: React.FC = () => {
 
     const ScrolledComponent = () => (
         <Slide direction="down" in mountOnEnter unmountOnExit>
-            <section className={classes.fixedMain}>
-                {MainComponent()}
-            </section>
+            <section className={classes.fixedMain}>{MainComponent()}</section>
         </Slide>
     );
 
