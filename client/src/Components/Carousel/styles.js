@@ -6,7 +6,7 @@ export default makeStyles((theme) => ({
 
     main: {
         '& .image-gallery-thumbnails-wrapper': {
-            backgroundColor: '#f2f2f2'
+            backgroundColor: '#f2f2f2',
         },
 
         '& .image-gallery-thumbnail .image-gallery-thumbnail-image': {

@@ -151,8 +151,7 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps
                         icon={<Crop color="primary" className={classes.smallIcon} />}
                         tooltipTitle="Crop image"
                         onClick={() =>
-                            cropImage(image.id, image.crop.original, image.crop.crop_info ?? defaultCropSettings)
-                        }
+                            cropImage(image.id, image.crop.original, image.crop.crop_info ?? defaultCropSettings)}
                     />
                     {!image.is_main_image ? (
                         <SpeedDialAction

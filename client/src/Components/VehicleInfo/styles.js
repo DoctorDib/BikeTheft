@@ -52,7 +52,7 @@ export default makeStyles((theme) => ({
     dialogTitle: {
         backgroundColor: '#eaeaea',
     },
-    
+
     dialogContent: {
         display: 'flex',
         justifyContent: 'center',

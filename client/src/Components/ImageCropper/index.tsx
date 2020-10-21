@@ -138,12 +138,10 @@ const ImageCropped: React.FC<IImageCropProps> = (props: IImageCropProps) => {
                     onClick={() => generateDownload()}
                     className={classes.button}
                 >
-                    {' '}
-                    Confirm{' '}
+                    Confirm
                 </Button>
                 <Button variant="outlined" onClick={handleClose} className={classes.button}>
-                    {' '}
-                    Cancel{' '}
+                    Cancel
                 </Button>
             </section>
         </Dialog>

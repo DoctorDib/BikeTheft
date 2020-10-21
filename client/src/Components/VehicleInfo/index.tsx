@@ -38,7 +38,9 @@ const formatFeatures = (features: Array<string>) =>
 
 const vinInformationPopup = (vin: string) => (
     <section>
-        <Typography> {vin} </Typography>
+        <Typography>
+            {vin}
+        </Typography>
     </section>
 );
 
@@ -56,17 +58,21 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
     const { owner, vehicle } = props;
 
     const capitalizeFirstLetter = (value: string) => {
-        if (value === undefined) { return ''; }
+        if (value === undefined) {
+            return '';
+        }
         return value.toLowerCase().charAt(0).toUpperCase() + value.toLowerCase().slice(1);
-    }
+    };
 
     const formatInfoValues = (key, value) => {
-        console.log(key)
-        console.log(value)
-        if (key === 'category') { return capitalizeFirstLetter(VehicleCategoryEnum[value]); }
+        console.log(key);
+        console.log(value);
+        if (key === 'category') {
+            return capitalizeFirstLetter(VehicleCategoryEnum[value]);
+        }
 
         return value;
-    }
+    };
 
     const formatInfo = (data: IVehicleInfo) =>
         infoKeys.map((indexKey: string) => {
@@ -77,12 +83,16 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                 return (
                     <Grid container key={`prop - ${indexKey}`}>
                         <Grid item xs={6}>
-                            <Typography> {FormatInfoTitles(indexKey)} </Typography>
+                            <Typography>
+                                {FormatInfoTitles(indexKey)}
+                            </Typography>
                         </Grid>
 
                         <Dialog onClose={handleVinClose} aria-labelledby="simple-dialog-title" open={openVin}>
                             <DialogTitle className={classes.dialogTitle}> Vehicle Identification Number</DialogTitle>
-                            <DialogContent className={classes.dialogContent}> {vinInformationPopup(value)} </DialogContent>
+                            <DialogContent className={classes.dialogContent}>
+                                {vinInformationPopup(value)}
+                            </DialogContent>
                         </Dialog>
 
                         <Grid item xs={6} style={{ padding: '5px' }}>
