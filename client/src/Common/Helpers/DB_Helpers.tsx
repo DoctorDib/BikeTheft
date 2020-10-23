@@ -7,7 +7,7 @@ import { IPostAttributes, IData, IInputFields, IImageSettings } from '../Interfa
 import { defaultData } from './Defaults';
 
 export const sendPost = async (
-    parentID: number,
+    parentID: string,
     posterID: string,
     postAttributes: IPostAttributes,
     postType: number,

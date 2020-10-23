@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Avatar, Typography } from '@material-ui/core';
+import ago from 's-ago';
 
 import PostTypeEnum from '../../Common/Enums/PostTypeEnums';
 
@@ -21,25 +22,30 @@ export const FormatPostBackground = (styleID: number): string => {
     }
 };
 
-export const FormatAvatar = (comment: IComment, classes: IClasses): React.FC => {
+const formatDate = (date:Date):string => ago(new Date(date))
+
+export const FormatAvatar = (comment: IComment, classes: IClasses, showAvatar:boolean): React.FC => {
     const image = comment.type === 1 ? `${UserImages}${comment.member_attributes.profile_image}` : 'I';
     const name = comment.type === 2 ? 'Info' : `${comment.member_attributes.display_name}`;
     const avatarColour = comment.type === 2 ? '#ff8e15' : 'gray';
 
     return (
-        <section className={classes.postContainer}>
+        <section className={classes.quotePostContainer}>
             <section className={classes.avatarContainer}>
-                <Avatar
-                    alt="Remy Sharp"
-                    src={image}
-                    className={classes.profileImage}
-                    style={{ backgroundColor: avatarColour }}
-                >
-                    {image}
-                </Avatar>
+                {showAvatar
+                ? (<Avatar
+                        alt="Remy Sharp"
+                        src={image}
+                        className={classes.profileImage}
+                        style={{ backgroundColor: avatarColour }}
+                    >
+                        {image}
+                    </Avatar>)
+                : null
+                }
                 <section className={classes.avatarText}>
-                    <Typography variant="subtitle1">{name}</Typography>
-                    <Typography variant="caption">{comment.date_added}</Typography>
+                    <Typography variant={showAvatar ? "subtitle1" : "subtitle2"}>{name}</Typography>
+                    <Typography variant="caption">{formatDate(comment.date_added)}</Typography>
                 </section>
             </section>
         </section>

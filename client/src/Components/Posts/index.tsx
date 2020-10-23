@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
-import { Typography, Button, TextField, CardMedia, Paper } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Typography } from '@material-ui/core';
 
-import ConfirmationComponent from '../Confirmation';
-
-import { FormatAvatar, FormatPostBackground } from './helper';
-import Confirmation from '../../Common/Enums/ConfirmationEnums';
-
-import style from './styles';
-import { IClasses } from '../../Common/Interfaces/IClasses';
+import PopupComponent from '../Popup';
 
 import { IComment, IPostAttributes } from '../../Common/Interfaces/interfaces';
+import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
+import { sendPost } from '../../Common/Helpers/DB_Helpers';
 
-import { defaultComment, defaultPostAttributes } from '../../Common/Helpers/Defaults';
+import TextCommentComponent from '../CommentTextBox';
+import CommentComponent from '../Comment';
 
-import { sendPost, updatePost, updateVehicleStat } from '../../Common/Helpers/DB_Helpers';
+import { IClasses } from '../../Common/Interfaces/IClasses';
+import style from './styles';
 
 interface IForumProps {
+    threadID: string;
     posts: Array<IComment>;
     vehicleID: number;
 }
@@ -23,191 +22,100 @@ interface IForumProps {
 const Forum: React.FC<IForumProps> = (props: IForumProps) => {
     const classes: IClasses = style();
 
-    const [value, setValue] = useState<string>('');
+    const { threadID, posts, vehicleID } = props;
+
+    const [highlightedID, setHighlightedID] = useState<number | undefined>();
+
+    const [postPopupOpen, setPostPopupOpen] = useState<boolean>(false);
+    const [commentValue, setCommentValue] = useState<string>('');
     const [inputError, setInputError] = useState<boolean>(false);
-    const [confirmation, setConfirmation] = useState(false);
-    const [confirmationMessage, setConfirmationMessage] = useState<number>(Confirmation.CANCEL);
-    const [selectedPost, setSelectedPost] = useState<IComment>(defaultComment);
+    const [comments, setComments] = useState<Array<React.ReactNode>>();
 
-    const { posts, vehicleID } = props;
+    const scrollTo = (id:number) => {
+        const targetID = `#post-id-${id}`;
+        const targetElement:Element | null = document.querySelector(targetID);
+        if (targetElement === null) { return; }
 
-    // TODO We need interfaces/types for all the data schema once we know what it is
-    // TODO essentially all of this is temporary until that is set in stone in the db
-    // TODO and then we map it to some local object
+        targetElement.scrollIntoView({
+            behavior: "smooth", 
+            inline: 'center', 
+            block: 'center'
+        });
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        setValue(event.target.value);
-
-        if (inputError) setInputError(false);
+        setHighlightedID(id);
     };
 
-    const onClearClick = (): void => setValue('');
+    const scrollToCallback = (val:number) => scrollTo(val);
+    const setCommentValueCallback = (newVal:string) => setCommentValue(newVal);
+    const setInputErrorCallback = (newVal:boolean) => setInputError(newVal);
 
-    const onPostSubmit = (): void => {
-        if (value === '') {
-            setInputError(true);
-            return;
-        }
+    const postPopupCallback = (response:boolean) => {
+        setPostPopupOpen(false);
+        if (!response) { return; }
 
-        setConfirmationMessage(Confirmation.CONFIRM_POST);
-        setConfirmation(true);
+        const newCommentAttributes:IPostAttributes = defaultPostAttributes;
+        newCommentAttributes.message = commentValue;
+        setCommentValue('');
+        sendPost(threadID, '1', newCommentAttributes, 1);
     };
 
-    const onVehicleConfirm = (comment: IComment, userInput: boolean) => {
-        setSelectedPost(comment);
+    const onPostClickCallback = () => setPostPopupOpen(true);
 
-        if (userInput) {
-            setConfirmationMessage(Confirmation.CONFIRM_VEHICLE);
-        } else {
-            setConfirmationMessage(Confirmation.CANCEL_VEHICLE);
-        }
+    const layoutComments = () => {
+        if (!posts.length) { return; }
+        if (posts[0].post_id === -1) { return; }
 
-        setConfirmation(true);
-    };
-
-    const confirmationCallback = (enumMessage: number, response: boolean): void => {
-        setConfirmation(false);
-
-        let newPostAttributes: IPostAttributes = defaultPostAttributes;
-
-        switch (enumMessage) {
-            case Confirmation.CONFIRM_POST:
-                if (!response) return;
-                setValue('');
-                sendPost(1, '1', newPostAttributes, 1);
-                break;
-
-            case Confirmation.CONFIRM_VEHICLE:
-            case Confirmation.CANCEL_VEHICLE:
-                console.log(selectedPost);
-
-                newPostAttributes = selectedPost.post_attributes;
-                newPostAttributes.active_state = false;
-
-                // Disabling the "found" post
-                updatePost(selectedPost.post_id, newPostAttributes);
-
-                if (!response) return;
-
-                // Prepping for a new post send thing
-                newPostAttributes = defaultPostAttributes;
-
-                if (Confirmation.CONFIRM_VEHICLE) {
-                    newPostAttributes.message = 'Owner has confirmed vehicle and is planning to take action.';
-                } else {
-                    newPostAttributes.message = 'Owner has declined founders request.';
-                }
-
-                // Sending comment to notify other users of update
-                sendPost(1, '1', newPostAttributes, 2);
-
-                // Set to pending pickup
-                updateVehicleStat(vehicleID, 2);
-
-                break;
-            default:
-                break;
-        }
-    };
-
-    const commentConfirmationClick = (comment: IComment, response: boolean) => () =>
-        onVehicleConfirm(comment, response);
-
-    const InfoComponent = (comment: IComment) => (
-        <section>
-            <section className={classes.waitingText}>
-                <Typography> Waiting for users response </Typography>
-            </section>
-
-            {/* TODO - ONLY MAKE IT ACCESSIBLE FOR THE OWNER OF THE THREAD */}
-            {/* Requires user accounts to be set up */}
-            <section className={classes.buttonContainer}>
-                <Button
-                    className={classes.infoButton}
-                    variant="contained"
-                    color="primary"
-                    onClick={commentConfirmationClick(comment, true)}
-                >
-                    Confirm
-                </Button>
-                <Button
-                    className={classes.infoButton}
-                    variant="contained"
-                    color="primary"
-                    onClick={commentConfirmationClick(comment, false)}
-                >
-                    Deny
-                </Button>
-            </section>
-        </section>
-    );
-
-    const AddInfoCardFeatures = (comment: IComment) => (
-        <section>
-            {Object.prototype.hasOwnProperty.call(comment.post_attributes, 'confirmation_image') ? (
-                <CardMedia
-                    className={classes.confirmationImg}
-                    component="img"
-                    image={`../static/media/${comment.post_attributes.confirmation_image}`}
-                />
-            ) : null}
-
-            {comment.post_attributes.active_state ? InfoComponent(comment) : null}
-        </section>
-    );
-
-    const LayoutComments = () =>
-        posts.map((comment: IComment) => (
-            <Paper
-                className={classes.message}
-                elevation={1}
-                style={{ backgroundColor: FormatPostBackground(comment.type) }}
-                key={comment.post_id}
+        const mappedCommentElements = posts.map((comment: IComment):React.ReactNode => (
+            <section
+                id={`parent-post-${comment.post_id}`}
+                className={classes.layoutComment}
             >
-                {FormatAvatar(comment, classes)}
-                {comment.type === 2 ? AddInfoCardFeatures(comment) : null}
-                <section className={classes.postContainer}>
-                    <Typography>{comment.post_attributes.message}</Typography>
-                </section>
-            </Paper>
+                <CommentComponent 
+                    threadID={threadID} 
+                    vehicleID={vehicleID}
+                    currentHighlightedID={highlightedID === comment.post_id} 
+                    comment={comment} 
+                    posts={posts} 
+                    ScrollToID={scrollToCallback}
+                />
+            </section>
         ));
+
+        setComments(mappedCommentElements);
+    };
+
+    useEffect(() => layoutComments(), [posts]);
+    // Someone might have better luck, I can only get it to work by rerendering the entire thing
+    useEffect(() => layoutComments(), [highlightedID]);
 
     return (
         <section className={classes.mainContainer}>
             <Typography variant="h5"> Activity </Typography>
-            <Typography variant="caption"> Found anything related to this vehicle? Every second counts! </Typography>
+            <Typography variant="caption">
+                Found anything related to this vehicle? Every second counts!
+            </Typography>
 
             <section className={classes.textBoxContainer}>
-                <TextField
-                    id="outlined-multiline-flexible"
-                    className={classes.textBox}
-                    multiline
-                    rows={4}
-                    rowsMax={10}
-                    value={value}
-                    onChange={onChange}
-                    variant="outlined"
-                    error={inputError}
+                <TextCommentComponent 
+                    isMainTextBox
+                    textValue={commentValue}
+                    setTextValue={setCommentValueCallback}
+                    inputError={inputError}
+                    setInputError={setInputErrorCallback}
+                    onClickPost={onPostClickCallback}
                 />
-
-                <section className={classes.postButtonControls}>
-                    <Button variant="contained" color="primary" onClick={onClearClick}>
-                        Clear
-                    </Button>
-
-                    <Button variant="contained" color="primary" onClick={onPostSubmit}>
-                        Post
-                    </Button>
-                </section>
             </section>
 
-            <ConfirmationComponent
-                enumMessage={confirmationMessage}
-                open={confirmation}
-                callback={confirmationCallback}
-            />
+            <section className={classes.messageContainer}>
+                { posts !== null ? comments : null }
+            </section>
 
-            <section className={classes.messageContainer}>{posts !== null ? LayoutComments() : ''}</section>
+            <PopupComponent 
+                open={postPopupOpen}
+                title="Post"
+                message="Are you sure that you wish to post your comment?"
+                callback={postPopupCallback}
+            />
         </section>
     );
 };

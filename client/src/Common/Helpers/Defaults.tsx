@@ -35,6 +35,8 @@ export const defaultPostAttributes: IPostAttributes = {
     message: '',
     confirmation_image: '',
     active_state: false,
+    is_deleted: false,
+    replying_to: null,
 };
 
 export const defaultOwner: IOwner = {

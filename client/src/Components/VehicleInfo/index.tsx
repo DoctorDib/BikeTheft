@@ -25,6 +25,7 @@ import style from './styles';
 const infoKeys: Array<string> = ['number_plate', 'vin', 'make', 'model', 'category'];
 
 interface IVehicleInfoProps {
+    threadID: string;
     owner: IOwner;
     vehicle: IVehicleInfo;
 }
@@ -55,7 +56,7 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
     const handleVinClose = () => setOpenVin(false);
     const foundConfirmationResponse = () => setOpen(false);
 
-    const { owner, vehicle } = props;
+    const { threadID, owner, vehicle } = props;
 
     const capitalizeFirstLetter = (value: string) => {
         if (value === undefined) {
@@ -65,8 +66,6 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
     };
 
     const formatInfoValues = (key, value) => {
-        console.log(key);
-        console.log(value);
         if (key === 'category') {
             return capitalizeFirstLetter(VehicleCategoryEnum[value]);
         }
@@ -165,7 +164,7 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                             Report
                         </Button>
 
-                        <FoundConfirmation close={foundConfirmationResponse} open={open} />
+                        <FoundConfirmation threadID={threadID} close={foundConfirmationResponse} open={open} />
                     </section>
 
                     <section className={classes.gridStyle}>

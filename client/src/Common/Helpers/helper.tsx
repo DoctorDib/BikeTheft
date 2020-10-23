@@ -3,7 +3,7 @@ import { IImageSettings, IChip } from '../Interfaces/interfaces';
 
 export function getDateTimeString(): string {
     const currentdate = new Date();
-    const date = `${currentdate.getFullYear()}/${currentdate.getMonth()}/${currentdate.getDate()}`;
+    const date = `${currentdate.getFullYear()}/${currentdate.getMonth()+1}/${currentdate.getDate()}`;
     const time = `${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}`;
     return `${date} ${time}`;
 }

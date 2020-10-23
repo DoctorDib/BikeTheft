@@ -31,6 +31,8 @@ export interface IPostAttributes {
     message: string;
     confirmation_image: string;
     active_state: boolean;
+    is_deleted: boolean;
+    replying_to: number | null;
 }
 
 export interface IComment {

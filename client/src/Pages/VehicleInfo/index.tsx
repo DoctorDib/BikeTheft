@@ -58,7 +58,7 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
             </section>
 
             <section style={{ width: '100%' }}>
-                <VehicleInfoComponent owner={memberData} vehicle={vehicleData} />
+                <VehicleInfoComponent threadID={threadID} owner={memberData} vehicle={vehicleData} />
             </section>
 
             <section className={classes.mainContentGap}>
@@ -66,7 +66,7 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
             </section>
 
             <section className={classes.mainContentGap}>
-                <PostsComponent vehicleID={vehicleID} posts={postData} />
+                <PostsComponent threadID={threadID} vehicleID={vehicleID} posts={postData} />
             </section>
 
             <section className={classes.mainContentGap}>
