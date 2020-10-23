@@ -7,7 +7,7 @@ export default makeStyles((theme) => ({
     postContainer: {
         padding: '5px 15px 5px',
     },
-    
+
     message: {
         display: 'flex',
         flexDirection: 'column',
@@ -44,17 +44,18 @@ export default makeStyles((theme) => ({
 
     '@keyframes replyIconClosed': {
         from: {
-            transform: "rotate(-90deg)",
-        },to: {
-            transform: "rotate(90deg)",
+            transform: 'rotate(-90deg)',
+        },
+        to: {
+            transform: 'rotate(90deg)',
         },
     },
     '@keyframes replyIconOpen': {
         from: {
-            transform: "rotate(180deg)",
+            transform: 'rotate(180deg)',
         },
         to: {
-            transform: "rotate(0deg)",
+            transform: 'rotate(0deg)',
         },
     },
 
@@ -79,7 +80,7 @@ export default makeStyles((theme) => ({
         color: '#555',
         fontSize: '10px !important',
         margin: '15px 0 15px 2em',
-        width:'100%',
+        width: '100%',
     },
 
     quotePostContainer: {
@@ -126,7 +127,7 @@ export default makeStyles((theme) => ({
         animationName: '$blinker',
         animationDuration: '1s',
         animationTimingFunction: 'alternate',
-        
+
         boxShadow: '0 0 3px 1px #2185c5',
         backgroundColor: '#f1f1f1',
     },

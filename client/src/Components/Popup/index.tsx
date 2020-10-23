@@ -22,9 +22,13 @@ const PopupComponent: React.FC<IConfirmationProp> = (props: IConfirmationProp) =
 
     return (
         <Dialog open={open} keepMounted onClose={onClickCancel} className={classes.main}>
-            <DialogTitle> { title } </DialogTitle>
+            <DialogTitle>
+                { title }
+            </DialogTitle>
             <DialogContent>
-                <DialogContentText> { message } </DialogContentText>
+                <DialogContentText>
+                    { message }
+                </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClickCancel} color="primary"> Cancel </Button>

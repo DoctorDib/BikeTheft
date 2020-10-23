@@ -22,7 +22,7 @@ const TextCommentComponent: React.FC<ICommentTextBoxProps> = (props: ICommentTex
     const onClearClick = (): void => {
         setInputError(false);
         setTextValue('');
-    }
+    };
 
     const onPostSubmit = (): void => {
         if (textValue === '') {
@@ -38,9 +38,9 @@ const TextCommentComponent: React.FC<ICommentTextBoxProps> = (props: ICommentTex
 
         if (inputError) { setInputError(false); }
     };
-    
+
     return (
-        <section style={{width: '100%'}}>
+        <section style={{ width: '100%' }}>
             <TextField
                 className={classes.textBox}
                 multiline
@@ -62,13 +62,13 @@ const TextCommentComponent: React.FC<ICommentTextBoxProps> = (props: ICommentTex
                 </Button>
             </section>
 
-            {/*<ConfirmationComponent
+            {/* <ConfirmationComponent
                 enumMessage={confirmationMessage}
                 open={confirmation}
                 callback={confirmationCallback}
-            />*/}
+            /> */}
         </section>
-    )
+    );
 };
 
 export default TextCommentComponent;

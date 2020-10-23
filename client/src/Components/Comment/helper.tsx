@@ -22,7 +22,7 @@ export const FormatPostBackground = (styleID: number): string => {
     }
 };
 
-const formatDate = (date:Date):string => ago(new Date(date))
+const formatDate = (date:Date):string => ago(new Date(date));
 
 export const FormatAvatar = (comment: IComment, classes: IClasses, showAvatar:boolean): React.FC => {
     const image = comment.type === 1 ? `${UserImages}${comment.member_attributes.profile_image}` : 'I';
@@ -33,18 +33,19 @@ export const FormatAvatar = (comment: IComment, classes: IClasses, showAvatar:bo
         <section className={classes.quotePostContainer}>
             <section className={classes.avatarContainer}>
                 {showAvatar
-                ? (<Avatar
-                        alt="Remy Sharp"
-                        src={image}
-                        className={classes.profileImage}
-                        style={{ backgroundColor: avatarColour }}
-                    >
-                        {image}
-                    </Avatar>)
-                : null
-                }
+                    ? (
+                        <Avatar
+                            alt="Remy Sharp"
+                            src={image}
+                            className={classes.profileImage}
+                            style={{ backgroundColor: avatarColour }}
+                        >
+                            {image}
+                        </Avatar>
+                    )
+                    : null}
                 <section className={classes.avatarText}>
-                    <Typography variant={showAvatar ? "subtitle1" : "subtitle2"}>{name}</Typography>
+                    <Typography variant={showAvatar ? 'subtitle1' : 'subtitle2'}>{name}</Typography>
                     <Typography variant="caption">{formatDate(comment.date_added)}</Typography>
                 </section>
             </section>

@@ -15,7 +15,7 @@ import {
 import { Check, Report } from '@material-ui/icons';
 
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
-import { IVehicleInfo, IOwner } from '../../Common/Interfaces/interfaces';
+import { IVehicleInfo, IOwner, IImageSettings } from '../../Common/Interfaces/interfaces';
 import { FormatStatusColour, FormatStatusText, FormatInfoTitles } from './formats';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import CarouselComponent from '../Carousel';
@@ -65,8 +65,8 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
         return value.toLowerCase().charAt(0).toUpperCase() + value.toLowerCase().slice(1);
     };
 
-    const formatInfoValues = (key, value) => {
-        if (key === 'category') {
+    const formatInfoValues = (key:string, value:string | number | string[] | IImageSettings[]):string | number | string[] | IImageSettings[] => {
+        if (key === 'category' && typeof value === 'number') {
             return capitalizeFirstLetter(VehicleCategoryEnum[value]);
         }
 

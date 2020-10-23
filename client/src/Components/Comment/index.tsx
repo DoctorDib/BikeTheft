@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 import classNames from 'classnames';
 
-import { Paper, Accordion, AccordionDetails, Typography, CardMedia, Button  } from '@material-ui/core';
+import { Paper, Accordion, AccordionDetails, Typography, CardMedia, Button } from '@material-ui/core';
+import { Reply, Delete, Clear } from '@material-ui/icons';
 import { sendPost, updatePost, updateVehicleStat } from '../../Common/Helpers/DB_Helpers';
 import { FormatAvatar, FormatPostBackground } from './helper';
-import { Reply, Delete, Clear } from '@material-ui/icons';
 
 import PopupComponent from '../Popup';
 import { IComment, IPostAttributes } from '../../Common/Interfaces/interfaces';
@@ -36,16 +36,17 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
     const [commentValue, setCommentValue] = useState<string>('');
     const [inputError, setInputError] = useState<boolean>(false);
     const [highlightStyle, setHighlightStyle] = useState();
-    
+
     const [isExpanded, setExpand] = useState<boolean>(false);
 
-    const InfoComponent = (comment: IComment) => (
+    // TEMP comment in brackets
+    const InfoComponent = (/* comment: IComment */) => (
         <section>
             <section className={classes.waitingText}>
                 <Typography> Waiting for users response </Typography>
             </section>
 
-             {/*TODO - ONLY MAKE IT ACCESSIBLE FOR THE OWNER OF THE THREAD */}
+            {/* TODO - ONLY MAKE IT ACCESSIBLE FOR THE OWNER OF THE THREAD */}
             {/* Requires user accounts to be set up */}
             <section className={classes.buttonContainer}>
                 <Button
@@ -68,7 +69,7 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
         </section>
     );
 
-    const AddInfoCardFeatures = (comment: IComment) => (
+    const AddInfoCardFeatures = () => (
         <section>
             {Object.prototype.hasOwnProperty.call(comment.post_attributes, 'confirmation_image') ? (
                 <CardMedia
@@ -77,8 +78,8 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
                     image={`../static/media/${comment.post_attributes.confirmation_image}`}
                 />
             ) : null}
-    
-            { comment.post_attributes.active_state ? InfoComponent(comment) : null }
+
+            { comment.post_attributes.active_state ? InfoComponent() : null }
         </section>
     );
 
@@ -87,15 +88,15 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
         const message:Array<IComment> = posts.filter((post) => post.post_id === targetCommentID);
         if (!message.length) { return null; }
         return message[0];
-    }
+    };
 
     const addReplyParent = () => {
         const parentComment:IComment | null = getCommentMessageFromQuote();
         if (parentComment === null) { return null; }
 
         return (
-            <Button 
-                onClick={() => ScrollToID(parentComment.post_id)} 
+            <Button
+                onClick={() => ScrollToID(parentComment.post_id)}
                 className={classes.quoteButton}
                 disableFocusRipple
                 disableRipple
@@ -104,7 +105,7 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
                     className={classes.quoteCommentContainer}
                     elevation={0}
                     key={comment.post_id}
-                    
+
                 >
                     <section>
                         {FormatAvatar(parentComment, classes, false)}
@@ -121,13 +122,13 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
     const onClickDelete = () => setDeletePopupOpen(true);
     const onClickVehicleConfimration = () => setPopupVehicleConfirmation(true);
     const onClickDenyConfimration = () => setPopupDenyConfirmation(true);
-    
+
     const deletePopupCallback = (response:boolean) => {
         setDeletePopupOpen(false);
 
         if (!response) { return; }
 
-        let newPostAttributes = comment.post_attributes;
+        const newPostAttributes = comment.post_attributes;
         newPostAttributes.is_deleted = true;
         updatePost(comment.post_id, newPostAttributes);
     };
@@ -176,10 +177,7 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
     const onPostClickCallback = () => setPostPopupOpen(true);
     const toggleExpand = () => setExpand(!isExpanded);
 
-    useEffect(() => {
-        setHighlightStyle(currentHighlightedID ? classes.highlight : '');
-        console.log("THIS CHANGED")
-    }, [currentHighlightedID]);
+    useEffect(() => setHighlightStyle(currentHighlightedID ? classes.highlight : ''), [currentHighlightedID]);
 
     return (
         <Accordion
@@ -188,32 +186,32 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
             style={{ backgroundColor: FormatPostBackground(comment.type) }}
             expanded={isExpanded}
         >
-            <section 
+            <section
                 id={`post-id-${comment.post_id.toString()}`}
                 className={classNames(classes.mainContainer, highlightStyle)}
             >
-                <section className={classes.messageContents} >
+                <section className={classes.messageContents}>
                     {FormatAvatar(comment, classes, true)}
-                    
-                    {comment.type === 2 ? AddInfoCardFeatures(comment) : null}
+
+                    {comment.type === 2 ? AddInfoCardFeatures() : null}
                     {comment.post_attributes.replying_to === null || comment.post_attributes.replying_to === undefined
-                    ? null
-                    : addReplyParent()}
-                    
+                        ? null
+                        : addReplyParent()}
+
                     <section className={classes.postContainer}>
                         <Typography>{comment.post_attributes.message}</Typography>
                     </section>
                 </section>
 
                 <section className={classes.messageButtonContainer}>
-                    <Delete className={classes.deleteIcon} onClick={onClickDelete} /> 
-                    {isExpanded 
-                    ? <Clear className={classNames(classes.replyIcon, classes.replyIconClosed)} onClick={onExpandClick} /> 
-                    : <Reply className={classNames(classes.replyIcon, classes.replyIconOpen)} onClick={onExpandClick} />}
+                    <Delete className={classes.deleteIcon} onClick={onClickDelete} />
+                    {isExpanded
+                        ? <Clear className={classNames(classes.replyIcon, classes.replyIconClosed)} onClick={onExpandClick} />
+                        : <Reply className={classNames(classes.replyIcon, classes.replyIconOpen)} onClick={onExpandClick} />}
                 </section>
             </section>
 
-            <AccordionDetails style={{backgroundColor: '#f7f7f7'}}>
+            <AccordionDetails style={{ backgroundColor: '#f7f7f7' }}>
                 <TextCommentComponent
                     isMainTextBox={false}
                     textValue={commentValue}
@@ -224,34 +222,34 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
                 />
             </AccordionDetails>
 
-            <PopupComponent 
+            <PopupComponent
                 open={deletePopupOpen}
                 title="Delete post"
                 message="Are you sure you wish to delete your post?"
                 callback={deletePopupCallback}
             />
 
-            <PopupComponent 
+            <PopupComponent
                 open={postPopupOpen}
                 title="Post"
                 message="Are you sure that you wish to post your comment?"
                 callback={postPopupCallback}
             />
 
-            <PopupComponent 
+            <PopupComponent
                 open={popupVehicleConfirmation}
                 title="Vehicle confirmation"
                 message="Please ensure that this is indeed your vehicle."
                 callback={vehicleConfirmationPopupCallback}
             />
 
-            <PopupComponent 
+            <PopupComponent
                 open={popupDenyConfirmation}
                 title="Deny confimration"
                 message="Please ensure that this is not your vehicle."
                 callback={vehicleDenyPopupCallback}
             />
-            
+
         </Accordion>
     );
 };

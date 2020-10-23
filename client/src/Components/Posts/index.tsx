@@ -37,9 +37,9 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         if (targetElement === null) { return; }
 
         targetElement.scrollIntoView({
-            behavior: "smooth", 
-            inline: 'center', 
-            block: 'center'
+            behavior: 'smooth',
+            inline: 'center',
+            block: 'center',
         });
 
         setHighlightedID(id);
@@ -67,15 +67,15 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
 
         const mappedCommentElements = posts.map((comment: IComment):React.ReactNode => (
             <section
-                id={`parent-post-${comment.post_id}`}
+                key={`parent-post-${comment.post_id}`}
                 className={classes.layoutComment}
             >
-                <CommentComponent 
-                    threadID={threadID} 
+                <CommentComponent
+                    threadID={threadID}
                     vehicleID={vehicleID}
-                    currentHighlightedID={highlightedID === comment.post_id} 
-                    comment={comment} 
-                    posts={posts} 
+                    currentHighlightedID={highlightedID === comment.post_id}
+                    comment={comment}
+                    posts={posts}
                     ScrollToID={scrollToCallback}
                 />
             </section>
@@ -96,7 +96,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
             </Typography>
 
             <section className={classes.textBoxContainer}>
-                <TextCommentComponent 
+                <TextCommentComponent
                     isMainTextBox
                     textValue={commentValue}
                     setTextValue={setCommentValueCallback}
@@ -110,7 +110,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 { posts !== null ? comments : null }
             </section>
 
-            <PopupComponent 
+            <PopupComponent
                 open={postPopupOpen}
                 title="Post"
                 message="Are you sure that you wish to post your comment?"

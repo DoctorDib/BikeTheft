@@ -3,7 +3,7 @@ import { IImageSettings, IChip } from '../Interfaces/interfaces';
 
 export function getDateTimeString(): string {
     const currentdate = new Date();
-    const date = `${currentdate.getFullYear()}/${currentdate.getMonth()+1}/${currentdate.getDate()}`;
+    const date = `${currentdate.getFullYear()}/${currentdate.getMonth() + 1}/${currentdate.getDate()}`;
     const time = `${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}`;
     return `${date} ${time}`;
 }
@@ -44,10 +44,7 @@ export const uploadImagesToS3 = (
     }
 
     return Promise.all(promises)
-        .then(() => {
-            console.log('Done');
-            return true;
-        })
+        .then(() => true)
         .catch((err) => {
             console.log('ERROR:', err);
             return false;

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 
-import { IPostAttributes } from '../../Common/Interfaces/interfaces';
+import { Modal, Backdrop, Fade, Paper, Typography, Button } from '@material-ui/core';
+import { CheckCircle, Cancel } from '@material-ui/icons';
+import { IPostAttributes, IImageSettings } from '../../Common/Interfaces/interfaces';
 import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
 
 import { sendPost } from '../../Common/Helpers/DB_Helpers';
 import PostTypeEnums from '../../Common/Enums/PostTypeEnums';
-
-import { Modal, Backdrop, Fade, Paper, Typography, Button } from '@material-ui/core';
-
-import { CheckCircle, Cancel } from '@material-ui/icons';
 
 import ImageUploaderComponent from '../ImageUploader';
 
@@ -30,13 +28,13 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfi
 
     const sendFoundBike = () => {
         const newProperties:IPostAttributes = defaultPostAttributes;
-        newProperties.message = "A user may have found your vehicle! Please confirm the image above that this is your vehicle";
-        newProperties.confirmation_image = "broken";
+        newProperties.message = 'A user may have found your vehicle! Please confirm the image above that this is your vehicle';
+        newProperties.confirmation_image = 'broken';
         newProperties.active_state = true;
 
         sendPost(threadID, '1', newProperties, PostTypeEnums.INFO);
-        close;
-    }
+        close();
+    };
 
     return (
         <Modal
