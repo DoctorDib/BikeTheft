@@ -1,4 +1,5 @@
 import { Storage } from 'aws-amplify';
+import ago from 's-ago';
 import { IImageSettings, IChip } from '../Interfaces/interfaces';
 
 export function getDateTimeString(): string {
@@ -50,3 +51,5 @@ export const uploadImagesToS3 = (
             return false;
         });
 };
+
+export const formatDate = (date:Date | string):string => ago(new Date(date));

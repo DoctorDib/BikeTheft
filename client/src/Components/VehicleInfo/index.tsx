@@ -15,6 +15,7 @@ import {
 import { Check, Report } from '@material-ui/icons';
 
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
+import { formatDate } from '../../Common/Helpers/helper';
 import { IVehicleInfo, IOwner, IImageSettings } from '../../Common/Interfaces/interfaces';
 import { FormatStatusColour, FormatStatusText, FormatInfoTitles } from './formats';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -135,7 +136,7 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                             <Avatar className={classes.profileImage} src={`${owner.member_attributes.profile_image}`} />
                         </section>
                         <Typography variant="h6">{owner.member_attributes.display_name}</Typography>
-                        <Typography variant="caption">{vehicle.date_added}</Typography>
+                        <Typography variant="caption">{formatDate(vehicle.date_added)}</Typography>
                     </section>
 
                     <section className={classes.statusText}>

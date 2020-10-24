@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { Avatar, Typography } from '@material-ui/core';
-import ago from 's-ago';
 
 import PostTypeEnum from '../../Common/Enums/PostTypeEnums';
 
+import { formatDate } from '../../Common/Helpers/helper';
 import { IComment } from '../../Common/Interfaces/interfaces';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
@@ -21,8 +21,6 @@ export const FormatPostBackground = (styleID: number): string => {
             return 'black';
     }
 };
-
-const formatDate = (date:Date):string => ago(new Date(date));
 
 export const FormatAvatar = (comment: IComment, classes: IClasses, showAvatar:boolean): React.FC => {
     const image = comment.type === 1 ? `${UserImages}${comment.member_attributes.profile_image}` : 'I';
