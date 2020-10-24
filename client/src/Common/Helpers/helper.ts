@@ -68,3 +68,10 @@ export const moveItemInArray = (array:ReadonlyArray<IImageSettings>, from:number
     const newArray:Array<IImageSettings> = [...array];
     return newArray.splice(to, 0, newArray.splice(from, 1)[0]);
 };
+
+export const capitalizeFirstLetter = (value: string):string => {
+    if (value === undefined) {
+        return '';
+    }
+    return value.toLowerCase().charAt(0).toUpperCase() + value.toLowerCase().slice(1);
+};

@@ -23,18 +23,17 @@ export default makeStyles((theme) => ({
     topSection: {
         display: 'flex',
         justifyContent: 'space-around',
-        alignItems: 'center',
         flexDirection: 'column',
-        width: '100%',
+        width: '100vw',
         [theme.breakpoints.up('md')]: {
+            width: '100%',
             flexDirection: 'row',
-            overflow: 'auto',
         },
     },
 
     rightSide: {
         margin: '20px',
-        width: '100%',
+        width: 'none',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -50,11 +49,24 @@ export default makeStyles((theme) => ({
         },
     },
 
+    dialogTitle: {
+        backgroundColor: '#eaeaea',
+    },
+
+    dialogContent: {
+        display: 'flex',
+        justifyContent: 'center',
+    },
+
     gridStyle: {
         backgroundColor: '',
         width: '80%',
         margin: '0 auto 0 auto',
         textAlign: 'center',
+        '& .MuiGrid-container': {
+            overflow: 'auto',
+            wordWrap: 'break-word',
+        },
         '& .MuiGrid-root.MuiGrid-container:nth-child(even)': {
             backgroundColor: '#e1e1e1',
         },

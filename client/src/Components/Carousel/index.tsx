@@ -1,9 +1,14 @@
 import React from 'react';
 
+import { Paper } from '@material-ui/core';
+
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 
 import { IImageSettings } from '../../Common/Interfaces/interfaces';
+
+import { IClasses } from '../../Common/Interfaces/IClasses';
+import style from './styles';
 
 interface ICarouselProps {
     owner: string;
@@ -13,6 +18,8 @@ interface ICarouselProps {
 // https://github.com/xiaolin/react-image-gallery
 
 const CarouselComponent = (props: ICarouselProps): React.ReactElement<ICarouselProps> => {
+    const classes: IClasses = style();
+
     const { owner, images } = props;
 
     const mapImages = images.map((image: IImageSettings) => ({
@@ -21,14 +28,16 @@ const CarouselComponent = (props: ICarouselProps): React.ReactElement<ICarouselP
     }));
 
     return (
-        <ImageGallery
-            items={mapImages}
-            showFullscreenButton={false}
-            useBrowserFullscreen={false}
-            showPlayButton={false}
-            showIndex={false}
-            autoPlay={false}
-        />
+        <Paper elevation={0} className={classes.main}>
+            <ImageGallery
+                items={mapImages}
+                showFullscreenButton={false}
+                useBrowserFullscreen={false}
+                showPlayButton={false}
+                showIndex={false}
+                autoPlay={false}
+            />
+        </Paper>
     );
 };
 

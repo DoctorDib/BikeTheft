@@ -17,7 +17,7 @@ const Copyright = () => {
                 ©
             </Typography>
             <Typography variant="body2" component="p">
-                Copyright (groupname) 2020
+                Copyright Lost My Wheels 2020
             </Typography>
         </div>
     );

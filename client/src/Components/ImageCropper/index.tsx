@@ -140,14 +140,10 @@ const ImageCropped = (props: IImageCropProps): React.Element<IImageCropProps> =>
                     onClick={() => generateDownload()}
                     className={classes.button}
                 >
-                    {' '}
                     Confirm
-                    {' '}
                 </Button>
                 <Button variant="outlined" onClick={handleClose} className={classes.button}>
-                    {' '}
                     Cancel
-                    {' '}
                 </Button>
             </section>
         </Dialog>

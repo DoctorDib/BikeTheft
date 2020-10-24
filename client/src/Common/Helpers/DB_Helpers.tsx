@@ -122,7 +122,7 @@ export const createNewThread = async (
             location: null,
             // for now we're defaulting vehicles that get uploaded to
             // automatically be assumed as stolen
-            status: 1,
+            status: 0,
             number_plate,
             make,
             model,

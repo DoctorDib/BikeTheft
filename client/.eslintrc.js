@@ -40,12 +40,13 @@ module.exports = {
             "ignoreStrings": true,
 
         }],
-        "react/jsx-props-no-spreading": "off",
         "no-console": 0,
         "no-plusplus": ["error", {
             "allowForLoopAfterthoughts": true,
         }],
         "no-continue": 0,
+        "object-curly-newline": 0,
+        "implicit-arrow-linebreak": 0
     },
     env: {
         "browser": true,
