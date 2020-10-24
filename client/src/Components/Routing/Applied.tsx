@@ -9,7 +9,7 @@ interface IAppliedRouteProps {
     path?: string;
 }
 
-const AppliedRoute: React.FC<IAppliedRouteProps> = (props: IAppliedRouteProps) => {
+const AppliedRoute = (props: IAppliedRouteProps): React.Element<IAppliedRouteProps> => {
     const { component: C, appProps, ...rest } = props;
 
     return (

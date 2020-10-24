@@ -2,14 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Paper, IconButton, CardMedia, Backdrop, Typography } from '@material-ui/core';
 
 import { SpeedDialAction, SpeedDial, SpeedDialIcon } from '@material-ui/lab';
-import { Add, Crop, Clear, StarBorder } from '@material-ui/icons';
+import {
+    Add, Crop, Clear, StarBorder,
+} from '@material-ui/icons';
 
+import {
+    fileToBase64,
+    moveItemInArray,
+} from '../../Common/Helpers/helper';
 import { IImageSettings } from '../../Common/Interfaces/interfaces';
 import { defaultCropSettings } from '../../Common/Helpers/Defaults';
-
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
-
 import ImageCropperComponent from '../ImageCropper';
 
 interface IImageUploaderProps {
@@ -18,24 +22,7 @@ interface IImageUploaderProps {
     maxImages: number;
 }
 
-const fileToBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
-    new Promise((resolve) => {
-        const reader = new FileReader(); // Read file content on file loaded event
-
-        reader.onload = () => {
-            const results = reader.result;
-
-            if (results === undefined) {
-                resolve(null);
-            }
-
-            resolve(results);
-        };
-
-        reader.readAsDataURL(file);
-    });
-
-const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps) => {
+const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUploaderProps> => {
     const classes: IClasses = styles();
 
     const { images, setImages, maxImages } = props;
@@ -93,12 +80,7 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps
         setCroppingIndex(-1);
     };
 
-    const moveItemInArray = (array: Array<IImageSettings>, from: number, to: number) => {
-        array.splice(to, 0, array.splice(from, 1)[0]);
-        return array;
-    };
-
-    const setAsMainImage = (id: number) => {
+    const setAsMainImage = (id:number) => {
         let newImages = [...images];
         let chosenIndex = -1;
 

@@ -10,7 +10,7 @@ import { IClasses } from '../../Common/Interfaces/IClasses';
 
 interface IErrorPageProps {}
 
-const ErrorPage: React.FC<IErrorPageProps> = () => {
+const ErrorPage = ():React.ReactElement<IErrorPageProps> => {
     const classes: IClasses = styles();
 
     const GoBack = () => window.history.back();

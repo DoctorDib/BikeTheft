@@ -4,7 +4,7 @@ import { Typography } from '@material-ui/core';
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
-const AboutInfo: React.FC = () => {
+const AboutInfo = (): React.ReactElement => {
     const classes: IClasses = style();
 
     return (

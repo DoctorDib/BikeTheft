@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { API } from 'aws-amplify';
 
 import { getDateTimeString, sortFeaturesArray } from './helper';
 
-import { IPostAttributes, IData, IInputFields, IImageSettings } from '../Interfaces/interfaces';
+import {
+    IPostAttributes, IData, IInputFields, IImageSettings,
+} from '../Interfaces/interfaces';
 
 import { defaultData } from './Defaults';
 
@@ -82,27 +85,37 @@ export const updateVehicleStat = async (vehicleID: number, newStat: number): Pro
     }
 };
 
-const stripData64 = (images: Array<IImageSettings>) =>
-    images.map((data) => ({
-        name: data.name,
-        is_main_image: data.is_main_image,
-        type: data.type,
-        crop: {
-            crop_info: data.crop.crop_info,
-        },
-    }));
+const stripData64 = (images: Array<IImageSettings>) => images.map((data) => ({
+    name: data.name,
+    is_main_image: data.is_main_image,
+    type: data.type,
+    crop: {
+        crop_info: data.crop.crop_info,
+    },
+}));
 
 export const createNewThread = async (
     ownerID: string,
     data: IInputFields,
     images: Array<IImageSettings>,
 ): Promise<boolean> => {
+    const {
+        number_plate,
+        make,
+        model,
+        category,
+        primary_colour,
+        secondary_colour,
+        description,
+        vin,
+    } = data;
+
     // Extracting the string values from an array of objects
     // e.g. [{key: 1, value: "one"}, {key: 2, value: "two"}]
     // is now ["one", "two"]
-    const featuresArray: Array<string> = sortFeaturesArray(data.featuresArray);
+    const features: Array<string> = sortFeaturesArray(data.featuresArray);
 
-    const body = {
+    const serverThreadData = { // TODO this needs a type!!!
         body: {
             owner_id: ownerID,
             // TODO - Set up location / geometry
@@ -110,26 +123,30 @@ export const createNewThread = async (
             // for now we're defaulting vehicles that get uploaded to
             // automatically be assumed as stolen
             status: 0,
-            number_plate: data.number_plate,
-            make: data.make,
-            model: data.model,
-            category: data.category,
+            number_plate,
+            make,
+            model,
+            category,
             vehicle_attributes: {
-                primary_colour: data.primary_colour,
-                secondary_colour: data.secondary_colour,
-                features: featuresArray,
-                description: data.description,
-                v5c_verification_date: data.v5cVerificationDate,
+                primary_colour,
+                secondary_colour,
+                features,
+                description,
+                v5c_verification_date: data.v5cVerificationDate, // change like others when naming is better
                 date_stolen: data.dateStolen,
                 vehicle_images: stripData64(images),
             },
-            vin: data.vin,
+            vin,
             verified: false,
         },
     };
 
     try {
-        const response = await API.post('base_endpoint', '/forum/create_thread', body);
+        const response = await API.post(
+            'base_endpoint',
+            '/forum/create_thread',
+            serverThreadData,
+        );
         return response;
     } catch (e) {
         console.error(e);

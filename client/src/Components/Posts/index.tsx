@@ -20,7 +20,7 @@ interface IForumProps {
     vehicleID: number;
 }
 
-const Forum: React.FC<IForumProps> = (props: IForumProps) => {
+const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
     const classes: IClasses = style();
 
     const { threadID, ownerID, vehicleID, posts } = props;
@@ -122,6 +122,10 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 message="Are you sure that you wish to post your comment?"
                 callback={postPopupCallback}
             />
+
+            <section className={classes.messageContainer}>
+                {posts !== null ? comments : ''}
+            </section>
         </section>
     );
 };
