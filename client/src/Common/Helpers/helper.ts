@@ -21,6 +21,8 @@ const uploadImageToS3 = async (userId: string, imgObj: IImageSettings, storageTy
         ContentEncoding: 'base64',
         ContentType: `image/${imgObj.type}`,
     });
+
+    return true;
 };
 
 const dataURItoBlob = (dataURI: string) => {
@@ -33,23 +35,39 @@ const dataURItoBlob = (dataURI: string) => {
 };
 
 export const uploadImagesToS3 = (
-    userId: string,
-    imageArray: Array<IImageSettings>,
-    storageType: string,
-): Promise<boolean> => {
-    const promises = [];
+    userId:string,
+    imageArray:Array<IImageSettings>,
+    storageType:string,
+):Promise<boolean> => {
+    const promises:Array<Promise<boolean>> = [];
 
-    const imageArrayLength = imageArray.length;
-    for (let index = 0; index < imageArrayLength; index++) {
-        promises.push(uploadImageToS3(userId, imageArray[index], storageType));
-    }
+    imageArray.forEach((image:IImageSettings) => {
+        promises.push(uploadImageToS3(userId, image, storageType));
+    });
 
-    return Promise.all(promises)
-        .then(() => true)
-        .catch((err) => {
-            console.log('ERROR:', err);
-            return false;
-        });
+    return Promise.all(promises).then(() => true).catch((err) => {
+        console.log('ERROR:', err);
+        return false;
+    });
+};
+
+export const fileToBase64 = (file:File):Promise<string | ArrayBuffer | null> => new Promise((resolve) => {
+    const reader = new FileReader(); // Read file content on file loaded event
+
+    reader.onload = () => {
+        const results = reader.result;
+
+        if (results === undefined) { resolve(null); }
+
+        resolve(results);
+    };
+
+    reader.readAsDataURL(file);
+});
+
+export const moveItemInArray = (array:ReadonlyArray<IImageSettings>, from:number, to:number):Array<IImageSettings> => {
+    const newArray:Array<IImageSettings> = [...array];
+    return newArray.splice(to, 0, newArray.splice(from, 1)[0]);
 };
 
 export const formatDate = (date:Date | string):string => ago(new Date(date));

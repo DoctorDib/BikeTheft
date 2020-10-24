@@ -45,7 +45,7 @@ Amplify.configure({
     },
 });
 
-const App: React.FC = () => (
+const App = (): React.ReactElement => (
     <Router>
         <ThemeProvider theme={mainTheme}>
             <Switch>

@@ -12,7 +12,7 @@ interface IPrivateRouteProps {
     location: { pathname: string };
 }
 
-const PrivateRoute: React.FC<IPrivateRouteProps> = (props: IPrivateRouteProps) => {
+const PrivateRoute = (props: IPrivateRouteProps): React.ReactElement<IPrivateRouteProps> => {
     const {
         // TODO fix this later on
         // eslint-disable-next-line react/prop-types

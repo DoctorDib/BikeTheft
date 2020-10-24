@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
 
 import {
-    Typography,
-    List,
-    Avatar,
-    Button,
-    Grid,
-    ListItem,
-    ListItemText,
-    Dialog,
-    DialogTitle,
-    DialogContent,
+    Typography, List, Avatar, Button, Grid, ListItem, ListItemText,
 } from '@material-ui/core';
 import { Check, Report } from '@material-ui/icons';
 
@@ -31,14 +22,13 @@ interface IVehicleInfoProps {
     vehicle: IVehicleInfo;
 }
 
-const formatFeatures = (features: Array<string>) =>
-    features.map((damage: string) => (
+const formatFeatures = (features: Array<string>) => features.map((damage: string) => (
         <ListItem key={`damages - ${damage}`}>
             <ListItemText primary={damage} />
         </ListItem>
     ));
 
-const vinInformationPopup = (vin: string) => (
+const vinInformationPopup = (vin: string):React.ReactElement => (
     <section>
         <Typography>
             {vin}
@@ -46,7 +36,7 @@ const vinInformationPopup = (vin: string) => (
     </section>
 );
 
-const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
+const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoProps> => {
     const classes: IClasses = style();
 
     const [open, setOpen] = useState(false);

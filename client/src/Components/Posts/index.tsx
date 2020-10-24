@@ -13,13 +13,40 @@ import CommentComponent from '../Comment';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import style from './styles';
 
+import React, { useState } from 'react';
+import {
+    Typography, Button, TextField, CardMedia, Paper,
+} from '@material-ui/core';
+
+import ConfirmationComponent from '../Confirmation';
+import {
+    FormatAvatar,
+    FormatPostBackground,
+} from './helper';
+import Confirmation from '../../Common/Enums/ConfirmationEnums';
+import style from './styles';
+import { IClasses } from '../../Common/Interfaces/IClasses';
+import {
+    IComment,
+    IPostAttributes,
+} from '../../Common/Interfaces/interfaces';
+import {
+    defaultComment,
+    defaultPostAttributes,
+} from '../../Common/Helpers/Defaults';
+import {
+    sendPost,
+    updatePost,
+    updateVehicleStat,
+} from '../../Common/Helpers/DB_Helpers';
+
 interface IForumProps {
     threadID: string;
     posts: Array<IComment>;
     vehicleID: number;
 }
 
-const Forum: React.FC<IForumProps> = (props: IForumProps) => {
+const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
     const classes: IClasses = style();
 
     const { threadID, posts, vehicleID } = props;
@@ -116,6 +143,10 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 message="Are you sure that you wish to post your comment?"
                 callback={postPopupCallback}
             />
+
+            <section className={classes.messageContainer}>
+                {posts !== null ? LayoutComments() : ''}
+            </section>
         </section>
     );
 };
