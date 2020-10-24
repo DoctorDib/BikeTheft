@@ -1,13 +1,18 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, {
+    useState, useCallback, useRef, useEffect,
+} from 'react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
-import { Dialog, Button } from '@material-ui/core';
-
+import {
+    Dialog,
+    Button,
+} from '@material-ui/core';
 import { defaultCropSettings } from '../../Common/Helpers/Defaults';
-
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
+import { ICropSettings } from '../../Common/Interfaces/interfaces';
+import { isNullOrUndefined } from '../../Common/Utils/Types';
 
 // Increase pixel density for crop preview quality on retina screens.
 const pixelRatio = window.devicePixelRatio || 1;
@@ -39,7 +44,7 @@ interface IImageCropProps {
     setCrop: (x: ReactCrop.Crop) => void;
 }
 
-const ImageCropped: React.FC<IImageCropProps> = (props: IImageCropProps) => {
+const ImageCropped = (props: IImageCropProps): React.Element<IImageCropProps> => {
     const classes: IClasses = styles();
 
     const imgRef = useRef<HTMLImageElement>();
@@ -47,7 +52,9 @@ const ImageCropped: React.FC<IImageCropProps> = (props: IImageCropProps) => {
 
     const [completedCrop, setCompletedCrop] = useState<ReactCrop.Crop>(defaultCropSettings);
 
-    const { open, handleClose, imageSrc, saveCroppedData, setCrop, crop } = props;
+    const {
+        open, handleClose, imageSrc, saveCroppedData, setCrop, crop,
+    } = props;
 
     const onLoad = useCallback((img) => {
         imgRef.current = img;
@@ -73,13 +80,10 @@ const ImageCropped: React.FC<IImageCropProps> = (props: IImageCropProps) => {
     };
 
     useEffect(() => {
-        if (!completedCrop || !previewCanvasRef.current || !imgRef.current) {
-            return;
-        }
-
         const image = imgRef.current;
         const canvas = previewCanvasRef.current;
-        if (image === null || canvas === null) {
+
+        if (!completedCrop || isNullOrUndefined(canvas) || isNullOrUndefined(image)) {
             return;
         }
 
@@ -87,7 +91,7 @@ const ImageCropped: React.FC<IImageCropProps> = (props: IImageCropProps) => {
         const scaleY = image.naturalHeight / image.height; // natural height
         const ctx = canvas.getContext('2d');
 
-        if (ctx == null) {
+        if (isNullOrUndefined(ctx)) {
             return;
         }
 
