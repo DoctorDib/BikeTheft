@@ -15,6 +15,7 @@ import {
 import { Check, Report } from '@material-ui/icons';
 
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
+import { capitalizeFirstLetter } from '../../Common/Helpers/helper';
 import { IVehicleInfo, IOwner } from '../../Common/Interfaces/interfaces';
 import { FormatStatusColour, FormatStatusText, FormatInfoTitles } from './formats';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -29,14 +30,14 @@ interface IVehicleInfoProps {
     vehicle: IVehicleInfo;
 }
 
-const formatFeatures = (features: Array<string>) =>
+const formatFeatures = (features: Array<string>):ReadonlyArray<React.ReactElement> =>
     features.map((damage: string) => (
         <ListItem key={`damages - ${damage}`}>
             <ListItemText primary={damage} />
         </ListItem>
     ));
 
-const vinInformationPopup = (vin: string) => (
+const vinInformationPopup = (vin: string): React.ReactElement => (
     <section>
         <Typography>
             {vin}
@@ -56,13 +57,6 @@ const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoPr
     const foundConfirmationResponse = () => setOpen(false);
 
     const { owner, vehicle } = props;
-
-    const capitalizeFirstLetter = (value: string) => {
-        if (value === undefined) {
-            return '';
-        }
-        return value.toLowerCase().charAt(0).toUpperCase() + value.toLowerCase().slice(1);
-    };
 
     const formatInfoValues = (key, value) => {
         console.log(key);
