@@ -2,20 +2,22 @@ import React, { useEffect, useState, useCallback } from 'react';
 import {
     Paper, IconButton, CardMedia, Backdrop,
 } from '@material-ui/core';
-
 import { SpeedDialAction, SpeedDial, SpeedDialIcon } from '@material-ui/lab';
 import {
     Add, Crop, Clear, StarBorder,
 } from '@material-ui/icons';
 
-import { fileToBase64, moveItemInArray } from '../../Common/Helpers/helper';
-
-import { IImageSettings, ICropSettings } from '../../Common/Interfaces/interfaces';
+import {
+    fileToBase64,
+    moveItemInArray,
+} from '../../Common/Helpers/helper';
+import {
+    IImageSettings,
+    ICropSettings,
+} from '../../Common/Interfaces/interfaces';
 import { defaultCropSettings } from '../../Common/Helpers/Defaults';
-
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
-
 import ImageCropperComponent from '../ImageCropper';
 
 interface IImageUploaderProps {
@@ -27,7 +29,7 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
     const classes: IClasses = styles();
 
     const { images, setImages } = props;
-    
+
     const [speedOpen, setSpeedOpen] = useState(true);
     const [imageCropSrc, setImageCropSrc] = useState<string>('');
     const [cropDialog, setCropDialog] = useState<boolean>(false);

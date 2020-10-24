@@ -4,13 +4,13 @@ import React, {
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
-import { Dialog, Button } from '@material-ui/core';
-
+import {
+    Dialog,
+    Button,
+} from '@material-ui/core';
 import { defaultCropSettings } from '../../Common/Helpers/Defaults';
-
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
-
 import { ICropSettings } from '../../Common/Interfaces/interfaces';
 
 // Increase pixel density for crop preview quality on retina screens.

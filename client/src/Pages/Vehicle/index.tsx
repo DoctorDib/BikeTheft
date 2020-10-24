@@ -6,11 +6,9 @@ import NavBarComponent from '../../Components/Header';
 import FooterComponent from '../../Components/Footer';
 import VehicleInfoComponent from '../../Components/VehicleInfo';
 import PostsComponent from '../../Components/Posts';
-
 import {
-    IVehicleInfo, IOwner, IData, IComment, IParams,
+    IVehicleInfo, IOwner, IData, IComment, IVehicleParams,
 } from '../../Common/Interfaces/interfaces';
-
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import { defaultComment, defaultOwner, defaultVehicleData } from '../../Common/Helpers/Defaults';
@@ -19,10 +17,10 @@ import { getThread } from '../../Common/Helpers/DB_Helpers';
 interface IVehicleProps {
 }
 
-const VehiclePage = ():React.ReactElement<IVehicleProps> => {
+const VehiclePage = (): React.ReactElement<IVehicleProps> => {
     const classes: IClasses = styles();
 
-    const { id } = useParams<IParams>();
+    const { id } = useParams<IVehicleParams>();
 
     const [threadID, setThreadID] = useState<string>(id);
     const [memberData, setMemberData] = useState<IOwner>(defaultOwner);

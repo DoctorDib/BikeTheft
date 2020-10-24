@@ -6,11 +6,9 @@ import NavBarComponent from '../../Components/Header';
 import FooterComponent from '../../Components/Footer';
 import VehicleInfoComponent from '../../Components/VehicleInfo';
 import PostsComponent from '../../Components/Posts';
-
 import {
     IVehicleInfo, IOwner, IData, IComment,
 } from '../../Common/Interfaces/interfaces';
-
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import { defaultComment, defaultOwner, defaultVehicleData } from '../../Common/Helpers/Defaults';

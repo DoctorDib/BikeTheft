@@ -4,20 +4,21 @@ import {
 } from '@material-ui/core';
 
 import ConfirmationComponent from '../Confirmation';
-
-import { FormatAvatar, FormatPostBackground } from './helper';
+import {
+    FormatAvatar,
+    FormatPostBackground,
+} from './helper';
 import Confirmation from '../../Common/Enums/ConfirmationEnums';
-
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
-
-import { IComment, IPostAttributes } from '../../Common/Interfaces/interfaces';
-
+import {
+    IComment,
+    IPostAttributes,
+} from '../../Common/Interfaces/interfaces';
 import {
     defaultComment,
     defaultPostAttributes,
 } from '../../Common/Helpers/Defaults';
-
 import {
     sendPost,
     updatePost,
