@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Typography, Button, TextField, CardMedia, Paper } from '@material-ui/core';
+import {
+    Typography, Button, TextField, CardMedia, Paper,
+} from '@material-ui/core';
 
 import ConfirmationComponent from '../Confirmation';
 
@@ -27,7 +29,7 @@ interface IForumProps {
     vehicleID: number;
 }
 
-const Forum: React.FC<IForumProps> = (props: IForumProps) => {
+const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
     const classes: IClasses = style();
 
     const [value, setValue] = useState<string>('');
@@ -160,21 +162,20 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         </section>
     );
 
-    const LayoutComments = () =>
-        posts.map((comment: IComment) => (
-            <Paper
-                className={classes.message}
-                elevation={1}
-                style={{ backgroundColor: FormatPostBackground(comment.type) }}
-                key={comment.post_id}
-            >
-                {FormatAvatar(comment, classes)}
-                {comment.type === 2 ? AddInfoCardFeatures(comment) : null}
-                <section className={classes.postContainer}>
-                    <Typography>{comment.post_attributes.message}</Typography>
-                </section>
-            </Paper>
-        ));
+    const LayoutComments = () => posts.map((comment: IComment) => (
+        <Paper
+            className={classes.message}
+            elevation={1}
+            style={{ backgroundColor: FormatPostBackground(comment.type) }}
+            key={comment.post_id}
+        >
+            {FormatAvatar(comment, classes)}
+            {comment.type === 2 ? AddInfoCardFeatures(comment) : null}
+            <section className={classes.postContainer}>
+                <Typography>{comment.post_attributes.message}</Typography>
+            </section>
+        </Paper>
+    ));
 
     return (
         <section className={classes.mainContainer}>
@@ -201,7 +202,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 open={confirmation}
                 callback={confirmationCallback}
             />
-        
+
             <section className={classes.messageContainer}>
                 {posts !== null ? LayoutComments() : ''}
             </section>

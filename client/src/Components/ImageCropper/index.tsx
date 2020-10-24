@@ -51,7 +51,7 @@ interface IImageCropProps {
     setCrop: (x:ICropSettings) => void;
 }
 
-const ImageCropped:React.FC<IImageCropProps> = (props: IImageCropProps) => {
+const ImageCropped = (props: IImageCropProps): React.Element<IImageCropProps> => {
     const classes: IClasses = styles();
 
     const imgRef = useRef<HTMLImageElement>();

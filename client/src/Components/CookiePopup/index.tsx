@@ -7,7 +7,7 @@ import Mobile from './Mobile';
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
-const Index: React.FC = () => {
+const Index = ():React.ReactElement => {
     const classes: IClasses = style();
 
     const [cookies, setCookie] = useCookie('CookiePrompt');

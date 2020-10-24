@@ -95,3 +95,7 @@ export interface ICropSettings {
     x: number,
     y: number,
 }
+
+export interface IParams {
+    id: string;
+}

@@ -19,7 +19,7 @@ const LogoButton = withStyles({
     },
 })(Button);
 
-const DesktopHeader: React.FC = () => {
+const DesktopHeader = (): React.ReactElement => {
     const classes: IClasses = styles();
 
     const [scrolled, setScrolled] = React.useState(false);
