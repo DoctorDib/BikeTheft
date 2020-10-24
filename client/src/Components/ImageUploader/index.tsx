@@ -15,6 +15,7 @@ import ImageCropperComponent from '../ImageCropper';
 interface IImageUploaderProps {
     images: Array<IImageSettings>;
     setImages: (x: Array<IImageSettings>) => void;
+    maxImages: number;
 }
 
 const fileToBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
@@ -37,7 +38,8 @@ const fileToBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
 const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps) => {
     const classes: IClasses = styles();
 
-    const { images, setImages } = props;
+    const { images, setImages, maxImages } = props;
+
     const [speedOpen, setSpeedOpen] = useState(true);
     const [imageCropSrc, setImageCropSrc] = useState<string>('');
     const [cropDialog, setCropDialog] = useState<boolean>(false);
@@ -243,7 +245,10 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps
                 <IconButton
                     aria-label="upload picture"
                     component="span"
-                    style={{ padding: '0' }}
+                    style={{ 
+                        padding: '0',
+                        display: (images.length >= maxImages) ? 'none' : 'block',
+                    }}
                 >
                     <Paper className={classes.container}>
                         <Add color="primary" />

@@ -15,6 +15,7 @@ import style from './styles';
 
 interface IForumProps {
     threadID: string;
+    ownerID: string;
     posts: Array<IComment>;
     vehicleID: number;
 }
@@ -22,7 +23,7 @@ interface IForumProps {
 const Forum: React.FC<IForumProps> = (props: IForumProps) => {
     const classes: IClasses = style();
 
-    const { threadID, posts, vehicleID } = props;
+    const { threadID, ownerID, vehicleID, posts } = props;
 
     const [highlightedID, setHighlightedID] = useState<number | undefined>();
 
@@ -72,6 +73,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
             >
                 <CommentComponent
                     threadID={threadID}
+                    ownerID={ownerID}
                     vehicleID={vehicleID}
                     currentHighlightedID={highlightedID === comment.post_id}
                     comment={comment}

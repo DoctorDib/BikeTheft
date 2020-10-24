@@ -29,7 +29,7 @@ export interface IOwner {
 
 export interface IPostAttributes {
     message: string;
-    confirmation_image: string;
+    confirmation_image: IImageSettings;
     active_state: boolean;
     is_deleted: boolean;
     replying_to: number | null;

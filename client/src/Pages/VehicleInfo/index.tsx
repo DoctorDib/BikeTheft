@@ -66,7 +66,12 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
             </section>
 
             <section className={classes.mainContentGap}>
-                <PostsComponent threadID={threadID} vehicleID={vehicleID} posts={postData} />
+                <PostsComponent
+                    threadID={threadID}
+                    ownerID={memberData.owner_id}
+                    vehicleID={vehicleID}
+                    posts={postData}
+                />
             </section>
 
             <section className={classes.mainContentGap}>

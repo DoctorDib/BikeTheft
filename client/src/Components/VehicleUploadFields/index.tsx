@@ -383,7 +383,11 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                 <Typography variant="h5"> Vehicle Upload </Typography>
             </section>
 
-            <ImageUploaderComponent images={images} setImages={setImages} />
+            <ImageUploaderComponent
+                images={images}
+                setImages={setImages}
+                maxImages={4}
+            />
 
             <Typography> The images you upload will be uploaded to an S3 bucket yo </Typography>
 

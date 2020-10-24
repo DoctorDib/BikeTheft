@@ -8,7 +8,7 @@ import { sendPost, updatePost, updateVehicleStat } from '../../Common/Helpers/DB
 import { FormatAvatar, FormatPostBackground } from './helper';
 
 import PopupComponent from '../Popup';
-import { IComment, IPostAttributes } from '../../Common/Interfaces/interfaces';
+import { IComment, IPostAttributes, IImageSettings } from '../../Common/Interfaces/interfaces';
 import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
 import TextCommentComponent from '../CommentTextBox';
 
@@ -17,6 +17,7 @@ import style from './styles';
 
 interface ICarouselProps {
     threadID: string;
+    ownerID: string;
     vehicleID: number;
     comment: IComment;
     posts: Array<IComment>;
@@ -27,7 +28,11 @@ interface ICarouselProps {
 const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
     const classes: IClasses = style();
 
-    const { threadID, vehicleID, comment, posts, ScrollToID, currentHighlightedID } = props;
+    const { threadID, ownerID, vehicleID, comment, posts, ScrollToID, currentHighlightedID } = props;
+
+    const [replyParent, setReplyParent] = useState<React.ReactElement>();
+    const [infoCard, setInfoCard] = useState<React.ReactElement>();
+    const [avatar, setAvatar] = useState<React.ReactElement>();
 
     const [postPopupOpen, setPostPopupOpen] = useState<boolean>(false);
     const [popupVehicleConfirmation, setPopupVehicleConfirmation] = useState<boolean>(false);
@@ -36,7 +41,6 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
     const [commentValue, setCommentValue] = useState<string>('');
     const [inputError, setInputError] = useState<boolean>(false);
     const [highlightStyle, setHighlightStyle] = useState();
-
     const [isExpanded, setExpand] = useState<boolean>(false);
 
     // TEMP comment in brackets
@@ -69,19 +73,24 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
         </section>
     );
 
-    const AddInfoCardFeatures = () => (
-        <section>
-            {Object.prototype.hasOwnProperty.call(comment.post_attributes, 'confirmation_image') ? (
+    const addInfoCardFeatures = () => {
+        const image:IImageSettings = comment.post_attributes.confirmation_image;
+        if (image.name === undefined) { return; }
+        
+        const infoCardElement = (
+            <section>
                 <CardMedia
                     className={classes.confirmationImg}
                     component="img"
-                    image={`../static/media/${comment.post_attributes.confirmation_image}`}
+                    image={`https://images.lostmywheels.com/public/${ownerID}/found/${image.name}.${image.type}`}
                 />
-            ) : null}
+    
+                { comment.post_attributes.active_state ? InfoComponent() : null }
+            </section>
+        );
 
-            { comment.post_attributes.active_state ? InfoComponent() : null }
-        </section>
-    );
+        setInfoCard(infoCardElement);
+    };
 
     const getCommentMessageFromQuote = ():IComment | null => {
         const targetCommentID = comment.post_attributes.replying_to;
@@ -94,7 +103,7 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
         const parentComment:IComment | null = getCommentMessageFromQuote();
         if (parentComment === null) { return null; }
 
-        return (
+        const replyParentElement = (
             <Button
                 onClick={() => ScrollToID(parentComment.post_id)}
                 className={classes.quoteButton}
@@ -116,6 +125,8 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
                 </Paper>
             </Button>
         );
+
+        setReplyParent(replyParentElement);
     };
 
     const onExpandClick = () => setExpand(!isExpanded);
@@ -151,6 +162,7 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
         updatePost(comment.post_id, newPostAttributes); // Disabling the "found" post
 
         newPostAttributes = defaultPostAttributes;
+        newPostAttributes.replying_to = comment.post_id;
         newPostAttributes.message = 'Owner has confirmed vehicle and is planning to take action.';
         sendPost(threadID, '1', newPostAttributes, 2);
 
@@ -168,6 +180,7 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
         updatePost(comment.post_id, newPostAttributes);
 
         newPostAttributes = defaultPostAttributes;
+        newPostAttributes.replying_to = comment.post_id;
         newPostAttributes.message = 'Owner has declined founders request.';
         sendPost(threadID, '1', newPostAttributes, 2);
     };
@@ -178,6 +191,12 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
     const toggleExpand = () => setExpand(!isExpanded);
 
     useEffect(() => setHighlightStyle(currentHighlightedID ? classes.highlight : ''), [currentHighlightedID]);
+
+    useEffect(() => {
+        addInfoCardFeatures();
+        addReplyParent();
+        setAvatar(FormatAvatar(comment, classes, true));
+    }, [comment]);
 
     return (
         <Accordion
@@ -191,24 +210,26 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
                 className={classNames(classes.mainContainer, highlightStyle)}
             >
                 <section className={classes.messageContents}>
-                    {FormatAvatar(comment, classes, true)}
+                    {avatar}
 
-                    {comment.type === 2 ? AddInfoCardFeatures() : null}
+                    {comment.type === 2 ? infoCard : null}
                     {comment.post_attributes.replying_to === null || comment.post_attributes.replying_to === undefined
                         ? null
-                        : addReplyParent()}
+                        : replyParent}
 
                     <section className={classes.postContainer}>
                         <Typography>{comment.post_attributes.message}</Typography>
                     </section>
                 </section>
 
-                <section className={classes.messageButtonContainer}>
+                { comment.type !== 2 
+                ? (<section className={classes.messageButtonContainer}>
                     <Delete className={classes.deleteIcon} onClick={onClickDelete} />
                     {isExpanded
                         ? <Clear className={classNames(classes.replyIcon, classes.replyIconClosed)} onClick={onExpandClick} />
                         : <Reply className={classNames(classes.replyIcon, classes.replyIconOpen)} onClick={onExpandClick} />}
-                </section>
+                </section> )
+                : null }
             </section>
 
             <AccordionDetails style={{ backgroundColor: '#f7f7f7' }}>

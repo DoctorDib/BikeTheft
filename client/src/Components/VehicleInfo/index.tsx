@@ -164,7 +164,12 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                             Report
                         </Button>
 
-                        <FoundConfirmation threadID={threadID} close={foundConfirmationResponse} open={open} />
+                        <FoundConfirmation
+                            ownerID={owner.owner_id}
+                            threadID={threadID}
+                            close={foundConfirmationResponse}
+                            open={open}
+                        />
                     </section>
 
                     <section className={classes.gridStyle}>

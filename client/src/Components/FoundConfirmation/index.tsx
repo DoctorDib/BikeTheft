@@ -5,6 +5,7 @@ import { CheckCircle, Cancel } from '@material-ui/icons';
 import { IPostAttributes, IImageSettings } from '../../Common/Interfaces/interfaces';
 import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
 
+import { uploadImagesToS3 } from '../../Common/Helpers/helper';
 import { sendPost } from '../../Common/Helpers/DB_Helpers';
 import PostTypeEnums from '../../Common/Enums/PostTypeEnums';
 
@@ -14,6 +15,7 @@ import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 interface IFoundConfirmationProps {
+    ownerID: string;
     threadID: string;
     open: boolean;
     close: () => void;
@@ -22,16 +24,17 @@ interface IFoundConfirmationProps {
 const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfirmationProps) => {
     const classes: IClasses = styles();
 
-    const { threadID, open, close } = props;
+    const { ownerID, threadID, open, close } = props;
 
     const [images, setImages] = useState<Array<IImageSettings>>([]);
 
     const sendFoundBike = () => {
         const newProperties:IPostAttributes = defaultPostAttributes;
         newProperties.message = 'A user may have found your vehicle! Please confirm the image above that this is your vehicle';
-        newProperties.confirmation_image = 'broken';
+        newProperties.confirmation_image = images[0];
         newProperties.active_state = true;
 
+        uploadImagesToS3(ownerID, images, 'found');
         sendPost(threadID, '1', newProperties, PostTypeEnums.INFO);
         close();
     };
@@ -57,7 +60,11 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfi
 
                     <Typography>Please upload a picture of the vehicle for confirmation purposes.</Typography>
 
-                    <ImageUploaderComponent images={images} setImages={setImages} />
+                    <ImageUploaderComponent 
+                        images={images} 
+                        setImages={setImages} 
+                        maxImages={1} 
+                    />
 
                     <section className={classes.buttonContainer}>
                         <Button variant="contained" startIcon={<CheckCircle />} onClick={sendFoundBike} color="primary">
