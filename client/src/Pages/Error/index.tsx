@@ -13,9 +13,7 @@ interface IErrorPageProps {}
 const ErrorPage: React.FC<IErrorPageProps> = () => {
     const classes: IClasses = styles();
 
-    const GoBack = () => {
-        window.history.back();
-    };
+    const GoBack = () => window.history.back();
 
     return (
         <section className={classes.body}>
@@ -57,7 +55,7 @@ const ErrorPage: React.FC<IErrorPageProps> = () => {
                             color="primary"
                             style={{ color: '#26844F' }}
                             className={classes.menuButtons}
-                            onClick={() => GoBack()}
+                            onClick={GoBack}
                         >
                             Go Back
                         </Button>

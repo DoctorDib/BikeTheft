@@ -14,8 +14,9 @@ import TextCommentComponent from '../CommentTextBox';
 
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import style from './styles';
+import { IsCommentDeleted } from 'aws-sdk/clients/codecommit';
 
-interface ICarouselProps {
+interface ICommentProp {
     threadID: string;
     ownerID: string;
     vehicleID: number;
@@ -25,7 +26,7 @@ interface ICarouselProps {
     currentHighlightedID: boolean;
 }
 
-const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
+const CommentComponent: React.FC<ICommentProp> = (props: ICommentProp) => {
     const classes: IClasses = style();
 
     const { threadID, ownerID, vehicleID, comment, posts, ScrollToID, currentHighlightedID } = props;
@@ -93,6 +94,8 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
         setInfoCard(infoCardElement);
     };
 
+    const onClickScroll: (parentComment:IsCommentDeleted) => (() => void) = (parentComment:IsCommentDeleted) => (() => ScrollToID(parentComment.post_id));
+
     const getCommentMessageFromQuote = ():IComment | null => {
         const targetCommentID = comment.post_attributes.replying_to;
         const message:Array<IComment> = posts.filter((post) => post.post_id === targetCommentID);
@@ -106,7 +109,7 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
 
         const replyParentElement = (
             <Button
-                onClick={() => ScrollToID(parentComment.post_id)}
+                onClick={onClickScroll(parentComment)}
                 className={classes.quoteButton}
                 disableFocusRipple
                 disableRipple
