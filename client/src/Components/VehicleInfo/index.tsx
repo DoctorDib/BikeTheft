@@ -44,7 +44,7 @@ const vinInformationPopup = (vin: string) => (
     </section>
 );
 
-const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
+const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoProps> => {
     const classes: IClasses = style();
 
     const [open, setOpen] = useState(false);

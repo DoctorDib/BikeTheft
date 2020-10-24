@@ -17,9 +17,9 @@ interface ICarouselProps {
 
 // https://github.com/xiaolin/react-image-gallery
 
-const CarouselComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
+const CarouselComponent = (props: ICarouselProps): React.ReactElement<ICarouselProps> => {
     const classes: IClasses = style();
-
+    
     const { owner, images } = props;
 
     const mapImages = images.map((image: IImageSettings) => ({

@@ -8,7 +8,7 @@ import style from './styles';
 import { ICookiePopupProps } from './Desktop';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
-const CookiePopup: React.FC<ICookiePopupProps> = (props: ICookiePopupProps) => {
+const CookiePopup = (props: ICookiePopupProps): React.ReactElement<ICookiePopupProps> => {
     const { clickTrigger } = props;
     const classes: IClasses = style();
 

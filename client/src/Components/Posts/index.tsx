@@ -1,26 +1,36 @@
 import React, { useState } from 'react';
-import { Typography, Button, TextField, CardMedia, Paper } from '@material-ui/core';
+import {
+    Typography, Button, TextField, CardMedia, Paper,
+} from '@material-ui/core';
 
 import ConfirmationComponent from '../Confirmation';
-
-import { FormatAvatar, FormatPostBackground } from './helper';
+import {
+    FormatAvatar,
+    FormatPostBackground,
+} from './helper';
 import Confirmation from '../../Common/Enums/ConfirmationEnums';
-
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
-
-import { IComment, IPostAttributes } from '../../Common/Interfaces/interfaces';
-
-import { defaultComment, defaultPostAttributes } from '../../Common/Helpers/Defaults';
-
-import { sendPost, updatePost, updateVehicleStat } from '../../Common/Helpers/DB_Helpers';
+import {
+    IComment,
+    IPostAttributes,
+} from '../../Common/Interfaces/interfaces';
+import {
+    defaultComment,
+    defaultPostAttributes,
+} from '../../Common/Helpers/Defaults';
+import {
+    sendPost,
+    updatePost,
+    updateVehicleStat,
+} from '../../Common/Helpers/DB_Helpers';
 
 interface IForumProps {
     posts: Array<IComment>;
     vehicleID: number;
 }
 
-const Forum: React.FC<IForumProps> = (props: IForumProps) => {
+const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
     const classes: IClasses = style();
 
     const [value, setValue] = useState<string>('');
@@ -110,8 +120,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         }
     };
 
-    const commentConfirmationClick = (comment: IComment, response: boolean) => () =>
-        onVehicleConfirm(comment, response);
+    const commentConfirmationClick = (comment: IComment, response: boolean) => () => onVehicleConfirm(comment, response);
 
     const InfoComponent = (comment: IComment) => (
         <section>
@@ -156,21 +165,20 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
         </section>
     );
 
-    const LayoutComments = () =>
-        posts.map((comment: IComment) => (
-            <Paper
-                className={classes.message}
-                elevation={1}
-                style={{ backgroundColor: FormatPostBackground(comment.type) }}
-                key={comment.post_id}
-            >
-                {FormatAvatar(comment, classes)}
-                {comment.type === 2 ? AddInfoCardFeatures(comment) : null}
-                <section className={classes.postContainer}>
-                    <Typography>{comment.post_attributes.message}</Typography>
-                </section>
-            </Paper>
-        ));
+    const LayoutComments = () => posts.map((comment: IComment) => (
+        <Paper
+            className={classes.message}
+            elevation={1}
+            style={{ backgroundColor: FormatPostBackground(comment.type) }}
+            key={comment.post_id}
+        >
+            {FormatAvatar(comment, classes)}
+            {comment.type === 2 ? AddInfoCardFeatures(comment) : null}
+            <section className={classes.postContainer}>
+                <Typography>{comment.post_attributes.message}</Typography>
+            </section>
+        </Paper>
+    ));
 
     return (
         <section className={classes.mainContainer}>
@@ -207,7 +215,9 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
                 callback={confirmationCallback}
             />
 
-            <section className={classes.messageContainer}>{posts !== null ? LayoutComments() : ''}</section>
+            <section className={classes.messageContainer}>
+                {posts !== null ? LayoutComments() : ''}
+            </section>
         </section>
     );
 };
