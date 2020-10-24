@@ -24,6 +24,13 @@ export default makeStyles(() => ({
         position: 'relative',
     },
 
+    imageCounter: {
+        position: 'absolute',
+        display: 'flex',
+        justifyContent: 'center',
+        bottom: '20px',
+    },
+
     input: {
         display: 'none',
     },

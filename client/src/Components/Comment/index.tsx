@@ -75,6 +75,7 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
 
     const addInfoCardFeatures = () => {
         const image:IImageSettings = comment.post_attributes.confirmation_image;
+        if (image === undefined) { return; }
         if (image.name === undefined) { return; }
         
         const infoCardElement = (

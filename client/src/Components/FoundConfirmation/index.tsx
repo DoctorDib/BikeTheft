@@ -9,6 +9,7 @@ import { uploadImagesToS3 } from '../../Common/Helpers/helper';
 import { sendPost } from '../../Common/Helpers/DB_Helpers';
 import PostTypeEnums from '../../Common/Enums/PostTypeEnums';
 
+import PopupComponent from '../Popup';
 import ImageUploaderComponent from '../ImageUploader';
 
 import styles from './styles';
@@ -27,6 +28,7 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfi
     const { ownerID, threadID, open, close } = props;
 
     const [images, setImages] = useState<Array<IImageSettings>>([]);
+    const [confirmationPopupOpen, setConfirmationPopupOpen] = useState<boolean>(false);
 
     const sendFoundBike = () => {
         const newProperties:IPostAttributes = defaultPostAttributes;
@@ -38,6 +40,14 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfi
         sendPost(threadID, '1', newProperties, PostTypeEnums.INFO);
         close();
     };
+
+    const openPopup = () => setConfirmationPopupOpen(true);
+
+    const confimrationPopupCallback = (response:boolean) => {
+        setConfirmationPopupOpen(false);
+        if (!response) { return; }
+        sendFoundBike();
+    }
 
     return (
         <Modal
@@ -54,11 +64,17 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfi
             <Fade in={open}>
                 <Paper className={classes.paper} elevation={0}>
                     <Typography variant="h5">Confirmation</Typography>
-                    <Typography>
-                        This will send a message to the owner requesting a confirmation that you have found their bike.
-                    </Typography>
+                    
+                    <section className={classes.infomationBox}>
+                        <Typography variant="body1">
+                            This will send a message to the owner requesting a confirmation that you have found their bike.
+                        </Typography>
 
-                    <Typography>Please upload a picture of the vehicle for confirmation purposes.</Typography>
+                        <Typography variant="body1">
+                            Please upload a picture of the vehicle for confirmation purposes.
+                        </Typography>
+                    </section>
+
 
                     <ImageUploaderComponent 
                         images={images} 
@@ -67,13 +83,20 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfi
                     />
 
                     <section className={classes.buttonContainer}>
-                        <Button variant="contained" startIcon={<CheckCircle />} onClick={sendFoundBike} color="primary">
-                            Confirm
-                        </Button>
                         <Button variant="contained" startIcon={<Cancel />} onClick={close} color="primary">
                             Cancel
                         </Button>
+                        <Button variant="contained" startIcon={<CheckCircle />} onClick={openPopup} color="primary">
+                            Confirm
+                        </Button>
                     </section>
+
+                    <PopupComponent
+                        open={confirmationPopupOpen}
+                        title="Confirmation"
+                        message="Are you sure that this could be the owners vehicle?"
+                        callback={confimrationPopupCallback}
+                    />
                 </Paper>
             </Fade>
         </Modal>

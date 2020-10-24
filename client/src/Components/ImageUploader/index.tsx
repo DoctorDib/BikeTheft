@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Paper, IconButton, CardMedia, Backdrop } from '@material-ui/core';
+import { Paper, IconButton, CardMedia, Backdrop, Typography } from '@material-ui/core';
 
 import { SpeedDialAction, SpeedDial, SpeedDialIcon } from '@material-ui/lab';
 import { Add, Crop, Clear, StarBorder } from '@material-ui/icons';
@@ -253,6 +253,9 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps
                     <Paper className={classes.container}>
                         <Add color="primary" />
                     </Paper>
+                    <section className={classes.imageCounter}>
+                        <Typography> { images.length } / { maxImages } </Typography>
+                    </section>
                 </IconButton>
             </label>
 
