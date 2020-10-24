@@ -12,6 +12,7 @@ import { defaultCropSettings } from '../../Common/Helpers/Defaults';
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import { ICropSettings } from '../../Common/Interfaces/interfaces';
+import { isNullOrUndefinedOrEmpty } from '../../Common/Utils/Types';
 
 // Increase pixel density for crop preview quality on retina screens.
 const pixelRatio = window.devicePixelRatio || 1;
@@ -79,13 +80,14 @@ const ImageCropped = (props: IImageCropProps): React.Element<IImageCropProps> =>
     };
 
     useEffect(() => {
-        if (!completedCrop || !previewCanvasRef.current || !imgRef.current) {
+        const image = imgRef.current;
+
+        if (!completedCrop || !previewCanvasRef.current || isNullOrUndefinedOrEmpty(image)) {
             return;
         }
 
-        const image = imgRef.current;
         const canvas = previewCanvasRef.current;
-        if (image === null || canvas === null) {
+        if (canvas === null) {
             return;
         }
 
