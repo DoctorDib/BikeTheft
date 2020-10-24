@@ -14,7 +14,6 @@ import TextCommentComponent from '../CommentTextBox';
 
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import style from './styles';
-import { IsCommentDeleted } from 'aws-sdk/clients/codecommit';
 
 interface ICommentProp {
     threadID: string;
@@ -94,7 +93,7 @@ const CommentComponent: React.FC<ICommentProp> = (props: ICommentProp) => {
         setInfoCard(infoCardElement);
     };
 
-    const onClickScroll: (parentComment:IsCommentDeleted) => (() => void) = (parentComment:IsCommentDeleted) => (() => ScrollToID(parentComment.post_id));
+    const onClickScroll = (parentComment:IComment) => (() => ScrollToID(parentComment.post_id));
 
     const getCommentMessageFromQuote = ():IComment | null => {
         const targetCommentID = comment.post_attributes.replying_to;
@@ -143,17 +142,23 @@ const CommentComponent: React.FC<ICommentProp> = (props: ICommentProp) => {
 
         if (!response) { return; }
 
-        const newPostAttributes = comment.post_attributes;
-        newPostAttributes.is_deleted = true;
+        const newPostAttributes = {
+            ...comment.post_attributes,
+            is_deleted: true,
+        };
+
         updatePost(comment.post_id, newPostAttributes);
     };
     const postPopupCallback = (response:boolean) => {
         setPostPopupOpen(false);
         if (!response) { return; }
 
-        const newCommentAttributes:IPostAttributes = defaultPostAttributes;
-        newCommentAttributes.message = commentValue;
-        newCommentAttributes.replying_to = comment.post_id;
+        const newCommentAttributes:IPostAttributes = {
+            ...defaultPostAttributes,
+            message: commentValue,
+            replying_to: comment.post_id,
+        };
+
         setCommentValue('');
         sendPost(threadID, '1', newCommentAttributes, 1);
     };
@@ -161,13 +166,19 @@ const CommentComponent: React.FC<ICommentProp> = (props: ICommentProp) => {
         setPostPopupOpen(false);
         if (!response) { return; }
 
-        let newPostAttributes = comment.post_attributes;
-        newPostAttributes.active_state = false;
+        let newPostAttributes = {
+            ...comment.post_attributes,
+            active_state: false,
+        };
+
         updatePost(comment.post_id, newPostAttributes); // Disabling the "found" post
 
-        newPostAttributes = defaultPostAttributes;
-        newPostAttributes.replying_to = comment.post_id;
-        newPostAttributes.message = 'Owner has confirmed vehicle and is planning to take action.';
+        newPostAttributes = {
+            ...defaultPostAttributes,
+            replying_to: comment.post_id,
+            message: 'Owner has confirmed vehicle and is planning to take action.',
+        };
+
         sendPost(threadID, '1', newPostAttributes, 2);
 
         // Set to pending pick up
@@ -177,15 +188,20 @@ const CommentComponent: React.FC<ICommentProp> = (props: ICommentProp) => {
         setPostPopupOpen(false);
         if (!response) { return; }
 
-        let newPostAttributes = comment.post_attributes;
-        newPostAttributes.active_state = false;
+        let newPostAttributes = {
+            ...comment.post_attributes,
+            active_state: false,
+        };
 
         // Disabling the "found" post
         updatePost(comment.post_id, newPostAttributes);
 
-        newPostAttributes = defaultPostAttributes;
-        newPostAttributes.replying_to = comment.post_id;
-        newPostAttributes.message = 'Owner has declined founders request.';
+        newPostAttributes = {
+            ...defaultPostAttributes,
+            replying_to: comment.post_id,
+            message: 'Owner has declined founders request.',
+        };
+
         sendPost(threadID, '1', newPostAttributes, 2);
     };
 

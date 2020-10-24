@@ -125,9 +125,10 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps
         handleClose();
     };
 
-    const onClickRemove: (image:IImageSettings) => (() => void) = (image:IImageSettings) => (() => onImgRemove(image.id));
-    const onClickCrop: (image:IImageSettings) => (() => void) = (image:IImageSettings) => (() => cropImage(image.id, image.crop.original, image.crop.crop_info ?? defaultCropSettings));
-    const onClickDefault: (image:IImageSettings) => (() => void) = (image:IImageSettings) => (() => setAsMainImage(image.id));
+    const onClickDefault = (image:IImageSettings) => (() => setAsMainImage(image.id));
+    const onClickRemove = (image:IImageSettings) => (() => onImgRemove(image.id));
+    const onClickCrop = (image:IImageSettings) =>
+        (() => cropImage(image.id, image.crop.original, image.crop.crop_info ?? defaultCropSettings));
 
     const mapImages = () => {
         const newMappedImages:Array<React.ReactElement> = images.map((image: IImageSettings):React.ReactElement => (

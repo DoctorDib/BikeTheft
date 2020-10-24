@@ -27,16 +27,18 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfi
 
     const { ownerID, threadID, open, close } = props;
 
-    const [images, setImages] = useState<Array<IImageSettings>>([]);
+    const [[image], setImages] = useState<Array<IImageSettings>>([]);
     const [confirmationPopupOpen, setConfirmationPopupOpen] = useState<boolean>(false);
 
     const sendFoundBike = () => {
-        const newProperties:IPostAttributes = defaultPostAttributes;
-        newProperties.message = 'A user may have found your vehicle! Please confirm the image above that this is your vehicle';
-        newProperties.confirmation_image = images[0];
-        newProperties.active_state = true;
+        const newProperties:IPostAttributes = {
+            ...defaultPostAttributes,
+            message: 'A user may have found your vehicle! Please confirm the image above that this is your vehicle',
+            confirmation_image: image,
+            active_state: true,
+        };
 
-        uploadImagesToS3(ownerID, images, 'found');
+        uploadImagesToS3(ownerID, [image], 'found');
         sendPost(threadID, '1', newProperties, PostTypeEnums.INFO);
         close();
     };
@@ -76,7 +78,7 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfi
                     </section>
 
                     <ImageUploaderComponent
-                        images={images}
+                        images={[image]}
                         setImages={setImages}
                         maxImages={1}
                     />
