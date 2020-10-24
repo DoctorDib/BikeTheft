@@ -8,7 +8,7 @@ import AboutInfoComponent from '../../Components/AboutInfo';
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
-const About: React.FC = () => {
+const About = ():React.ReactElement => {
     const classes: IClasses = styles();
 
     return (
