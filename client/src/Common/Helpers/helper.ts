@@ -71,3 +71,10 @@ export const moveItemInArray = (array:ReadonlyArray<IImageSettings>, from:number
 };
 
 export const formatDate = (date:Date | string):string => ago(new Date(date));
+
+export const capitalizeFirstLetter = (value: string):string => {
+    if (value === undefined) {
+        return '';
+    }
+    return value.toLowerCase().charAt(0).toUpperCase() + value.toLowerCase().slice(1);
+};
