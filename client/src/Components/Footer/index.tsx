@@ -25,7 +25,7 @@ const Copyright = () => {
 
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const FooterComponent: React.FC<IFooterProps> = (props: IFooterProps) => {
+const FooterComponent = (props: IFooterProps): React.ReactElement<IFooterProps> => {
     const classes = styles();
 
     return (

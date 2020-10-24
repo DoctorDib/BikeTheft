@@ -2,19 +2,22 @@
 import React, { useState } from 'react';
 import { API } from 'aws-amplify';
 import classNames from 'classnames';
-import { TextField, Typography, Chip, Grid, Button } from '@material-ui/core';
+import {
+    TextField, Typography, Chip, Grid, Button,
+} from '@material-ui/core';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
 import InputToolTip from '../ToopTip';
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
 import ImageUploaderComponent from '../ImageUploader';
-import { IInputFields, IChip } from '../../Common/Interfaces/interfaces';
+import { IInputFields, IChip, IImageSettings } from '../../Common/Interfaces/interfaces';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import styles from './styles';
 import { isNullOrUndefinedOrEmpty } from '../../Common/Utils/Types';
 import { defaultInputs } from '../../Common/Helpers/Defaults';
-import { addNewVehicle } from '../../Common/Helpers/DB_Helpers';
+import { createNewThread } from '../../Common/Helpers/DB_Helpers';
+import { uploadImagesToS3 } from '../../Common/Helpers/helper';
 
 interface IImageUploaderProps {}
 
@@ -28,8 +31,10 @@ interface IToolTipMessage {
     [key: string]: string;
 }
 
-const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
+const VehicleUploadInputs = ():React.ReactElement<IImageUploaderProps> => {
     const classes: IClasses = styles();
+
+    const [images, setImages] = useState<Array<IImageSettings>>([]);
 
     const [inputFields, setInputFields] = useState<IInputFields>(defaultInputs);
     const [dateStolen, setDateStolen] = useState<Date>(new Date());
@@ -199,8 +204,11 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         inputFields.dateStolen = dateStolen;
         // Turning string capture into int
 
+        // currently static upload to vehicles folder only
+        uploadImagesToS3('1', images, 'vehicles');
+
         // TODO - Will need to change the owner_id when login is setup
-        addNewVehicle(1, inputFields);
+        createNewThread('1', inputFields, images);
     };
 
     // eslint-disable-next-line no-undef
@@ -217,7 +225,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         },
     );
 
-    const inputComponents = Object.keys(inputFields).map((key: string): any => {
+    const inputComponents = Object.keys(inputFields).map((key: string):React.ReactNode => {
         switch (key) {
             case 'primaryColour':
             case 'secondaryColour':
@@ -235,7 +243,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                                 endAdornment: <InputToolTip message={getToolTip(key)} />,
                             }}
                         />
-                        <section className={classes.colour} style={{ backgroundColor: inputFields[key] }}></section>
+                        <section className={classes.colour} style={{ backgroundColor: inputFields[key] }} />
                     </Grid>
                 );
             case 'dateStolen':
@@ -371,7 +379,7 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                 <Typography variant="h5"> Vehicle Upload </Typography>
             </section>
 
-            <ImageUploaderComponent />
+            <ImageUploaderComponent images={images} setImages={setImages} />
 
             <Typography> The images you upload will be uploaded to an S3 bucket yo </Typography>
 

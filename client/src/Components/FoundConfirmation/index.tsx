@@ -1,10 +1,13 @@
 import React from 'react';
 
-import { Modal, Backdrop, Fade, Paper, Typography, Button } from '@material-ui/core';
+import {
+    Modal, Backdrop, Fade, Paper, Typography, Button,
+} from '@material-ui/core';
 
 import { CheckCircle, Cancel } from '@material-ui/icons';
 
-import ImageUploaderComponent from '../ImageUploader';
+// Temp disabled
+// import ImageUploaderComponent from '../ImageUploader';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -14,7 +17,7 @@ interface IFoundConfirmationProps {
     close: () => void;
 }
 
-const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfirmationProps) => {
+const FoundConfirmation = (props: IFoundConfirmationProps): React.ReactElement<IFoundConfirmationProps> => {
     const classes: IClasses = styles();
 
     const { open, close } = props;
@@ -41,7 +44,7 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfi
 
                     <Typography>Please upload a picture of the vehicle for confirmation purposes.</Typography>
 
-                    <ImageUploaderComponent />
+                    {/* <ImageUploaderComponent images={} setImages={} /> */}
 
                     <section className={classes.buttonContainer}>
                         <Button variant="contained" startIcon={<CheckCircle />} color="primary">

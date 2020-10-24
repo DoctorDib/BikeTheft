@@ -1,8 +1,17 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { API } from 'aws-amplify';
 
-import { getDateTimeString, SQLStringProtection, checkSQLInObject, sortFeaturesArray as ExtractValue } from './helper';
+import {
+    getDateTimeString,
+    sortFeaturesArray,
+} from './helper';
 
-import { IPostAttributes, IData, IInputFields } from '../Interfaces/interfaces';
+import {
+    IPostAttributes,
+    IData,
+    IInputFields,
+    IImageSettings,
+} from '../Interfaces/interfaces';
 
 import { defaultData } from './Defaults';
 
@@ -12,9 +21,6 @@ export const sendPost = async (
     postAttributes: IPostAttributes,
     postType: number,
 ): Promise<boolean> => {
-    const postAttributesSetup: IPostAttributes = postAttributes;
-    postAttributesSetup.message = SQLStringProtection(postAttributes.message);
-
     const body = {
         body: {
             parent_id: parentID,
@@ -85,15 +91,37 @@ export const updateVehicleStat = async (vehicleID: number, newStat: number): Pro
     }
 };
 
-export const addNewVehicle = async (ownerID: number, data: IInputFields): Promise<boolean> => {
-    const cleanData = checkSQLInObject(data);
+const stripData64 = (images:Array<IImageSettings>) => images.map((data) => ({
+    name: data.name,
+    is_main_image: data.is_main_image,
+    type: data.type,
+    crop: {
+        crop_info: data.crop.crop_info,
+    },
+}));
+
+export const createNewThread = async (
+    ownerID: string,
+    data: IInputFields,
+    images: Array<IImageSettings>,
+): Promise<boolean> => {
+    const {
+        number_plate,
+        make,
+        model,
+        category,
+        primary_colour,
+        secondary_colour,
+        description,
+        vin,
+    } = data;
 
     // Extracting the string values from an array of objects
     // e.g. [{key: 1, value: "one"}, {key: 2, value: "two"}]
-    let featuresArray: any = ExtractValue(data.featuresArray);
-    featuresArray = checkSQLInObject(featuresArray);
+    // is now ["one", "two"]
+    const features: Array<string> = sortFeaturesArray(data.featuresArray);
 
-    const body = {
+    const serverThreadData = { // TODO this needs a type!!!
         body: {
             owner_id: ownerID,
             // TODO - Set up location / geometry
@@ -101,26 +129,30 @@ export const addNewVehicle = async (ownerID: number, data: IInputFields): Promis
             // for now we're defaulting vehicles that get uploaded to
             // automatically be assumed as stolen
             status: 1,
-            number_plate: cleanData.number_plate,
-            make: cleanData.make,
-            model: cleanData.model,
-            category: cleanData.category,
+            number_plate,
+            make,
+            model,
+            category,
             vehicle_attributes: {
-                primary_colour: cleanData.primary_colour,
-                secondary_colour: cleanData.secondary_colour,
-                features: featuresArray,
-                description: cleanData.description,
-                v5c_verification_date: cleanData.v5cVerificationDate,
+                primary_colour,
+                secondary_colour,
+                features,
+                description,
+                v5c_verification_date: data.v5cVerificationDate, // change like others when naming is better
                 date_stolen: data.dateStolen,
+                vehicle_images: stripData64(images),
             },
-            vin: cleanData.vin,
+            vin,
         },
     };
 
     try {
-        const response = await API.post('base_endpoint', '/vehicles/set_vehicle', body);
-        console.debug(response);
-        return true;
+        const response = await API.post(
+            'base_endpoint',
+            '/forum/create_thread',
+            serverThreadData,
+        );
+        return response;
     } catch (e) {
         console.error(e);
         return false;

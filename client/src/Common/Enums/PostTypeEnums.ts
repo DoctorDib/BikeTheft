@@ -1,7 +1,7 @@
 enum PostTypeEnum {
     OWNER,
     USER,
-    INFO,
+    INFO
 }
 
 export default PostTypeEnum;

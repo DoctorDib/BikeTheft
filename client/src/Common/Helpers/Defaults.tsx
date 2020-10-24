@@ -7,6 +7,7 @@ import {
     IData,
     IInputFields,
     IChip,
+    ICropSettings,
 } from '../Interfaces/interfaces';
 
 export const defaultVehicleData: IVehicleInfo = {
@@ -14,7 +15,7 @@ export const defaultVehicleData: IVehicleInfo = {
     date_added: '',
     description: '',
     features: [],
-    images: [''],
+    images: [],
     location: '',
     number_plate: '',
     owner_id: '',
@@ -37,6 +38,7 @@ export const defaultPostAttributes: IPostAttributes = {
 };
 
 export const defaultOwner: IOwner = {
+    owner_id: '-1',
     member_attributes: defaultMemberAttributes,
 };
 
@@ -73,4 +75,12 @@ export const defaultInputs: IInputFields = {
     featuresArray: [],
     description: '',
     v5cVerificationDate: '',
+};
+
+export const defaultCropSettings:ICropSettings = {
+    unit: '%',
+    width: 1,
+    height: 1,
+    x: 50,
+    y: 50,
 };
