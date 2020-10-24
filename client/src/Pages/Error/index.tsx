@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 
 import NavBarComponent from '../../Components/Header';
 import FooterComponent from '../../Components/Footer';
-import CookiePopupComponent from '../../Components/CookiePopup';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -72,8 +71,6 @@ const ErrorPage: React.FC<IErrorPageProps> = () => {
             <section className={classes.mainContentGap}>
                 <FooterComponent />
             </section>
-
-            <CookiePopupComponent />
         </section>
     );
 };

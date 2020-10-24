@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
     Typography,
@@ -30,13 +30,6 @@ interface IVehicleInfoProps {
     vehicle: IVehicleInfo;
 }
 
-const formatFeatures = (features: Array<string>) =>
-    features.map((damage: string) => (
-        <ListItem key={`damages - ${damage}`}>
-            <ListItemText primary={damage} />
-        </ListItem>
-    ));
-
 const vinInformationPopup = (vin: string) => (
     <section>
         <Typography>
@@ -48,15 +41,20 @@ const vinInformationPopup = (vin: string) => (
 const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
     const classes: IClasses = style();
 
+    const { threadID, owner, vehicle } = props;
+
     const [open, setOpen] = useState(false);
     const [openVin, setOpenVin] = useState(false);
+
+    const [formattedFeatures, setFormattedFeatures] = useState<Array<React.ReactElement>>([]);
+    const [formattedInfo, setFormattedInfo] = useState<Array<React.ReactElement>>([]);
+    const [formatStatusText, setFormatStatusText] = useState<string>('');
+    const [formattedStatusColour, setFormattedStatusColour] = useState<string>('');
 
     const handleOpen = () => setOpen(true);
     const handleVinOpen = () => setOpenVin(true);
     const handleVinClose = () => setOpenVin(false);
     const foundConfirmationResponse = () => setOpen(false);
-
-    const { threadID, owner, vehicle } = props;
 
     const capitalizeFirstLetter = (value: string) => {
         if (value === undefined) {
@@ -73,8 +71,18 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
         return value;
     };
 
-    const formatInfo = (data: IVehicleInfo) =>
-        infoKeys.map((indexKey: string) => {
+    const formatFeatures = (features: Array<string>) => {
+        const newFormattedFeatures = features.map((damage: string) => (
+            <ListItem key={`damages - ${damage}`}>
+                <ListItemText primary={damage} />
+            </ListItem>
+        ));
+
+        setFormattedFeatures(newFormattedFeatures);
+    };
+
+    const formatInfo = (data: IVehicleInfo) => {
+        const newFormattedInfo = infoKeys.map((indexKey: string) => {
             if (indexKey === 'vin') {
                 // const value in if statement to avoid type confusion when using "vinInformationPopup"
                 const value: string = data[indexKey];
@@ -122,6 +130,16 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
             );
         });
 
+        setFormattedInfo(newFormattedInfo);
+    };
+
+    useEffect(() => {
+        formatFeatures(vehicle.features);
+        formatInfo(vehicle);
+        setFormatStatusText(FormatStatusText(vehicle.status));
+        setFormattedStatusColour(FormatStatusColour(vehicle.status));
+    }, [vehicle]);
+
     return (
         <section className={classes.container}>
             <section className={classes.topSection}>
@@ -142,11 +160,11 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                         <Typography
                             variant="h4"
                             style={{
-                                color: FormatStatusColour(vehicle.status),
+                                color: formattedStatusColour,
                             }}
                             className={classes.statusText}
                         >
-                            {FormatStatusText(vehicle.status)}
+                            {formatStatusText}
                         </Typography>
                     </section>
 
@@ -176,7 +194,7 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                         <Typography className={classes.titles} variant="body1">
                             Specifications
                         </Typography>
-                        {formatInfo(vehicle)}
+                        {formattedInfo}
                     </section>
                 </section>
             </section>
@@ -189,7 +207,7 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
 
                 <section>
                     <Typography className={classes.titles}>Additional damages</Typography>
-                    <List dense>{formatFeatures(vehicle.features)}</List>
+                    <List dense>{formattedFeatures}</List>
                 </section>
             </section>
         </section>

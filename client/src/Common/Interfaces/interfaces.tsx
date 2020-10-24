@@ -86,14 +86,6 @@ export interface IImageSettings {
     data64: string;
     crop: {
         original: string;
-        crop_info: ICropSettings | null;
+        crop_info: ReactCrop.Crop | null;
     };
-}
-
-export interface ICropSettings {
-    unit: string;
-    width: number;
-    height: number;
-    x: number;
-    y: number;
 }

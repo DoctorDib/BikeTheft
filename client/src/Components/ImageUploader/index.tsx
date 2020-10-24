@@ -4,7 +4,7 @@ import { Paper, IconButton, CardMedia, Backdrop, Typography } from '@material-ui
 import { SpeedDialAction, SpeedDial, SpeedDialIcon } from '@material-ui/lab';
 import { Add, Crop, Clear, StarBorder } from '@material-ui/icons';
 
-import { IImageSettings, ICropSettings } from '../../Common/Interfaces/interfaces';
+import { IImageSettings } from '../../Common/Interfaces/interfaces';
 import { defaultCropSettings } from '../../Common/Helpers/Defaults';
 
 import styles from './styles';
@@ -40,23 +40,22 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps
 
     const { images, setImages, maxImages } = props;
 
-    const [speedOpen, setSpeedOpen] = useState(true);
+    const [mappedImageElement, setMappedImageElement] = useState<Array<React.ReactElement>>([]);
+    const [speedOpen, setSpeedOpen] = useState<boolean>(true);
     const [imageCropSrc, setImageCropSrc] = useState<string>('');
     const [cropDialog, setCropDialog] = useState<boolean>(false);
     const [croppingIndex, setCroppingIndex] = useState<number>(-1);
 
-    const [crop, setCrop] = useState<ICropSettings>(defaultCropSettings);
+    const [crop, setCrop] = useState<ReactCrop.Crop>(defaultCropSettings);
 
     const [picIndex, setPicIndex] = useState<number>(0);
 
-    const handleOpen = () => {
-        setSpeedOpen(true);
-    };
-    const handleClose = () => {
-        setSpeedOpen(false);
-    };
+    const handleOpen = () => setSpeedOpen(true);
+    const handleClose = () => setSpeedOpen(false);
+    const onSaveCropData = (data64: string, cropInfo: ReactCrop.Crop) => saveCroppedData(data64, cropInfo);
+    const onHandleClose = () => setCropDialog(false);
 
-    const cropImage = (id: number, imgSrc: string, cropInfo: ICropSettings) => {
+    const cropImage = (id: number, imgSrc: string, cropInfo: ReactCrop.Crop) => {
         setCroppingIndex(id);
         setImageCropSrc(imgSrc);
         setCrop(cropInfo);
@@ -69,7 +68,7 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps
         handleClose();
     };
 
-    const saveCroppedData = (newImageData64: string, newCropInfo: ICropSettings) => {
+    const saveCroppedData = (newImageData64: string, newCropInfo: ReactCrop.Crop) => {
         if (croppingIndex === -1) {
             return;
         }
@@ -125,58 +124,60 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps
         setImages(newImages);
         handleClose();
     };
-    const mapImages = images.map((image: IImageSettings) => (
-        <Paper
-            key={image.id}
-            className={classes.container}
-            style={{ border: image.is_main_image ? '3px solid rgb(204, 204, 4)' : '0' }}
-        >
-            <section className={classes.speedDialContainer}>
-                <Backdrop open={speedOpen} />
-                <SpeedDial
-                    ariaLabel="SpeedDial tooltip"
-                    className={classes.speedDial}
-                    icon={<SpeedDialIcon className={classes.smallIcon} />}
-                    onClose={handleClose}
-                    onOpen={handleOpen}
-                    open={speedOpen}
-                    direction="down"
-                >
-                    <SpeedDialAction
-                        key="remove"
-                        icon={<Clear style={{ color: 'rgb(176, 0, 0)' }} className={classes.smallIcon} />}
-                        tooltipTitle="Remove"
-                        onClick={() => onImgRemove(image.id)}
-                    />
-                    <SpeedDialAction
-                        key="crop"
-                        icon={<Crop color="primary" className={classes.smallIcon} />}
-                        tooltipTitle="Crop image"
-                        onClick={() =>
-                            cropImage(image.id, image.crop.original, image.crop.crop_info ?? defaultCropSettings)}
-                    />
-                    {!image.is_main_image ? (
+    const mapImages = () => {
+        const newMappedImages:Array<React.ReactElement> = images.map((image: IImageSettings):React.ReactElement => (
+            <Paper
+                key={image.id}
+                className={classes.container}
+                style={{ border: image.is_main_image ? '3px solid rgb(204, 204, 4)' : '0' }}
+            >
+                <section className={classes.speedDialContainer}>
+                    <Backdrop open={speedOpen} />
+                    <SpeedDial
+                        ariaLabel="SpeedDial tooltip"
+                        className={classes.speedDial}
+                        icon={<SpeedDialIcon className={classes.smallIcon} />}
+                        onClose={handleClose}
+                        onOpen={handleOpen}
+                        open={speedOpen}
+                        direction="down"
+                    >
                         <SpeedDialAction
-                            key="make-default"
-                            icon={<StarBorder color="primary" className={classes.smallIcon} />}
-                            tooltipTitle="Make default image"
-                            onClick={() => setAsMainImage(image.id)}
+                            key="remove"
+                            icon={<Clear style={{ color: 'rgb(176, 0, 0)' }} className={classes.smallIcon} />}
+                            tooltipTitle="Remove"
+                            onClick={() => onImgRemove(image.id)}
                         />
-                    ) : (
-                        ''
-                    )}
-                </SpeedDial>
-            </section>
+                        <SpeedDialAction
+                            key="crop"
+                            icon={<Crop color="primary" className={classes.smallIcon} />}
+                            tooltipTitle="Crop image"
+                            onClick={() =>
+                                cropImage(image.id, image.crop.original, image.crop.crop_info ?? defaultCropSettings)}
+                        />
+                        {!image.is_main_image ? (
+                            <SpeedDialAction
+                                key="make-default"
+                                icon={<StarBorder color="primary" className={classes.smallIcon} />}
+                                tooltipTitle="Make default image"
+                                onClick={() => setAsMainImage(image.id)}
+                            />
+                        ) : (
+                            ''
+                        )}
+                    </SpeedDial>
+                </section>
 
-            <CardMedia component="img" image={image.data64} />
-        </Paper>
-    ));
+                <CardMedia component="img" image={image.data64} />
+            </Paper>
+        ));
 
-    const remapImages = useCallback(() => mapImages, [mapImages]);
+        setMappedImageElement(newMappedImages);
+    };
 
-    useEffect(() => {
-        remapImages();
-    }, [remapImages]);
+    // TODO - Look into this to see if there is a better method
+    // Currently re-renders all images when the speed dial is used
+    useEffect(() => mapImages(), [images, speedOpen]);
 
     const hashString = (stringToHash: string) => {
         const newString = stringToHash + Date.now();
@@ -232,7 +233,8 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps
 
     return (
         <section className={classes.mainContainer}>
-            {mapImages}
+
+            {mappedImageElement}
 
             <label htmlFor="icon-button-file">
                 <input
@@ -254,14 +256,10 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps
                         <Add color="primary" />
                     </Paper>
                     <section className={classes.imageCounter}>
-                        <Typography>
-                            {' '}
+                        <Typography variant="body1">
                             { images.length }
-                            {' '}
-/
-                            {' '}
+                            /
                             { maxImages }
-                            {' '}
                         </Typography>
                     </section>
                 </IconButton>
@@ -270,10 +268,10 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps
             <ImageCropperComponent
                 imageSrc={imageCropSrc}
                 open={cropDialog}
-                handleClose={() => setCropDialog(false)}
+                handleClose={onHandleClose}
                 crop={crop}
                 setCrop={setCrop}
-                saveCroppedData={(data64: string, cropInfo: ICropSettings) => saveCroppedData(data64, cropInfo)}
+                saveCroppedData={onSaveCropData}
             />
         </section>
     );

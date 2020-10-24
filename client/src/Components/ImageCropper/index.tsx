@@ -9,8 +9,6 @@ import { defaultCropSettings } from '../../Common/Helpers/Defaults';
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
-import { ICropSettings } from '../../Common/Interfaces/interfaces';
-
 // Increase pixel density for crop preview quality on retina screens.
 const pixelRatio = window.devicePixelRatio || 1;
 
@@ -36,9 +34,9 @@ interface IImageCropProps {
     open: boolean;
     handleClose: () => void;
     imageSrc: string;
-    crop: ICropSettings;
-    saveCroppedData: (x: string, y: ICropSettings) => void;
-    setCrop: (x: ICropSettings) => void;
+    crop: ReactCrop.Crop;
+    saveCroppedData: (x: string, y: ReactCrop.Crop) => void;
+    setCrop: (x: ReactCrop.Crop) => void;
 }
 
 const ImageCropped: React.FC<IImageCropProps> = (props: IImageCropProps) => {
@@ -47,7 +45,7 @@ const ImageCropped: React.FC<IImageCropProps> = (props: IImageCropProps) => {
     const imgRef = useRef<HTMLImageElement>();
     const previewCanvasRef = useRef<HTMLCanvasElement>(null);
 
-    const [completedCrop, setCompletedCrop] = useState<ICropSettings>(defaultCropSettings);
+    const [completedCrop, setCompletedCrop] = useState<ReactCrop.Crop>(defaultCropSettings);
 
     const { open, handleClose, imageSrc, saveCroppedData, setCrop, crop } = props;
 
@@ -62,7 +60,7 @@ const ImageCropped: React.FC<IImageCropProps> = (props: IImageCropProps) => {
             return;
         }
 
-        const canvas = getResizedCanvas(previewCanvas, completedCrop.width, completedCrop.height);
+        const canvas = getResizedCanvas(previewCanvas, completedCrop.width ?? 1, completedCrop.height ?? 1);
 
         if (!canvas) {
             return;
@@ -93,24 +91,28 @@ const ImageCropped: React.FC<IImageCropProps> = (props: IImageCropProps) => {
             return;
         }
 
-        canvas.width = completedCrop.width * pixelRatio;
-        canvas.height = completedCrop.height * pixelRatio;
+        canvas.width = (completedCrop.width ?? 1) * pixelRatio;
+        canvas.height = (completedCrop.height ?? 1) * pixelRatio;
 
         ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
         ctx.imageSmoothingQuality = 'high';
 
         ctx.drawImage(
             image,
-            completedCrop.x * scaleX || 1,
-            completedCrop.y * scaleY || 1,
-            completedCrop.width * scaleX || 1,
-            completedCrop.height * scaleY || 1,
+            (completedCrop.x ?? 1) * scaleX || 1,
+            (completedCrop.y ?? 1) * scaleY || 1,
+            (completedCrop.width ?? 1) * scaleX || 1,
+            (completedCrop.height ?? 1) * scaleY || 1,
             0,
             0,
             completedCrop.width || 1,
             completedCrop.height || 1,
         );
     }, [completedCrop]);
+
+    const generateClick = () => generateDownload();
+    const onChange = (c:ReactCrop.Crop) => setCrop(c);
+    const onComplete = (c:ReactCrop.Crop) => setCompletedCrop(c);
 
     return (
         <Dialog onClose={handleClose} aria-labelledby="image-cropper" open={open}>
@@ -119,8 +121,8 @@ const ImageCropped: React.FC<IImageCropProps> = (props: IImageCropProps) => {
                     src={imageSrc}
                     onImageLoaded={onLoad}
                     crop={crop}
-                    onChange={(c) => setCrop(c)}
-                    onComplete={(c) => setCompletedCrop(c)}
+                    onChange={onChange}
+                    onComplete={onComplete}
                 />
                 <section style={{ display: 'none' }}>
                     <canvas
@@ -135,7 +137,7 @@ const ImageCropped: React.FC<IImageCropProps> = (props: IImageCropProps) => {
                 <Button
                     variant="outlined"
                     disabled={!completedCrop?.width || !completedCrop?.height}
-                    onClick={() => generateDownload()}
+                    onClick={generateClick}
                     className={classes.button}
                 >
                     Confirm

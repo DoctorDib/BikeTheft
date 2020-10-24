@@ -42,9 +42,9 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
     const [inputError, setInputError] = useState<boolean>(false);
     const [highlightStyle, setHighlightStyle] = useState();
     const [isExpanded, setExpand] = useState<boolean>(false);
+    const [postBackground, setPostBackground] = useState<string>('');
 
-    // TEMP comment in brackets
-    const InfoComponent = (/* comment: IComment */) => (
+    const InfoComponent = () => (
         <section>
             <section className={classes.waitingText}>
                 <Typography> Waiting for users response </Typography>
@@ -128,7 +128,6 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
         );
 
         setReplyParent(replyParentElement);
-        return;
     };
 
     const onExpandClick = () => setExpand(!isExpanded);
@@ -198,13 +197,14 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
         addInfoCardFeatures();
         addReplyParent();
         setAvatar(FormatAvatar(comment, classes, true));
+        setPostBackground(FormatPostBackground(comment.type));
     }, [comment]);
 
     return (
         <Accordion
             className={classes.message}
             onChange={toggleExpand}
-            style={{ backgroundColor: FormatPostBackground(comment.type) }}
+            style={{ backgroundColor: postBackground }}
             expanded={isExpanded}
         >
             <section

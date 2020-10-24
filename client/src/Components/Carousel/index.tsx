@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Paper } from '@material-ui/core';
 
-import ImageGallery from 'react-image-gallery';
+import ImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 
 import { IImageSettings } from '../../Common/Interfaces/interfaces';
@@ -22,15 +22,26 @@ const CarouselComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
 
     const { owner, images } = props;
 
-    const mapImages = images.map((image: IImageSettings) => ({
-        original: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,
-        thumbnail: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,
-    }));
+    const [mappedImagesElement, setMappedImagesElement] = useState<Array<ReactImageGalleryItem>>([]);
+
+    const mapImages = () => {
+        if (images === undefined || !images.length) { return; }
+        if (images[0].name === undefined) { return; }
+
+        const newMappedImages:Array<ReactImageGalleryItem> = images.map((image: IImageSettings):object => ({
+            original: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,
+            thumbnail: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,
+        }));
+
+        setMappedImagesElement(newMappedImages);
+    };
+
+    useEffect(() => mapImages(), [images]);
 
     return (
         <Paper elevation={0} className={classes.main}>
             <ImageGallery
-                items={mapImages}
+                items={mappedImagesElement}
                 showFullscreenButton={false}
                 useBrowserFullscreen={false}
                 showPlayButton={false}
