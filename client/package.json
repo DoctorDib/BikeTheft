@@ -11,10 +11,10 @@
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
-    "fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
     "test": "jest",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-    "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\""
+    "format" : "npm run format:eslint && npm run format:prettier",
+    "format:eslint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
+    "format:prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
     "@brainhubeu/react-carousel": "^1.19.26",

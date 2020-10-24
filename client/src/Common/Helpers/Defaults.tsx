@@ -77,7 +77,7 @@ export const defaultInputs: IInputFields = {
     v5cVerificationDate: '',
 };
 
-export const defaultCropSettings:ICropSettings = {
+export const defaultCropSettings: ICropSettings = {
     unit: '%',
     width: 1,
     height: 1,

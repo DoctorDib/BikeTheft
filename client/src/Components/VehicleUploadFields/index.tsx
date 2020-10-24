@@ -302,7 +302,7 @@ const VehicleUploadInputs = ():React.ReactElement<IImageUploaderProps> => {
                                 color: 'red',
                             }}
                         >
-                            Unknown number plate, please make sure you have entered it correctly!
+                                Unknown number plate, please make sure you have entered it correctly!
                         </Typography>
                     </Grid>
                 );
@@ -328,7 +328,11 @@ const VehicleUploadInputs = ():React.ReactElement<IImageUploaderProps> => {
                 );
             case 'description':
                 return (
-                    <Grid item md={12} className={classNames(classes.inputContainers, classes.descriptionContainer)}>
+                    <Grid
+                        item
+                        md={12}
+                        className={classNames(classes.inputContainers, classes.descriptionContainer)}
+                    >
                         <TextField
                             id={key}
                             size="small"

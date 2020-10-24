@@ -118,7 +118,7 @@ const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
         }
     };
 
-    const commentConfirmationClick = (comment: IComment, response: boolean) => (() => onVehicleConfirm(comment, response));
+    const commentConfirmationClick = (comment: IComment, response: boolean) => () => onVehicleConfirm(comment, response);
 
     const InfoComponent = (comment: IComment) => (
         <section>

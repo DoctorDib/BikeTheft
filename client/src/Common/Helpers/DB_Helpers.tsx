@@ -1,16 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { API } from 'aws-amplify';
 
-import {
-    getDateTimeString,
-    sortFeaturesArray,
-} from './helper';
+import { getDateTimeString, sortFeaturesArray } from './helper';
 
 import {
-    IPostAttributes,
-    IData,
-    IInputFields,
-    IImageSettings,
+    IPostAttributes, IData, IInputFields, IImageSettings,
 } from '../Interfaces/interfaces';
 
 import { defaultData } from './Defaults';
@@ -91,7 +85,7 @@ export const updateVehicleStat = async (vehicleID: number, newStat: number): Pro
     }
 };
 
-const stripData64 = (images:Array<IImageSettings>) => images.map((data) => ({
+const stripData64 = (images: Array<IImageSettings>) => images.map((data) => ({
     name: data.name,
     is_main_image: data.is_main_image,
     type: data.type,

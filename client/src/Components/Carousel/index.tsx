@@ -6,7 +6,7 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 import { IImageSettings } from '../../Common/Interfaces/interfaces';
 
 interface ICarouselProps {
-    owner: string,
+    owner: string;
     images: Array<IImageSettings>;
 }
 

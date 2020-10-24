@@ -21,8 +21,8 @@ import { IClasses } from '../../Common/Interfaces/IClasses';
 import ImageCropperComponent from '../ImageCropper';
 
 interface IImageUploaderProps {
-    images: Array<IImageSettings>,
-    setImages: (x:Array<IImageSettings>) => void,
+    images: Array<IImageSettings>;
+    setImages: (x: Array<IImageSettings>) => void;
 }
 
 const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUploaderProps> => {
@@ -37,10 +37,14 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
     const [crop, setCrop] = useState<ICropSettings>(defaultCropSettings);
     const [picIndex, setPicIndex] = useState<number>(0);
 
-    const handleOpen = () => { setSpeedOpen(true); };
-    const handleClose = () => { setSpeedOpen(false); };
+    const handleOpen = () => {
+        setSpeedOpen(true);
+    };
+    const handleClose = () => {
+        setSpeedOpen(false);
+    };
 
-    const cropImage = (id:number, imgSrc:string, cropInfo:ICropSettings) => {
+    const cropImage = (id: number, imgSrc: string, cropInfo: ICropSettings) => {
         setCroppingIndex(id);
         setImageCropSrc(imgSrc);
         setCrop(cropInfo);
@@ -48,20 +52,24 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
         handleClose();
     };
 
-    const onImgRemove = (keyToRemove:number) => {
+    const onImgRemove = (keyToRemove: number) => {
         setImages(images.filter((data) => data.id !== keyToRemove));
         handleClose();
     };
 
-    const saveCroppedData = (newImageData64:string, newCropInfo:ICropSettings) => {
-        if (croppingIndex === -1) { return; }
+    const saveCroppedData = (newImageData64: string, newCropInfo: ICropSettings) => {
+        if (croppingIndex === -1) {
+            return;
+        }
 
         const newImages = images;
 
-        const imageLength:number = newImages.length;
+        const imageLength: number = newImages.length;
         for (let index = 0; index < imageLength; index++) {
             const imageData = newImages[index];
-            if (imageData.id !== croppingIndex) { continue; }
+            if (imageData.id !== croppingIndex) {
+                continue;
+            }
 
             imageData.data64 = newImageData64;
             imageData.crop.crop_info = newCropInfo;
@@ -78,17 +86,22 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
         let newImages = [...images];
         let chosenIndex = -1;
 
-        const newImagesLength:number = images.length;
+        const newImagesLength: number = images.length;
         for (let index = 0; index < newImagesLength; index++) {
             const imageData = newImages[index];
 
-            if (imageData.id === id) { chosenIndex = index; }
+            if (imageData.id === id) {
+                chosenIndex = index;
+            }
 
             imageData.is_main_image = imageData.id === id;
             newImages[index] = imageData;
         }
 
-        if (chosenIndex === -1) { console.error('Setting image an may caused an error...'); return; }
+        if (chosenIndex === -1) {
+            console.error('Setting image an may caused an error...');
+            return;
+        }
 
         newImages = moveItemInArray(newImages, chosenIndex, 0);
 
@@ -96,8 +109,11 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
         handleClose();
     };
     const mapImages = images.map((image: IImageSettings) => (
-        <Paper key={image.id} className={classes.container} style={{ border: image.is_main_image ? '3px solid rgb(204, 204, 4)' : '0' }}>
-
+        <Paper
+            key={image.id}
+            className={classes.container}
+            style={{ border: image.is_main_image ? '3px solid rgb(204, 204, 4)' : '0' }}
+        >
             <section className={classes.speedDialContainer}>
                 <Backdrop open={speedOpen} />
                 <SpeedDial
@@ -119,22 +135,18 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
                         key="crop"
                         icon={<Crop color="primary" className={classes.smallIcon} />}
                         tooltipTitle="Crop image"
-                        onClick={() => cropImage(
-                            image.id,
-                            image.crop.original,
-                            image.crop.crop_info ?? defaultCropSettings,
-                        )}
+                        onClick={() => cropImage(image.id, image.crop.original, image.crop.crop_info ?? defaultCropSettings)}
                     />
-                    {
-                        !image.is_main_image ? (
-                            <SpeedDialAction
-                                key="make-default"
-                                icon={<StarBorder color="primary" className={classes.smallIcon} />}
-                                tooltipTitle="Make default image"
-                                onClick={() => setAsMainImage(image.id)}
-                            />
-                        ) : ''
-                    }
+                    {!image.is_main_image ? (
+                        <SpeedDialAction
+                            key="make-default"
+                            icon={<StarBorder color="primary" className={classes.smallIcon} />}
+                            tooltipTitle="Make default image"
+                            onClick={() => setAsMainImage(image.id)}
+                        />
+                    ) : (
+                        ''
+                    )}
                 </SpeedDial>
             </section>
 
@@ -144,33 +156,38 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
 
     const remapImages = useCallback(() => mapImages, [mapImages]);
 
-    useEffect(() => { remapImages(); }, [remapImages]);
+    useEffect(() => {
+        remapImages();
+    }, [remapImages]);
 
-    const hashString = (stringToHash:string) => {
+    const hashString = (stringToHash: string) => {
         const newString = stringToHash + Date.now();
         const newStringLength = newString.length;
         const range = Array(newStringLength);
 
-        for (let i = 0; i < newStringLength; i++) { range[i] = i; }
+        for (let i = 0; i < newStringLength; i++) {
+            range[i] = i;
+        }
 
-        return Array.prototype.map.call(range, (i) => newString
-            .charCodeAt(i)
-            .toString(16))
-            .join('');
+        return Array.prototype.map.call(range, (i) => newString.charCodeAt(i).toString(16)).join('');
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (!event.target.files) { return; }
+        if (!event.target.files) {
+            return;
+        }
 
         const fileImage = event.target.files[0];
 
         fileToBase64(fileImage)
-            .then((image:string | ArrayBuffer | null):boolean => {
+            .then((image: string | ArrayBuffer | null): boolean => {
                 const imageDetails = fileImage.name.split('.');
 
-                if (image === null || image instanceof ArrayBuffer) { return false; }
+                if (image === null || image instanceof ArrayBuffer) {
+                    return false;
+                }
 
-                const newImage:IImageSettings = {
+                const newImage: IImageSettings = {
                     id: picIndex,
                     // Ensuring a unique value based on name and Date.now()
                     name: hashString(imageDetails[0]),
@@ -188,7 +205,8 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
 
                 setImages([...images, newImage]);
                 return true;
-            }).catch((error) => {
+            })
+            .catch((error) => {
                 console.log('error');
                 console.log(error);
             });
@@ -219,7 +237,7 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
                 handleClose={() => setCropDialog(false)}
                 crop={crop}
                 setCrop={setCrop}
-                saveCroppedData={(data64:string, cropInfo:ICropSettings) => saveCroppedData(data64, cropInfo)}
+                saveCroppedData={(data64: string, cropInfo: ICropSettings) => saveCroppedData(data64, cropInfo)}
             />
         </section>
     );

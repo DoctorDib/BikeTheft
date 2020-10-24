@@ -12,32 +12,25 @@ import { defaultCropSettings } from '../../Common/Helpers/Defaults';
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import { ICropSettings } from '../../Common/Interfaces/interfaces';
+import { isNullOrUndefined } from '../../Common/Utils/Types';
 
 // Increase pixel density for crop preview quality on retina screens.
 const pixelRatio = window.devicePixelRatio || 1;
 
 // We resize the canvas down when saving on retina devices otherwise the image
 // will be double or triple the preview size.
-const getResizedCanvas = (canvas:HTMLCanvasElement, newWidth:number, newHeight:number):HTMLCanvasElement => {
+const getResizedCanvas = (canvas: HTMLCanvasElement, newWidth: number, newHeight: number): HTMLCanvasElement => {
     const tmpCanvas = document.createElement('canvas');
     tmpCanvas.width = newWidth;
     tmpCanvas.height = newHeight;
 
     const ctx = tmpCanvas.getContext('2d');
 
-    if (!ctx) { return tmpCanvas; }
+    if (!ctx) {
+        return tmpCanvas;
+    }
 
-    ctx.drawImage(
-        canvas,
-        0,
-        0,
-        canvas.width,
-        canvas.height,
-        0,
-        0,
-        newWidth,
-        newHeight,
-    );
+    ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, newWidth, newHeight);
 
     return tmpCanvas;
 };
@@ -47,8 +40,8 @@ interface IImageCropProps {
     handleClose: () => void;
     imageSrc: string;
     crop: ICropSettings;
-    saveCroppedData: (x:string, y:ICropSettings) => void;
-    setCrop: (x:ICropSettings) => void;
+    saveCroppedData: (x: string, y: ICropSettings) => void;
+    setCrop: (x: ICropSettings) => void;
 }
 
 const ImageCropped = (props: IImageCropProps): React.Element<IImageCropProps> => {
@@ -63,16 +56,22 @@ const ImageCropped = (props: IImageCropProps): React.Element<IImageCropProps> =>
         open, handleClose, imageSrc, saveCroppedData, setCrop, crop,
     } = props;
 
-    const onLoad = useCallback((img) => { imgRef.current = img; }, []);
+    const onLoad = useCallback((img) => {
+        imgRef.current = img;
+    }, []);
 
     const generateDownload = () => {
         const previewCanvas = previewCanvasRef.current;
 
-        if (!completedCrop || !previewCanvas) { return; }
+        if (!completedCrop || !previewCanvas) {
+            return;
+        }
 
         const canvas = getResizedCanvas(previewCanvas, completedCrop.width, completedCrop.height);
 
-        if (!canvas) { return; }
+        if (!canvas) {
+            return;
+        }
 
         const dataURL = canvas.toDataURL('image/png');
 
@@ -81,17 +80,20 @@ const ImageCropped = (props: IImageCropProps): React.Element<IImageCropProps> =>
     };
 
     useEffect(() => {
-        if (!completedCrop || !previewCanvasRef.current || !imgRef.current) { return; }
-
         const image = imgRef.current;
         const canvas = previewCanvasRef.current;
-        if (image === null || canvas === null) { return; }
+
+        if (!completedCrop || isNullOrUndefined(canvas) || isNullOrUndefined(image)) {
+            return;
+        }
 
         const scaleX = image.naturalWidth / image.width; // natural width
         const scaleY = image.naturalHeight / image.height; // natural height
         const ctx = canvas.getContext('2d');
 
-        if (ctx == null) { return; }
+        if (isNullOrUndefined(ctx)) {
+            return;
+        }
 
         canvas.width = completedCrop.width * pixelRatio;
         canvas.height = completedCrop.height * pixelRatio;
@@ -139,16 +141,12 @@ const ImageCropped = (props: IImageCropProps): React.Element<IImageCropProps> =>
                     className={classes.button}
                 >
                     {' '}
-Confirm
+                    Confirm
                     {' '}
                 </Button>
-                <Button
-                    variant="outlined"
-                    onClick={handleClose}
-                    className={classes.button}
-                >
+                <Button variant="outlined" onClick={handleClose} className={classes.button}>
                     {' '}
-Cancel
+                    Cancel
                     {' '}
                 </Button>
             </section>
