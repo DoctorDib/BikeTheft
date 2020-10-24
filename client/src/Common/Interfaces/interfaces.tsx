@@ -95,3 +95,7 @@ export interface ICropSettings {
     x: number;
     y: number;
 }
+
+export interface IVehicleParams {
+    id: string;
+}

@@ -10,7 +10,7 @@ interface IMainLogoProps {}
 
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const MainLogo: React.FC<IMainLogoProps> = () => {
+const MainLogo = ():React.ReactElement<IMainLogoProps> => {
     const classes: IClasses = style();
 
     return (

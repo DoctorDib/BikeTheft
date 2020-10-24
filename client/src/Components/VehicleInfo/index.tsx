@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
-import { Typography, List, Avatar, Button, Grid, ListItem, ListItemText } from '@material-ui/core';
+import {
+    Typography, List, Avatar, Button, Grid, ListItem, ListItemText,
+} from '@material-ui/core';
 import { Check, Report } from '@material-ui/icons';
 
 import { IVehicleInfo, IOwner } from '../../Common/Interfaces/interfaces';
@@ -17,26 +19,24 @@ interface IVehicleInfoProps {
     vehicle: IVehicleInfo;
 }
 
-const formatInfo = (data: IVehicleInfo) =>
-    infoKeys.map((indexKey: string) => (
-        <Grid container key={`prop - ${indexKey}`}>
-            <Grid item xs={6}>
-                <Typography>{FormatInfoTitles(indexKey)}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-                <Typography>{indexKey === '' ? 'N/A' : data[indexKey]}</Typography>
-            </Grid>
+const formatInfo = (data: IVehicleInfo) => infoKeys.map((indexKey: string) => (
+    <Grid container key={`prop - ${indexKey}`}>
+        <Grid item xs={6}>
+            <Typography>{FormatInfoTitles(indexKey)}</Typography>
         </Grid>
-    ));
+        <Grid item xs={6}>
+            <Typography>{indexKey === '' ? 'N/A' : data[indexKey]}</Typography>
+        </Grid>
+    </Grid>
+));
 
-const formatFeatures = (features: Array<string>) =>
-    features.map((damage: string) => (
-        <ListItem key={`damages - ${damage}`}>
-            <ListItemText primary={damage} />
-        </ListItem>
-    ));
+const formatFeatures = (features: Array<string>) => features.map((damage: string) => (
+    <ListItem key={`damages - ${damage}`}>
+        <ListItemText primary={damage} />
+    </ListItem>
+));
 
-const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
+const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoProps> => {
     const classes: IClasses = style();
 
     const [open, setOpen] = useState(false);

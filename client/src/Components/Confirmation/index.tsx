@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import {
+    Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+} from '@material-ui/core';
 
 import Confirmation from '../../Common/Enums/ConfirmationEnums';
 
@@ -13,7 +15,7 @@ interface IConfirmationProp {
     callback: (arg0: number, arg1: boolean) => void;
 }
 
-const FoundConfirmation: React.FC<IConfirmationProp> = (props: IConfirmationProp) => {
+const FoundConfirmation = (props: IConfirmationProp): React.ReactElement<IConfirmationProp> => {
     const classes: IClasses = styles();
 
     const { enumMessage, callback, open } = props;

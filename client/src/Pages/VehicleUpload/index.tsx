@@ -10,9 +10,7 @@ import { IClasses } from '../../Common/Interfaces/IClasses';
 
 interface IHomeProps {}
 
-// TODO these props should be used
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const VehicleUploadPage: React.FC<IHomeProps> = (props: IHomeProps) => {
+const VehicleUploadPage = (): React.ReactElement<IHomeProps> => {
     const classes: IClasses = style();
 
     return (

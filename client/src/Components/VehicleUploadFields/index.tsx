@@ -2,7 +2,9 @@
 import React, { useState } from 'react';
 import { API } from 'aws-amplify';
 import classNames from 'classnames';
-import { TextField, Typography, Chip, Grid, Button } from '@material-ui/core';
+import {
+    TextField, Typography, Chip, Grid, Button,
+} from '@material-ui/core';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
@@ -29,7 +31,7 @@ interface IToolTipMessage {
     [key: string]: string;
 }
 
-const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
+const VehicleUploadInputs = ():React.ReactElement<IImageUploaderProps> => {
     const classes: IClasses = styles();
 
     const [images, setImages] = useState<Array<IImageSettings>>([]);
@@ -223,14 +225,32 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         },
     );
 
-    const inputComponents = Object.keys(inputFields).map(
-        (key: string): React.ReactNode => {
-            switch (key) {
-                case 'primaryColour':
-                case 'secondaryColour':
-                    return (
-                        <Grid item md={6} xs={12} className={classes.inputContainers}>
-                            <TextField
+    const inputComponents = Object.keys(inputFields).map((key: string):React.ReactNode => {
+        switch (key) {
+            case 'primaryColour':
+            case 'secondaryColour':
+                return (
+                    <Grid item md={6} xs={12} className={classes.inputContainers}>
+                        <TextField
+                            id={key}
+                            size="small"
+                            label={setLabel(key)}
+                            variant="outlined"
+                            value={inputFields[key]}
+                            onChange={onChange}
+                            className={classes.input}
+                            InputProps={{
+                                endAdornment: <InputToolTip message={getToolTip(key)} />,
+                            }}
+                        />
+                        <section className={classes.colour} style={{ backgroundColor: inputFields[key] }} />
+                    </Grid>
+                );
+            case 'dateStolen':
+                return (
+                    <Grid item md={6} xs={12} className={classes.inputContainers}>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <DateTimePicker
                                 id={key}
                                 size="small"
                                 label={setLabel(key)}
