@@ -27,13 +27,12 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
     const classes: IClasses = styles();
 
     const { images, setImages } = props;
+    
     const [speedOpen, setSpeedOpen] = useState(true);
     const [imageCropSrc, setImageCropSrc] = useState<string>('');
     const [cropDialog, setCropDialog] = useState<boolean>(false);
     const [croppingIndex, setCroppingIndex] = useState<number>(-1);
-
     const [crop, setCrop] = useState<ICropSettings>(defaultCropSettings);
-
     const [picIndex, setPicIndex] = useState<number>(0);
 
     const handleOpen = () => { setSpeedOpen(true); };
