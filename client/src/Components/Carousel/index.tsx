@@ -19,7 +19,7 @@ interface ICarouselProps {
 
 const CarouselComponent = (props: ICarouselProps): React.ReactElement<ICarouselProps> => {
     const classes: IClasses = style();
-    
+
     const { owner, images } = props;
 
     const mapImages = images.map((image: IImageSettings) => ({

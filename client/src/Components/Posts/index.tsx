@@ -13,33 +13,6 @@ import CommentComponent from '../Comment';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import style from './styles';
 
-import React, { useState } from 'react';
-import {
-    Typography, Button, TextField, CardMedia, Paper,
-} from '@material-ui/core';
-
-import ConfirmationComponent from '../Confirmation';
-import {
-    FormatAvatar,
-    FormatPostBackground,
-} from './helper';
-import Confirmation from '../../Common/Enums/ConfirmationEnums';
-import style from './styles';
-import { IClasses } from '../../Common/Interfaces/IClasses';
-import {
-    IComment,
-    IPostAttributes,
-} from '../../Common/Interfaces/interfaces';
-import {
-    defaultComment,
-    defaultPostAttributes,
-} from '../../Common/Helpers/Defaults';
-import {
-    sendPost,
-    updatePost,
-    updateVehicleStat,
-} from '../../Common/Helpers/DB_Helpers';
-
 interface IForumProps {
     threadID: string;
     posts: Array<IComment>;
@@ -145,7 +118,7 @@ const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
             />
 
             <section className={classes.messageContainer}>
-                {posts !== null ? LayoutComments() : ''}
+                {posts !== null ? comments : ''}
             </section>
         </section>
     );

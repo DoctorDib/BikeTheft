@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import {
-    Typography, List, Avatar, Button, Grid, ListItem, ListItemText,
+    Typography, List, Avatar, Button, Grid, ListItem, ListItemText, Dialog, DialogTitle, DialogContent,
 } from '@material-ui/core';
 import { Check, Report } from '@material-ui/icons';
 
@@ -23,10 +23,10 @@ interface IVehicleInfoProps {
 }
 
 const formatFeatures = (features: Array<string>) => features.map((damage: string) => (
-        <ListItem key={`damages - ${damage}`}>
-            <ListItemText primary={damage} />
-        </ListItem>
-    ));
+    <ListItem key={`damages - ${damage}`}>
+        <ListItemText primary={damage} />
+    </ListItem>
+));
 
 const vinInformationPopup = (vin: string):React.ReactElement => (
     <section>

@@ -29,7 +29,7 @@ export const FormatAvatar = (comment: IComment, classes: IClasses, showAvatar:bo
     const name = comment.type === 2
         ? 'Info'
         : `${comment.member_attributes.display_name}`;
-        
+
     const avatarColour = comment.type === 2 ? '#ff8e15' : 'gray';
 
     return (
