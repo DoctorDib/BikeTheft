@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
 
 import {
-    Typography, List, Avatar, Button, Grid, ListItem, ListItemText, Dialog, DialogTitle, DialogContent,
+    Typography,
+    List,
+    Avatar,
+    Button,
+    Grid,
+    ListItem,
+    ListItemText,
+    Dialog,
+    DialogTitle,
+    DialogContent,
 } from '@material-ui/core';
 import { Check, Report } from '@material-ui/icons';
 
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
-import { formatDate } from '../../Common/Helpers/helper';
+import { formatDate, capitalizeFirstLetter } from '../../Common/Helpers/helper';
 import { IVehicleInfo, IOwner, IImageSettings } from '../../Common/Interfaces/interfaces';
 import { FormatStatusColour, FormatStatusText, FormatInfoTitles } from './formats';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -22,7 +31,8 @@ interface IVehicleInfoProps {
     vehicle: IVehicleInfo;
 }
 
-const formatFeatures = (features: Array<string>) => features.map((damage: string) => (
+const formatFeatures = (features: Array<string>):ReadonlyArray<React.ReactElement> =>
+    features.map((damage: string) => (
     <ListItem key={`damages - ${damage}`}>
         <ListItemText primary={damage} />
     </ListItem>
@@ -48,13 +58,6 @@ const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoPr
     const foundConfirmationResponse = () => setOpen(false);
 
     const { threadID, owner, vehicle } = props;
-
-    const capitalizeFirstLetter = (value: string) => {
-        if (value === undefined) {
-            return '';
-        }
-        return value.toLowerCase().charAt(0).toUpperCase() + value.toLowerCase().slice(1);
-    };
 
     const formatInfoValues = (key:string, value:string | number | string[] | IImageSettings[]):string | number | string[] | IImageSettings[] => {
         if (key === 'category' && typeof value === 'number') {
