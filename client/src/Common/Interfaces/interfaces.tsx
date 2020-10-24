@@ -90,14 +90,6 @@ export interface IImageSettings {
     };
 }
 
-export interface ICropSettings {
-    unit: string;
-    width: number;
-    height: number;
-    x: number;
-    y: number;
-}
-
 export interface IVehicleParams {
     id: string;
 }

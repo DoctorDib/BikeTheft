@@ -11,7 +11,6 @@ import {
 import { defaultCropSettings } from '../../Common/Helpers/Defaults';
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
-import { ICropSettings } from '../../Common/Interfaces/interfaces';
 import { isNullOrUndefined } from '../../Common/Utils/Types';
 
 // Increase pixel density for crop preview quality on retina screens.

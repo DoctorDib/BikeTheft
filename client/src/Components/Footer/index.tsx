@@ -7,7 +7,7 @@ import { IClasses } from '../../Common/Interfaces/IClasses';
 interface IFooterProps {
 }
 
-const FooterComponent = (props: IFooterProps): React.ReactElement<IFooterProps> => {
+const FooterComponent = (): React.ReactElement<IFooterProps> => {
     const classes: IClasses = styles();
 
     return (
