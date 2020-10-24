@@ -124,6 +124,7 @@ export const createNewThread = async (
                 vehicle_images: stripData64(images),
             },
             vin: data.vin,
+            verified: false,
         },
     };
 

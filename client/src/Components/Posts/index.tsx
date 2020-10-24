@@ -66,6 +66,7 @@ const Forum: React.FC<IForumProps> = (props: IForumProps) => {
     const onPostClickCallback = () => setPostPopupOpen(true);
 
     const layoutComments = () => {
+        if (posts === null) { return; }
         if (!posts.length) { return; }
         if (posts[0].post_id === -1) { return; }
 

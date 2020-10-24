@@ -24,6 +24,7 @@ export const defaultVehicleData: IVehicleInfo = {
     model: '',
     vin: '',
     category: '',
+    veified: false,
 };
 
 export const defaultMemberAttributes: IMemberAttributes = {

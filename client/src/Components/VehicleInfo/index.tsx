@@ -11,8 +11,10 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
+    Divider,
 } from '@material-ui/core';
-import { Check, Report } from '@material-ui/icons';
+
+import { Check, Report, Beenhere, Cancel } from '@material-ui/icons';
 
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
 import { formatDate } from '../../Common/Helpers/helper';
@@ -47,6 +49,7 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
     const [open, setOpen] = useState(false);
     const [openVin, setOpenVin] = useState(false);
 
+    const [verifiedElement, setVerifiedElement] = useState<React.ReactElement>();
     const [formattedFeatures, setFormattedFeatures] = useState<Array<React.ReactElement>>([]);
     const [formattedInfo, setFormattedInfo] = useState<Array<React.ReactElement>>([]);
     const [formatStatusText, setFormatStatusText] = useState<string>('');
@@ -134,11 +137,36 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
         setFormattedInfo(newFormattedInfo);
     };
 
+    const checkVerification = () => {
+        if (vehicle.verified) {
+            const verificationElement = (
+                <section className={classes.verified}>
+                    <Beenhere />
+                    <Typography variant="body2" style={{ marginLeft: '5px' }}> Verified Post </Typography>
+                </section>
+            );
+
+            setVerifiedElement(verificationElement);
+
+            return;
+        }
+
+        const verificationElement = (
+            <section className={classes.unverified}>
+                <Cancel />
+                <Typography variant="body2" style={{ marginLeft: '5px' }}> Unverified Post </Typography>
+            </section>
+        );
+
+        setVerifiedElement(verificationElement);
+    };
+
     useEffect(() => {
         formatFeatures(vehicle.features);
         formatInfo(vehicle);
         setFormatStatusText(FormatStatusText(vehicle.status));
         setFormattedStatusColour(FormatStatusColour(vehicle.status));
+        checkVerification();
     }, [vehicle]);
 
     return (
@@ -155,11 +183,12 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                         </section>
                         <Typography variant="h6">{owner.member_attributes.display_name}</Typography>
                         <Typography variant="caption">{formatDate(vehicle.date_added)}</Typography>
+                        {verifiedElement}
                     </section>
 
                     <section className={classes.statusText}>
                         <Typography
-                            variant="h4"
+                            variant="h5"
                             style={{
                                 color: formattedStatusColour,
                             }}
@@ -168,6 +197,8 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                             {formatStatusText}
                         </Typography>
                     </section>
+
+                    <Divider className={classes.divider} />
 
                     <section className={classes.buttonContainer}>
                         <Button
