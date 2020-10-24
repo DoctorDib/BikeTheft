@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Paper, IconButton, CardMedia, Backdrop, Typography } from '@material-ui/core';
 
 import { SpeedDialAction, SpeedDial, SpeedDialIcon } from '@material-ui/lab';

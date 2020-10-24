@@ -28,7 +28,7 @@ const CarouselComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
         if (images === undefined || !images.length) { return; }
         if (images[0].name === undefined) { return; }
 
-        const newMappedImages:Array<ReactImageGalleryItem> = images.map((image: IImageSettings):object => ({
+        const newMappedImages:Array<ReactImageGalleryItem> = images.map((image: IImageSettings):ReactImageGalleryItem => ({
             original: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,
             thumbnail: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,
         }));
