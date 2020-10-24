@@ -1,4 +1,6 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, {
+    useState, useCallback, useRef, useEffect,
+} from 'react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
@@ -49,7 +51,9 @@ const ImageCropped = (props: IImageCropProps): React.Element<IImageCropProps> =>
 
     const [completedCrop, setCompletedCrop] = useState<ICropSettings>(defaultCropSettings);
 
-    const { open, handleClose, imageSrc, saveCroppedData, setCrop, crop } = props;
+    const {
+        open, handleClose, imageSrc, saveCroppedData, setCrop, crop,
+    } = props;
 
     const onLoad = useCallback((img) => {
         imgRef.current = img;
@@ -139,11 +143,13 @@ const ImageCropped = (props: IImageCropProps): React.Element<IImageCropProps> =>
                     className={classes.button}
                 >
                     {' '}
-                    Confirm{' '}
+                    Confirm
+                    {' '}
                 </Button>
                 <Button variant="outlined" onClick={handleClose} className={classes.button}>
                     {' '}
-                    Cancel{' '}
+                    Cancel
+                    {' '}
                 </Button>
             </section>
         </Dialog>

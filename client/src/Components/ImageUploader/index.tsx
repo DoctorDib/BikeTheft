@@ -3,7 +3,9 @@ import {
     Paper, IconButton, CardMedia, Backdrop,
 } from '@material-ui/core';
 import { SpeedDialAction, SpeedDial, SpeedDialIcon } from '@material-ui/lab';
-import { Add, Crop, Clear, StarBorder } from '@material-ui/icons';
+import {
+    Add, Crop, Clear, StarBorder,
+} from '@material-ui/icons';
 
 import {
     fileToBase64,
@@ -133,9 +135,7 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
                         key="crop"
                         icon={<Crop color="primary" className={classes.smallIcon} />}
                         tooltipTitle="Crop image"
-                        onClick={() =>
-                            cropImage(image.id, image.crop.original, image.crop.crop_info ?? defaultCropSettings)
-                        }
+                        onClick={() => cropImage(image.id, image.crop.original, image.crop.crop_info ?? defaultCropSettings)}
                     />
                     {!image.is_main_image ? (
                         <SpeedDialAction
