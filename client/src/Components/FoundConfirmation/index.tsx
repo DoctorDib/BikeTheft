@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 
-import { Modal, Backdrop, Fade, Paper, Typography, Button } from '@material-ui/core';
+import {
+    Modal, Backdrop, Fade, Paper, Typography, Button,
+} from '@material-ui/core';
+
 import { CheckCircle, Cancel } from '@material-ui/icons';
 import { IPostAttributes, IImageSettings } from '../../Common/Interfaces/interfaces';
 import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
@@ -22,7 +25,7 @@ interface IFoundConfirmationProps {
     close: () => void;
 }
 
-const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfirmationProps) => {
+const FoundConfirmation = (props: IFoundConfirmationProps): React.ReactElement<IFoundConfirmationProps> => {
     const classes: IClasses = styles();
 
     const { ownerID, threadID, open, close } = props;

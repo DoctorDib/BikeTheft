@@ -15,6 +15,7 @@ import {
 import { Check, Report } from '@material-ui/icons';
 
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
+import { formatDate, capitalizeFirstLetter } from '../../Common/Helpers/helper';
 import { IVehicleInfo, IOwner, IImageSettings } from '../../Common/Interfaces/interfaces';
 import { FormatStatusColour, FormatStatusText, FormatInfoTitles } from './formats';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -38,7 +39,7 @@ const vinInformationPopup = (vin: string) => (
     </section>
 );
 
-const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
+const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoProps> => {
     const classes: IClasses = style();
 
     const { threadID, owner, vehicle } = props;
@@ -55,13 +56,6 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
     const handleVinOpen = () => setOpenVin(true);
     const handleVinClose = () => setOpenVin(false);
     const foundConfirmationResponse = () => setOpen(false);
-
-    const capitalizeFirstLetter = (value: string) => {
-        if (value === undefined) {
-            return '';
-        }
-        return value.toLowerCase().charAt(0).toUpperCase() + value.toLowerCase().slice(1);
-    };
 
     const formatInfoValues = (key:string, value:string | number | string[] | IImageSettings[]):string | number | string[] | IImageSettings[] => {
         if (key === 'category' && typeof value === 'number') {
@@ -153,7 +147,7 @@ const VehicleInfo: React.FC<IVehicleInfoProps> = (props: IVehicleInfoProps) => {
                             <Avatar className={classes.profileImage} src={`${owner.member_attributes.profile_image}`} />
                         </section>
                         <Typography variant="h6">{owner.member_attributes.display_name}</Typography>
-                        <Typography variant="caption">{vehicle.date_added}</Typography>
+                        <Typography variant="caption">{formatDate(vehicle.date_added)}</Typography>
                     </section>
 
                     <section className={classes.statusText}>

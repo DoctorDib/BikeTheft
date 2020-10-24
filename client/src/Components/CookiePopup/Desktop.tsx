@@ -10,7 +10,7 @@ export interface ICookiePopupProps {
     clickTrigger?: () => void;
 }
 
-const CookiePopup: React.FC<ICookiePopupProps> = (props: ICookiePopupProps) => {
+const CookiePopup = (props: ICookiePopupProps): React.ReactElement<ICookiePopupProps> => {
     const { clickTrigger } = props;
     const classes: IClasses = style();
 

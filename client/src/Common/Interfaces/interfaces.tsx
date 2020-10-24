@@ -89,3 +89,7 @@ export interface IImageSettings {
         crop_info: ReactCrop.Crop | null;
     };
 }
+
+export interface IVehicleParams {
+    id: string;
+}
