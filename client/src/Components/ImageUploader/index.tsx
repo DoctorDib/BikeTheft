@@ -245,7 +245,7 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps
                 <IconButton
                     aria-label="upload picture"
                     component="span"
-                    style={{ 
+                    style={{
                         padding: '0',
                         display: (images.length >= maxImages) ? 'none' : 'block',
                     }}
@@ -254,7 +254,15 @@ const ImageUploader: React.FC<IImageUploaderProps> = (props: IImageUploaderProps
                         <Add color="primary" />
                     </Paper>
                     <section className={classes.imageCounter}>
-                        <Typography> { images.length } / { maxImages } </Typography>
+                        <Typography>
+                            {' '}
+                            { images.length }
+                            {' '}
+/
+                            {' '}
+                            { maxImages }
+                            {' '}
+                        </Typography>
                     </section>
                 </IconButton>
             </label>

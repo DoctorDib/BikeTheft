@@ -47,7 +47,7 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfi
         setConfirmationPopupOpen(false);
         if (!response) { return; }
         sendFoundBike();
-    }
+    };
 
     return (
         <Modal
@@ -64,7 +64,7 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfi
             <Fade in={open}>
                 <Paper className={classes.paper} elevation={0}>
                     <Typography variant="h5">Confirmation</Typography>
-                    
+
                     <section className={classes.infomationBox}>
                         <Typography variant="body1">
                             This will send a message to the owner requesting a confirmation that you have found their bike.
@@ -75,11 +75,10 @@ const FoundConfirmation: React.FC<IFoundConfirmationProps> = (props: IFoundConfi
                         </Typography>
                     </section>
 
-
-                    <ImageUploaderComponent 
-                        images={images} 
-                        setImages={setImages} 
-                        maxImages={1} 
+                    <ImageUploaderComponent
+                        images={images}
+                        setImages={setImages}
+                        maxImages={1}
                     />
 
                     <section className={classes.buttonContainer}>

@@ -77,7 +77,7 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
         const image:IImageSettings = comment.post_attributes.confirmation_image;
         if (image === undefined) { return; }
         if (image.name === undefined) { return; }
-        
+
         const infoCardElement = (
             <section>
                 <CardMedia
@@ -85,7 +85,7 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
                     component="img"
                     image={`https://images.lostmywheels.com/public/${ownerID}/found/${image.name}.${image.type}`}
                 />
-    
+
                 { comment.post_attributes.active_state ? InfoComponent() : null }
             </section>
         );
@@ -102,7 +102,7 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
 
     const addReplyParent = () => {
         const parentComment:IComment | null = getCommentMessageFromQuote();
-        if (parentComment === null) { return null; }
+        if (parentComment === null) { return; }
 
         const replyParentElement = (
             <Button
@@ -128,6 +128,7 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
         );
 
         setReplyParent(replyParentElement);
+        return;
     };
 
     const onExpandClick = () => setExpand(!isExpanded);
@@ -223,14 +224,16 @@ const CommentComponent: React.FC<ICarouselProps> = (props: ICarouselProps) => {
                     </section>
                 </section>
 
-                { comment.type !== 2 
-                ? (<section className={classes.messageButtonContainer}>
-                    <Delete className={classes.deleteIcon} onClick={onClickDelete} />
-                    {isExpanded
-                        ? <Clear className={classNames(classes.replyIcon, classes.replyIconClosed)} onClick={onExpandClick} />
-                        : <Reply className={classNames(classes.replyIcon, classes.replyIconOpen)} onClick={onExpandClick} />}
-                </section> )
-                : null }
+                { comment.type !== 2
+                    ? (
+                        <section className={classes.messageButtonContainer}>
+                            <Delete className={classes.deleteIcon} onClick={onClickDelete} />
+                            {isExpanded
+                                ? <Clear className={classNames(classes.replyIcon, classes.replyIconClosed)} onClick={onExpandClick} />
+                                : <Reply className={classNames(classes.replyIcon, classes.replyIconOpen)} onClick={onExpandClick} />}
+                        </section>
+                    )
+                    : null }
             </section>
 
             <AccordionDetails style={{ backgroundColor: '#f7f7f7' }}>
