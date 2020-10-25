@@ -142,15 +142,13 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
                             tooltipTitle="Crop image"
                             onClick={onClickCrop(image)}
                         />
-                        {!image.is_main_image ? (
+                        {!image.is_main_image && (
                             <SpeedDialAction
                                 key="make-default"
                                 icon={<StarBorder color="primary" className={classes.smallIcon} />}
                                 tooltipTitle="Make default image"
                                 onClick={onClickDefault(image)}
                             />
-                        ) : (
-                            ''
                         )}
                     </SpeedDial>
                 </section>

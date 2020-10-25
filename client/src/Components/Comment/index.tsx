@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { Paper, Accordion, AccordionDetails, Typography, CardMedia, Button } from '@material-ui/core';
 import { Reply, Delete, Clear } from '@material-ui/icons';
-
 import {
     sendPost,
     updatePost,
@@ -111,6 +110,8 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
         if (!message.length) { return undefined; }
         return message[0];
     };
+
+    const onClickScroll = (parentComment:IComment) => (() => ScrollToID(parentComment.post_id));
 
     const addReplyParent = () => {
         const parentComment: IComment | undefined = getCommentMessageFromQuote();
