@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Paper, IconButton, CardMedia, Backdrop, Typography } from '@material-ui/core';
-
 import { SpeedDialAction, SpeedDial, SpeedDialIcon } from '@material-ui/lab';
 import {
     Add, Crop, Clear, StarBorder,
@@ -23,9 +22,12 @@ interface IImageUploaderProps {
 }
 
 const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUploaderProps> => {
+    const {
+        images,
+        setImages,
+        maxImages,
+    } = props;
     const classes: IClasses = styles();
-
-    const { images, setImages, maxImages } = props;
 
     const [mappedImageElement, setMappedImageElement] = useState<Array<React.ReactElement>>([]);
     const [speedOpen, setSpeedOpen] = useState<boolean>(true);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
     Typography,
     List,
@@ -158,11 +158,11 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
                         <Typography
                             variant="h4"
                             style={{
-                                color: formattedStatusColour,
+                                color: FormatStatusColour(vehicle.status),
                             }}
                             className={classes.statusText}
                         >
-                            {formatStatusText}
+                            {FormatStatusText(vehicle.status)}
                         </Typography>
                     </section>
 
@@ -192,7 +192,7 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
                         <Typography className={classes.titles} variant="body1">
                             Specifications
                         </Typography>
-                        {formattedInfo}
+                        {formatInfo(vehicle)}
                     </section>
                 </section>
             </section>
