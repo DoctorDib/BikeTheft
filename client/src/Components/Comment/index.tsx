@@ -13,7 +13,7 @@ import {
     FormatPostBackground,
 } from './helper';
 import PopupComponent from '../Popup';
-import { IComment, IPostAttributes, IImageSettings } from '../../Common/Interfaces/interfaces';
+import { IComment, IImageSettings } from '../../Common/Interfaces/interfaces';
 import PostTypeEnum from '../../Common/Enums/PostTypeEnums';
 import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
 import TextCommentComponent from '../CommentTextBox';
@@ -35,6 +35,7 @@ const CommentComponent = React.memo((props: ICommentComponent): React.ReactEleme
     const classes: IClasses = style();
 
     const {
+        ownerID,
         threadID,
         vehicleID,
         comment,
