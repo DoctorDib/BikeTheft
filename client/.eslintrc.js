@@ -58,5 +58,9 @@ module.exports = {
             version: 'detect',
         },
     },
-
+    "globals": {
+        // https://stackoverflow.com/questions/34820817/eslints-no-undef-rule-is-calling-my-use-of-underscore-an-undefined-variable
+        // Preventing error when we're using ReactCrop namespace from node_modules
+        "ReactCrop": false,
+    },
 };

@@ -7,7 +7,7 @@ import {
     IData,
     IInputFields,
     IChip,
-    ICropSettings,
+    IImageSettings,
 } from '../Interfaces/interfaces';
 
 export const defaultVehicleData: IVehicleInfo = {
@@ -31,9 +31,29 @@ export const defaultMemberAttributes: IMemberAttributes = {
     profile_image: '',
 };
 
+export const defaultCropSettings: ReactCrop.Crop = {
+    unit: '%',
+    width: 1,
+    height: 1,
+    x: 50,
+    y: 50,
+};
+
+export const defaultImageSettings: IImageSettings = {
+    id: -1,
+    name: '',
+    is_main_image: false,
+    type: '',
+    data64: '',
+    crop: {
+        original: '',
+        crop_info: defaultCropSettings,
+    },
+};
+
 export const defaultPostAttributes: IPostAttributes = {
     message: '',
-    confirmation_image: '',
+    confirmation_image: defaultImageSettings,
     active_state: false,
     is_deleted: false,
     replying_to: null,
@@ -77,12 +97,4 @@ export const defaultInputs: IInputFields = {
     featuresArray: [],
     description: '',
     v5cVerificationDate: '',
-};
-
-export const defaultCropSettings: ICropSettings = {
-    unit: '%',
-    width: 1,
-    height: 1,
-    x: 50,
-    y: 50,
 };

@@ -73,12 +73,6 @@ const TextCommentComponent: React.FC<ICommentTextBoxProps> = (props: ICommentTex
                     Post
                 </Button>
             </section>
-
-            {/* <ConfirmationComponent
-                enumMessage={confirmationMessage}
-                open={confirmation}
-                callback={confirmationCallback}
-            /> */}
         </section>
     );
 };

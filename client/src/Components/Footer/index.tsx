@@ -5,28 +5,10 @@ import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 interface IFooterProps {
-    className?: string;
 }
 
-const Copyright = () => {
+const FooterComponent = (): React.ReactElement<IFooterProps> => {
     const classes: IClasses = styles();
-
-    return (
-        <div className={classes.copyrightParent}>
-            <Typography variant="body2" component="p" className={classes.copyrightSymbol}>
-                ©
-            </Typography>
-            <Typography variant="body2" component="p">
-                Copyright Lost My Wheels 2020
-            </Typography>
-        </div>
-    );
-};
-
-// TODO these props should be used
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const FooterComponent = (props: IFooterProps): React.ReactElement<IFooterProps> => {
-    const classes = styles();
 
     return (
         <section
@@ -37,7 +19,16 @@ const FooterComponent = (props: IFooterProps): React.ReactElement<IFooterProps> 
             }}
             className={classes.footerParent}
         >
-            <section>{Copyright()}</section>
+            <section>
+                <div className={classes.copyrightParent}>
+                    <Typography variant="body2" component="p" className={classes.copyrightSymbol}>
+                        ©
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                        Copyright Lost My Wheels 2020
+                    </Typography>
+                </div>
+            </section>
         </section>
     );
 };

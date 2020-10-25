@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Paper } from '@material-ui/core';
 
-import ImageGallery from 'react-image-gallery';
+import ImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 
 import { IImageSettings } from '../../Common/Interfaces/interfaces';
@@ -18,19 +18,23 @@ interface ICarouselProps {
 // https://github.com/xiaolin/react-image-gallery
 
 const CarouselComponent = (props: ICarouselProps): React.ReactElement<ICarouselProps> => {
+    const { owner, images } = props;
     const classes: IClasses = style();
 
-    const { owner, images } = props;
+    const mapImages = (): Array<ReactImageGalleryItem> => {
+        if (images === undefined || !images.length) { return []; }
+        if (images[0].name === undefined) { return []; }
 
-    const mapImages = images.map((image: IImageSettings) => ({
-        original: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,
-        thumbnail: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,
-    }));
+        return images.map((image: IImageSettings):ReactImageGalleryItem => ({
+            original: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,
+            thumbnail: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,
+        }));
+    };
 
     return (
         <Paper elevation={0} className={classes.main}>
             <ImageGallery
-                items={mapImages}
+                items={mapImages()}
                 showFullscreenButton={false}
                 useBrowserFullscreen={false}
                 showPlayButton={false}
