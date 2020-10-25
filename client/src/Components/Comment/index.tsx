@@ -21,7 +21,7 @@ import { IClasses } from '../../Common/Interfaces/IClasses';
 import style from './styles';
 import { isNullOrUndefined } from '../../Common/Utils/Types';
 
-interface ICommentComponent {
+interface ICommentComponentProp {
     threadID: string;
     ownerID: string;
     vehicleID: number;
@@ -31,7 +31,7 @@ interface ICommentComponent {
     isHighlighted: boolean;
 }
 
-const CommentComponent = React.memo((props: ICommentComponent): React.ReactElement<ICommentComponent> => {
+const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactElement<ICommentComponentProp> => {
     const classes: IClasses = style();
 
     const {
@@ -248,7 +248,7 @@ const CommentComponent = React.memo((props: ICommentComponent): React.ReactEleme
                                 : <Reply className={classNames(classes.replyIcon, classes.replyIconOpen)} onClick={onExpandClick} />}
                         </section>
                     )
-                    : null }
+                    : null}
             </section>
 
             <AccordionDetails style={{ backgroundColor: '#f7f7f7' }}>
@@ -293,8 +293,8 @@ const CommentComponent = React.memo((props: ICommentComponent): React.ReactEleme
         </Accordion>
     );
 }, (
-    prevProps: Readonly<React.PropsWithChildren<ICommentComponent>>,
-    nextProps: Readonly<React.PropsWithChildren<ICommentComponent>>,
+    prevProps: Readonly<React.PropsWithChildren<ICommentComponentProp>>,
+    nextProps: Readonly<React.PropsWithChildren<ICommentComponentProp>>,
 ) => prevProps.isHighlighted === nextProps.isHighlighted);
 
 CommentComponent.displayName = 'CommentComponent';
