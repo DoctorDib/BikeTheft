@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Paper, IconButton, CardMedia, Backdrop, Typography } from '@material-ui/core';
-
 import { SpeedDialAction, SpeedDial, SpeedDialIcon } from '@material-ui/lab';
 import {
     Add, Crop, Clear, StarBorder,
@@ -23,18 +22,19 @@ interface IImageUploaderProps {
 }
 
 const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUploaderProps> => {
+    const {
+        images,
+        setImages,
+        maxImages,
+    } = props;
     const classes: IClasses = styles();
-
-    const { images, setImages, maxImages } = props;
 
     const [mappedImageElement, setMappedImageElement] = useState<Array<React.ReactElement>>([]);
     const [speedOpen, setSpeedOpen] = useState<boolean>(true);
     const [imageCropSrc, setImageCropSrc] = useState<string>('');
     const [cropDialog, setCropDialog] = useState<boolean>(false);
     const [croppingIndex, setCroppingIndex] = useState<number>(-1);
-
     const [crop, setCrop] = useState<ReactCrop.Crop>(defaultCropSettings);
-
     const [picIndex, setPicIndex] = useState<number>(0);
 
     const handleOpen = () => setSpeedOpen(true);
