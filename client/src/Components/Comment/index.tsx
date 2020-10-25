@@ -51,7 +51,6 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
     const [commentValue, setCommentValue] = useState<string>('');
     const [inputError, setInputError] = useState<boolean>(false);
     const [isExpanded, setExpand] = useState<boolean>(false);
-    const [postBackground, setPostBackground] = useState<string>('');
 
     // TEMP comment in brackets
     const InfoComponent = (/* comment: IComment */) => {
@@ -110,6 +109,8 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
         if (!message.length) { return undefined; }
         return message[0];
     };
+
+    const onClickScroll = (parentComment:IComment) => (() => ScrollToID(parentComment.post_id));
 
     const addReplyParent = () => {
         const parentComment: IComment | undefined = getCommentMessageFromQuote();
@@ -223,7 +224,7 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
         <Accordion
             className={classes.message}
             onChange={toggleExpand}
-            style={{ backgroundColor: postBackground }}
+            style={{ backgroundColor: FormatPostBackground(comment.type) }}
             expanded={isExpanded}
         >
             <section

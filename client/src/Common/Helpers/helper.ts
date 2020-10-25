@@ -9,12 +9,10 @@ export const getDateTimeString = (): string => {
     const date = `${currentdate.getFullYear()}/${currentdate.getMonth() + 1}/${currentdate.getDate()}`;
     const time = `${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}`;
     return `${date} ${time}`;
-}
+};
 
 // fArrObj = Array of Object Features
-export const sortFeaturesArray = (fArrObj: Array<IChip>): Array<string> => {
-    return fArrObj.map((object: IChip) => object.value);
-}
+export const sortFeaturesArray = (fArrObj: Array<IChip>): Array<string> => fArrObj.map((object: IChip) => object.value);
 
 const uploadImageToS3 = async (userId: string, imgObj: IImageSettings, storageType: string) => {
     const storagePutLink = `${userId}/${storageType}/${imgObj.name}.${imgObj.type}`;

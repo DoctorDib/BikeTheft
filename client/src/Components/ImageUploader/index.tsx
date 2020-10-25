@@ -32,9 +32,7 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
     const [imageCropSrc, setImageCropSrc] = useState<string>('');
     const [cropDialog, setCropDialog] = useState<boolean>(false);
     const [croppingIndex, setCroppingIndex] = useState<number>(-1);
-
     const [crop, setCrop] = useState<ReactCrop.Crop>(defaultCropSettings);
-
     const [picIndex, setPicIndex] = useState<number>(0);
 
     const handleOpen = () => setSpeedOpen(true);
@@ -142,15 +140,13 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
                             tooltipTitle="Crop image"
                             onClick={onClickCrop(image)}
                         />
-                        {!image.is_main_image ? (
+                        {!image.is_main_image && (
                             <SpeedDialAction
                                 key="make-default"
                                 icon={<StarBorder color="primary" className={classes.smallIcon} />}
                                 tooltipTitle="Make default image"
                                 onClick={onClickDefault(image)}
                             />
-                        ) : (
-                            ''
                         )}
                     </SpeedDial>
                 </section>

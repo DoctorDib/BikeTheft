@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Typography,
     List,
@@ -38,13 +38,6 @@ interface IVehicleInfoProps {
     vehicle: IVehicleInfo;
 }
 
-const formatFeatures = (features: Array<string>): ReadonlyArray<React.ReactElement> =>
-    features.map((damage: string) => (
-        <ListItem key={`damages - ${damage}`}>
-            <ListItemText primary={damage} />
-        </ListItem>
-    ));
-
 const vinInformationPopup = (vin: string): React.ReactElement => (
     <section>
         <Typography>
@@ -57,12 +50,9 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
     const { threadID, owner, vehicle } = props;
     const classes: IClasses = style();
 
-    const { threadID, owner, vehicle } = props;
-
     const [open, setOpen] = useState(false);
     const [openVin, setOpenVin] = useState(false);
 
-    const [formattedFeatures, setFormattedFeatures] = useState<Array<React.ReactElement>>([]);
     const [formattedInfo, setFormattedInfo] = useState<Array<React.ReactElement>>([]);
     const [formatStatusText, setFormatStatusText] = useState<string>('');
     const [formattedStatusColour, setFormattedStatusColour] = useState<string>('');
@@ -71,6 +61,13 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
     const handleVinOpen = () => setOpenVin(true);
     const handleVinClose = () => setOpenVin(false);
     const foundConfirmationResponse = () => setOpen(false);
+
+    const formatFeatures = (): ReadonlyArray<React.ReactElement> =>
+        vehicle.features.map((damage: string) => (
+            <ListItem key={`damages - ${damage}`}>
+                <ListItemText primary={damage} />
+            </ListItem>
+        ));
 
     const formatInfoValues = (
         key:string,
@@ -81,16 +78,6 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
         }
 
         return value;
-    };
-
-    const formatFeatures = (features: Array<string>) => {
-        const newFormattedFeatures = features.map((damage: string) => (
-            <ListItem key={`damages - ${damage}`}>
-                <ListItemText primary={damage} />
-            </ListItem>
-        ));
-
-        setFormattedFeatures(newFormattedFeatures);
     };
 
     const formatInfo = (data: IVehicleInfo) => {
@@ -146,7 +133,6 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
     };
 
     useEffect(() => {
-        formatFeatures(vehicle.features);
         formatInfo(vehicle);
         setFormatStatusText(FormatStatusText(vehicle.status));
         setFormattedStatusColour(FormatStatusColour(vehicle.status));
@@ -219,7 +205,7 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
 
                 <section>
                     <Typography className={classes.titles}>Additional damages</Typography>
-                    <List dense>{formattedFeatures}</List>
+                    <List dense>{ formatFeatures() }</List>
                 </section>
             </section>
         </section>
