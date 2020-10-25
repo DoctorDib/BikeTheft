@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { Paper, Accordion, AccordionDetails, Typography, CardMedia, Button } from '@material-ui/core';
 import { Reply, Delete, Clear } from '@material-ui/icons';
-
 import {
     sendPost,
     updatePost,
@@ -110,13 +109,15 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
         return message[0];
     };
 
+    const onClickScroll = (parentComment:IComment) => (() => ScrollToID(parentComment.post_id));
+
     const addReplyParent = () => {
         const parentComment: IComment | undefined = getCommentMessageFromQuote();
         if (parentComment === undefined) { return undefined; }
 
         const replyParentElement = (
             <Button
-                onClick={() => ScrollToID(parentComment.post_id)}
+                onClick={onClickScroll(parentComment)}
                 className={classes.quoteButton}
                 disableFocusRipple
                 disableRipple
@@ -150,8 +151,11 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
 
         if (!response) { return; }
 
-        const newPostAttributes = comment.post_attributes;
-        newPostAttributes.is_deleted = true;
+        const newPostAttributes = {
+            ...comment.post_attributes,
+            is_deleted: true,
+        };
+
         updatePost(comment.post_id, newPostAttributes);
     };
 

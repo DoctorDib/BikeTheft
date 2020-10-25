@@ -55,8 +55,11 @@ const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
         setPostPopupOpen(false);
         if (!response) { return; }
 
-        const newCommentAttributes:IPostAttributes = defaultPostAttributes;
-        newCommentAttributes.message = commentValue;
+        const newCommentAttributes:IPostAttributes = {
+            ...defaultPostAttributes,
+            message: commentValue,
+        };
+
         setCommentValue('');
         sendPost(threadID, '1', newCommentAttributes, 1);
     };

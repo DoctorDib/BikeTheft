@@ -38,13 +38,6 @@ interface IVehicleInfoProps {
     vehicle: IVehicleInfo;
 }
 
-const formatFeatures = (features: Array<string>): ReadonlyArray<React.ReactElement> =>
-    features.map((damage: string) => (
-        <ListItem key={`damages - ${damage}`}>
-            <ListItemText primary={damage} />
-        </ListItem>
-    ));
-
 const vinInformationPopup = (vin: string): React.ReactElement => (
     <section>
         <Typography>
@@ -65,6 +58,13 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
     const handleVinClose = () => setOpenVin(false);
     const foundConfirmationResponse = () => setOpen(false);
 
+    const formatFeatures = (): ReadonlyArray<React.ReactElement> =>
+        vehicle.features.map((damage: string) => (
+            <ListItem key={`damages - ${damage}`}>
+                <ListItemText primary={damage} />
+            </ListItem>
+        ));
+
     const formatInfoValues = (
         key:string,
         value:string | number | string[] | IImageSettings[] | Date,
@@ -76,54 +76,53 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
         return value;
     };
 
-    const formatInfo = (data: IVehicleInfo) =>
-        infoKeys.map((indexKey: string) => {
-            if (indexKey === 'vin') {
-                // const value in if statement to avoid type confusion when using "vinInformationPopup"
-                const value: string = data[indexKey];
-
-                return (
-                    <Grid container key={`prop - ${indexKey}`}>
-                        <Grid item xs={6}>
-                            <Typography>
-                                {FormatInfoTitles(indexKey)}
-                            </Typography>
-                        </Grid>
-
-                        <Dialog onClose={handleVinClose} aria-labelledby="simple-dialog-title" open={openVin}>
-                            <DialogTitle className={classes.dialogTitle}> Vehicle Identification Number</DialogTitle>
-                            <DialogContent className={classes.dialogContent}>
-                                {vinInformationPopup(value)}
-                            </DialogContent>
-                        </Dialog>
-
-                        <Grid item xs={6} style={{ padding: '5px' }}>
-                            <Button
-                                size="small"
-                                variant="contained"
-                                color="primary"
-                                onClick={handleVinOpen}
-                                style={{ width: '100%' }}
-                                disabled={value === ''}
-                            >
-                                {value === '' ? 'N/A' : 'View'}
-                            </Button>
-                        </Grid>
-                    </Grid>
-                );
-            }
+    const formatInfo = () => infoKeys.map((indexKey: string) => {
+        if (indexKey === 'vin') {
+            // const value in if statement to avoid type confusion when using "vinInformationPopup"
+            const value: string = vehicle[indexKey];
 
             return (
                 <Grid container key={`prop - ${indexKey}`}>
                     <Grid item xs={6}>
-                        <Typography>{FormatInfoTitles(indexKey)}</Typography>
+                        <Typography>
+                            {FormatInfoTitles(indexKey)}
+                        </Typography>
                     </Grid>
-                    <Grid item xs={6}>
-                        <Typography>{indexKey === '' ? 'N/A' : formatInfoValues(indexKey, data[indexKey])}</Typography>
+
+                    <Dialog onClose={handleVinClose} aria-labelledby="simple-dialog-title" open={openVin}>
+                        <DialogTitle className={classes.dialogTitle}> Vehicle Identification Number</DialogTitle>
+                        <DialogContent className={classes.dialogContent}>
+                            {vinInformationPopup(value)}
+                        </DialogContent>
+                    </Dialog>
+
+                    <Grid item xs={6} style={{ padding: '5px' }}>
+                        <Button
+                            size="small"
+                            variant="contained"
+                            color="primary"
+                            onClick={handleVinOpen}
+                            style={{ width: '100%' }}
+                            disabled={value === ''}
+                        >
+                            {value === '' ? 'N/A' : 'View'}
+                        </Button>
                     </Grid>
                 </Grid>
             );
-        });
+        }
+
+        return (
+            <Grid container key={`prop - ${indexKey}`}>
+                <Grid item xs={6}>
+                    <Typography>{FormatInfoTitles(indexKey)}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography>{indexKey === '' ? 'N/A' : formatInfoValues(indexKey, vehicle[indexKey])}</Typography>
+                </Grid>
+            </Grid>
+        );
+    });
 
     return (
         <section className={classes.container}>
@@ -179,7 +178,7 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
                         <Typography className={classes.titles} variant="body1">
                             Specifications
                         </Typography>
-                        {formatInfo(vehicle)}
+                        {formatInfo()}
                     </section>
                 </section>
             </section>
@@ -192,7 +191,7 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
 
                 <section>
                     <Typography className={classes.titles}>Additional damages</Typography>
-                    <List dense>{formatFeatures(vehicle.features)}</List>
+                    <List dense>{ formatFeatures() }</List>
                 </section>
             </section>
         </section>

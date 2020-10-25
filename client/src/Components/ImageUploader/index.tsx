@@ -106,6 +106,12 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
         setImages(newImages);
         handleClose();
     };
+
+    const onClickDefault = (image:IImageSettings) => (() => setAsMainImage(image.id));
+    const onClickRemove = (image:IImageSettings) => (() => onImgRemove(image.id));
+    const onClickCrop = (image:IImageSettings) =>
+        (() => cropImage(image.id, image.crop.original, image.crop.crop_info ?? defaultCropSettings));
+
     const mapImages = () => {
         const newMappedImages:Array<React.ReactElement> = images.map((image: IImageSettings):React.ReactElement => (
             <Paper
@@ -128,24 +134,21 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
                             key="remove"
                             icon={<Clear style={{ color: 'rgb(176, 0, 0)' }} className={classes.smallIcon} />}
                             tooltipTitle="Remove"
-                            onClick={() => onImgRemove(image.id)}
+                            onClick={onClickRemove(image)}
                         />
                         <SpeedDialAction
                             key="crop"
                             icon={<Crop color="primary" className={classes.smallIcon} />}
                             tooltipTitle="Crop image"
-                            onClick={() =>
-                                cropImage(image.id, image.crop.original, image.crop.crop_info ?? defaultCropSettings)}
+                            onClick={onClickCrop(image)}
                         />
-                        {!image.is_main_image ? (
+                        {!image.is_main_image && (
                             <SpeedDialAction
                                 key="make-default"
                                 icon={<StarBorder color="primary" className={classes.smallIcon} />}
                                 tooltipTitle="Make default image"
-                                onClick={() => setAsMainImage(image.id)}
+                                onClick={onClickDefault(image)}
                             />
-                        ) : (
-                            ''
                         )}
                     </SpeedDial>
                 </section>
