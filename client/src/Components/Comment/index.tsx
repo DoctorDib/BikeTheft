@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { Paper, Accordion, AccordionDetails, Typography, CardMedia, Button } from '@material-ui/core';
 import { Reply, Delete, Clear } from '@material-ui/icons';
-
 import {
     sendPost,
     updatePost,
