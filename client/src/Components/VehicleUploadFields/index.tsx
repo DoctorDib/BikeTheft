@@ -18,10 +18,12 @@ import { isNullOrUndefinedOrEmpty } from '../../Common/Utils/Types';
 import { defaultInputs } from '../../Common/Helpers/Defaults';
 import { createNewThread } from '../../Common/Helpers/DB_Helpers';
 import { uploadImagesToS3 } from '../../Common/Helpers/helper';
+import Env from '../../Common/Utils/Env';
 
 interface IImageUploaderProps {}
 
 let chipIndex = 0;
+const MAXIMAGES = 4;
 
 interface IToolTipMessage {
     primaryColour: string;
@@ -137,7 +139,7 @@ const VehicleUploadInputs = ():React.ReactElement<IImageUploaderProps> => {
         const body = {
             body: {
                 post: 443,
-                key: import.meta.env.SNOWPACK_PUBLIC_DVLAAPIKEY,
+                key: Env.SNOWPACK_PUBLIC_DVLAAPIKEY,
                 number_plate: numberPlate,
             },
         };
@@ -383,7 +385,7 @@ const VehicleUploadInputs = ():React.ReactElement<IImageUploaderProps> => {
                 <Typography variant="h5"> Vehicle Upload </Typography>
             </section>
 
-            <ImageUploaderComponent images={images} setImages={setImages} />
+            <ImageUploaderComponent images={images} setImages={setImages} maxImages={MAXIMAGES} />
 
             <Typography> The images you upload will be uploaded to an S3 bucket yo </Typography>
 

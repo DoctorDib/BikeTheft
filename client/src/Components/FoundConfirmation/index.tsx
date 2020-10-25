@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 
 import {
-    Modal, Backdrop, Fade, Paper, Typography, Button,
+    Modal,
+    Backdrop,
+    Fade,
+    Paper,
+    Typography,
+    Button,
 } from '@material-ui/core';
 
 import { CheckCircle, Cancel } from '@material-ui/icons';
 import { IPostAttributes, IImageSettings } from '../../Common/Interfaces/interfaces';
 import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
-
 import { sendPost } from '../../Common/Helpers/DB_Helpers';
 import PostTypeEnums from '../../Common/Enums/PostTypeEnums';
-
 import ImageUploaderComponent from '../ImageUploader';
-
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 

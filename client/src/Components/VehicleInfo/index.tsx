@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import {
     Typography,
     List,
@@ -16,8 +15,16 @@ import { Check, Report } from '@material-ui/icons';
 
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
 import { formatDate, capitalizeFirstLetter } from '../../Common/Helpers/helper';
-import { IVehicleInfo, IOwner, IImageSettings } from '../../Common/Interfaces/interfaces';
-import { FormatStatusColour, FormatStatusText, FormatInfoTitles } from './formats';
+import {
+    IVehicleInfo,
+    IOwner,
+    IImageSettings,
+} from '../../Common/Interfaces/interfaces';
+import {
+    FormatStatusColour,
+    FormatStatusText,
+    FormatInfoTitles,
+} from './formats';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import CarouselComponent from '../Carousel';
 import FoundConfirmation from '../FoundConfirmation';
@@ -31,14 +38,14 @@ interface IVehicleInfoProps {
     vehicle: IVehicleInfo;
 }
 
-const formatFeatures = (features: Array<string>):ReadonlyArray<React.ReactElement> =>
+const formatFeatures = (features: Array<string>): ReadonlyArray<React.ReactElement> =>
     features.map((damage: string) => (
-    <ListItem key={`damages - ${damage}`}>
-        <ListItemText primary={damage} />
-    </ListItem>
-));
+        <ListItem key={`damages - ${damage}`}>
+            <ListItemText primary={damage} />
+        </ListItem>
+    ));
 
-const vinInformationPopup = (vin: string):React.ReactElement => (
+const vinInformationPopup = (vin: string): React.ReactElement => (
     <section>
         <Typography>
             {vin}
@@ -46,7 +53,8 @@ const vinInformationPopup = (vin: string):React.ReactElement => (
     </section>
 );
 
-const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoProps> => {
+const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoProps> => {
+    const { threadID, owner, vehicle } = props;
     const classes: IClasses = style();
 
     const [open, setOpen] = useState(false);
@@ -57,9 +65,10 @@ const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoPr
     const handleVinClose = () => setOpenVin(false);
     const foundConfirmationResponse = () => setOpen(false);
 
-    const { threadID, owner, vehicle } = props;
-
-    const formatInfoValues = (key:string, value:string | number | string[] | IImageSettings[]):string | number | string[] | IImageSettings[] => {
+    const formatInfoValues = (
+        key:string,
+        value:string | number | string[] | IImageSettings[] | Date,
+    ): string | number | string[] | IImageSettings[] | Date => {
         if (key === 'category' && typeof value === 'number') {
             return capitalizeFirstLetter(VehicleCategoryEnum[value]);
         }
