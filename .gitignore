@@ -72,6 +72,8 @@ typings/
 # dotenv environment variables file
 .env
 .env.test
+.env.dev
+.env.prod
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -107,13 +109,8 @@ dist
 # Secret folder - shhh
 secrets
 
-# Removing build folder
-client/public
-
 .idea/
 
-.env.dev
-.env.prod
 client/.history
 
 .build

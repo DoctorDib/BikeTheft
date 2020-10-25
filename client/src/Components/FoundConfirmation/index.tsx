@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
-
 import {
-    Modal, Backdrop, Fade, Paper, Typography, Button,
+    Modal,
+    Backdrop,
+    Fade,
+    Paper,
+    Typography,
+    Button,
 } from '@material-ui/core';
-
 import { CheckCircle, Cancel } from '@material-ui/icons';
+
 import { IPostAttributes, IImageSettings } from '../../Common/Interfaces/interfaces';
 import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
-
 import { uploadImagesToS3 } from '../../Common/Helpers/helper';
 import { sendPost } from '../../Common/Helpers/DB_Helpers';
 import PostTypeEnums from '../../Common/Enums/PostTypeEnums';
-
 import PopupComponent from '../Popup';
 import ImageUploaderComponent from '../ImageUploader';
-
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
@@ -28,7 +29,12 @@ interface IFoundConfirmationProps {
 const FoundConfirmation = (props: IFoundConfirmationProps): React.ReactElement<IFoundConfirmationProps> => {
     const classes: IClasses = styles();
 
-    const { ownerID, threadID, open, close } = props;
+    const {
+        ownerID,
+        threadID,
+        open,
+        close,
+    } = props;
 
     const [[image], setImages] = useState<Array<IImageSettings>>([]);
     const [confirmationPopupOpen, setConfirmationPopupOpen] = useState<boolean>(false);
@@ -99,7 +105,7 @@ const FoundConfirmation = (props: IFoundConfirmationProps): React.ReactElement<I
                         open={confirmationPopupOpen}
                         title="Confirmation"
                         message="Are you sure that this could be the owners vehicle?"
-                        callback={confimrationPopupCallback}
+                        confirmationCallback={confimrationPopupCallback}
                     />
                 </Paper>
             </Fade>

@@ -39,7 +39,7 @@ export interface IPostAttributes {
 export interface IComment {
     post_id: number;
     type: number;
-    date_added: string;
+    date_added: Date;
     member_attributes: IMemberAttributes;
     post_attributes: IPostAttributes;
 }

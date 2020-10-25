@@ -68,7 +68,7 @@ export const defaultOwner: IOwner = {
 export const defaultComment: IComment = {
     post_id: -1,
     type: -1,
-    date_added: '',
+    date_added: new Date(),
     member_attributes: defaultMemberAttributes,
     post_attributes: defaultPostAttributes,
 };

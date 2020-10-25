@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState } from 'react';
 import {
     Typography,
     List,
@@ -18,8 +17,16 @@ import { Check, Report, Beenhere, Cancel } from '@material-ui/icons';
 
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
 import { formatDate, capitalizeFirstLetter } from '../../Common/Helpers/helper';
-import { IVehicleInfo, IOwner, IImageSettings } from '../../Common/Interfaces/interfaces';
-import { FormatStatusColour, FormatStatusText, FormatInfoTitles } from './formats';
+import {
+    IVehicleInfo,
+    IOwner,
+    IImageSettings,
+} from '../../Common/Interfaces/interfaces';
+import {
+    FormatStatusColour,
+    FormatStatusText,
+    FormatInfoTitles,
+} from './formats';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import CarouselComponent from '../Carousel';
 import FoundConfirmation from '../FoundConfirmation';
@@ -33,7 +40,14 @@ interface IVehicleInfoProps {
     vehicle: IVehicleInfo;
 }
 
-const vinInformationPopup = (vin: string) => (
+const formatFeatures = (features: Array<string>): ReadonlyArray<React.ReactElement> =>
+    features.map((damage: string) => (
+        <ListItem key={`damages - ${damage}`}>
+            <ListItemText primary={damage} />
+        </ListItem>
+    ));
+
+const vinInformationPopup = (vin: string): React.ReactElement => (
     <section>
         <Typography>
             {vin}
@@ -41,10 +55,9 @@ const vinInformationPopup = (vin: string) => (
     </section>
 );
 
-const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoProps> => {
-    const classes: IClasses = style();
-
+const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoProps> => {
     const { threadID, owner, vehicle } = props;
+    const classes: IClasses = style();
 
     const [open, setOpen] = useState(false);
     const [openVin, setOpenVin] = useState(false);
@@ -60,7 +73,10 @@ const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoPr
     const handleVinClose = () => setOpenVin(false);
     const foundConfirmationResponse = () => setOpen(false);
 
-    const formatInfoValues = (key:string, value:string | number | string[] | IImageSettings[]):string | number | string[] | IImageSettings[] => {
+    const formatInfoValues = (
+        key:string,
+        value:string | number | string[] | IImageSettings[] | Date,
+    ): string | number | string[] | IImageSettings[] | Date => {
         if (key === 'category' && typeof value === 'number') {
             return capitalizeFirstLetter(VehicleCategoryEnum[value]);
         }
@@ -68,18 +84,8 @@ const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoPr
         return value;
     };
 
-    const formatFeatures = (features: Array<string>) => {
-        const newFormattedFeatures = features.map((damage: string) => (
-            <ListItem key={`damages - ${damage}`}>
-                <ListItemText primary={damage} />
-            </ListItem>
-        ));
-
-        setFormattedFeatures(newFormattedFeatures);
-    };
-
-    const formatInfo = (data: IVehicleInfo) => {
-        const newFormattedInfo = infoKeys.map((indexKey: string) => {
+    const formatInfo = (data: IVehicleInfo) =>
+        infoKeys.map((indexKey: string) => {
             if (indexKey === 'vin') {
                 // const value in if statement to avoid type confusion when using "vinInformationPopup"
                 const value: string = data[indexKey];
@@ -183,11 +189,11 @@ const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoPr
                         <Typography
                             variant="h5"
                             style={{
-                                color: formattedStatusColour,
+                                color: FormatStatusColour(vehicle.status),
                             }}
                             className={classes.statusText}
                         >
-                            {formatStatusText}
+                            {FormatStatusText(vehicle.status)}
                         </Typography>
                     </section>
 
@@ -219,7 +225,7 @@ const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoPr
                         <Typography className={classes.titles} variant="body1">
                             Specifications
                         </Typography>
-                        {formattedInfo}
+                        {formatInfo(vehicle)}
                     </section>
                 </section>
             </section>
@@ -232,7 +238,7 @@ const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoPr
 
                 <section>
                     <Typography className={classes.titles}>Additional damages</Typography>
-                    <List dense>{formattedFeatures}</List>
+                    <List dense>{formatFeatures(vehicle.features)}</List>
                 </section>
             </section>
         </section>

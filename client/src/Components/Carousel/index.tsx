@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { Paper } from '@material-ui/core';
 
@@ -18,30 +18,23 @@ interface ICarouselProps {
 // https://github.com/xiaolin/react-image-gallery
 
 const CarouselComponent = (props: ICarouselProps): React.ReactElement<ICarouselProps> => {
+    const { owner, images } = props;
     const classes: IClasses = style();
 
-    const { owner, images } = props;
+    const mapImages = (): Array<ReactImageGalleryItem> => {
+        if (images === undefined || !images.length) { return []; }
+        if (images[0].name === undefined) { return []; }
 
-    const [mappedImagesElement, setMappedImagesElement] = useState<Array<ReactImageGalleryItem>>([]);
-
-    const mapImages = () => {
-        if (images === undefined || !images.length) { return; }
-        if (images[0].name === undefined) { return; }
-
-        const newMappedImages:Array<ReactImageGalleryItem> = images.map((image: IImageSettings):ReactImageGalleryItem => ({
+        return images.map((image: IImageSettings):ReactImageGalleryItem => ({
             original: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,
             thumbnail: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,
         }));
-
-        setMappedImagesElement(newMappedImages);
     };
-
-    useEffect(() => mapImages(), [images]);
 
     return (
         <Paper elevation={0} className={classes.main}>
             <ImageGallery
-                items={mappedImagesElement}
+                items={mapImages()}
                 showFullscreenButton={false}
                 useBrowserFullscreen={false}
                 showPlayButton={false}

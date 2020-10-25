@@ -2,13 +2,14 @@ import React from 'react';
 
 import { Avatar, Typography } from '@material-ui/core';
 
+import Env from '../../Common/Utils/Env';
 import PostTypeEnum from '../../Common/Enums/PostTypeEnums';
 
 import { formatDate } from '../../Common/Helpers/helper';
 import { IComment } from '../../Common/Interfaces/interfaces';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
-const UserImages = import.meta.env.SNOWPACK_PUBLIC_USERIMAGES;
+const UserImages = Env.SNOWPACK_PUBLIC_USERIMAGES;
 
 export const FormatPostBackground = (styleID: number): string => {
     switch (styleID) {
@@ -22,7 +23,7 @@ export const FormatPostBackground = (styleID: number): string => {
     }
 };
 
-export const FormatAvatar = (comment: IComment, classes: IClasses, showAvatar:boolean):React.ReactElement => {
+export const formatAvatar = (comment: IComment, classes: IClasses, showAvatar:boolean):React.ReactElement => {
     const image = comment.type === 1
         ? `${UserImages}${comment.member_attributes.profile_image}`
         : 'I';
