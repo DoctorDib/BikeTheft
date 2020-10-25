@@ -117,7 +117,7 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
             <section className={classes.speedDialContainer}>
                 <Backdrop open={speedOpen} />
                 <SpeedDial
-                    ariaLabel="SpeedDial tooltip example"
+                    ariaLabel="SpeedDial tooltip"
                     className={classes.speedDial}
                     icon={<SpeedDialIcon className={classes.smallIcon} />}
                     onClose={handleClose}
@@ -224,7 +224,11 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
                     id="icon-button-file"
                     type="file"
                 />
-                <IconButton aria-label="upload picture" component="span" style={{ padding: '0' }}>
+                <IconButton
+                    aria-label="upload picture"
+                    component="span"
+                    style={{ padding: '0' }}
+                >
                     <Paper className={classes.container}>
                         <Add color="primary" />
                     </Paper>

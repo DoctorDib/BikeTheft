@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import {
     Typography,
     List,
@@ -15,9 +14,17 @@ import {
 import { Check, Report } from '@material-ui/icons';
 
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
-import { capitalizeFirstLetter } from '../../Common/Helpers/helper';
-import { IVehicleInfo, IOwner } from '../../Common/Interfaces/interfaces';
-import { FormatStatusColour, FormatStatusText, FormatInfoTitles } from './formats';
+import { formatDate, capitalizeFirstLetter } from '../../Common/Helpers/helper';
+import {
+    IVehicleInfo,
+    IOwner,
+    IImageSettings,
+} from '../../Common/Interfaces/interfaces';
+import {
+    FormatStatusColour,
+    FormatStatusText,
+    FormatInfoTitles,
+} from './formats';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import CarouselComponent from '../Carousel';
 import FoundConfirmation from '../FoundConfirmation';
@@ -26,11 +33,12 @@ import style from './styles';
 const infoKeys: Array<string> = ['number_plate', 'vin', 'make', 'model', 'category'];
 
 interface IVehicleInfoProps {
+    threadID: string;
     owner: IOwner;
     vehicle: IVehicleInfo;
 }
 
-const formatFeatures = (features: Array<string>):ReadonlyArray<React.ReactElement> =>
+const formatFeatures = (features: Array<string>): ReadonlyArray<React.ReactElement> =>
     features.map((damage: string) => (
         <ListItem key={`damages - ${damage}`}>
             <ListItemText primary={damage} />
@@ -45,7 +53,8 @@ const vinInformationPopup = (vin: string): React.ReactElement => (
     </section>
 );
 
-const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoProps> => {
+const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoProps> => {
+    const { threadID, owner, vehicle } = props;
     const classes: IClasses = style();
 
     const [open, setOpen] = useState(false);
@@ -56,12 +65,11 @@ const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoPr
     const handleVinClose = () => setOpenVin(false);
     const foundConfirmationResponse = () => setOpen(false);
 
-    const { owner, vehicle } = props;
-
-    const formatInfoValues = (key, value) => {
-        console.log(key);
-        console.log(value);
-        if (key === 'category') {
+    const formatInfoValues = (
+        key:string,
+        value:string | number | string[] | IImageSettings[] | Date,
+    ): string | number | string[] | IImageSettings[] | Date => {
+        if (key === 'category' && typeof value === 'number') {
             return capitalizeFirstLetter(VehicleCategoryEnum[value]);
         }
 
@@ -130,7 +138,7 @@ const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoPr
                             <Avatar className={classes.profileImage} src={`${owner.member_attributes.profile_image}`} />
                         </section>
                         <Typography variant="h6">{owner.member_attributes.display_name}</Typography>
-                        <Typography variant="caption">{vehicle.date_added}</Typography>
+                        <Typography variant="caption">{formatDate(vehicle.date_added)}</Typography>
                     </section>
 
                     <section className={classes.statusText}>
@@ -159,7 +167,7 @@ const VehicleInfo = (props: IVehicleInfoProps):React.ReactElement<IVehicleInfoPr
                             Report
                         </Button>
 
-                        <FoundConfirmation close={foundConfirmationResponse} open={open} />
+                        <FoundConfirmation threadID={threadID} close={foundConfirmationResponse} open={open} />
                     </section>
 
                     <section className={classes.gridStyle}>

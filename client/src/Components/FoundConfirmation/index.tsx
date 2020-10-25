@@ -1,18 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
-    Modal, Backdrop, Fade, Paper, Typography, Button,
+    Modal,
+    Backdrop,
+    Fade,
+    Paper,
+    Typography,
+    Button,
 } from '@material-ui/core';
 
 import { CheckCircle, Cancel } from '@material-ui/icons';
-
-// Temp disabled
-// import ImageUploaderComponent from '../ImageUploader';
-
+import { IPostAttributes, IImageSettings } from '../../Common/Interfaces/interfaces';
+import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
+import { sendPost } from '../../Common/Helpers/DB_Helpers';
+import PostTypeEnums from '../../Common/Enums/PostTypeEnums';
+import ImageUploaderComponent from '../ImageUploader';
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 interface IFoundConfirmationProps {
+    threadID: string;
     open: boolean;
     close: () => void;
 }
@@ -20,12 +27,23 @@ interface IFoundConfirmationProps {
 const FoundConfirmation = (props: IFoundConfirmationProps): React.ReactElement<IFoundConfirmationProps> => {
     const classes: IClasses = styles();
 
-    const { open, close } = props;
+    const { threadID, open, close } = props;
+
+    const [images, setImages] = useState<Array<IImageSettings>>([]);
+
+    const sendFoundBike = () => {
+        const newProperties:IPostAttributes = defaultPostAttributes;
+        newProperties.message = 'A user may have found your vehicle! Please confirm the image above that this is your vehicle';
+        newProperties.confirmation_image = 'broken';
+        newProperties.active_state = true;
+
+        sendPost(threadID, '1', newProperties, PostTypeEnums.INFO);
+        close();
+    };
 
     return (
         <Modal
-            aria-labelledby="transition-modal-title"
-            aria-describedby="transition-modal-description"
+            aria-labelledby="transition-modal-found"
             className={classes.modal}
             open={open}
             onClose={close}
@@ -44,10 +62,10 @@ const FoundConfirmation = (props: IFoundConfirmationProps): React.ReactElement<I
 
                     <Typography>Please upload a picture of the vehicle for confirmation purposes.</Typography>
 
-                    {/* <ImageUploaderComponent images={} setImages={} /> */}
+                    <ImageUploaderComponent images={images} setImages={setImages} />
 
                     <section className={classes.buttonContainer}>
-                        <Button variant="contained" startIcon={<CheckCircle />} color="primary">
+                        <Button variant="contained" startIcon={<CheckCircle />} onClick={sendFoundBike} color="primary">
                             Confirm
                         </Button>
                         <Button variant="contained" startIcon={<Cancel />} onClick={close} color="primary">

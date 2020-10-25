@@ -35,6 +35,8 @@ export const defaultPostAttributes: IPostAttributes = {
     message: '',
     confirmation_image: '',
     active_state: false,
+    is_deleted: false,
+    replying_to: null,
 };
 
 export const defaultOwner: IOwner = {
@@ -45,7 +47,7 @@ export const defaultOwner: IOwner = {
 export const defaultComment: IComment = {
     post_id: -1,
     type: -1,
-    date_added: '',
+    date_added: new Date(),
     member_attributes: defaultMemberAttributes,
     post_attributes: defaultPostAttributes,
 };

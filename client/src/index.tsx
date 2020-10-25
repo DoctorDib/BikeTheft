@@ -4,6 +4,7 @@ import Amplify from 'aws-amplify';
 import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 
+import Env from './Common/Utils/Env';
 import mainTheme from './templates/theme';
 import AppliedRoute from './Components/Routing/Applied';
 
@@ -19,28 +20,28 @@ Amplify.configure({
     Auth: {
         mandatorySignIn: false,
         // REQUIRED - Amazon Cognito Identity Pool ID
-        identityPoolId: import.meta.env.SNOWPACK_PUBLIC_IDENTITYPOOLID,
+        identityPoolId: Env.SNOWPACK_PUBLIC_IDENTITYPOOLID,
         // REQUIRED - Amazon Cognito Region
-        region: import.meta.env.SNOWPACK_PUBLIC_REGION,
+        region: Env.SNOWPACK_PUBLIC_REGION,
         // OPTIONAL - Amazon Cognito User Pool ID
-        userPoolId: import.meta.env.SNOWPACK_PUBLIC_USERPOOLID,
+        userPoolId: Env.SNOWPACK_PUBLIC_USERPOOLID,
         // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-        userPoolWebClientId: import.meta.env.SNOWPACK_PUBLIC_CLIENTID,
+        userPoolWebClientId: Env.SNOWPACK_PUBLIC_CLIENTID,
     },
     API: {
         endpoints: [
             {
                 name: 'base_endpoint',
-                endpoint: import.meta.env.SNOWPACK_PUBLIC_APIENDPOINT,
-                region: import.meta.env.SNOWPACK_PUBLIC_REGION,
+                endpoint: Env.SNOWPACK_PUBLIC_APIENDPOINT,
+                region: Env.SNOWPACK_PUBLIC_REGION,
             },
         ],
     },
     Storage: {
         AWSS3: {
-            bucket: import.meta.env.SNOWPACK_PUBLIC_S3BUCKET,
-            region: import.meta.env.SNOWPACK_PUBLIC_REGION,
-            identityPoolId: import.meta.env.SNOWPACK_PUBLIC_IDENTITYPOOLID,
+            bucket: Env.SNOWPACK_PUBLIC_S3BUCKET,
+            region: Env.SNOWPACK_PUBLIC_REGION,
+            identityPoolId: Env.SNOWPACK_PUBLIC_IDENTITYPOOLID,
         },
     },
 });

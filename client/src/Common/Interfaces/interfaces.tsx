@@ -14,7 +14,7 @@ export interface IVehicleInfo {
     model: string;
     vin: string;
     category: string;
-    [key: string]: string | number | Array<string> | Array<IImageSettings>;
+    [key: string]: string | number | Array<string> | Array<IImageSettings> | Date;
 }
 
 export interface IMemberAttributes {
@@ -31,12 +31,14 @@ export interface IPostAttributes {
     message: string;
     confirmation_image: string;
     active_state: boolean;
+    is_deleted: boolean;
+    replying_to: number | null;
 }
 
 export interface IComment {
     post_id: number;
     type: number;
-    date_added: string;
+    date_added: Date;
     member_attributes: IMemberAttributes;
     post_attributes: IPostAttributes;
 }
