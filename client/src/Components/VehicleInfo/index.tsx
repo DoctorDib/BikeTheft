@@ -57,15 +57,8 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
     const { threadID, owner, vehicle } = props;
     const classes: IClasses = style();
 
-    const { threadID, owner, vehicle } = props;
-
     const [open, setOpen] = useState(false);
     const [openVin, setOpenVin] = useState(false);
-
-    const [formattedFeatures, setFormattedFeatures] = useState<Array<React.ReactElement>>([]);
-    const [formattedInfo, setFormattedInfo] = useState<Array<React.ReactElement>>([]);
-    const [formatStatusText, setFormatStatusText] = useState<string>('');
-    const [formattedStatusColour, setFormattedStatusColour] = useState<string>('');
 
     const handleOpen = () => setOpen(true);
     const handleVinOpen = () => setOpenVin(true);
@@ -83,18 +76,8 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
         return value;
     };
 
-    const formatFeatures = (features: Array<string>) => {
-        const newFormattedFeatures = features.map((damage: string) => (
-            <ListItem key={`damages - ${damage}`}>
-                <ListItemText primary={damage} />
-            </ListItem>
-        ));
-
-        setFormattedFeatures(newFormattedFeatures);
-    };
-
-    const formatInfo = (data: IVehicleInfo) => {
-        const newFormattedInfo = infoKeys.map((indexKey: string) => {
+    const formatInfo = (data: IVehicleInfo) =>
+        infoKeys.map((indexKey: string) => {
             if (indexKey === 'vin') {
                 // const value in if statement to avoid type confusion when using "vinInformationPopup"
                 const value: string = data[indexKey];
@@ -142,16 +125,6 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
             );
         });
 
-        setFormattedInfo(newFormattedInfo);
-    };
-
-    useEffect(() => {
-        formatFeatures(vehicle.features);
-        formatInfo(vehicle);
-        setFormatStatusText(FormatStatusText(vehicle.status));
-        setFormattedStatusColour(FormatStatusColour(vehicle.status));
-    }, [vehicle]);
-
     return (
         <section className={classes.container}>
             <section className={classes.topSection}>
@@ -172,11 +145,11 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
                         <Typography
                             variant="h4"
                             style={{
-                                color: formattedStatusColour,
+                                color: FormatStatusColour(vehicle.status),
                             }}
                             className={classes.statusText}
                         >
-                            {formatStatusText}
+                            {FormatStatusText(vehicle.status)}
                         </Typography>
                     </section>
 
@@ -206,7 +179,7 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
                         <Typography className={classes.titles} variant="body1">
                             Specifications
                         </Typography>
-                        {formattedInfo}
+                        {formatInfo(vehicle)}
                     </section>
                 </section>
             </section>
@@ -219,7 +192,7 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
 
                 <section>
                     <Typography className={classes.titles}>Additional damages</Typography>
-                    <List dense>{formattedFeatures}</List>
+                    <List dense>{formatFeatures(vehicle.features)}</List>
                 </section>
             </section>
         </section>

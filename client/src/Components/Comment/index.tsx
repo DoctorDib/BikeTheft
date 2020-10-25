@@ -51,10 +51,9 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
     const [commentValue, setCommentValue] = useState<string>('');
     const [inputError, setInputError] = useState<boolean>(false);
     const [isExpanded, setExpand] = useState<boolean>(false);
-    const [postBackground, setPostBackground] = useState<string>('');
 
     // TEMP comment in brackets
-    const InfoComponent = () => {
+    const InfoComponent = (/* comment: IComment */) => {
         const infoCardElement = (
             <section>
                 <section className={classes.waitingText}>
@@ -220,7 +219,7 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
         <Accordion
             className={classes.message}
             onChange={toggleExpand}
-            style={{ backgroundColor: postBackground }}
+            style={{ backgroundColor: FormatPostBackground(comment.type) }}
             expanded={isExpanded}
         >
             <section
