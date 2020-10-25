@@ -1,15 +1,20 @@
 import React from 'react';
-
-import { TextField, Button } from '@material-ui/core';
+import {
+    TextField,
+    Button,
+} from '@material-ui/core';
 
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import style from './styles';
 
+const ROWS = 4;
+const MAXROWS = 10;
+
 interface ICommentTextBoxProps {
     textValue: string,
-    setTextValue: (x:string) => void;
+    setTextValue: (x: string) => void;
     inputError: boolean;
-    setInputError: (x:boolean) => void;
+    setInputError: (x: boolean) => void;
     isMainTextBox: boolean;
     onClickPost: ()=>void;
 }
@@ -17,7 +22,14 @@ interface ICommentTextBoxProps {
 const TextCommentComponent: React.FC<ICommentTextBoxProps> = (props: ICommentTextBoxProps) => {
     const classes: IClasses = style();
 
-    const { textValue, setTextValue, inputError, setInputError, isMainTextBox, onClickPost } = props;
+    const {
+        textValue,
+        setTextValue,
+        inputError,
+        setInputError,
+        isMainTextBox,
+        onClickPost,
+    } = props;
 
     const onClearClick = (): void => {
         setInputError(false);
@@ -44,8 +56,8 @@ const TextCommentComponent: React.FC<ICommentTextBoxProps> = (props: ICommentTex
             <TextField
                 className={classes.textBox}
                 multiline
-                rows={isMainTextBox ? 4 : 2}
-                rowsMax={isMainTextBox ? 10 : 8}
+                rows={isMainTextBox ? ROWS : ROWS / 2}
+                rowsMax={isMainTextBox ? MAXROWS : MAXROWS / 2}
                 value={textValue}
                 onChange={onChange}
                 variant="outlined"
