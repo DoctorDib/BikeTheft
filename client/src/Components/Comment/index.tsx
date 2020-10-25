@@ -13,9 +13,7 @@ import {
     FormatPostBackground,
 } from './helper';
 import PopupComponent from '../Popup';
-import {
-    IComment,
-} from '../../Common/Interfaces/interfaces';
+import { IComment, IImageSettings } from '../../Common/Interfaces/interfaces';
 import PostTypeEnum from '../../Common/Enums/PostTypeEnums';
 import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
 import TextCommentComponent from '../CommentTextBox';
@@ -23,8 +21,9 @@ import { IClasses } from '../../Common/Interfaces/IClasses';
 import style from './styles';
 import { isNullOrUndefined } from '../../Common/Utils/Types';
 
-interface ICommentComponent {
+interface ICommentComponentProp {
     threadID: string;
+    ownerID: string;
     vehicleID: number;
     comment: IComment;
     posts: Array<IComment>;
@@ -32,10 +31,11 @@ interface ICommentComponent {
     isHighlighted: boolean;
 }
 
-const CommentComponent = React.memo((props: ICommentComponent): React.ReactElement<ICommentComponent> => {
+const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactElement<ICommentComponentProp> => {
     const classes: IClasses = style();
 
     const {
+        ownerID,
         threadID,
         vehicleID,
         comment,
@@ -85,19 +85,23 @@ const CommentComponent = React.memo((props: ICommentComponent): React.ReactEleme
         setInfoCard(infoCardElement);
     };
 
-    const addInfoCardFeatures = () => (
-        <section>
-            {Object.prototype.hasOwnProperty.call(comment.post_attributes, 'confirmation_image') ? (
+    const addInfoCardFeatures = ():React.ReactElement | undefined => {
+        const image:IImageSettings = comment.post_attributes.confirmation_image;
+        if (image === undefined) { return undefined; }
+        if (image.name === undefined) { return undefined; }
+
+        return (
+            <section>
                 <CardMedia
                     className={classes.confirmationImg}
                     component="img"
-                    image={`../static/media/${comment.post_attributes.confirmation_image}`}
+                    image={`https://images.lostmywheels.com/public/${ownerID}/found/${image.name}.${image.type}`}
                 />
-            ) : null}
 
-            { comment.post_attributes.active_state ? InfoComponent() : null }
-        </section>
-    );
+                { comment.post_attributes.active_state ? InfoComponent() : null }
+            </section>
+        );
+    };
 
     const getCommentMessageFromQuote = (): IComment | undefined => {
         const targetCommentID: number | null = comment.post_attributes.replying_to;
@@ -222,14 +226,9 @@ const CommentComponent = React.memo((props: ICommentComponent): React.ReactEleme
                 id={`post-id-${comment.post_id.toString()}`}
                 className={classNames(classes.mainContainer, isHighlighted ? classes.highlight : '')}
             >
-
                 <section className={classes.messageContents}>
                     {avatar}
-                    <Typography>
-                        {' '}
-                        { isHighlighted }
-                        {' '}
-                    </Typography>
+
                     {comment.type === 2 ? infoCard : null}
                     {comment.post_attributes.replying_to === null || comment.post_attributes.replying_to === undefined
                         ? null
@@ -240,12 +239,16 @@ const CommentComponent = React.memo((props: ICommentComponent): React.ReactEleme
                     </section>
                 </section>
 
-                <section className={classes.messageButtonContainer}>
-                    <Delete className={classes.deleteIcon} onClick={onClickDelete} />
-                    {isExpanded
-                        ? <Clear className={classNames(classes.replyIcon, classes.replyIconClosed)} onClick={onExpandClick} />
-                        : <Reply className={classNames(classes.replyIcon, classes.replyIconOpen)} onClick={onExpandClick} />}
-                </section>
+                { comment.type !== 2
+                    ? (
+                        <section className={classes.messageButtonContainer}>
+                            <Delete className={classes.deleteIcon} onClick={onClickDelete} />
+                            {isExpanded
+                                ? <Clear className={classNames(classes.replyIcon, classes.replyIconClosed)} onClick={onExpandClick} />
+                                : <Reply className={classNames(classes.replyIcon, classes.replyIconOpen)} onClick={onExpandClick} />}
+                        </section>
+                    )
+                    : null}
             </section>
 
             <AccordionDetails style={{ backgroundColor: '#f7f7f7' }}>
@@ -290,8 +293,8 @@ const CommentComponent = React.memo((props: ICommentComponent): React.ReactEleme
         </Accordion>
     );
 }, (
-    prevProps: Readonly<React.PropsWithChildren<ICommentComponent>>,
-    nextProps: Readonly<React.PropsWithChildren<ICommentComponent>>,
+    prevProps: Readonly<React.PropsWithChildren<ICommentComponentProp>>,
+    nextProps: Readonly<React.PropsWithChildren<ICommentComponentProp>>,
 ) => prevProps.isHighlighted === nextProps.isHighlighted);
 
 CommentComponent.displayName = 'CommentComponent';

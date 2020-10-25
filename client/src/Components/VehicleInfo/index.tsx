@@ -167,7 +167,12 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
                             Report
                         </Button>
 
-                        <FoundConfirmation threadID={threadID} close={foundConfirmationResponse} open={open} />
+                        <FoundConfirmation
+                            ownerID={owner.owner_id}
+                            threadID={threadID}
+                            close={foundConfirmationResponse}
+                            open={open}
+                        />
                     </section>
 
                     <section className={classes.gridStyle}>

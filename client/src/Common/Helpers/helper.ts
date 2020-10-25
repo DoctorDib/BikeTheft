@@ -1,9 +1,10 @@
 import { Storage } from 'aws-amplify';
 import ago from 's-ago';
+
 import { IImageSettings, IChip } from '../Interfaces/interfaces';
 
 // TODO - Use for Tooltip - Check if date generates when adding new post to DB
-export function getDateTimeString(): string {
+export const getDateTimeString = (): string => {
     const currentdate = new Date();
     const date = `${currentdate.getFullYear()}/${currentdate.getMonth() + 1}/${currentdate.getDate()}`;
     const time = `${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}`;
@@ -11,7 +12,7 @@ export function getDateTimeString(): string {
 }
 
 // fArrObj = Array of Object Features
-export function sortFeaturesArray(fArrObj: Array<IChip>): Array<string> {
+export const sortFeaturesArray = (fArrObj: Array<IChip>): Array<string> => {
     return fArrObj.map((object: IChip) => object.value);
 }
 

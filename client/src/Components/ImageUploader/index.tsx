@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import {
-    Paper, IconButton, CardMedia, Backdrop,
-} from '@material-ui/core';
+import { Paper, IconButton, CardMedia, Backdrop, Typography } from '@material-ui/core';
+
 import { SpeedDialAction, SpeedDial, SpeedDialIcon } from '@material-ui/lab';
 import {
     Add, Crop, Clear, StarBorder,
@@ -23,12 +22,13 @@ import ImageCropperComponent from '../ImageCropper';
 interface IImageUploaderProps {
     images: Array<IImageSettings>;
     setImages: (x: Array<IImageSettings>) => void;
+    maxImages: number;
 }
 
 const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUploaderProps> => {
     const classes: IClasses = styles();
 
-    const { images, setImages } = props;
+    const { images, setImages, maxImages } = props;
 
     const [speedOpen, setSpeedOpen] = useState(true);
     const [imageCropSrc, setImageCropSrc] = useState<string>('');
@@ -227,11 +227,25 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
                 <IconButton
                     aria-label="upload picture"
                     component="span"
-                    style={{ padding: '0' }}
+                    style={{
+                        padding: '0',
+                        display: (images.length >= maxImages) ? 'none' : 'block',
+                    }}
                 >
                     <Paper className={classes.container}>
                         <Add color="primary" />
                     </Paper>
+                    <section className={classes.imageCounter}>
+                        <Typography>
+                            {' '}
+                            { images.length }
+                            {' '}
+/
+                            {' '}
+                            { maxImages }
+                            {' '}
+                        </Typography>
+                    </section>
                 </IconButton>
             </label>
 

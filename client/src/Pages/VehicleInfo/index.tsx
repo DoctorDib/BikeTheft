@@ -65,7 +65,12 @@ const VehiclePage = (): React.ReactElement<IVehicleProps> => {
             </section>
 
             <section className={classes.mainContentGap}>
-                <PostsComponent threadID={threadID} vehicleID={vehicleID} posts={postData} />
+                <PostsComponent
+                    threadID={threadID}
+                    ownerID={memberData.owner_id}
+                    vehicleID={vehicleID}
+                    posts={postData}
+                />
             </section>
 
             <section className={classes.mainContentGap}>
