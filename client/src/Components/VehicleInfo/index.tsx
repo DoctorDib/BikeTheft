@@ -10,8 +10,10 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
+    Divider,
 } from '@material-ui/core';
-import { Check, Report } from '@material-ui/icons';
+
+import { Check, Report, Beenhere, Cancel } from '@material-ui/icons';
 
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
 import { formatDate, capitalizeFirstLetter } from '../../Common/Helpers/helper';
@@ -67,8 +69,8 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
 
     const formatInfoValues = (
         key:string,
-        value:string | number | string[] | IImageSettings[] | Date,
-    ): string | number | string[] | IImageSettings[] | Date => {
+        value:string | number | string[] | IImageSettings[] | boolean| Date,
+    ): string | number | string[] | IImageSettings[] | boolean | Date => {
         if (key === 'category' && typeof value === 'number') {
             return capitalizeFirstLetter(VehicleCategoryEnum[value]);
         }
@@ -124,6 +126,16 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
         );
     });
 
+    const checkVerification = () => (
+        <section className={vehicle.verified ? classes.verified : classes.unverified}>
+            { vehicle.verified ? <Beenhere /> : <Cancel />}
+            <Typography variant="body2" style={{ marginLeft: '5px' }}>
+                {vehicle.verified ? '' : 'Not '}
+                Verified Post
+            </Typography>
+        </section>
+    );
+
     return (
         <section className={classes.container}>
             <section className={classes.topSection}>
@@ -138,11 +150,12 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
                         </section>
                         <Typography variant="h6">{owner.member_attributes.display_name}</Typography>
                         <Typography variant="caption">{formatDate(vehicle.date_added)}</Typography>
+                        {checkVerification()}
                     </section>
 
                     <section className={classes.statusText}>
                         <Typography
-                            variant="h4"
+                            variant="h5"
                             style={{
                                 color: FormatStatusColour(vehicle.status),
                             }}
@@ -151,6 +164,8 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
                             {FormatStatusText(vehicle.status)}
                         </Typography>
                     </section>
+
+                    <Divider className={classes.divider} />
 
                     <section className={classes.buttonContainer}>
                         <Button
