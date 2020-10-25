@@ -65,8 +65,6 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
     const handleVinClose = () => setOpenVin(false);
     const foundConfirmationResponse = () => setOpen(false);
 
-    const { threadID, owner, vehicle } = props;
-
     const formatInfoValues = (
         key:string,
         value:string | number | string[] | IImageSettings[] | Date,

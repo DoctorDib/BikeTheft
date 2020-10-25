@@ -21,6 +21,7 @@ const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
     const classes: IClasses = style();
 
     const {
+        ownerID,
         threadID,
         posts,
         vehicleID,

@@ -84,12 +84,12 @@ const CommentComponent = React.memo((props: ICommentComponent): React.ReactEleme
         setInfoCard(infoCardElement);
     };
 
-    const addInfoCardFeatures = () => {
+    const addInfoCardFeatures = ():React.ReactElement | undefined => {
         const image:IImageSettings = comment.post_attributes.confirmation_image;
-        if (image === undefined) { return; }
-        if (image.name === undefined) { return; }
+        if (image === undefined) { return undefined; }
+        if (image.name === undefined) { return undefined; }
 
-        const infoCardElement = (
+        return (
             <section>
                 <CardMedia
                     className={classes.confirmationImg}
@@ -100,8 +100,6 @@ const CommentComponent = React.memo((props: ICommentComponent): React.ReactEleme
                 { comment.post_attributes.active_state ? InfoComponent() : null }
             </section>
         );
-
-        setInfoCard(infoCardElement);
     };
 
     const getCommentMessageFromQuote = (): IComment | undefined => {
@@ -214,12 +212,6 @@ const CommentComponent = React.memo((props: ICommentComponent): React.ReactEleme
         setReplyParent(addReplyParent());
         setInfoCard(addInfoCardFeatures());
         setAvatar(formatAvatar(comment, classes, true));
-    }, [comment]);
-
-    useEffect(() => {
-        addInfoCardFeatures();
-        addReplyParent();
-        setAvatar(FormatAvatar(comment, classes, true));
     }, [comment]);
 
     return (
