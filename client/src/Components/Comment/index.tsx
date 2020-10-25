@@ -102,8 +102,6 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
         );
     };
 
-    const onClickScroll = (parentComment:IComment) => (() => ScrollToID(parentComment.post_id));
-
     const getCommentMessageFromQuote = (): IComment | undefined => {
         const targetCommentID: number | null = comment.post_attributes.replying_to;
         const message: Array<IComment> = posts.filter((post: IComment) => post.post_id === targetCommentID);
@@ -160,34 +158,6 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
 
         updatePost(comment.post_id, newPostAttributes);
     };
-
-    const newCommentAttributes:IPostAttributes = {
-        ...defaultPostAttributes,
-        message: commentValue,
-        replying_to: comment.post_id,
-    };
-
-    setCommentValue('');
-    sendPost(threadID, '1', newCommentAttributes, 1);
-};
-const vehicleConfirmationPopupCallback = (response:boolean) => {
-    setPostPopupOpen(false);
-    if (!response) { return; }
-
-    let newPostAttributes = {
-        ...comment.post_attributes,
-        active_state: false,
-    };
-
-    updatePost(comment.post_id, newPostAttributes); // Disabling the "found" post
-
-    newPostAttributes = {
-        ...defaultPostAttributes,
-        replying_to: comment.post_id,
-        message: 'Owner has confirmed vehicle and is planning to take action.',
-    };
-
-    sendPost(threadID, '1', newPostAttributes, 2);
 
     const postPopupCallback = (response: boolean) => {
         dbActions(response, commentValue, 1);

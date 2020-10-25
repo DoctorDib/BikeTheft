@@ -15,7 +15,7 @@ export interface IVehicleInfo {
     vin: string;
     category: string;
     verified: boolean;
-    [key: string]: string | number | Array<string> | Array<IImageSettings> | boolean;
+    [key: string]: string | number | Array<string> | Array<IImageSettings> | Date | boolean;
 }
 
 export interface IMemberAttributes {

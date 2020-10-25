@@ -55,12 +55,6 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
     const [open, setOpen] = useState(false);
     const [openVin, setOpenVin] = useState(false);
 
-    const [verifiedElement, setVerifiedElement] = useState<React.ReactElement>();
-    const [formattedFeatures, setFormattedFeatures] = useState<Array<React.ReactElement>>([]);
-    const [formattedInfo, setFormattedInfo] = useState<Array<React.ReactElement>>([]);
-    const [formatStatusText, setFormatStatusText] = useState<string>('');
-    const [formattedStatusColour, setFormattedStatusColour] = useState<string>('');
-
     const handleOpen = () => setOpen(true);
     const handleVinOpen = () => setOpenVin(true);
     const handleVinClose = () => setOpenVin(false);
@@ -75,8 +69,8 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
 
     const formatInfoValues = (
         key:string,
-        value:string | number | string[] | IImageSettings[] | Date,
-    ): string | number | string[] | IImageSettings[] | Date => {
+        value:string | number | string[] | IImageSettings[] | boolean| Date,
+    ): string | number | string[] | IImageSettings[] | boolean | Date => {
         if (key === 'category' && typeof value === 'number') {
             return capitalizeFirstLetter(VehicleCategoryEnum[value]);
         }
@@ -132,40 +126,23 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
         );
     });
 
-        setFormattedInfo(newFormattedInfo);
-    };
-
     const checkVerification = () => {
         if (vehicle.verified) {
-            const verificationElement = (
+            return (
                 <section className={classes.verified}>
                     <Beenhere />
                     <Typography variant="body2" style={{ marginLeft: '5px' }}> Verified Post </Typography>
                 </section>
             );
-
-            setVerifiedElement(verificationElement);
-
-            return;
         }
 
-        const verificationElement = (
+        return (
             <section className={classes.unverified}>
                 <Cancel />
                 <Typography variant="body2" style={{ marginLeft: '5px' }}> Unverified Post </Typography>
             </section>
         );
-
-        setVerifiedElement(verificationElement);
     };
-
-    useEffect(() => {
-        formatFeatures(vehicle.features);
-        formatInfo(vehicle);
-        setFormatStatusText(FormatStatusText(vehicle.status));
-        setFormattedStatusColour(FormatStatusColour(vehicle.status));
-        checkVerification();
-    }, [vehicle]);
 
     return (
         <section className={classes.container}>
@@ -181,7 +158,7 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
                         </section>
                         <Typography variant="h6">{owner.member_attributes.display_name}</Typography>
                         <Typography variant="caption">{formatDate(vehicle.date_added)}</Typography>
-                        {verifiedElement}
+                        {checkVerification()}
                     </section>
 
                     <section className={classes.statusText}>
