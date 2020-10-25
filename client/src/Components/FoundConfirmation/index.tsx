@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
-
 import {
-    Modal, Backdrop, Fade, Paper, Typography, Button,
+    Modal,
+    Backdrop,
+    Fade,
+    Paper,
+    Typography,
+    Button,
 } from '@material-ui/core';
-
 import { CheckCircle, Cancel } from '@material-ui/icons';
+
 import { IPostAttributes, IImageSettings } from '../../Common/Interfaces/interfaces';
 import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
-
 import { uploadImagesToS3 } from '../../Common/Helpers/helper';
 import { sendPost } from '../../Common/Helpers/DB_Helpers';
 import PostTypeEnums from '../../Common/Enums/PostTypeEnums';
-
 import PopupComponent from '../Popup';
 import ImageUploaderComponent from '../ImageUploader';
-
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
@@ -28,18 +29,23 @@ interface IFoundConfirmationProps {
 const FoundConfirmation = (props: IFoundConfirmationProps): React.ReactElement<IFoundConfirmationProps> => {
     const classes: IClasses = styles();
 
-    const { ownerID, threadID, open, close } = props;
+    const {
+        ownerID,
+        threadID,
+        open,
+        close,
+    } = props;
 
-    const [images, setImages] = useState<Array<IImageSettings>>([]);
+    const [[image], setImages] = useState<Array<IImageSettings>>([]);
     const [confirmationPopupOpen, setConfirmationPopupOpen] = useState<boolean>(false);
 
     const sendFoundBike = () => {
         const newProperties:IPostAttributes = defaultPostAttributes;
         newProperties.message = 'A user may have found your vehicle! Please confirm the image above that this is your vehicle';
-        newProperties.confirmation_image = images[0];
+        newProperties.confirmation_image = image;
         newProperties.active_state = true;
 
-        uploadImagesToS3(ownerID, images, 'found');
+        uploadImagesToS3(ownerID, [image], 'found');
         sendPost(threadID, '1', newProperties, PostTypeEnums.INFO);
         close();
     };
@@ -79,7 +85,7 @@ const FoundConfirmation = (props: IFoundConfirmationProps): React.ReactElement<I
                     </section>
 
                     <ImageUploaderComponent
-                        images={images}
+                        images={[image]}
                         setImages={setImages}
                         maxImages={1}
                     />
@@ -97,7 +103,7 @@ const FoundConfirmation = (props: IFoundConfirmationProps): React.ReactElement<I
                         open={confirmationPopupOpen}
                         title="Confirmation"
                         message="Are you sure that this could be the owners vehicle?"
-                        callback={confimrationPopupCallback}
+                        confirmationCallback={confimrationPopupCallback}
                     />
                 </Paper>
             </Fade>
