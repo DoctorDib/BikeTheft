@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 
 import {
-    Modal, Backdrop, Fade, Paper, Typography, Button,
+    Modal,
+    Backdrop,
+    Fade,
+    Paper,
+    Typography,
+    Button,
 } from '@material-ui/core';
 
 import { CheckCircle, Cancel } from '@material-ui/icons';
@@ -14,9 +19,10 @@ import PostTypeEnums from '../../Common/Enums/PostTypeEnums';
 
 import PopupComponent from '../Popup';
 import ImageUploaderComponent from '../ImageUploader';
-
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
+
+import PostTypeEnums from '../../Common/Enums/PostTypeEnums';
 
 interface IFoundConfirmationProps {
     ownerID: string;
