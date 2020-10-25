@@ -126,23 +126,15 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
         );
     });
 
-    const checkVerification = () => {
-        if (vehicle.verified) {
-            return (
-                <section className={classes.verified}>
-                    <Beenhere />
-                    <Typography variant="body2" style={{ marginLeft: '5px' }}> Verified Post </Typography>
-                </section>
-            );
-        }
-
-        return (
-            <section className={classes.unverified}>
-                <Cancel />
-                <Typography variant="body2" style={{ marginLeft: '5px' }}> Unverified Post </Typography>
-            </section>
-        );
-    };
+    const checkVerification = () => (
+        <section className={vehicle.verified ? classes.verified : classes.unverified}>
+            { vehicle.verified ? <Beenhere /> : <Cancel />}
+            <Typography variant="body2" style={{ marginLeft: '5px' }}>
+                {vehicle.verified ? '' : 'Not '}
+                Verified Post
+            </Typography>
+        </section>
+    );
 
     return (
         <section className={classes.container}>

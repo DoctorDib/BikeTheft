@@ -67,9 +67,7 @@ const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
     const onPostClickCallback = () => setPostPopupOpen(true);
 
     const layoutComments = () => {
-        if (posts === null) { return; }
-        if (!posts.length) { return; }
-        if (posts[0].post_id === -1) { return; }
+        if (posts === null || !posts.length || posts[0].post_id === -1) { return; }
 
         const mappedPost = posts.map((comment: IComment): React.ReactNode => (
             <section
