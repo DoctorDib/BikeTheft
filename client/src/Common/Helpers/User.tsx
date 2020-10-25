@@ -70,7 +70,7 @@ const useAuthentication = ():((user: IUserDetails) => Promise<unknown>)[] => {
                 data: response.attributes,
             });
 
-            resolve(true);
+            resolve(response);
         }).catch(e => {
             reject({
                 code: e.code,
