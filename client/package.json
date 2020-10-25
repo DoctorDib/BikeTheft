@@ -46,6 +46,8 @@
     "eslint": "^7.11.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "file": "^0.2.2",
+    "formik": "^2.2.1",
+    "formik-material-ui": "^3.0.0",
     "live-server": "^1.2.1",
     "material-ui-pickers": "^2.2.4",
     "react": "^16.13.1",
@@ -86,7 +88,7 @@
     "html-webpack-plugin": "^4.5.0",
     "jest": "^26.2.2",
     "prettier": "^2.0.5",
-    "snowpack": "^2.14.0",
+    "snowpack": "^2.15.1",
     "typescript": "^4.0.0",
     "webpack": "^5.1.0"
   }
