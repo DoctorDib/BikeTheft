@@ -27,6 +27,7 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
         setImages,
         maxImages,
     } = props;
+
     const classes: IClasses = styles();
 
     const [mappedImageElement, setMappedImageElement] = useState<Array<React.ReactElement>>([]);
@@ -51,6 +52,7 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
     };
 
     const onImgRemove = (keyToRemove: number) => {
+        if (images === undefined) { return; }
         setImages(images.filter((data) => data.id !== keyToRemove));
         handleClose();
     };
@@ -113,6 +115,8 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
         (() => cropImage(image.id, image.crop.original, image.crop.crop_info ?? defaultCropSettings));
 
     const mapImages = () => {
+        if (images === undefined || !images.length) { return; }
+
         const newMappedImages:Array<React.ReactElement> = images.map((image: IImageSettings):React.ReactElement => (
             <Paper
                 key={image.id}
