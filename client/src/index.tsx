@@ -7,6 +7,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import Env from './Common/Utils/Env';
 import mainTheme from './templates/theme';
 import AppliedRoute from './Components/Routing/Applied';
+import { UserContextProvider } from './Components/Routing/UserContext';
 
 import HomePage from './Pages/Home';
 import VehicleInfoPage from './Pages/VehicleInfo';
@@ -48,20 +49,21 @@ Amplify.configure({
 });
 
 const App = (): React.ReactElement => (
-    <Router>
-        <ThemeProvider theme={mainTheme}>
-            <Switch>
-                <AppliedRoute appProps={{}} exact path="/" component={HomePage} />
-                <AppliedRoute appProps={{}} exact path="/register" component={RegisterPage} />
-
-                <AppliedRoute appProps={{}} path="/post/upload" component={VehicleUploadPage} />
-                <AppliedRoute appProps={{}} path="/post/:id" component={VehicleInfoPage} />
-                <AppliedRoute appProps={{}} path="/404" component={ErrorPage} />
-                <AppliedRoute appProps={{}} path="/about" component={AboutPage} />
-                <Redirect to="/404" />
-            </Switch>
-        </ThemeProvider>
-    </Router>
+    <UserContextProvider>
+        <Router>
+            <ThemeProvider theme={mainTheme}>
+                <Switch>
+                    <AppliedRoute appProps={{}} exact path="/" component={HomePage} />
+                    <AppliedRoute appProps={{}} exact path="/register" component={RegisterPage} />
+                    <AppliedRoute appProps={{}} path="/post/upload" component={VehicleUploadPage} />
+                    <AppliedRoute appProps={{}} path="/post/:id" component={VehicleInfoPage} />
+                    <AppliedRoute appProps={{}} path="/404" component={ErrorPage} />
+                    <AppliedRoute appProps={{}} path="/about" component={AboutPage} />
+                    <Redirect to="/404" />
+                </Switch>
+            </ThemeProvider>
+        </Router>
+    </UserContextProvider>
 );
 
 ReactDom.render(<App />, document.getElementById('importContent'));
