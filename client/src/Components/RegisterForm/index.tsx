@@ -6,7 +6,7 @@ import { IClasses } from '../../Common/Interfaces/IClasses';
 import { Formik, Form, Field } from 'formik';
 import { Typography, Button, LinearProgress } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
-// import { useAuthentication } from '../../Common/Helpers/User';
+import useAuthentication from '../../Common/Helpers/User';
 
 interface Values {
     username: string,
@@ -27,7 +27,7 @@ const ModifiedTextfield = (props) => (
 
 const Register = (): React.ReactElement => {
     const classes: IClasses = style();
-    // const [signIn, signUp] = useAuthentication();
+    const [signIn, signUp] = useAuthentication();
 
     return (
         <section className={classes.container}>
@@ -59,14 +59,14 @@ const Register = (): React.ReactElement => {
                     return errors;
                 }}
                 onSubmit={(values, { setSubmitting }) => {
-                    // alert(JSON.stringify(values, null, 2));
-                    // signUp(values).then(result => {
-                    //     setSubmitting(false);
-                    //     // todo add redirect to index / show confirmation here
+                    alert(JSON.stringify(values, null, 2));
+                    signUp(values).then(result => {
+                        setSubmitting(false);
+                        // todo add redirect to index / show confirmation here
 
-                    // }).catch(errors => {
-                    //     console.error(errors);
-                    // });
+                    }).catch(errors => {
+                        console.error(errors);
+                    });
                 }}
 
             >
