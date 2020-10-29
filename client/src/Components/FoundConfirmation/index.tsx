@@ -90,6 +90,7 @@ const FoundConfirmation = (props: IFoundConfirmationProps): React.ReactElement<I
                         images={images}
                         setImages={setImages}
                         maxImages={1}
+                        canMakeDefault={false}
                     />
 
                     <section className={classes.buttonContainer}>

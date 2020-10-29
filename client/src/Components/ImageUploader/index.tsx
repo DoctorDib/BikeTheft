@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Paper, IconButton, CardMedia, Backdrop, Typography } from '@material-ui/core';
 import { SpeedDialAction, SpeedDial, SpeedDialIcon } from '@material-ui/lab';
 import {
-    Add, Crop, Clear, StarBorder,
+    Add, Crop, Clear, StarBorder, AttachFile,
 } from '@material-ui/icons';
 
 import {
     fileToBase64,
     moveItemInArray,
 } from '../../Common/Helpers/helper';
+
 import { IImageSettings } from '../../Common/Interfaces/interfaces';
 import { defaultCropSettings } from '../../Common/Helpers/Defaults';
 import styles from './styles';
@@ -16,6 +17,7 @@ import { IClasses } from '../../Common/Interfaces/IClasses';
 import ImageCropperComponent from '../ImageCropper';
 
 interface IImageUploaderProps {
+    canMakeDefault: boolean;
     images: Array<IImageSettings>;
     setImages: (x: Array<IImageSettings>) => void;
     maxImages: number;
@@ -23,6 +25,7 @@ interface IImageUploaderProps {
 
 const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUploaderProps> => {
     const {
+        canMakeDefault,
         images,
         setImages,
         maxImages,
@@ -36,7 +39,7 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
     const [cropDialog, setCropDialog] = useState<boolean>(false);
     const [croppingIndex, setCroppingIndex] = useState<number>(-1);
     const [crop, setCrop] = useState<ReactCrop.Crop>(defaultCropSettings);
-    const [picIndex, setPicIndex] = useState<number>(0);
+    const [picIndex, setPicIndex] = useState<number>(images.length);
 
     const handleOpen = () => setSpeedOpen(true);
     const handleClose = () => setSpeedOpen(false);
@@ -121,7 +124,7 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
             <Paper
                 key={image.id}
                 className={classes.container}
-                style={{ border: image.is_main_image ? '3px solid rgb(204, 204, 4)' : '0' }}
+                style={{ border: image.is_main_image && canMakeDefault ? '3px solid rgb(204, 204, 4)' : '0' }}
             >
                 <section className={classes.speedDialContainer}>
                     <Backdrop open={speedOpen} />
@@ -146,7 +149,7 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
                             tooltipTitle="Crop image"
                             onClick={onClickCrop(image)}
                         />
-                        {!image.is_main_image && (
+                        {!image.is_main_image && canMakeDefault && (
                             <SpeedDialAction
                                 key="make-default"
                                 icon={<StarBorder color="primary" className={classes.smallIcon} />}
@@ -184,6 +187,8 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
         if (!event.target.files) {
             return;
         }
+
+        console.log(images);
 
         const fileImage = event.target.files[0];
 

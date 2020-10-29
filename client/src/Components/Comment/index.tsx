@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { Paper, Accordion, AccordionDetails, Typography, CardMedia, Button } from '@material-ui/core';
-import { Reply, Delete, Clear } from '@material-ui/icons';
+import { Reply, Delete, Clear, Attachment } from '@material-ui/icons';
 import {
     sendPost,
     updatePost,
@@ -11,6 +11,7 @@ import {
     formatAvatar,
     FormatPostBackground,
 } from './helper';
+import ImageComponent from '../Image';
 import PopupComponent from '../Popup';
 import { IComment, IImageSettings } from '../../Common/Interfaces/interfaces';
 import PostTypeEnum from '../../Common/Enums/PostTypeEnums';
@@ -19,6 +20,7 @@ import TextCommentComponent from '../CommentTextBox';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import style from './styles';
 import { isNullOrUndefined } from '../../Common/Utils/Types';
+import { uploadImagesToS3 } from '../../Common/Helpers/helper';
 
 interface ICommentComponentProp {
     threadID: string;
@@ -50,6 +52,11 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
     const [commentValue, setCommentValue] = useState<string>('');
     const [inputError, setInputError] = useState<boolean>(false);
     const [isExpanded, setExpand] = useState<boolean>(false);
+    const [images, setImages] = useState<Array<IImageSettings>>([]);
+
+    const [replyParent, setReplyParent] = useState<React.ReactElement>();
+    const [infoCard, setInfoCard] = useState<React.ReactElement>();
+    const [avatar, setAvatar] = useState<React.ReactElement>();
 
     // TEMP comment in brackets
     const InfoComponent = (/* comment: IComment */) => {
@@ -130,6 +137,23 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
                 >
                     <section>
                         {formatAvatar(parentComment, classes, false)}
+                        {isNullOrUndefined(parentComment.post_attributes.comment_images)
+                            ? ''
+                            : (
+                                <section className={classes.quoteAttachment}>
+                                    <Typography variant="caption">
+                                        {' '}
+                                        <Attachment />
+                                        {' '}
+                                    </Typography>
+                                    <Typography variant="caption">
+                                        {' '}
+                                        {parentComment.post_attributes.comment_images.length}
+                                        {' '}
+images attached
+                                    </Typography>
+                                </section>
+                            )}
                         <section className={classes.quotePostContainer}>
                             <Typography variant="caption">{parentComment.post_attributes.message}</Typography>
                         </section>
@@ -160,7 +184,18 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
     };
 
     const postPopupCallback = (response: boolean) => {
-        dbActions(response, commentValue, 1);
+        let customAttr = { };
+
+        if (images.length > 0) {
+            customAttr = {
+                comment_images: images,
+            };
+
+            // TODO - here
+            uploadImagesToS3('1', images, 'comments');
+        }
+
+        dbActions(response, commentValue, 1, customAttr);
     };
 
     const vehicleConfirmationPopupCallback = (response: boolean) => {
@@ -204,14 +239,19 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
         sendPost(threadID, '1', newPostAttributes, userType);
     };
 
+    const mapCommentImages = () => {
+        const commentImages = comment.post_attributes.comment_images;
+        return commentImages.map((image: IImageSettings) => (
+            <ImageComponent
+                source={`https://images.lostmywheels.com/public/${ownerID}/comments/${image.name}.${image.type}`}
+            />
+        ));
+    };
+
     const setTextValueCallback = (newVal: string) => setCommentValue(newVal);
     const setInputErrorCallback = (newVal: boolean) => setInputError(newVal);
     const onPostClickCallback = () => setPostPopupOpen(true);
     const toggleExpand = () => setExpand(!isExpanded);
-
-    const [replyParent, setReplyParent] = useState<React.ReactElement>();
-    const [infoCard, setInfoCard] = useState<React.ReactElement>();
-    const [avatar, setAvatar] = useState<React.ReactElement>();
 
     useEffect(() => {
         setReplyParent(addReplyParent());
@@ -234,9 +274,15 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
                     {avatar}
 
                     {comment.type === 2 ? infoCard : null}
-                    {comment.post_attributes.replying_to === null || comment.post_attributes.replying_to === undefined
+                    {isNullOrUndefined(comment.post_attributes.replying_to)
                         ? null
                         : replyParent}
+
+                    <section className={classes.commentImageContainer}>
+                        {isNullOrUndefined(comment.post_attributes.comment_images)
+                            ? ''
+                            : mapCommentImages() }
+                    </section>
 
                     <section className={classes.postContainer}>
                         <Typography>{comment.post_attributes.message}</Typography>
@@ -259,6 +305,8 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
                 <TextCommentComponent
                     isMainTextBox={false}
                     textValue={commentValue}
+                    images={images}
+                    setImages={setImages}
                     setTextValue={setTextValueCallback}
                     inputError={inputError}
                     setInputError={setInputErrorCallback}

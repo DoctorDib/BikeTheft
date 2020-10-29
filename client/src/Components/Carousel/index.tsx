@@ -13,21 +13,23 @@ import style from './styles';
 interface ICarouselProps {
     owner: string;
     images: Array<IImageSettings>;
+    source: string;
 }
 
 // https://github.com/xiaolin/react-image-gallery
 
 const CarouselComponent = (props: ICarouselProps): React.ReactElement<ICarouselProps> => {
-    const { owner, images } = props;
     const classes: IClasses = style();
+
+    const { owner, images, source } = props;
 
     const mapImages = (): Array<ReactImageGalleryItem> => {
         if (images === undefined || !images.length) { return []; }
         if (images[0].name === undefined) { return []; }
 
         return images.map((image: IImageSettings):ReactImageGalleryItem => ({
-            original: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,
-            thumbnail: `https://images.lostmywheels.com/public/${owner}/vehicles/${image.name}.${image.type}`,
+            original: `https://images.lostmywheels.com/public/${owner}/${source}/${image.name}.${image.type}`,
+            thumbnail: `https://images.lostmywheels.com/public/${owner}/${source}/${image.name}.${image.type}`,
         }));
     };
 

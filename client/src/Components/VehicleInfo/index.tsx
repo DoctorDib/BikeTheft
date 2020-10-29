@@ -140,7 +140,11 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
         <section className={classes.container}>
             <section className={classes.topSection}>
                 <section className={classes.imageContainer}>
-                    <CarouselComponent owner={owner.owner_id} images={vehicle.images} />
+                    <CarouselComponent
+                        owner={owner.owner_id}
+                        images={vehicle.images}
+                        source="vehicles"
+                    />
                 </section>
 
                 <section className={classes.rightSide}>

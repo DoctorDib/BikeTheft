@@ -94,6 +94,13 @@ export default makeStyles((theme) => ({
         padding: 0,
     },
 
+    quoteAttachment: {
+        display: 'flex',
+        marginLeft: '10px',
+        alignContent: 'center',
+        alignItems: 'center',
+    },
+
     messageContents: {
         width: '100%',
     },
@@ -130,5 +137,11 @@ export default makeStyles((theme) => ({
 
         boxShadow: '0 0 3px 1px #2185c5',
         backgroundColor: '#f1f1f1',
+    },
+
+    commentImageContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        margin: '5px 10px 10px 15px',
     },
 }));
