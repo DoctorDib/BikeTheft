@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Dialog, IconButton } from '@material-ui/core';
+import { Dialog, IconButton, Button } from '@material-ui/core';
 
 import { Cancel } from '@material-ui/icons';
 
@@ -11,7 +11,7 @@ interface IImageProp {
     source: string;
 }
 
-const CarouselComponent = (props: IImageProp): React.ReactElement<IImageProp> => {
+const ImageComponent = (props: IImageProp): React.ReactElement<IImageProp> => {
     const classes: IClasses = style();
 
     const { source } = props;
@@ -23,13 +23,13 @@ const CarouselComponent = (props: IImageProp): React.ReactElement<IImageProp> =>
 
     return (
         <section className={classes.mainContainer}>
-            <section className={classes.smallImageContainer}>
+            <Button onClick={open} className={classes.smallImageContainer}>
                 <img
+                    alt="small-thumbnail-in-comment"
                     className={classes.smallImage}
                     src={source}
-                    onClick={open}
                 />
-            </section>
+            </Button>
 
             <Dialog
                 open={isFullScreen}
@@ -41,9 +41,9 @@ const CarouselComponent = (props: IImageProp): React.ReactElement<IImageProp> =>
                         <Cancel />
                     </IconButton>
                     <img
+                        alt="fullscreen-thumbnail-in-comment"
                         className={classes.bigImage}
                         src={source}
-                        onClick={open}
                     />
                 </section>
             </Dialog>
@@ -51,4 +51,4 @@ const CarouselComponent = (props: IImageProp): React.ReactElement<IImageProp> =>
     );
 };
 
-export default CarouselComponent;
+export default ImageComponent;

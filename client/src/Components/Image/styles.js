@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import mainStyle from '../../templates/mainStyle';
 
-export default makeStyles((theme) => ({
+export default makeStyles(() => ({
     ...mainStyle,
 
     mainContainer: {
@@ -17,7 +17,7 @@ export default makeStyles((theme) => ({
         '& .MuiSvgIcon-root': {
             height: '1.5em',
             width: '1.5em',
-        }
+        },
     },
 
     closeButton: {
@@ -35,6 +35,7 @@ export default makeStyles((theme) => ({
         alignItems: 'center',
         alignContent: 'center',
         borderRadius: '5px',
+        padding: 0,
     },
 
     smallImage: {

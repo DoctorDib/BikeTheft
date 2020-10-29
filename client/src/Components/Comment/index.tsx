@@ -99,6 +99,7 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
         return (
             <section>
                 <CardMedia
+                    key="found-vehicle"
                     className={classes.confirmationImg}
                     component="img"
                     image={`https://images.lostmywheels.com/public/${ownerID}/found/${image.name}.${image.type}`}
@@ -243,6 +244,7 @@ images attached
         const commentImages = comment.post_attributes.comment_images;
         return commentImages.map((image: IImageSettings) => (
             <ImageComponent
+                key={image.id}
                 source={`https://images.lostmywheels.com/public/${ownerID}/comments/${image.name}.${image.type}`}
             />
         ));

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Paper, IconButton, CardMedia, Backdrop, Typography } from '@material-ui/core';
 import { SpeedDialAction, SpeedDial, SpeedDialIcon } from '@material-ui/lab';
-import {
-    Add, Crop, Clear, StarBorder, AttachFile,
-} from '@material-ui/icons';
+import { Add, Crop, Clear, StarBorder } from '@material-ui/icons';
 
 import {
     fileToBase64,
@@ -187,8 +185,6 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
         if (!event.target.files) {
             return;
         }
-
-        console.log(images);
 
         const fileImage = event.target.files[0];
 
