@@ -33,8 +33,6 @@ interface ICommentComponentProp {
 }
 
 const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactElement<ICommentComponentProp> => {
-    const classes: IClasses = style();
-
     const {
         ownerID,
         threadID,
@@ -45,15 +43,16 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
         isHighlighted,
     } = props;
 
+    const classes: IClasses = style();
+
     const [postPopupOpen, setPostPopupOpen] = useState<boolean>(false);
     const [popupVehicleConfirmation, setPopupVehicleConfirmation] = useState<boolean>(false);
     const [popupDenyConfirmation, setPopupDenyConfirmation] = useState<boolean>(false);
     const [deletePopupOpen, setDeletePopupOpen] = useState<boolean>(false);
     const [commentValue, setCommentValue] = useState<string>('');
     const [inputError, setInputError] = useState<boolean>(false);
-    const [isExpanded, setExpand] = useState<boolean>(false);
+    const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [images, setImages] = useState<Array<IImageSettings>>([]);
-
     const [replyParent, setReplyParent] = useState<React.ReactElement>();
     const [infoCard, setInfoCard] = useState<React.ReactElement>();
     const [avatar, setAvatar] = useState<React.ReactElement>();
@@ -143,15 +142,13 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
                             : (
                                 <section className={classes.quoteAttachment}>
                                     <Typography variant="caption">
-                                        {' '}
                                         <Attachment />
-                                        {' '}
                                     </Typography>
                                     <Typography variant="caption">
-                                        {' '}
                                         {parentComment.post_attributes.comment_images.length}
-                                        {' '}
-images attached
+                                    </Typography>
+                                    <Typography variant="caption">
+                                        images attached
                                     </Typography>
                                 </section>
                             )}
@@ -166,7 +163,7 @@ images attached
         return replyParentElement;
     };
 
-    const onExpandClick = () => setExpand(!isExpanded);
+    const onExpandClick = () => setIsExpanded(!isExpanded);
     const onClickDelete = () => setDeletePopupOpen(true);
     const onClickVehicleConfirmation = () => setPopupVehicleConfirmation(true);
     const onClickDenyConfirmation = () => setPopupDenyConfirmation(true);
@@ -218,7 +215,7 @@ images attached
         userType: PostTypeEnum,
         customAttr?: Record<string, unknown>,
         shouldUpdate = false,
-    ) => {
+    ):void => {
         setPostPopupOpen(false);
         if (!response) { return; }
 
@@ -240,8 +237,8 @@ images attached
         sendPost(threadID, '1', newPostAttributes, userType);
     };
 
-    const mapCommentImages = () => {
-        const commentImages = comment.post_attributes.comment_images;
+    const mapCommentImages = ():Array<React.ReactElement> => {
+        const commentImages:string = comment.post_attributes.comment_images;
         return commentImages.map((image: IImageSettings) => (
             <ImageComponent
                 key={image.id}
@@ -253,7 +250,7 @@ images attached
     const setTextValueCallback = (newVal: string) => setCommentValue(newVal);
     const setInputErrorCallback = (newVal: boolean) => setInputError(newVal);
     const onPostClickCallback = () => setPostPopupOpen(true);
-    const toggleExpand = () => setExpand(!isExpanded);
+    const toggleExpand = () => setIsExpanded(!isExpanded);
 
     useEffect(() => {
         setReplyParent(addReplyParent());
@@ -280,11 +277,15 @@ images attached
                         ? null
                         : replyParent}
 
-                    <section className={classes.commentImageContainer}>
-                        {isNullOrUndefined(comment.post_attributes.comment_images)
-                            ? ''
-                            : mapCommentImages() }
-                    </section>
+                    {isNullOrUndefined(comment.post_attributes.comment_images)
+                        ? ''
+                        : (
+                            <section className={classes.commentImageContainer}>
+                                {' '}
+                                { mapCommentImages() }
+                                {' '}
+                            </section>
+                        ) }
 
                     <section className={classes.postContainer}>
                         <Typography>{comment.post_attributes.message}</Typography>

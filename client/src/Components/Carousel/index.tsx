@@ -19,9 +19,9 @@ interface ICarouselProps {
 // https://github.com/xiaolin/react-image-gallery
 
 const CarouselComponent = (props: ICarouselProps): React.ReactElement<ICarouselProps> => {
-    const classes: IClasses = style();
-
     const { owner, images, source } = props;
+
+    const classes: IClasses = style();
 
     const mapImages = (): Array<ReactImageGalleryItem> => {
         if (images === undefined || !images.length) { return []; }

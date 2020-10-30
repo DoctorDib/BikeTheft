@@ -142,6 +142,8 @@ export default makeStyles((theme) => ({
     commentImageContainer: {
         display: 'flex',
         flexDirection: 'row',
-        margin: '5px 10px 10px 15px',
+        margin: '0 5px 0 5px',
+        padding: '10px',
+        backgroundColor: '#f4f4f4',
     },
 }));

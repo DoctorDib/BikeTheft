@@ -75,7 +75,7 @@ const TextCommentComponent: React.FC<ICommentTextBoxProps> = (props: ICommentTex
     const onClick = () => setOpenImageUploader(true);
     const onClose = () => setOpenImageUploader(false);
 
-    const mapPreviewImages = () => tempImages.map((image:IImageSettings) => (
+    const mapPreviewImages = ():Array<React.ReactElement> => tempImages.map((image:IImageSettings) => (
         <CardMedia
             key={image.id}
             className={classes.previewImage}

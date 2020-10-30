@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-
 import { Dialog, IconButton, Button } from '@material-ui/core';
-
 import { Cancel } from '@material-ui/icons';
-
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import style from './styles';
 
@@ -19,11 +16,11 @@ const ImageComponent = (props: IImageProp): React.ReactElement<IImageProp> => {
     const [isFullScreen, setFullScreen] = useState<boolean>(false);
 
     const onClose = () => setFullScreen(false);
-    const open = () => setFullScreen(true);
+    const onOpen = () => setFullScreen(true);
 
     return (
         <section className={classes.mainContainer}>
-            <Button onClick={open} className={classes.smallImageContainer}>
+            <Button onClick={onOpen} className={classes.smallImageContainer}>
                 <img
                     alt="small-thumbnail-in-comment"
                     className={classes.smallImage}
