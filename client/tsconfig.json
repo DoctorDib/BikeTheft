@@ -27,7 +27,6 @@
         "forceConsistentCasingInFileNames": true,
         "importsNotUsedAsValues": "preserve",
         "importHelpers": true,
-        
         "skipLibCheck": true,
         /* noEmit - Snowpack builds (emits) files, not tsc. */
         "noEmit": true,

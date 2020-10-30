@@ -12,7 +12,7 @@ export default makeStyles(() => ({
         boxShadow: 'rgba(0, 0, 0, 0.23) 0px .25px 1px 0px',
         width: '100vw',
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         backgroundColor: 'white',
     },
 
@@ -35,5 +35,25 @@ export default makeStyles(() => ({
     headerContainer: {
         display: 'flex',
         alignItems: 'center',
+    },
+
+    profileImageContainer: {
+        alignSelf: 'center',
+        '&:hover': {
+            cursor: 'pointer',
+        },
+    },
+
+    widthContainer: {
+        display: 'flex',
+        width: '75vw',
+        justifyContent: 'space-between',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
+
+    profilePopper: {
+        width: '12rem',
+        height: '8rem',
     },
 }));

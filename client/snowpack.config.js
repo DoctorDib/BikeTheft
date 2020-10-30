@@ -22,6 +22,7 @@ module.exports = {
   ],
   buildOptions: {
     baseUrl: '/',
+    sourceMaps: true,
   },
   installOptions: {
     polyfillNode: true,

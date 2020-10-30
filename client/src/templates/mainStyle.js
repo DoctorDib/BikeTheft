@@ -87,6 +87,7 @@ export default {
             mozBoxShadow: '0 0 3px 0 rgb(200,200,200)',
             boxShadow: '0 0 3px 0 rgb(200,200,200)',
         },
+        minHeight: '90vh',
     },
 
     header: {
@@ -117,5 +118,17 @@ export default {
         paddingLeft: '5em',
         paddingRight: '5em',
         color: '#1b1b1b',
+    },
+
+    spaceLeft: {
+        marginLeft: '1rem',
+    },
+
+    spaceRight: {
+        marginRight: '1rem',
+    },
+
+    spaceItemsEvenly: {
+        justifyContent: 'space-between',
     },
 };

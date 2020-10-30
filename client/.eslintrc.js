@@ -46,7 +46,8 @@ module.exports = {
         }],
         "no-continue": 0,
         "object-curly-newline": 0,
-        "implicit-arrow-linebreak": 0
+        "implicit-arrow-linebreak": 0,
+        "no-inferrable-types": "off", // It didn't like 0 
     },
     env: {
         "browser": true,
