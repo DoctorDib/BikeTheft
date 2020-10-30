@@ -13,8 +13,6 @@ let response = {
 
 module.exports.get_dvla_data = (event, context, callback) => {
     const eBody = JSON.parse(event.body);
-    const key = process.env.dvla;
-    console.log('Attempting to grab DVLA data');
 
     const body = {
         "registrationNumber": eBody.number_plate
@@ -29,8 +27,6 @@ module.exports.get_dvla_data = (event, context, callback) => {
             'x-api-key': eBody.key,
         }
     }).then(data => {
-        console.log(data);
-
         response.body = JSON.stringify(data);
         context.callbackWaitsForEmptyEventLoop = false;
         callback(null, response);

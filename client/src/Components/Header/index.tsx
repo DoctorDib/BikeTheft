@@ -1,10 +1,11 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import React, { useEffect } from 'react';
+import { Button, Slide } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 
 import styles from './styles';
-import Logo from '../../static/img/Logo.png';
+
+// TODO - Will need to change to S3 Bucket link when set up
+import Logo from '../../static/img/Logo-Header.png';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 const LogoButton = withStyles({
@@ -18,10 +19,18 @@ const LogoButton = withStyles({
     },
 })(Button);
 
-const DesktopHeader: React.FC = () => {
+const DesktopHeader = (): React.ReactElement => {
     const classes: IClasses = styles();
 
-    return (
+    const [scrolled, setScrolled] = React.useState(false);
+    const handleScroll = () => setScrolled(window.scrollY > 100);
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const MainComponent = () => (
         <section className={classes.main}>
             <section className={classes.headerContainer}>
                 <div className={classes.logoContainer}>
@@ -29,10 +38,17 @@ const DesktopHeader: React.FC = () => {
                         <img src={Logo} title="logo" alt="logo" className={classes.logo} />
                     </LogoButton>
                 </div>
-                <Typography variant="body1"> Lost My Wheels </Typography>
             </section>
         </section>
     );
+
+    const ScrolledComponent = () => (
+        <Slide direction="down" in mountOnEnter unmountOnExit>
+            <section className={classes.fixedMain}>{MainComponent()}</section>
+        </Slide>
+    );
+
+    return !scrolled ? MainComponent() : ScrolledComponent();
 };
 
 export default DesktopHeader;

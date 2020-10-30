@@ -16,8 +16,15 @@ export default makeStyles(() => ({
 
     buttonContainer: {
         display: 'flex',
-        justifyContent: 'space-around',
+        justifyContent: 'flex-end',
         width: '100%',
         margin: '20px 0 0 0',
+        '& .MuiButton-root': {
+            margin: '0 5px 0 5px',
+        },
+    },
+
+    infomationBox: {
+        margin: '5px 5px 15px 5px',
     },
 }));

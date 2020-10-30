@@ -1,11 +1,9 @@
 'use strict';
 const Database = require('./database');
-const https = require('https');
-const axios = require('axios');
 let client = null;
+const s3 = require('aws-sdk');
 
 module.exports.call = (packet) => new Promise((resolve, reject) => {
-    console.log('Make call');
     let conn = process.env.postgres;
     let database = new Database(client, conn, () => {});
 

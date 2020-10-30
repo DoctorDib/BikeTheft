@@ -4,41 +4,49 @@ import Amplify from 'aws-amplify';
 import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 
-import mainTheme from '../templates/theme';
-import AppliedRoute from '../Components/Routing/Applied';
-import * as constants from '../../../secrets/constants';
+import Env from './Common/Utils/Env';
+import mainTheme from './templates/theme';
+import AppliedRoute from './Components/Routing/Applied';
 
-import HomePage from '../Pages/Home';
-import VehicleInfoPage from '../Pages/VehicleInfo';
-import VehicleUploadPage from '../Pages/VehicleUpload';
-import AboutPage from '../Pages/About';
-import ErrorPage from '../Pages/Error';
+import HomePage from './Pages/Home';
+import VehicleInfoPage from './Pages/VehicleInfo';
+import VehicleUploadPage from './Pages/VehicleUpload';
+import AboutPage from './Pages/About';
+import ErrorPage from './Pages/Error';
 
 Amplify.configure({
     // OPTIONAL - if your API requires authentication
+    // TODO ensure none of these secret keys end up on the client
     Auth: {
-        mandatorySignIn: true,
+        mandatorySignIn: false,
         // REQUIRED - Amazon Cognito Identity Pool ID
-        identityPoolId: constants.IDENTITYPOOLID,
+        identityPoolId: Env.SNOWPACK_PUBLIC_IDENTITYPOOLID,
         // REQUIRED - Amazon Cognito Region
-        region: constants.REGION,
+        region: Env.SNOWPACK_PUBLIC_REGION,
         // OPTIONAL - Amazon Cognito User Pool ID
-        userPoolId: constants.USERPOOLID,
+        userPoolId: Env.SNOWPACK_PUBLIC_USERPOOLID,
         // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-        userPoolWebClientId: constants.CLIENTID,
+        userPoolWebClientId: Env.SNOWPACK_PUBLIC_CLIENTID,
     },
     API: {
         endpoints: [
             {
                 name: 'base_endpoint',
-                endpoint: constants.APIENDPOINT,
-                region: constants.REGION,
+                endpoint: Env.SNOWPACK_PUBLIC_APIENDPOINT,
+                region: Env.SNOWPACK_PUBLIC_REGION,
             },
         ],
     },
+    Storage: {
+        AWSS3: {
+            bucket: Env.SNOWPACK_PUBLIC_S3BUCKET,
+            region: Env.SNOWPACK_PUBLIC_REGION,
+            identityPoolId: Env.SNOWPACK_PUBLIC_IDENTITYPOOLID,
+        },
+    },
 });
 
-const App: React.FC = () => (
+const App = (): React.ReactElement => (
     <Router>
         <ThemeProvider theme={mainTheme}>
             <Switch>

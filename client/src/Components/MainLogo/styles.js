@@ -1,16 +1,20 @@
 import { makeStyles } from '@material-ui/core/styles';
 import mainStyle from '../../templates/mainStyle';
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
     ...mainStyle,
 
-    clientLogosParent: {
+    container: {
+        width: '100%',
         display: 'flex',
         justifyContent: 'center',
     },
 
-    titleContainer: {
+    logo: {
+        pointerEvents: 'none',
         width: '100%',
-        marginBottom: '2vh',
+        [theme.breakpoints.up('md')]: {
+            width: '25%',
+        },
     },
 }));

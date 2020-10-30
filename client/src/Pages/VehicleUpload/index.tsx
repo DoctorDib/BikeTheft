@@ -3,17 +3,14 @@ import React from 'react';
 import NavBarComponent from '../../Components/Header';
 import FooterComponent from '../../Components/Footer';
 
-import VehicleUploadInputsComponent from '../../Components/VehicleUploadInputs';
+import VehicleUploadFieldsComponent from '../../Components/VehicleUploadFields';
 
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
-interface IHomeProps {
-}
+interface IHomeProps {}
 
-// TODO these props should be used
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const VehicleUploadPage: React.FC<IHomeProps> = (props: IHomeProps) => {
+const VehicleUploadPage = (): React.ReactElement<IHomeProps> => {
     const classes: IClasses = style();
 
     return (
@@ -23,7 +20,7 @@ const VehicleUploadPage: React.FC<IHomeProps> = (props: IHomeProps) => {
             </section>
 
             <section>
-                <VehicleUploadInputsComponent />
+                <VehicleUploadFieldsComponent />
             </section>
 
             <section className={classes.mainContentGap}>

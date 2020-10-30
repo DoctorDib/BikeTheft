@@ -7,7 +7,7 @@ import Mobile from './Mobile';
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
-const Index: React.FC = () => {
+const Index = ():React.ReactElement => {
     const classes: IClasses = style();
 
     const [cookies, setCookie] = useCookie('CookiePrompt');
@@ -22,18 +22,18 @@ const Index: React.FC = () => {
     };
 
     return (
-
         <Drawer anchor="top" open={cookieState}>
             <section style={{ padding: 10 }}>
                 <section className={classes.hideOnMobileOnly}>
-                    <Desktop clickTrigger={() => { saveCookie(); }} />
+                    <Desktop
+                        clickTrigger={saveCookie}
+                    />
                 </section>
 
                 <section className={classes.showOnMobileOnly}>
                     <Mobile />
                 </section>
             </section>
-
         </Drawer>
     );
 };

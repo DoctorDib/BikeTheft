@@ -12,40 +12,23 @@ export default makeStyles((theme) => ({
         alignItems: 'center',
     },
 
-    textBox: {
-        width: '100%',
-        maxWidth: '75%',
-        padding: '10px 12px 10px',
-    },
-
-    message: {
-        margin: '20px 0 20px 0',
-    },
-
     messageContainer: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
+        width: '100%',
         [theme.breakpoints.up('md')]: {
-            maxWidth: '50%',
+            width: '65%',
         },
     },
 
-    confirmationImg: {
-        maxHeight: '50%',
+    textBoxContainer: {
         width: '100%',
-    },
-
-    avatarContainer: {
         display: 'flex',
-        flexDirection: 'row',
-    },
-
-    avatarText: {
-        display: 'flex',
-        alignItems: 'flex-start',
-        marginLeft: '10px',
         flexDirection: 'column',
+        [theme.breakpoints.up('md')]: {
+            maxWidth: '75%',
+        },
     },
 
     buttonContainer: {
@@ -65,12 +48,7 @@ export default makeStyles((theme) => ({
         width: '35%',
     },
 
-    postContainer: {
-        padding: '15px',
-    },
-
-    profileImage: {
-        width: '55px',
-        height: '55px',
+    layoutComment: {
+        margin: '25px 0 0 0',
     },
 }));

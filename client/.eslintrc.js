@@ -35,12 +35,18 @@ module.exports = {
         "no-use-before-define": 0,
         "@typescript-eslint/no-use-before-define": 0,
         "max-len": ["error", { 
-            "code": 120,
+            "code": 150,
             "ignoreComments": true,
             "ignoreStrings": true,
 
         }],
         "no-console": 0,
+        "no-plusplus": ["error", {
+            "allowForLoopAfterthoughts": true,
+        }],
+        "no-continue": 0,
+        "object-curly-newline": 0,
+        "implicit-arrow-linebreak": 0
     },
     env: {
         "browser": true,
@@ -49,8 +55,12 @@ module.exports = {
     },
     settings: {
         react: {
-            version: 'detect'
-        }
+            version: 'detect',
+        },
     },
-
+    "globals": {
+        // https://stackoverflow.com/questions/34820817/eslints-no-undef-rule-is-calling-my-use-of-underscore-an-undefined-variable
+        // Preventing error when we're using ReactCrop namespace from node_modules
+        "ReactCrop": false,
+    },
 };

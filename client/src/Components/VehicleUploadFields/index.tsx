@@ -1,17 +1,10 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import React, { useState } from 'react';
-
 import { API } from 'aws-amplify';
-
 import classNames from 'classnames';
-
 import {
-    TextField,
-    Typography,
-    Chip,
-    Grid,
-    Button,
+    TextField, Typography, Chip, Grid, Button,
 } from '@material-ui/core';
-
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
@@ -28,24 +21,32 @@ import { IClasses } from '../../Common/Interfaces/IClasses';
 import PopupTypeEnums from '../../Common/Enums/PopupEnums';
 import PopupComponent from '../Popup';
 
-import ImageUploaderComponent from '../ImageUploader';
+import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
 
+import ImageUploaderComponent from '../ImageUploader';
+import { IInputFields, IChip, IImageSettings } from '../../Common/Interfaces/interfaces';
+import { IClasses } from '../../Common/Interfaces/IClasses';
 import styles from './styles';
 import PopupTypeEnum from '../../Common/Enums/PopupEnums';
 
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { isNullOrUndefinedOrEmpty } from '../../Common/Utils/Types';
+import { defaultInputs } from '../../Common/Helpers/Defaults';
+import { createNewThread } from '../../Common/Helpers/DB_Helpers';
+import { uploadImagesToS3 } from '../../Common/Helpers/helper';
+import Env from '../../Common/Utils/Env';
 
-interface IImageUploaderProps {
-}
+interface IImageUploaderProps {}
 
-let index = 0;
+let chipIndex = 0;
+const MAXIMAGES = 4;
 
 interface IToolTipMessage {
-    primaryColour: string,
-    secondaryColour: string,
-    features: string,
-    description: string,
+    primaryColour: string;
+    secondaryColour: string;
+    features: string;
+    description: string;
     [key: string]: string;
 }
 
@@ -77,70 +78,88 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
     const [uploadButton, setDisableUploadButton] = useState<boolean>(false);
 
     const [input, setInput] = useState<IInputFields>(defaultInputs);
+
+
+
+    const classes: IClasses = styles();
+
+    const [images, setImages] = useState<Array<IImageSettings>>([]);
+
+    const [inputFields, setInputFields] = useState<IInputFields>(defaultInputs);
     const [dateStolen, setDateStolen] = useState<Date>(new Date());
-    const [numberPlateError, setNumberPlateError] = useState<boolean>(false);
+    const [numberPlateInError, setNumberPlateInError] = useState<boolean>(false);
     // Flag to determine if number plate has changed
     // if changed then we can make a call to DVLA
     const [numberPlateFlag, setNumberPlateFlag] = useState<boolean>(false);
 
-    const toolTipMessages:IToolTipMessage = {
+    const toolTipMessages: IToolTipMessage = {
         primaryColour: 'The main Colour of your vehicle',
         secondaryColour: 'The second main colour of your vehicle',
-        features: 'Write down identifiable features of your vehicle, seperate using commans: e.g "single black door, red wheels"',
+        features:
+            'Write down identifiable features of your vehicle, seperate using commans: e.g "single black door, red wheels"',
         description: 'Write a short description of your vehicle, more information the better.',
     };
 
-    const onLeave = (event:React.FocusEvent<HTMLInputElement>) => {
+    const onLeave = (event: React.FocusEvent<HTMLInputElement>) => {
         // Ensuring that we're only calling api if id is numberPlate
         // It's here just in case anyone accidentally adds the onLeave function to any other TextField
-        if (event.target.id !== 'numberPlate') { return; }
+        if (event.target.id !== 'numberPlate') {
+            return;
+        }
         // Only making API calls if number plate flat has been raised
-        if (!numberPlateFlag) { return; }
+        if (!numberPlateFlag) {
+            return;
+        }
 
         setNumberPlateFlag(false);
         setDisableUploadButton(false);
 
-        GetDVLAData(event.target.value);
+        getDVLAData(event.target.value);
     };
 
-    const onChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const key = event.target.id;
         const newValue = event.target.value;
 
         setDisableUploadButton(false);
 
-        if (key === 'numberPlate') { setNumberPlateFlag(true); }
-        if (key === 'features' && newValue.includes(',')) { SetChipArray(newValue); return; }
+        if (key === 'numberPlate') {
+            setNumberPlateFlag(true);
+        }
+        if (key === 'features' && newValue.includes(',')) {
+            setChipArray(newValue);
+            return;
+        }
 
         // Setting values
-        setInput({ ...input, [key]: event.target.value });
+        setInputFields({ ...inputFields, [key]: event.target.value });
     };
 
-    const SetChipArray = (value:string) => {
+    const setChipArray = (value: string) => {
         const inputValue = value.replace(',', '');
 
-        const newChip:IChip = {
-            key: index += 1,
+        const newChip: IChip = {
+            key: chipIndex += 1,
             value: inputValue,
         };
 
-        setInput({
-            ...input,
+        setInputFields({
+            ...inputFields,
             features: '',
-            featuresArray: [...input.featuresArray, newChip],
+            featuresArray: [...inputFields.featuresArray, newChip],
         });
     };
 
     const handleDelete = (chipData: IChip) => () => {
-        let newFeatureArray = input.featuresArray;
-        newFeatureArray = newFeatureArray.filter((chip: IChip) => (chip.key !== chipData.key));
-        setInput({
-            ...input,
+        let newFeatureArray = inputFields.featuresArray;
+        newFeatureArray = newFeatureArray.filter((chip: IChip) => chip.key !== chipData.key);
+        setInputFields({
+            ...inputFields,
             featuresArray: newFeatureArray,
         });
     };
 
-    const SetChips = input.featuresArray.map((chipData:IChip) => (
+    const setChips = inputFields.featuresArray.map((chipData: IChip) => (
         <Chip
             key={chipData.key}
             label={chipData.value}
@@ -150,72 +169,92 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         />
     ));
 
-    const SetCategory = (wheelPlan:string):number => {
-        const wPStr = wheelPlan.toLowerCase();
+    const setCategory = (wheelPlan: string): number => {
+        const wheelPlanLowerCase: string = wheelPlan.toLowerCase();
 
-        if (wPStr.includes('2') && wPStr.includes('wheel')) { return VehicleCategoryEnum.MOTORBIKE; }
-        if (wPStr.includes('2') && wPStr.includes('axle')) { return VehicleCategoryEnum.CAR; }
-        if (wPStr.includes('3') && wPStr.includes('axle')) { return VehicleCategoryEnum.TRUCK; }
+        if (wheelPlanLowerCase.includes('2') && wheelPlanLowerCase.includes('wheel')) {
+            return VehicleCategoryEnum.MOTORBIKE;
+        }
+        if (wheelPlanLowerCase.includes('2') && wheelPlanLowerCase.includes('axle')) {
+            return VehicleCategoryEnum.CAR;
+        }
+        if (wheelPlanLowerCase.includes('3') && wheelPlanLowerCase.includes('axle')) {
+            return VehicleCategoryEnum.TRUCK;
+        }
 
         return VehicleCategoryEnum.NONE;
     };
 
-    const GetDVLAData = async (numberPlate:string) => {
+    const getDVLAData = async (numberPlate: string) => {
         const body = {
             body: {
                 post: 443,
-                key: DVLAAPIKEY,
+                key: Env.SNOWPACK_PUBLIC_DVLAAPIKEY,
                 number_plate: numberPlate,
             },
         };
 
         await API.post('base_endpoint', '/external/dvla', body)
             .then((response) => {
-                if (numberPlateError) { setNumberPlateError(false); }
+                if (numberPlateInError) {
+                    setNumberPlateInError(false);
+                }
 
-                setInput({
-                    ...input,
+                setInputFields({
+                    ...inputFields,
                     make: response.make,
                     primaryColour: response.colour,
-                    category: SetCategory(response.wheelplan),
+                    category: setCategory(response.wheelplan),
                     v5cVerificationDate: response.dateOfLastV5CIssued,
                 });
             })
-            .catch(() => {
-            // Only use for debugging
-            // console.log("DVLA API Error: ", error);
-                setNumberPlateError(true);
+            .catch((error) => {
+                // Only use for debugging
+                console.log('DVLA API Error: ', error);
+                setNumberPlateInError(true);
             });
     };
 
-    const SetLabel = (key: string) => {
+    const setLabel = (key: string) => {
         switch (key) {
-            case 'numberPlate': return 'Number Plate';
-            case 'vin': return 'Vin';
-            case 'make': return 'Make';
-            case 'model': return 'Model';
-            case 'primaryColour': return 'Primary Colour';
-            case 'secondaryColour': return 'Secondary Colour';
-            case 'features': return 'Features';
-            case 'description': return 'Description';
-            case 'location': return 'Location';
-            default: return 'Key not found...';
+            case 'numberPlate':
+                return 'Number Plate';
+            case 'vin':
+                return 'Vin';
+            case 'make':
+                return 'Make';
+            case 'model':
+                return 'Model';
+            case 'primaryColour':
+                return 'Primary Colour';
+            case 'secondaryColour':
+                return 'Secondary Colour';
+            case 'features':
+                return 'Features';
+            case 'description':
+                return 'Description';
+            case 'location':
+                return 'Location';
+            default:
+                return 'Key not found...';
         }
     };
 
-    const GetToolTip = (key:string):string|boolean => {
-        if (!Object.prototype.hasOwnProperty.call(toolTipMessages, key)) { return false; }
+    const getToolTip = (key: string): string | boolean => {
+        if (!Object.prototype.hasOwnProperty.call(toolTipMessages, key)) {
+            return false;
+        }
         return toolTipMessages[key];
     };
 
-    const ClearEverything = ():void => {
+    const clearEverything = (): void => {
         setInput(defaultInputs);
         setNumberPlateError(false);
         setDisableUploadButton(true);
     };
 
-    const UploadData = ():void => {
-        if (numberPlateError || input.numberPlate === '') {
+    const uploadData = (): void => {
+        /*if (numberPlateError || input.numberPlate === '') {
             setNumberPlateError(true);
             setPopupType(PopupTypeEnums.ERROR);
             setPopupMessage("Please ensure that you have selected the correct numberplate.");
@@ -226,11 +265,17 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         setDisableUploadButton(true);
         setBackDrop(true);
 
-        input.dateStolen = dateStolen;
+        input.dateStolen = dateStolen;*/
+
+        inputFields.dateStolen = dateStolen;
         // Turning string capture into int
 
+        // currently static upload to vehicles folder only
+        uploadImagesToS3('1', images, 'vehicles');
+
         // TODO - Will need to change the owner_id when login is setup
-        const success = AddNewVehicle(1, input);
+
+        /*const success = AddNewVehicle(1, input);
         setBackDrop(false);
 
         if (success) { return; }
@@ -240,10 +285,26 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
         setPopupMessage("There was an unexpected error while uploading, please try again. If this problem persists, then contact us for support.");
         setPopup(true);
 
-        setDisableUploadButton(false);
+        setDisableUploadButton(false);*/
+
+        createNewThread('1', inputFields, images);
     };
 
-    const SetInputs = Object.keys(input).map((key:string):any => {
+    // eslint-disable-next-line no-undef
+    const categoryOptions: ReadonlyArray<JSX.Element | undefined> = Object.keys(VehicleCategoryEnum).map(
+        // eslint-disable-next-line no-undef
+        (key: string, i: number): JSX.Element | undefined => {
+            const value = VehicleCategoryEnum[i];
+
+            return !isNullOrUndefinedOrEmpty(value) ? (
+                <option key={key} value={i}>
+                    {value}
+                </option>
+            ) : undefined;
+        },
+    );
+
+    const inputComponents = Object.keys(inputFields).map((key: string):React.ReactNode => {
         switch (key) {
             case 'primaryColour':
             case 'secondaryColour':
@@ -252,14 +313,16 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                         <TextField
                             id={key}
                             size="small"
-                            label={SetLabel(key)}
+                            label={setLabel(key)}
                             variant="outlined"
-                            value={input[key]}
+                            value={inputFields[key]}
                             onChange={onChange}
                             className={classes.input}
-                            InputProps={{ endAdornment: (<InputToolTip message={GetToolTip(key)} />) }}
+                            InputProps={{
+                                endAdornment: <InputToolTip message={getToolTip(key)} />,
+                            }}
                         />
-                        <section className={classes.colour} style={{ backgroundColor: input[key] }}> </section>
+                        <section className={classes.colour} style={{ backgroundColor: inputFields[key] }} />
                     </Grid>
                 );
             case 'dateStolen':
@@ -287,13 +350,13 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                             id={key}
                             select
                             label="Vehicle Category"
-                            value={input[key]}
+                            value={inputFields[key]}
                             onChange={onChange}
                             SelectProps={{ native: true }}
                             helperText="Please select your vehicle category"
                             variant="outlined"
                         >
-                            {SetCategoryOptions}
+                            {categoryOptions}
                         </TextField>
                     </Grid>
                 );
@@ -301,78 +364,91 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                 return (
                     <Grid item md={6} xs={12} className={classes.inputContainers}>
                         <TextField
+                            error={numberPlateInError}
                             required
-                            error={numberPlateError}
                             id={key}
                             size="small"
-                            label={SetLabel(key)}
+                            label={setLabel(key)}
                             variant="outlined"
                             onChange={onChange}
                             onBlur={onLeave}
-                            value={input[key]}
+                            value={inputFields[key]}
                             className={classes.input}
                         />
                         <Typography
                             variant="caption"
-                            style={{ display: numberPlateError ? 'block' : 'none', color: 'red' }}
+                            style={{
+                                display: numberPlateInError ? 'block' : 'none',
+                                color: 'red',
+                            }}
                         >
-                            Unknown number plate, please make sure you have entered it correctly!
+                                Unknown number plate, please make sure you have entered it correctly!
                         </Typography>
                     </Grid>
                 );
             case 'features':
                 return (
                     <Grid item md={12} className={classes.inputContainers}>
-                        <section className={classes.featureContainer}>
-                            { SetChips }
-                        </section>
+                        <section className={classes.featureContainer}>{setChips}</section>
                         <TextField
                             id={key}
                             size="small"
-                            label={SetLabel(key)}
+                            label={setLabel(key)}
                             variant="outlined"
                             onChange={onChange}
                             onBlur={onLeave}
-                            value={input[key]}
+                            value={inputFields[key]}
                             className={classNames(classes.input, classes.featuresInput)}
                             multiline
-                            InputProps={{ endAdornment: (<InputToolTip message={GetToolTip(key)} />) }}
+                            InputProps={{
+                                endAdornment: <InputToolTip message={getToolTip(key)} />,
+                            }}
                         />
                     </Grid>
                 );
             case 'description':
                 return (
-                    <Grid item md={12} className={classNames(classes.inputContainers, classes.descriptionContainer)}>
+                    <Grid
+                        item
+                        md={12}
+                        className={classNames(classes.inputContainers, classes.descriptionContainer)}
+                    >
                         <TextField
                             id={key}
                             size="small"
-                            label={SetLabel(key)}
+                            label={setLabel(key)}
                             variant="outlined"
                             onChange={onChange}
                             onBlur={onLeave}
-                            value={input[key]}
+                            value={inputFields[key]}
                             className={classes.input}
                             multiline
                             rows={6}
-                            InputProps={{ endAdornment: (<InputToolTip message={GetToolTip(key)} />) }}
+                            InputProps={{
+                                endAdornment: <InputToolTip message={getToolTip(key)} />,
+                            }}
                         />
                     </Grid>
                 );
             default:
                 // featuresArray should be a hidden value
-                if (key === 'featuresArray' || key === 'v5cVerificationDate') { break; }
+                if (key === 'featuresArray' || key === 'v5cVerificationDate') {
+                    break;
+                }
 
                 return (
                     <Grid item md={6} xs={12} className={classes.inputContainers}>
                         <TextField
                             id={key}
                             size="small"
-                            label={SetLabel(key)}
+                            label={setLabel(key)}
                             variant="outlined"
                             onChange={onChange}
-                            value={input[key]}
+                            value={inputFields[key]}
                             className={classes.input}
-                            InputProps={{ endAdornment: (<InputToolTip message={GetToolTip(key)} />) }}
+                            InputProps={{
+                                endAdornment: <InputToolTip message={getToolTip(key)} />,
+                            }}
                         />
                     </Grid>
                 );
@@ -387,28 +463,32 @@ const VehicleUploadInputs: React.FC<IImageUploaderProps> = () => {
                 <Typography variant="h5"> Vehicle Upload </Typography>
             </section>
 
-            <ImageUploaderComponent />
+            <ImageUploaderComponent images={images} setImages={setImages} maxImages={MAXIMAGES} />
 
             <Typography> The images you upload will be uploaded to an S3 bucket yo </Typography>
 
             <Grid container spacing={3} className={classes.gridContainer}>
-                {SetInputs}
+                {inputComponents}
             </Grid>
 
             <section className={classes.controlButtons}>
-                <Button variant="contained" color="primary" onClick={UploadData} disabled={uploadButton}> Upload </Button>
-                <Button variant="contained" color="primary" onClick={ClearEverything}> Clear </Button>
+                <Button variant="contained" color="primary" onClick={uploadData}>
+                    Upload
+                </Button>
+                <Button variant="contained" color="primary" onClick={clearEverything}>
+                    Clear
+                </Button>
             </section>
 
             <Backdrop open={backdrop}>
                 <CircularProgress color="primary" />
             </Backdrop>
 
-            <PopupComponent 
-                open={popup} 
-                handleClose={() => setPopup(false)} 
-                popupType={popupType} 
-                popupMessage={popupMessage} 
+            <PopupComponent
+                open={popup}
+                handleClose={() => setPopup(false)}
+                popupType={popupType}
+                popupMessage={popupMessage}
             />
         </section>
     );

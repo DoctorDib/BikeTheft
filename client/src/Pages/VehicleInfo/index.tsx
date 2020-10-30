@@ -6,32 +6,20 @@ import NavBarComponent from '../../Components/Header';
 import FooterComponent from '../../Components/Footer';
 import VehicleInfoComponent from '../../Components/VehicleInfo';
 import PostsComponent from '../../Components/Posts';
-
-import { GetThread } from '../../Helpers/DB_Helpers';
-
 import {
-    IVehicleInfo,
-    IOwner,
-    IData,
-    IComment,
+    IVehicleInfo, IOwner, IData, IComment,
 } from '../../Common/Interfaces/interfaces';
-
-import {
-    defaultVehicleData,
-    defaultOwner,
-    defaultComment,
-} from '../../Helpers/Defaults';
-
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
+import { defaultComment, defaultOwner, defaultVehicleData } from '../../Common/Helpers/Defaults';
+import { getThread } from '../../Common/Helpers/DB_Helpers';
 
 interface IVehicleProps {
-    // match: any;
 }
 
 // TODO these props should be used
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
+const VehiclePage = (): React.ReactElement<IVehicleProps> => {
     const classes: IClasses = styles();
 
     interface IParams {
@@ -46,14 +34,12 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
     const [postData, setPostData] = useState<Array<IComment>>([defaultComment]);
 
     const fetch = async (thread_ID: string) => {
-        const data:IData = await GetThread(thread_ID);
+        const data: IData = await getThread(thread_ID);
 
         setMemberData(data.owner);
         setVehicleData(data.vehicle);
         setVehicleID(data.vehicle.vehicle_id);
         setPostData(data.posts);
-
-        console.log(data.posts);
     };
 
     useEffect(() => {
@@ -71,7 +57,7 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
             </section>
 
             <section style={{ width: '100%' }}>
-                <VehicleInfoComponent owner={memberData} vehicle={vehicleData} />
+                <VehicleInfoComponent threadID={threadID} owner={memberData} vehicle={vehicleData} />
             </section>
 
             <section className={classes.mainContentGap}>
@@ -79,7 +65,12 @@ const VehiclePage: React.FC<IVehicleProps> = (props: IVehicleProps) => {
             </section>
 
             <section className={classes.mainContentGap}>
-                <PostsComponent vehicleID={vehicleID} posts={postData} />
+                <PostsComponent
+                    threadID={threadID}
+                    ownerID={memberData.owner_id}
+                    vehicleID={vehicleID}
+                    posts={postData}
+                />
             </section>
 
             <section className={classes.mainContentGap}>
