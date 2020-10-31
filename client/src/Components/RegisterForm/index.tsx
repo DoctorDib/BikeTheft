@@ -1,17 +1,16 @@
 import React from 'react';
 
 import style from './styles';
-import { IClasses } from '../../Common/Interfaces/IClasses';
 
 import { Formik, Form, Field } from 'formik';
 import { Typography, Button, LinearProgress } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
+import { IClasses } from '../../Common/Interfaces/IClasses';
 import useAuthentication from '../../Common/Helpers/User';
 
 interface Values {
     username: string,
     nickname: string,
-    email: string,
     password: string,
     passwordConfirm: string,
 }
@@ -20,7 +19,7 @@ const ModifiedTextfield = (props) => (
     <TextField
         {...props}
         InputLabelProps={{
-            shrink: true
+            shrink: true,
         }}
     />
 )
@@ -39,31 +38,28 @@ const Register = (): React.ReactElement => {
                     attributes: {
                         nickname: '',
                     },
-                    email: '',
                     password: '',
                     passwordConfirm: '',
                 }}
-                validate={values => {
+                validate={(values) => {
                     const errors: Partial<Values> = {};
 
-                    if (!values.username) {
-                        errors.username = "Required. Please enter an username";
-                    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-                        errors.email = 'Invalid email address';
-                    } else if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%* #=+\(\)\^?&])[A-Za-z\d$@$!%* #=+\(\)\^?&]{3,}/i.test(values.password)) {
-                        errors.password = "Password requires at least 3 digits with 1 alphabet, 1 number and 1 special character"
+                    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.username)) {
+                        errors.username = 'Invalid email address';
+                    } else if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%* #=+\(\)\^?&])[A-Za-z\d$@$!%* #=+\(\)\^?&]{8,}/i.test(values.password)) {
+                        errors.password = 'Password requires at least 8 digits with 1 alphabet, 1 number and 1 special character'
                     } else if (values.password !== values.passwordConfirm) {
-                        errors.password = "Passwords don't match"
-                        errors.passwordConfirm = "Passwords don't match"
+                        errors.password = 'Passwords do not match'
+                        errors.passwordConfirm = "Passwords do not match"
                     }
                     return errors;
                 }}
                 onSubmit={(values, { setSubmitting }) => {
                     alert(JSON.stringify(values, null, 2));
-                    signUp(values).then(result => {
+                    signUp(values).then((result) => {
                         setSubmitting(false);
+                        console.log(result)
                         // todo add redirect to index / show confirmation here
-
                     }).catch(errors => {
                         console.error(errors);
                     });
@@ -72,15 +68,6 @@ const Register = (): React.ReactElement => {
             >
                 {({ submitForm, isSubmitting }) => (
                     <Form className={classes.form}>
-                        <Field
-                            component={ModifiedTextfield}
-                            name="email"
-                            type="email"
-                            label="Email"
-                            placeholder="your@email.com"
-                            required
-                        />
-                        <br />
                         <Field
                             component={ModifiedTextfield}
                             name="attributes.nickname"
@@ -92,9 +79,9 @@ const Register = (): React.ReactElement => {
                         <Field
                             component={ModifiedTextfield}
                             name="username"
-                            type="text"
+                            type="email"
                             label="Username"
-                            placeholder="Your username.."
+                            placeholder="Your email address.."
                             required
                         />
                         <br />

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Divider from '@material-ui/core/Divider';
-
 import NavBarComponent from '../../Components/Header';
 import FooterComponent from '../../Components/Footer';
 import RegisterComponent from '../../Components/RegisterForm';
@@ -13,7 +12,6 @@ interface IRegisterProps {
 
 const RegisterPage = (): React.ReactElement<IRegisterProps> => {
     const classes: IClasses = styles();
-
 
     return (
         <section className={classes.body}>

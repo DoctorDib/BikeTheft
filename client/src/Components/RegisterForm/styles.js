@@ -3,7 +3,6 @@ import mainStyle from '../../templates/mainStyle';
 
 export default makeStyles(() => ({
     ...mainStyle,
-
     container: {
         '& section': {
             margin: '20px 0 20px 0',
@@ -13,5 +12,5 @@ export default makeStyles(() => ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        }
+    },
 }));
