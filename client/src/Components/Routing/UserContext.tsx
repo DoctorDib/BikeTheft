@@ -1,4 +1,10 @@
-import React, {ReactElement} from 'react';
+import React from 'react';
+import {
+    IReducerAction,
+    IState,
+    IUserContextProvider,
+} from '../../Common/Interfaces/users';
+import UserMethodEnum from '../../Common/Enums/UserMethodEnum';
 
 const initialState = {
     user: {
@@ -8,36 +14,9 @@ const initialState = {
             email_verified: false,
             nickname: '',
             sub: '',
-        }
-    }
+        },
+    },
 };
-
-export const enum Method {
-    UpdateUserAttributes,
-    LogIn,
-}
-
-interface IReducerAction {
-    method: Method,
-    data: unknown;
-}
-
-interface IUserAttributes {
-    email: string;
-    email_verified: boolean;
-    nickname: string;
-    picture?: string;
-    sub: string;
-}
-
-interface IUserState {
-    loggedIn: boolean;
-    attributes?: IUserAttributes;
-}
-
-interface IState {
-    user: IUserState;
-}
 
 const UserContext = React.createContext<{
     state: IState;
@@ -46,36 +25,37 @@ const UserContext = React.createContext<{
     state: initialState,
     dispatch: () => null,
 });
+
 const UserContextConsumer = UserContext.Consumer;
 
 const reducer = (state: IState, action: IReducerAction) => {
-    switch(action.method) {
-        case Method.UpdateUserAttributes:
-            // @ts-ignore
-            state.user.attributes = action.data;
+    const newState: IState = state;
+
+    switch (action.method) {
+        case UserMethodEnum.UpdateUserAttributes:
+            newState.user.attributes = action.data;
             break;
-        case Method.LogIn:
-            // @ts-ignore
-            state.user.attributes = action.data;
-            state.user.loggedIn = true;
+        case UserMethodEnum.LogIn:
+            newState.user.attributes = action.data;
+            newState.user.loggedIn = true;
+            break;
+        default:
             break;
     }
 
-    return state;
-}
+    return newState;
+};
 
-interface IUserContextProvider {
-    children: ReactElement;
-}
-
-const UserContextProvider = (props: IUserContextProvider): React.Element<IUserContextProvider> => {
+const UserContextProvider = (props: IUserContextProvider): React.ReactElement<IUserContextProvider> => {
     const [state, dispatch] = React.useReducer(reducer, initialState);
+
+    const { children } = props;
 
     return (
         <UserContext.Provider value={{ state, dispatch }}>
-            {props.children}
+            { children }
         </UserContext.Provider>
-    )
-}
+    );
+};
 
 export { UserContext, UserContextProvider, UserContextConsumer };

@@ -1,10 +1,19 @@
 import React from 'react';
 
-import style from './styles';
-
-import { Formik, Form, Field } from 'formik';
-import { Typography, Button, LinearProgress } from '@material-ui/core';
+import {
+    Formik,
+    Form,
+    Field,
+} from 'formik';
+import {
+    Typography,
+    Button,
+    LinearProgress,
+} from '@material-ui/core';
+import validator from 'validator';
+import PasswordValidator from 'password-validator';
 import { TextField } from 'formik-material-ui';
+import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import useAuthentication from '../../Common/Helpers/User';
 
@@ -15,6 +24,20 @@ interface Values {
     passwordConfirm: string,
 }
 
+const SCHEMA = new PasswordValidator()
+    .is().min(8) // Minimum length 8
+    .is()
+    .max(100) // Maximum length 100
+    .has()
+    .uppercase() // Must have uppercase letters
+    .has()
+    .lowercase() // Must have lowercase letters
+    .has()
+    .digits(2) // Must have at least 2 digits
+    .has()
+    .not()
+    .spaces(); // Should not have spaces
+
 const ModifiedTextfield = (props) => (
     <TextField
         {...props}
@@ -22,11 +45,12 @@ const ModifiedTextfield = (props) => (
             shrink: true,
         }}
     />
-)
+);
 
 const Register = (): React.ReactElement => {
     const classes: IClasses = style();
-    const [signIn, signUp] = useAuthentication();
+    // signIn has been temporarily removed
+    const [signUp] = useAuthentication();
 
     return (
         <section className={classes.container}>
@@ -44,13 +68,13 @@ const Register = (): React.ReactElement => {
                 validate={(values) => {
                     const errors: Partial<Values> = {};
 
-                    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.username)) {
+                    if (!validator.isEmail(values.username)) {
                         errors.username = 'Invalid email address';
-                    } else if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%* #=+\(\)\^?&])[A-Za-z\d$@$!%* #=+\(\)\^?&]{8,}/i.test(values.password)) {
-                        errors.password = 'Password requires at least 8 digits with 1 alphabet, 1 number and 1 special character'
+                    } else if (!SCHEMA.validate(values.password)) {
+                        errors.password = 'Password requires at least 8 digits with 1 alphabet, 1 number and 1 special character';
                     } else if (values.password !== values.passwordConfirm) {
-                        errors.password = 'Passwords do not match'
-                        errors.passwordConfirm = "Passwords do not match"
+                        errors.password = 'Passwords do not match';
+                        errors.passwordConfirm = 'Passwords do not match';
                     }
                     return errors;
                 }}
@@ -58,9 +82,9 @@ const Register = (): React.ReactElement => {
                     alert(JSON.stringify(values, null, 2));
                     signUp(values).then((result) => {
                         setSubmitting(false);
-                        console.log(result)
+                        console.log(result);
                         // todo add redirect to index / show confirmation here
-                    }).catch(errors => {
+                    }).catch((errors) => {
                         console.error(errors);
                     });
                 }}
@@ -113,7 +137,7 @@ const Register = (): React.ReactElement => {
                             onClick={submitForm}
                         >
                             Register
-          </Button>
+                        </Button>
                     </Form>
                 )}
             </Formik>
