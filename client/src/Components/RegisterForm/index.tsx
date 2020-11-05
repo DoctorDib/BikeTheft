@@ -35,6 +35,8 @@ const SCHEMA = new PasswordValidator()
     .has()
     .digits(2) // Must have at least 2 digits
     .has()
+    .symbols()
+    .has()
     .not()
     .spaces(); // Should not have spaces
 
@@ -71,7 +73,7 @@ const Register = (): React.ReactElement => {
                     if (!validator.isEmail(values.username)) {
                         errors.username = 'Invalid email address';
                     } else if (!SCHEMA.validate(values.password)) {
-                        errors.password = 'Password requires at least 8 digits with 1 alphabet, 1 number and 1 special character';
+                        errors.password = 'Password requires between 8 to 100 characters with at least 1 lowercase and uppcase alphabet and 2 number and 1 special character';
                     } else if (values.password !== values.passwordConfirm) {
                         errors.password = 'Passwords do not match';
                         errors.passwordConfirm = 'Passwords do not match';
