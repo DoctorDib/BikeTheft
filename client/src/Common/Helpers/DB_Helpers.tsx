@@ -1,13 +1,35 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { API } from 'aws-amplify';
 
-import { getDateTimeString, sortFeaturesArray } from './helper';
-
+import { 
+    getDateTimeString, 
+    sortFeaturesArray 
+} from './helper';
 import {
-    IPostAttributes, IData, IInputFields, IImageSettings,
+    IPostAttributes, 
+    IData, 
+    IInputFields, 
+    IImageSettings,
+    IChip,
+    ICreateThreadResponse,
 } from '../Interfaces/interfaces';
-
 import { defaultData } from './Defaults';
+
+export const checkNumberPlate = async (numberPlate: string): Promise<boolean> => {
+    const body = {
+        body: { number_plate: numberPlate },
+    };
+
+    console.log("checking: ", numberPlate)
+
+    try {
+        const resp = await API.post('base_endpoint', '/vehicles/check_number_plate', body);
+        return resp.exists;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+};
 
 export const sendPost = async (
     parentID: string,
@@ -97,10 +119,10 @@ const stripData64 = (images: Array<IImageSettings>) => images.map((data) => ({
 export const createNewThread = async (
     ownerID: string,
     data: IInputFields,
+    featuresArray: Array<IChip>,
     images: Array<IImageSettings>,
-): Promise<boolean> => {
+): Promise<boolean | ICreateThreadResponse> => {
     const {
-        number_plate,
         make,
         model,
         category,
@@ -113,7 +135,7 @@ export const createNewThread = async (
     // Extracting the string values from an array of objects
     // e.g. [{key: 1, value: "one"}, {key: 2, value: "two"}]
     // is now ["one", "two"]
-    const features: Array<string> = sortFeaturesArray(data.featuresArray);
+    const features: Array<string> = sortFeaturesArray(featuresArray);
 
     const serverThreadData = { // TODO this needs a type!!!
         body: {
@@ -123,7 +145,7 @@ export const createNewThread = async (
             // for now we're defaulting vehicles that get uploaded to
             // automatically be assumed as stolen
             status: 0,
-            number_plate,
+            number_plate: data.numberPlate,
             make,
             model,
             category,
@@ -142,11 +164,14 @@ export const createNewThread = async (
     };
 
     try {
-        const response = await API.post(
+        const response:ICreateThreadResponse = await API.post(
             'base_endpoint',
             '/forum/create_thread',
             serverThreadData,
         );
+
+        console.log("THREAD RESPONSE: ", response);
+
         return response;
     } catch (e) {
         console.error(e);

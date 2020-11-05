@@ -8,6 +8,7 @@ import {
     IInputFields,
     IChip,
     IImageSettings,
+    IInputErrorMessages,
 } from '../Interfaces/interfaces';
 
 export const defaultVehicleData: IVehicleInfo = {
@@ -98,4 +99,13 @@ export const defaultInputs: IInputFields = {
     featuresArray: [],
     description: '',
     v5cVerificationDate: '',
+};
+
+export const defaultInputErrorMessages: IInputErrorMessages = {
+    numberPlate: '',
+    vin: '',
+    make: '',
+    model: '',
+    primaryColour: '',
+    secondaryColour: '',
 };

@@ -11,6 +11,7 @@ import AppliedRoute from './Components/Routing/Applied';
 import HomePage from './Pages/Home';
 import VehicleInfoPage from './Pages/VehicleInfo';
 import VehicleUploadPage from './Pages/VehicleUpload';
+import VehicleUploadPageOld from './Pages/VehicleUploadOld';
 import AboutPage from './Pages/About';
 import ErrorPage from './Pages/Error';
 
@@ -51,7 +52,8 @@ const App = (): React.ReactElement => (
         <ThemeProvider theme={mainTheme}>
             <Switch>
                 <AppliedRoute appProps={{}} exact path="/" component={HomePage} />
-                <AppliedRoute appProps={{}} path="/post/upload" component={VehicleUploadPage} />
+                <AppliedRoute appProps={{}} path="/upload" component={VehicleUploadPage} />
+                <AppliedRoute appProps={{}} path="/post/upload-old" component={VehicleUploadPageOld} />
                 <AppliedRoute appProps={{}} path="/post/:id" component={VehicleInfoPage} />
                 <AppliedRoute appProps={{}} path="/404" component={ErrorPage} />
                 <AppliedRoute appProps={{}} path="/about" component={AboutPage} />

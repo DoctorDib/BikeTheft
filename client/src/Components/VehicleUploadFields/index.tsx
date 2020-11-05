@@ -20,7 +20,7 @@ import { createNewThread } from '../../Common/Helpers/DB_Helpers';
 import { uploadImagesToS3 } from '../../Common/Helpers/helper';
 import Env from '../../Common/Utils/Env';
 
-interface IImageUploaderProps {}
+interface IVehicleUploadFields {}
 
 let chipIndex = 0;
 const MAXIMAGES = 4;
@@ -33,7 +33,7 @@ interface IToolTipMessage {
     [key: string]: string;
 }
 
-const VehicleUploadInputs = ():React.ReactElement<IImageUploaderProps> => {
+const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadFields> => {
     const classes: IClasses = styles();
 
     const [images, setImages] = useState<Array<IImageSettings>>([]);

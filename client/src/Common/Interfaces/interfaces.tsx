@@ -18,6 +18,11 @@ export interface IVehicleInfo {
     [key: string]: string | number | Array<string> | Array<IImageSettings> | Date | boolean;
 }
 
+export interface ICreateThreadResponse {
+    thread_id: number;
+    vehicle_id: number;
+}
+
 export interface IMemberAttributes {
     display_name: string;
     profile_image: string;
@@ -93,4 +98,24 @@ export interface IImageSettings {
 
 export interface IVehicleParams {
     id: string;
+}
+
+export interface IInputErrorMessages {
+    numberPlate: string;
+    vin: string;
+    make: string;
+    model: string;
+    primaryColour: string;
+    secondaryColour: string;
+    [key: string]: string;
+}
+
+export interface IInputLimits {
+    numberPlate: number,
+    vin: number,
+    make: number,
+    model: number,
+    primaryColour: number,
+    secondaryColour: number,
+    [key: string]: number;
 }

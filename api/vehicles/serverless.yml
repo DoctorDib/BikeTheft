@@ -82,3 +82,10 @@ functions:
           path: set_vehicle
           method: POST
           cors: {$self:custom.cors}
+  check_number_plate:
+    handler: vehicles.check_number_plate
+    events:
+      - http:
+          path: check_number_plate
+          method: POST
+          cors: {$self:custom.cors}
