@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, IconButton, Button } from '@material-ui/core';
 import { Cancel } from '@material-ui/icons';
+
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import style from './styles';
 

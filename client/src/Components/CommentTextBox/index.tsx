@@ -46,7 +46,7 @@ const TextCommentComponent: React.FC<ICommentTextBoxProps> = (props: ICommentTex
     } = props;
 
     const [openImageUploader, setOpenImageUploader] = useState<boolean>(false);
-    const [isExpanded, toggleExpand] = useState<boolean>(false);
+    const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [tempImages, setTempImages] = useState<Array<IImageSettings>>([]);
     const [previewImages, setPreviewImages] = useState<Array<React.ReactElement>>();
 
@@ -55,6 +55,8 @@ const TextCommentComponent: React.FC<ICommentTextBoxProps> = (props: ICommentTex
         setTempImages([]);
         setImages([]);
         setTextValue('');
+        setPreviewImages([]);
+        setIsExpanded(false);
     };
 
     const onPostSubmit = (): void => {
@@ -86,7 +88,7 @@ const TextCommentComponent: React.FC<ICommentTextBoxProps> = (props: ICommentTex
 
     const onClickAttach = () => {
         setOpenImageUploader(false);
-        toggleExpand(tempImages.length > 0);
+        setIsExpanded(tempImages.length > 0);
         setImages([...tempImages]);
         setPreviewImages(mapPreviewImages());
     };

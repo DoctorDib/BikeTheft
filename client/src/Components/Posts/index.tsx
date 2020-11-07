@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Typography } from '@material-ui/core';
-import { IClasses } from '../../Common/Interfaces/IClasses';
 
+import { IClasses } from '../../Common/Interfaces/IClasses';
 import PopupComponent from '../Popup';
 import { IComment, IPostAttributes, IImageSettings } from '../../Common/Interfaces/interfaces';
 import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
@@ -33,7 +33,7 @@ const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
     const [commentValue, setCommentValue] = useState<string>('');
     const [inputError, setInputError] = useState<boolean>(false);
     const [comments, setComments] = useState<ReadonlyArray<React.ReactNode>>([]);
-    const [images, setImages] = useState<Array<IImageSettings>>([]);
+    const [images, setImages] = useState<ReadonlyArray<IImageSettings>>([]);
 
     const scrollTo = (id: number) => {
         const targetID = `#post-id-${id}`;

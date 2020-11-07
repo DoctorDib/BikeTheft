@@ -1,7 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
-import { Paper, Accordion, AccordionDetails, Typography, CardMedia, Button } from '@material-ui/core';
-import { Reply, Delete, Clear, Attachment } from '@material-ui/icons';
+import {
+    Paper,
+    Accordion,
+    AccordionDetails,
+    Typography,
+    CardMedia,
+    Button,
+} from '@material-ui/core';
+import {
+    Reply,
+    Delete,
+    Clear,
+    Attachment,
+} from '@material-ui/icons';
+
 import {
     sendPost,
     updatePost,
@@ -138,7 +151,7 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
                     <section>
                         {formatAvatar(parentComment, classes, false)}
                         {isNullOrUndefined(parentComment.post_attributes.comment_images)
-                            ? ''
+                            ? null
                             : (
                                 <section className={classes.quoteAttachment}>
                                     <Typography variant="caption">
@@ -238,7 +251,7 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
     };
 
     const mapCommentImages = ():Array<React.ReactElement> => {
-        const commentImages:string = comment.post_attributes.comment_images;
+        const commentImages:Array<IImageSettings> = comment.post_attributes.comment_images;
         return commentImages.map((image: IImageSettings) => (
             <ImageComponent
                 key={image.id}
@@ -278,7 +291,7 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
                         : replyParent}
 
                     {isNullOrUndefined(comment.post_attributes.comment_images)
-                        ? ''
+                        ? null
                         : (
                             <section className={classes.commentImageContainer}>
                                 { mapCommentImages() }
