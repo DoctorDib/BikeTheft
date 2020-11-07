@@ -385,7 +385,12 @@ const VehicleUploadInputs = ():React.ReactElement<IImageUploaderProps> => {
                 <Typography variant="h5"> Vehicle Upload </Typography>
             </section>
 
-            <ImageUploaderComponent images={images} setImages={setImages} maxImages={MAXIMAGES} />
+            <ImageUploaderComponent
+                images={images}
+                setImages={setImages}
+                maxImages={MAXIMAGES}
+                canMakeDefault
+            />
 
             <Typography> The images you upload will be uploaded to an S3 bucket yo </Typography>
 
