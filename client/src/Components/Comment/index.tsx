@@ -281,9 +281,7 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
                         ? ''
                         : (
                             <section className={classes.commentImageContainer}>
-                                {' '}
                                 { mapCommentImages() }
-                                {' '}
                             </section>
                         ) }
 
