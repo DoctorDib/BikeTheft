@@ -48,7 +48,7 @@ const DesktopHeader = (): React.ReactElement => {
 
     const history = useHistory();
 
-    const onScroll = () => {
+    const onScroll = (): void => {
         setScrolled(window.scrollY > 100);
         setProfileContextOpen(false);
     };
@@ -58,34 +58,39 @@ const DesktopHeader = (): React.ReactElement => {
         return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
-    const onProfileClick = () => {
+    const onProfileClick = (): void => {
         setProfileContextOpen(!profileContextOpen);
         if (!isNullOrUndefined(profilePopperRef.current)) {
             profilePopperRef.current.focus();
         }
     };
 
-    const onProfileFocusLost = () => {
+    const onProfileFocusLost = (): void => {
         setProfileContextOpen(false);
     };
 
-    const onClickToProfile = () => {
+    const onClickToProfile = (): void => {
         setProfileContextOpen(false);
         history.push('/profile');
     };
-    const onClickToLogout = () => {
+
+    const onClickToLogout = (): void => {
         setProfileContextOpen(false);
         // TODO sign out here
     };
 
+    const onClickToLogin = (): void => {
+        // TODO put sign in here
+    };
+
     // TODO load in real user image & username
-    const username = 'B';
+    const username: string | undefined = 'B';
 
     const MainComponent = () => (
         <>
             <section className={classes.main}>
                 <div className={classes.widthContainer}>
-                    { username !== undefined && <div aria-label="Anti-profile image" style={{ width: ProfileImageSize.navbarSize }} /> }
+                    <div aria-label="Anti-profile image" style={{ width: ProfileImageSize.navbarSize }} />
                     <section className={classes.headerContainer}>
                         <div className={classes.logoContainer}>
                             <LogoButton disableRipple className={classes.menuButtons} href="/">
@@ -93,25 +98,26 @@ const DesktopHeader = (): React.ReactElement => {
                             </LogoButton>
                         </div>
                     </section>
-                    { username !== undefined && (
-                        <div
-                            className={classes.profileImageContainer}
-                            onClick={onProfileClick}
-                            role="button"
-                            tabIndex={0}
-                            onKeyDown={onProfileClick}
-                            ref={profileImageRef}
-                        >
+                    <div
+                        className={classes.profileImageContainer}
+                        onClick={username !== undefined ? onProfileClick : onClickToLogin}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={username !== undefined ? onProfileClick : onClickToLogin}
+                        ref={profileImageRef}
+                    >
+                        { username !== undefined ? (
                             <ProfileImage
                                 size={ProfileImageSize.navbarSize}
                                 imageSrc={DefaultUserImage}
                                 username={username}
                             />
-                        </div>
-                    )}
+                        ) : 'Sign In' }
+                    </div>
                 </div>
             </section>
 
+            {/* // TODO make this its own component at the behest of james */}
             <Menu
                 anchorEl={profileImageRef.current}
                 keepMounted

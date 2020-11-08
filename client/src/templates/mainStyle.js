@@ -75,6 +75,7 @@ export default {
     body: {
         margin: 0,
         width: '75vw',
+        maxWidth: '1200px',
         marginLeft: 'auto',
         marginRight: 'auto',
         display: 'flex',

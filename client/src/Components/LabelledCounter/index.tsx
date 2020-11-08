@@ -1,19 +1,30 @@
 import React from 'react';
+import { Typography } from '@material-ui/core';
+
+import { IClasses } from '../../Common/Interfaces/IClasses';
 
 interface ILabelledCounterProps {
+    title: string,
+    value?: string | number,
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function LabelledCounter(props: ILabelledCounterProps): React.ReactElement {
-    // TODO needs to have:
-    // ! text above
-    // ! big number
-    // ! centred content
+    const {
+        title,
+        value,
+    } = props;
+
+    const style: IClasses = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    };
 
     return (
-        <>
-            content
-        </>
+        <div style={style}>
+            <Typography>{ title }</Typography>
+            <Typography variant="h2">{value !== undefined ? value : '0'}</Typography>
+        </div>
     );
 }
 

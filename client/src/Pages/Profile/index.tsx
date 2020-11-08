@@ -1,5 +1,10 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import {
+    Button,
+    ButtonGroup,
+    Typography,
+} from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -10,25 +15,24 @@ import ProfileImageSize from '../../Components/ProfileImage/ProfileImageSizeEnum
 import DefaultUserImage from '../../static/img/DefaultUser.jpg';
 import LabelledCounter from '../../Components/LabelledCounter';
 
-interface IProfilePageProps {
-}
-
 // TODO for the page component:
-// ! link to this page from all places that the profile should be reachable
-// ! add all elements to page from mock image
-// ! styling
-// ! pull data for stats
-// ! pull user image
-// ! acc settings
-// ! acc delete
+// ! pull user data
 
-// TODO these props should be used
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function ProfilePage(props: IProfilePageProps): React.ReactElement {
+function ProfilePage(): React.ReactElement {
     const classes: IClasses = styles();
 
-    // TODO load from acc data
+    // TODO load acc data & values for LabelledCounters
     const username = 'Sexy boy 420';
+
+    const onSettingsClick = (): void => {
+        // TODO once settings page exists link to it here like so
+        // history.push('/settings');
+    };
+
+    const onDeleteClick = (): void => {
+        // TODO once delete functionality in place, show 'ARE YOU SURE?' prompt
+        // and then allow user to delete acc
+    };
 
     return (
         <section className={classes.body}>
@@ -58,23 +62,36 @@ function ProfilePage(props: IProfilePageProps): React.ReactElement {
                     <Typography variant="h4">{username}</Typography>
                 </div>
 
-                <div style={{
-                    gridRow: '3 / 4',
-                }}
-                >
-                    <LabelledCounter />
+                <div className={classes.counterContainer}>
+                    <LabelledCounter
+                        title="Vehicles Found"
+                        value={0}
+                    />
+                    <LabelledCounter
+                        title="Comments Made"
+                        value={0}
+                    />
+                    <LabelledCounter
+                        title="Praises Given"
+                        value={0}
+                    />
                 </div>
-                <div style={{
-                    gridRow: '3 / 4',
-                }}
-                >
-                    <LabelledCounter />
+
+                <div className={classes.postsContainer}>
+                    User Posts to be listed here
                 </div>
-                <div style={{
-                    gridRow: '3 / 4',
-                }}
-                >
-                    <LabelledCounter />
+
+                <div className={classes.settingButtonsContainer}>
+                    <ButtonGroup>
+                        <Button onClick={onSettingsClick}>Account Settings</Button>
+                        <Button
+                            className={classes.deleteButton}
+                            endIcon={<DeleteIcon />}
+                            onClick={onDeleteClick}
+                        >
+                            Delete Account
+                        </Button>
+                    </ButtonGroup>
                 </div>
             </section>
 

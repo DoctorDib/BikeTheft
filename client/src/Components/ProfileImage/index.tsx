@@ -12,7 +12,7 @@ interface IProfileImageProps {
 
 function ProfileImage(props: IProfileImageProps): React.ReactElement {
     const {
-        imageSrc, // TODO get from username?
+        imageSrc, // TODO make optional and get from username?
         size,
         altText,
         username,
@@ -24,7 +24,7 @@ function ProfileImage(props: IProfileImageProps): React.ReactElement {
                 height: size,
                 width: size,
             }}
-            alt={altText !== undefined ? altText : username}
+            alt={altText !== undefined ? altText : `${username}'s Profile`}
             src={imageSrc}
         >
             {/* if image doesn't exist then we use letter avatar instead by passing first letter of username */}
