@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import React, { useState } from 'react';
-import { API } from 'aws-amplify';
 import classNames from 'classnames';
 import {
-    TextField, 
     Typography, 
     Grid, 
     Button, 
@@ -11,40 +9,33 @@ import {
     Backdrop,
     CircularProgress
 } from '@material-ui/core';
-import { useFormik } from 'formik';
-import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
-import DateFnsUtils from '@date-io/date-fns';
+import { useFormik, FormikProvider } from 'formik';
 
-import InputToolTip from '../ToopTip';
-import ImageUploaderComponent from '../ImageUploader';
-import { 
-    IInputFields, 
-    IChip, 
+import {
     IImageSettings, 
     ICreateThreadResponse 
 } from '../../Common/Interfaces/interfaces';
+import ImageUploaderComponent from '../ImageUploader';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import styles from './styles';
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
-import { isNullOrUndefinedOrEmpty } from '../../Common/Utils/Types';
+import CountyEnum from '../../Common/Enums/CountyEnum';
 import { defaultInputs } from '../../Common/Helpers/Defaults';
 import { createNewThread } from '../../Common/Helpers/DB_Helpers';
-import NumberPlateComponent from '../VehicleUploadComponents/NumberPlateInput';
-import ChipFeaturesComponent from '../VehicleUploadComponents/ChipFeatures';
 import { uploadImagesToS3 } from '../../Common/Helpers/helper';
 import PopupComponent from '../Popup';
 import NotificationComponent from '../Notification';
 import NotificationEnums from '../../Common/Enums/NotificationEnum';
+/* INPUT */
+import DefaultTextInputComponent from '../VehicleUploadComponents/DefaultTextBox';
+import ColourInputComponent from '../VehicleUploadComponents/ColourInput';
+import DropDownInput from '../VehicleUploadComponents/DropDownInput';
+import ChipFeaturesComponent from '../VehicleUploadComponents/ChipFeatures';
+import NumberPlateComponent from '../VehicleUploadComponents/NumberPlateInput';
+import DescriptionComponent from '../VehicleUploadComponents/DescriptionInput';
+import DateTimeComponent from '../VehicleUploadComponents/DateTimeInput';
 
 interface IVehicleUploadProps {}
-
-interface IToolTipMessage {
-    primaryColour: string;
-    secondaryColour: string;
-    features: string;
-    description: string;
-    [key: string]: string;
-}
 
 const MAXIMAGES = 4;
 const GRIDSPACING = 6;
@@ -52,8 +43,6 @@ const GRIDSPACING = 6;
 const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
     const classes: IClasses = styles();
 
-    const [numberPlateError, setNumberPlateError] = useState<string>('');
-    const [featuresArray, setFeaturesArray] = useState<Array<IChip>>([]);
     const [images, setImages] = useState<Array<IImageSettings>>([]);
     const [uploadDisabled, setUploadDisabled] = useState<boolean>(false);
     const [confirmationPopup, setConfirmationPopup] = useState<boolean>(false);
@@ -64,24 +53,8 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
 
     const closeNotification = () => setNotificationOpen(false);
 
-    const onLeave = (event: React.FocusEvent<HTMLInputElement>) => {
-        // Ensuring that we're only calling api if id is numberPlate
-        // It's here just in case anyone accidentally adds the onLeave function to any other TextField
-        if (event.target.id !== 'numberPlate') {
-            return;
-        }
-    };
-
-    const getToolTip = (key: string): string | boolean => {
-        if (!Object.prototype.hasOwnProperty.call(toolTipMessages, key)) {
-            return false;
-        }
-        
-        return toolTipMessages[key];
-    };
-
     const clearEverything = (): void => {
-        //setInputFields(defaultInputs);
+        formik.setValues(defaultInputs);
         console.log("Clear");
     };
 
@@ -107,12 +80,12 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
     };
 
     const uploadData = (): void => {
-        if (values.numberPlate === '') {
+        if (formik.values.numberPlate === '') {
             setNotification('Please ensure that you have filled out "Number Plate" input', NotificationEnums.ERROR);
-            errors.numberPlate = 'Empty field';
+            formik.errors.numberPlate = 'Empty field';
             return;
         }
-
+        
         setLoading(true);
         setUploadDisabled(true);
 
@@ -123,12 +96,9 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                     setNotification('Error while uploading images... please try again later', NotificationEnums.ERROR);
                     return;
                 }
-
-                //inputFields.dateStolen = dateStolen;
-                // Turning string capture into int
-
+                
                 // TODO - Will need to change the owner_id when login is setup
-                createNewThread('1', values, featuresArray, images)
+                createNewThread('1', formik.values, images)
                     .then((threadResponse:boolean | ICreateThreadResponse) => {
                         if (!threadResponse) {
                             setNotification('Error while uploading to database... please try again later', NotificationEnums.ERROR);
@@ -149,62 +119,10 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
             });
     };
 
-    const toolTipMessages: IToolTipMessage = {
-        primaryColour: 'The main Colour of your vehicle',
-        secondaryColour: 'The second main colour of your vehicle',
-        features:
-            'Write down identifiable features of your vehicle, seperate using commans: e.g "single black door, red wheels"',
-        description: 'Write a short description of your vehicle, more information the better.',
-    };
-
-    // eslint-disable-next-line no-undef
-    const categoryOptions: ReadonlyArray<JSX.Element | undefined> = Object.keys(VehicleCategoryEnum).map(
-        // eslint-disable-next-line no-undef
-        (key: string, i: number): JSX.Element | undefined => {
-            const value = VehicleCategoryEnum[i];
-
-            return !isNullOrUndefinedOrEmpty(value) ? (
-                <option key={key} value={i}>
-                    {value}
-                </option>
-            ):undefined;
-        },
-    );
-
-    const createTextBox = (
-        label:string,
-        onChange:((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void) | undefined, 
-        textValue:IInputFields,
-        error:boolean | undefined | string,
-        addToolTip: boolean = false,
-        useBlur: boolean = false,
-    ):React.ReactElement => {
-        const id = label.split(' ')[0].toLowerCase() + 
-            label.split(' ').slice(1).join('');
-
-        let hasErrors:boolean = false;
-        if (typeof error === 'string') { hasErrors = error.length > 0; }
-        if (typeof error === 'boolean') { hasErrors = error }
-
-        return (
-            <TextField
-                id={id}
-                label={label}
-                onChange={onChange}
-                value={textValue[id]}
-                error={hasErrors}
-                onBlur={useBlur ? onLeave : undefined}
-                size="small"
-                variant="outlined"
-                className={classes.input}
-                InputProps={{
-                    endAdornment: addToolTip 
-                        ? <InputToolTip message={getToolTip(label)} />
-                        : null
-                }}
-            />
-        );
-    };
+    const createID = (value:string) => {
+        const splitLabel = value.split(' ');
+        return `${splitLabel[0].toLowerCase()}${splitLabel.slice(1).join('')}`;
+    }
 
     const confirmationPopupCallback = (response:boolean) => {
         setConfirmationPopup(false);
@@ -212,56 +130,56 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
         uploadData();
     };
 
-    const { handleSubmit, handleChange, errors, values, validateForm } = useFormik({
+    const formik = useFormik({
         initialValues: defaultInputs,
-        onSubmit() { setConfirmationPopup(true); }
+        onSubmit() { setConfirmationPopup(true); },
     });
-
-    const setValues = (key:string, value:string | VehicleCategoryEnum) => {
-        values[key] = value;
-        validateForm(values);
-    };
-
-    const setErrors = (key:string, value:string) => {
-        console.log("setting " + key + " to " + value);
-        errors[key] = value;
-    };
 
     return (
         <section className={classes.mainContainer}>
+
             <section className={classes.title}>
                 <Typography variant="h5"> Vehicle Upload </Typography>
             </section>
 
             <section style={{width: '100%', marginBottom: '30px'}}>
                 <ImageUploaderComponent images={images} setImages={setImages} maxImages={MAXIMAGES} />
-                <Typography> The images you upload will be uploaded to an S3 bucket yo </Typography>
+                <Typography>
+                    Things to think about when picking the right images:
+                </Typography>
+                <ul>
+                    <Typography variant="caption" component="li">
+                        Number plates are often removed from the vehicle, so don't rely on just that.
+                    </Typography>
+                    <Typography variant="caption" component="li">
+                        Include noticable marks that are on your vehicle if they apply to you.
+                    </Typography>
+                    <Typography variant="caption" component="li">
+                        Make sure your images are well lit.
+                    </Typography>
+                    <Typography variant="caption" component="li">
+                        Don't include pictures of yourself or friends / family for safety reasons.
+                    </Typography>
+                </ul>
             </section>
 
-            <form onSubmit={handleSubmit}>
+            <FormikProvider value={formik}>
                 <section className={classes.mainContainer}>
                     <Grid container spacing={3} className={classes.gridContainer}>
                         
                         <Divider className={classes.divider} />
                         {/* IDENTIFICATION */}
-                            <section className={classes.fieldSection}>
+                        <section className={classes.fieldSection}>
                             <section className={classes.fieldName}>
                                 <Typography variant="h6"> Identification </Typography>
                             </section>
                             <Grid container spacing={GRIDSPACING} className={classes.fieldInputs}>
                                 <Grid item sm={6} xs={12} className={classes.inputContainers}>
-                                    <NumberPlateComponent 
-                                        value={values.numberPlate} 
-                                        setValues={setValues} 
-                                        handleChange={handleChange} 
-                                        error={numberPlateError}
-                                        setError={setNumberPlateError}
-                                    />
+                                    <NumberPlateComponent />
                                 </Grid>
 
                                 <Grid item sm={6} xs={12} className={classes.inputContainers}>
-                                    {createTextBox("Vin", handleChange, values, errors.vin)}
-                                    <Typography className={classes.errorMessage} variant="caption"> {errors.vin} </Typography>
+                                    <DefaultTextInputComponent label={"Vin"} />
                                 </Grid>
                             </Grid>
                         </section>
@@ -274,28 +192,15 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                             </section>
                             <Grid container spacing={GRIDSPACING} className={classes.fieldInputs}>
                                 <Grid item sm={6} xs={12} className={classes.inputContainers}>
-                                    {createTextBox("Make", handleChange, values, errors.make)}
-                                    <Typography className={classes.errorMessage} variant="caption"> {errors.make} </Typography>
+                                    <DefaultTextInputComponent label={"Make"} />
                                 </Grid>
 
                                 <Grid item sm={6} xs={12} className={classes.inputContainers}>
-                                    {createTextBox("Model", handleChange, values, errors.model)}
-                                    <Typography className={classes.errorMessage} variant="caption"> {errors.model} </Typography>
+                                    <DefaultTextInputComponent label={"Model"} />
                                 </Grid>
 
                                 <Grid item xs={12} className={classes.inputContainers}>
-                                    <TextField
-                                        id="category"
-                                        select
-                                        label="Vehicle Category"
-                                        value={values.category}
-                                        onChange={handleChange}
-                                        SelectProps={{ native: true }}
-                                        helperText="Please select your vehicle category"
-                                        variant="outlined"
-                                    >
-                                        { categoryOptions }
-                                    </TextField>
+                                    <DropDownInput id="category" label="Vehicle Category" enumOptions={VehicleCategoryEnum} />
                                 </Grid>
                             </Grid>
                         </section>
@@ -308,25 +213,15 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                             </section>
                             <Grid container spacing={GRIDSPACING} className={classes.fieldInputs}>
                                 <Grid item sm={6} xs={12} className={classes.inputContainers}>
-                                    {createTextBox("Primary Colour", handleChange, values, errors.primaryColour, true)}
-                                    <section className={classes.colour} style={{ backgroundColor: values['primaryColour'] }} />
-                                    <Typography className={classes.errorMessage} variant="caption"> {errors.primaryColour} </Typography>
+                                    <ColourInputComponent label="Primary Colour" addToolTip={true} />
                                 </Grid>
 
                                 <Grid item sm={6} xs={12} className={classes.inputContainers}>
-                                    {createTextBox("Secondary Colour", handleChange, values, errors.secondaryColour, true)}
-                                    <section className={classes.colour} style={{ backgroundColor: values['secondaryColour'] }} />
-                                    <Typography className={classes.errorMessage} variant="caption"> {errors.secondaryColour} </Typography>
+                                    <ColourInputComponent label="Secondary Colour" addToolTip={true} />
                                 </Grid>
 
-                                <Grid item md={12} className={classes.inputContainers}>
-                                    <ChipFeaturesComponent 
-                                        value={values.features}
-                                        setValues={setValues}
-                                        handleChange={handleChange}
-                                        featuresArray={featuresArray}
-                                        setFeaturesArray={setFeaturesArray}
-                                    />
+                                <Grid item xs={12}>
+                                    <ChipFeaturesComponent />
                                 </Grid>
                             </Grid>
                         </section>
@@ -339,23 +234,10 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                             </section>
                             <Grid container spacing={GRIDSPACING} className={classes.fieldInputs}>
                                 <Grid item md={6} xs={12} className={classes.inputContainers}>
-                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                        <DateTimePicker
-                                            id="dateStolen"
-                                            variant="outlined"
-                                            label="Date Stolen"
-                                            disableFuture
-                                            value={values.dateStolen}
-                                            onChange={handleChange}
-                                            autoOk
-                                            ampm={false}
-                                            className={classes.input}
-                                        />
-                                    </MuiPickersUtilsProvider>
+                                    <DateTimeComponent />
                                 </Grid>
-
                                 <Grid item md={6} xs={12} className={classes.inputContainers}>
-                                    {createTextBox("Location", handleChange, values, false)}
+                                    <DropDownInput key="category" label="County" enumOptions={CountyEnum} />
                                 </Grid>
                             </Grid>
                         </section>
@@ -369,21 +251,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                             </section>
                             <Grid container spacing={GRIDSPACING} className={classes.fieldInputs}>
                                 <Grid item md={12}  className={classNames(classes.inputContainers, classes.descriptionContainer)}>
-                                    <TextField
-                                        id="description"
-                                        size="small"
-                                        label="Description"
-                                        variant="outlined"
-                                        onChange={handleChange}
-                                        onBlur={onLeave}
-                                        value={values.description}
-                                        className={classes.input}
-                                        multiline
-                                        rows={6}
-                                        InputProps={{
-                                            endAdornment: <InputToolTip message={getToolTip("description")} />,
-                                        }}
-                                    />
+                                    <DescriptionComponent />
                                 </Grid>
                             </Grid>  
                         </section>
@@ -391,30 +259,28 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                         <Divider className={classes.divider} />
 
                         <section className={classes.fieldSection}>
-                            <section className={classes.fieldInputs}>
-                                <section className={classes.controlButtons}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={clearEverything}
-                                        disabled={uploadDisabled}
-                                    >
-                                        Clear
-                                    </Button>
-                                    <Button 
-                                        variant="contained" 
-                                        color="primary" 
-                                        type="submit"
-                                        disabled={uploadDisabled}
-                                    >
-                                        Upload
-                                    </Button>
-                                </section>
+                            <section className={classes.controlButtons}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={clearEverything}
+                                    disabled={uploadDisabled}
+                                >
+                                    Clear
+                                </Button>
+                                <Button 
+                                    variant="contained" 
+                                    color="primary" 
+                                    onClick={formik.submitForm}
+                                    disabled={uploadDisabled}
+                                >
+                                    Upload
+                                </Button>
                             </section>
                         </section>
                     </Grid>
                 </section>
-            </form>
+            </FormikProvider>
 
             <PopupComponent
                 open={confirmationPopup}

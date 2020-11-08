@@ -119,7 +119,6 @@ const stripData64 = (images: Array<IImageSettings>) => images.map((data) => ({
 export const createNewThread = async (
     ownerID: string,
     data: IInputFields,
-    featuresArray: Array<IChip>,
     images: Array<IImageSettings>,
 ): Promise<boolean | ICreateThreadResponse> => {
     const {
@@ -135,7 +134,7 @@ export const createNewThread = async (
     // Extracting the string values from an array of objects
     // e.g. [{key: 1, value: "one"}, {key: 2, value: "two"}]
     // is now ["one", "two"]
-    const features: Array<string> = sortFeaturesArray(featuresArray);
+    const features: Array<string> = sortFeaturesArray(data.featuresArray);
 
     const serverThreadData = { // TODO this needs a type!!!
         body: {

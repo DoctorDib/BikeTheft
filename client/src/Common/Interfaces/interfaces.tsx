@@ -119,3 +119,11 @@ export interface IInputLimits {
     secondaryColour: number,
     [key: string]: number;
 }
+
+export interface IToolTipMessage {
+    primaryColour: string;
+    secondaryColour: string;
+    features: string;
+    description: string;
+    [key: string]: string;
+}

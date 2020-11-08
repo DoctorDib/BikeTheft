@@ -1,30 +1,28 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import {
     TextField, 
     Chip,
 } from '@material-ui/core';
+import { useFormikContext } from 'formik';
 
 import InputToolTip from '../../ToopTip';
-import { IChip } from '../../../Common/Interfaces/interfaces';
+import { IChip, IInputFields } from '../../../Common/Interfaces/interfaces';
 import { IClasses } from '../../../Common/Interfaces/IClasses';
-import VehicleCategoryEnum from '../../../Common/Enums/VehicleCategoryEnum';
 import styles from './styles';
 
 interface IChipProps {
-    value: string;
-    setValues: (key:string, value:string | VehicleCategoryEnum) => void;
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>)=>void;
-    featuresArray: Array<IChip>;
-    setFeaturesArray: (x: Array<IChip>) => void;
 }
 
 let chipIndex = 0;
 const errorMessage = 'Write down identifiable features of your vehicle, seperate using commans: e.g "single black door, red wheels"';
 
-const VehicleUploadInputs = (props:IChipProps):React.ReactElement<IChipProps> => {
-    const { value, setValues, handleChange, featuresArray, setFeaturesArray } = props;
+const VehicleUploadInputs = ():React.ReactElement<IChipProps> => {
+    const { values, setFieldValue } = useFormikContext<IInputFields>();
+
+    const [value, setValue] = useState<string>('');
+    const [featuresArray, setFeaturesArray] = useState<Array<IChip>>([]);
 
     const classes: IClasses = styles();
 
@@ -33,16 +31,32 @@ const VehicleUploadInputs = (props:IChipProps):React.ReactElement<IChipProps> =>
 
         if (newValue.includes(',')) {
             setChipArray(newValue);
-            setValues('features', '');
+            setValue('');
             return;
         }
 
-        handleChange(event);
+        setValue(newValue);
     };
+
+    const onBlur = () => {
+        // ensuring rerender only if value has changed
+        if (featuresArray === values['featuresArray']) { return; }
+        setFieldValue('featuresArray', featuresArray);
+    };
+
+    const syncValue = () => {
+        if (values['features'] === value) { return; }
+        setValue(values['features']);
+    };
+
+    useEffect(syncValue, [values['features']]);
 
     const handleDelete = (chipData: IChip) => () => {
         let newFeatureArray = featuresArray;
-        newFeatureArray = newFeatureArray.filter((chip: IChip) => chip.key !== chipData.key);
+        newFeatureArray = newFeatureArray.filter(
+            (chip: IChip) => chip.key !== chipData.key
+        );
+        setFieldValue('featuresArray', newFeatureArray);
         setFeaturesArray(newFeatureArray);
     };
 
@@ -71,11 +85,12 @@ const VehicleUploadInputs = (props:IChipProps):React.ReactElement<IChipProps> =>
         <section className={classes.inputContainers}>
             <section className={classes.featureContainer}>{setChips}</section>
             <TextField
-                id='features'
+                id="features"
                 size="small"
                 label="Vehicle Features"
                 variant="outlined"
                 onChange={onChange}
+                onBlur={onBlur}
                 value={value}
                 className={classNames(classes.input, classes.featuresInput)}
                 multiline

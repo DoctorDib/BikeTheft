@@ -1,9 +1,10 @@
+import { useFormikContext } from 'formik';
+
 import { 
     IInputFields, 
     IInputErrorMessages, 
     IInputLimits 
 } from '../../Common/Interfaces/interfaces';
-
 import { defaultInputErrorMessages } from '../../Common/Helpers/Defaults';
 
 const LIST: IInputLimits = {
@@ -30,11 +31,12 @@ const checkFieldLengths = (values:IInputFields):IInputErrorMessages => {
     return lengthErrors;
 };
 
-const onValidate = (values:IInputFields) => {
-    let errors:IInputErrorMessages = defaultInputErrorMessages;
+const onValidate = () => {
+    const { errors, values, setErrors } = useFormikContext<IInputFields>();
 
-    const newErrors:IInputErrorMessages = checkFieldLengths(values);
-    errors = {...errors, ...newErrors}
+    let newErrors:IInputErrorMessages = checkFieldLengths(values);
+    
+    setErrors({...errors, ...newErrors});
 
     if (values.numberPlate) {
         if (!values.numberPlate) {

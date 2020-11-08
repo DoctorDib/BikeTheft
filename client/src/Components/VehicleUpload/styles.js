@@ -52,14 +52,6 @@ export default makeStyles((theme) => ({
         },
     },
 
-    colour: {
-        height: '5px',
-        border: '1px solid #C4C4C4',
-        borderRadius: '10px',
-        width: '100%',
-        marginTop: '5px',
-    },
-
     descriptionContainer: {
         width: '100%',
         padding: '0 12px 0 12px',
@@ -101,7 +93,7 @@ export default makeStyles((theme) => ({
 
     divider: {
         height: '1px',
-        width: '100vw',
+        width: '110%',
     },
 
     inputContainers: {
@@ -113,6 +105,7 @@ export default makeStyles((theme) => ({
         margin: '1em 0 1em 0',
         width: '100%',
         position: 'relative',
+        padding: '15px 25px 15px 25px !override',
     },
 
     fieldSection: {
@@ -128,7 +121,6 @@ export default makeStyles((theme) => ({
     },
 
     fieldName: {
-        width: '100vw',
         display: 'flex',
         justifyContent: 'center',
         color: '#4a4a4a',

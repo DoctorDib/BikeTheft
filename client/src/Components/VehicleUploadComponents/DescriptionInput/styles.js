@@ -24,21 +24,10 @@ export default makeStyles((theme) => ({
         flexDirection: 'row',
         width: '100%',
         flexWrap: 'wrap',
-        backgroundColor: '#ececec',
+        backgroundColor: '#d9d9d9',
         padding: '10px',
         minHeight: '32px',
-        borderRadius: '5px',
-    },
-
-    chip: {
-        margin: '5px',
-        height: 'auto',
-        padding: '5px',
-        backgroundColor: '#376B9F',
-        borderRadius: '10px',
-        '& .MuiChip-label': {
-            whiteSpace: 'normal',
-        },
+        borderRadius: '15px',
     },
 
     inputContainers: {
@@ -51,4 +40,22 @@ export default makeStyles((theme) => ({
         width: '100%',
         position: 'relative',
     },
+
+    fieldSection: {
+        width: '100%',
+        padding: '10px',
+        margin: '10px 0 10px 0',
+        display: 'flex',
+        flexDirection: 'column',
+
+        [theme.breakpoints.up('md')]: {
+            flexDirection: 'row',
+        },
+    },
+
+    errorMessage: {
+        color: 'red',
+        position: 'absolute',
+        bottom: 0,
+    }
 }));
