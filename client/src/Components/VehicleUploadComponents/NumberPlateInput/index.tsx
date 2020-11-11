@@ -39,7 +39,7 @@ const NumberPlateInput = ():React.ReactElement<INumberPlateInputProps> => {
 
         checkNumberPlate(value)
             .then((response:number | boolean) => {
-                if (typeof response == 'number') {
+                if (typeof response === 'number') {
                     setFieldError('numberPlate', `Vehicle post already exists at ${window.location.origin}/post/${response}`);
                     return;
                 }
@@ -84,9 +84,9 @@ const NumberPlateInput = ():React.ReactElement<INumberPlateInputProps> => {
             },
         };
 
+        // eslint-disable-next-line
         return await API.post('base_endpoint', '/external/dvla', body)
             .then((response) => {
-                
                 setFieldValue('make', response.make);
                 setFieldValue('primaryColour', response.colour);
                 setFieldValue('category', setCategory(response.wheelplan));

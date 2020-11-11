@@ -108,7 +108,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                         if (!threadResponse) {
                             setNotification('Error while uploading to database... please try again later', NotificationEnums.ERROR);
                             return;
-                        } 
+                        }
                         if (typeof threadResponse !== 'boolean' && threadResponse.thread_id === -1) {
                             const message = 'Number plate has already been found in our database, please ensure you have entered the number plate and try again, if the issues persists then please contact support.';
                             setNotification(message, NotificationEnums.ERROR);
@@ -150,7 +150,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                 </Typography>
                 <ul>
                     <Typography variant="caption" component="li">
-                        Number plates are often removed from the vehicle, so don't rely on just that.
+                        Number plates are often removed from the vehicle, so do not rely on just that.
                     </Typography>
                     <Typography variant="caption" component="li">
                         Include noticable marks that are on your vehicle if they apply to you.
@@ -159,7 +159,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                         Make sure your images are well lit.
                     </Typography>
                     <Typography variant="caption" component="li">
-                        Don't include pictures of yourself or friends / family for safety reasons.
+                        Do not include pictures of yourself or friends / family for safety reasons.
                     </Typography>
                 </ul>
             </section>
