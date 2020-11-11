@@ -42,7 +42,7 @@ module.exports = {
            *
            * See https://github.com/pikapkg/snowpack/discussions/718
            */
-          name: "redirect-aws-amplify",
+          /*name: "redirect-aws-amplify",
           load(id) {
             // This is only needed for (and only works in) production mode,
             // though note that in dev mode you still get many warnings.
@@ -55,7 +55,7 @@ module.exports = {
                 return fs.readFileSync(alternate, "utf-8");
               }
             }
-          },
+          },*/
         },
       ],
     },

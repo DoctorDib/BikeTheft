@@ -37,6 +37,7 @@ export interface IPostAttributes {
     message: string;
     confirmation_image: IImageSettings;
     active_state: boolean;
+    comment_images: Array<IImageSettings>;
     is_deleted: boolean;
     replying_to: number | null;
 }
