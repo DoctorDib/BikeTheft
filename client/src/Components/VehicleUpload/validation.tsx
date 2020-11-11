@@ -1,9 +1,9 @@
 import { useFormikContext } from 'formik';
 
-import { 
-    IInputFields, 
-    IInputErrorMessages, 
-    IInputLimits 
+import {
+    IInputFields,
+    IInputErrorMessages,
+    IInputLimits,
 } from '../../Common/Interfaces/interfaces';
 import { defaultInputErrorMessages } from '../../Common/Helpers/Defaults';
 
@@ -19,7 +19,7 @@ const LIST: IInputLimits = {
 const check = (expectedValue:number, actualValue:number) => actualValue <= expectedValue;
 
 const checkFieldLengths = (values:IInputFields):IInputErrorMessages => {
-    let lengthErrors:IInputErrorMessages = defaultInputErrorMessages;
+    const lengthErrors:IInputErrorMessages = defaultInputErrorMessages;
 
     Object.keys(values).forEach((key:string) => {
         const value = values[key];
@@ -34,17 +34,17 @@ const checkFieldLengths = (values:IInputFields):IInputErrorMessages => {
 const onValidate = () => {
     const { errors, values, setErrors } = useFormikContext<IInputFields>();
 
-    let newErrors:IInputErrorMessages = checkFieldLengths(values);
-    
-    setErrors({...errors, ...newErrors});
+    const newErrors:IInputErrorMessages = checkFieldLengths(values);
+
+    setErrors({ ...errors, ...newErrors });
 
     if (values.numberPlate) {
         if (!values.numberPlate) {
-            errors.numberPlate = "Required number plate!";
+            errors.numberPlate = 'Required number plate!';
         }
     }
 
     return errors;
 };
 
-export default  onValidate;
+export default onValidate;

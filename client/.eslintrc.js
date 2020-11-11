@@ -46,7 +46,8 @@ module.exports = {
         }],
         "no-continue": 0,
         "object-curly-newline": 0,
-        "implicit-arrow-linebreak": 0
+        "implicit-arrow-linebreak": 0,
+        "react/jsx-props-no-spreading": 0,
     },
     env: {
         "browser": true,

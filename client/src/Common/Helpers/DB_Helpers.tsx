@@ -1,29 +1,29 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { API } from 'aws-amplify';
 
-import { 
-    getDateTimeString, 
-    sortFeaturesArray 
+import {
+    getDateTimeString,
+    sortFeaturesArray,
 } from './helper';
 import {
-    IPostAttributes, 
-    IData, 
-    IInputFields, 
+    IPostAttributes,
+    IData,
+    IInputFields,
     IImageSettings,
-    IChip,
     ICreateThreadResponse,
 } from '../Interfaces/interfaces';
 import { defaultData } from './Defaults';
 
-export const checkNumberPlate = async (numberPlate: string): Promise<boolean> => {
+export const checkNumberPlate = async (numberPlate: string): Promise<boolean | number> => {
     const body = {
         body: { number_plate: numberPlate },
     };
 
-    console.log("checking: ", numberPlate)
+    console.log('checking: ', numberPlate);
 
     try {
         const resp = await API.post('base_endpoint', '/vehicles/check_number_plate', body);
+        console.log('Check response: ', resp);
         return resp.exists;
     } catch (e) {
         console.error(e);
@@ -124,6 +124,7 @@ export const createNewThread = async (
     const {
         make,
         model,
+        location,
         category,
         primary_colour,
         secondary_colour,
@@ -140,7 +141,7 @@ export const createNewThread = async (
         body: {
             owner_id: ownerID,
             // TODO - Set up location / geometry
-            location: null,
+            location,
             // for now we're defaulting vehicles that get uploaded to
             // automatically be assumed as stolen
             status: 0,
@@ -169,7 +170,7 @@ export const createNewThread = async (
             serverThreadData,
         );
 
-        console.log("THREAD RESPONSE: ", response);
+        console.log('THREAD RESPONSE: ', response);
 
         return response;
     } catch (e) {

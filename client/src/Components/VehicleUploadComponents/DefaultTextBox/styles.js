@@ -57,5 +57,5 @@ export default makeStyles((theme) => ({
         color: 'red',
         position: 'absolute',
         bottom: 0,
-    }
+    },
 }));

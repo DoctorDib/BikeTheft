@@ -16,23 +16,25 @@ interface IDropDownProps {
     enumOptions: CountyEnum | VehicleCategoryEnum
 }
 
-const categoryOptions = (enumOptions: CountyEnum | VehicleCategoryEnum):Array<React.ReactElement | undefined> => {
-    return Object.keys(enumOptions).map(
-        (key: string, i: number | any): React.ReactElement | undefined=> {
-            const value: string = enumOptions[Object.keys(enumOptions)[i]];
-          
-            return !isNullOrUndefinedOrEmpty(value) 
-                ? ( <option key={key} value={i}> {value} </option> )
-                : undefined;
-        },
-    );
-}
+const categoryOptions = (enumOptions: CountyEnum | VehicleCategoryEnum):Array<React.ReactElement | undefined> => Object.keys(enumOptions).map(
+    (key: string, i: number | any): React.ReactElement | undefined => {
+        const value: string = enumOptions[Object.keys(enumOptions)[i]];
+
+        return !isNullOrUndefinedOrEmpty(value)
+            ? (
+                <option key={key} value={i}>
+                    {value}
+                </option>
+            )
+            : undefined;
+    },
+);
 
 const DropDownInput = (props:IDropDownProps):React.ReactElement<IDropDownProps> => {
     const { id, label, enumOptions } = props;
     const { values, setFieldValue } = useFormikContext<IInputFields>();
     const classes:IClasses = styles();
-    
+
     const [options, setOptions] = useState<Array<React.ReactElement | undefined>>();
     const [value, setValue] = useState<string>('');
 
@@ -56,7 +58,7 @@ const DropDownInput = (props:IDropDownProps):React.ReactElement<IDropDownProps> 
 
     useEffect(syncValue, [values[id]]);
 
-    return (              
+    return (
         <TextField
             id={id}
             select

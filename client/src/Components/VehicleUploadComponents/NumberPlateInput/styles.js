@@ -55,7 +55,6 @@ export default makeStyles((theme) => ({
 
     errorMessage: {
         color: 'red',
-        position: 'absolute',
         bottom: 0,
-    }
+    },
 }));

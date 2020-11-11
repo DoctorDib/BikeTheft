@@ -6,5 +6,5 @@ export default makeStyles(() => ({
 
     input: {
         width: '100%',
-    }
+    },
 }));

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import {
-    TextField, 
+    TextField,
     Chip,
 } from '@material-ui/core';
 import { useFormikContext } from 'formik';
@@ -40,21 +40,21 @@ const VehicleUploadInputs = ():React.ReactElement<IChipProps> => {
 
     const onBlur = () => {
         // ensuring rerender only if value has changed
-        if (featuresArray === values['featuresArray']) { return; }
+        if (featuresArray === values.featuresArray) { return; }
         setFieldValue('featuresArray', featuresArray);
     };
 
     const syncValue = () => {
-        if (values['features'] === value) { return; }
-        setValue(values['features']);
+        if (values.features === value) { return; }
+        setValue(values.features);
     };
 
-    useEffect(syncValue, [values['features']]);
+    useEffect(syncValue, [values.features]);
 
     const handleDelete = (chipData: IChip) => () => {
         let newFeatureArray = featuresArray;
         newFeatureArray = newFeatureArray.filter(
-            (chip: IChip) => chip.key !== chipData.key
+            (chip: IChip) => chip.key !== chipData.key,
         );
         setFieldValue('featuresArray', newFeatureArray);
         setFeaturesArray(newFeatureArray);
@@ -80,7 +80,7 @@ const VehicleUploadInputs = ():React.ReactElement<IChipProps> => {
 
         setFeaturesArray([...featuresArray, newChip]);
     };
-    
+
     return (
         <section className={classes.inputContainers}>
             <section className={classes.featureContainer}>{setChips}</section>

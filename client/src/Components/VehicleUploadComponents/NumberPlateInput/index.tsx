@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import React, { useState } from 'react';
 import { useFormikContext, Field } from 'formik';
-import {
-    TextField,
-    Typography,
-} from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { API } from 'aws-amplify';
 
+import ModifiedTextfield from '../ModifiedTextfield';
 import Env from '../../../Common/Utils/Env';
 import { checkNumberPlate } from '../../../Common/Helpers/DB_Helpers';
 import { IInputFields } from '../../../Common/Interfaces/interfaces';
@@ -17,28 +15,19 @@ import styles from './styles';
 interface INumberPlateInputProps {
 }
 
-const ModifiedTextfield = (props: FormikProps<FormValues>) => (
-    <TextField
-        {...props}
-        InputLabelProps={{
-            shrink: true,
-        }}
-    />
-);
-
 const NumberPlateInput = ():React.ReactElement<INumberPlateInputProps> => {
     const { values, errors, setFieldValue, setFieldError } = useFormikContext<IInputFields>();
-    
+
     const classes: IClasses = styles();
 
     // Flag to determine if number plate has changed
     // if changed then we can make a call to DVLA
     const [numberPlateFlag, setNumberPlateFlag] = useState<boolean>(false);
-    const [value, setValue] = useState<string>(values['numberPlate']);
+    const [value, setValue] = useState<string>(values.numberPlate);
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (errors['numberPlate'] !== undefined && errors['numberPlate'].length > 0) {
-            setFieldError('numberPlate', ''); 
+        if (errors.numberPlate !== undefined && errors.numberPlate.length > 0) {
+            setFieldError('numberPlate', '');
         }
         if (!numberPlateFlag) { setNumberPlateFlag(true); }
         setValue(event.target.value);
@@ -49,26 +38,24 @@ const NumberPlateInput = ():React.ReactElement<INumberPlateInputProps> => {
         if (!numberPlateFlag) { return; }
 
         checkNumberPlate(value)
-            .then((response) => {
-                console.log(response);
-                if (!response) {
-                    //setError('Number plate already exists');
-                    setFieldError('numberPlate', 'Number plate already exists');
+            .then((response:number | boolean) => {
+                if (typeof response == 'number') {
+                    setFieldError('numberPlate', `Vehicle post already exists at ${window.location.origin}/post/${response}`);
                     return;
                 }
 
                 getDVLAData(value)
-                    .then(() => {
+                    .then((dvlaResponse:boolean):void => {
+                        if (!dvlaResponse) { return; }
                         setNumberPlateFlag(false);
                         setFieldValue('numberPlate', value);
                     })
                     .catch((e) => {
                         console.log(e);
                     });
-                
             }).catch((e) => {
                 console.log(e);
-                //setError(e);
+                // setError(e);
             });
     };
 
@@ -88,7 +75,7 @@ const NumberPlateInput = ():React.ReactElement<INumberPlateInputProps> => {
         return VehicleCategoryEnum.NONE;
     };
 
-    const getDVLAData = async (numberPlate: string) => {
+    const getDVLAData = async (numberPlate: string):Promise<boolean> => {
         const body = {
             body: {
                 post: 443,
@@ -97,26 +84,30 @@ const NumberPlateInput = ():React.ReactElement<INumberPlateInputProps> => {
             },
         };
 
-        await API.post('base_endpoint', '/external/dvla', body)
+        return await API.post('base_endpoint', '/external/dvla', body)
             .then((response) => {
+                
                 setFieldValue('make', response.make);
                 setFieldValue('primaryColour', response.colour);
                 setFieldValue('category', setCategory(response.wheelplan));
                 setFieldValue('v5cVerificationDate', response.dateOfLastV5CIssued);
+                return true;
             })
             .catch((responseError) => {
+                console.log(responseError);
                 // Only use for debugging
                 console.log('DVLA API Error: ', responseError);
-                setFieldError('numberPlate', 'API error, please try again later');
+                setFieldError('numberPlate', 'Number plate not found in DVLA records');
+                return false;
             });
     };
 
     return (
         <>
             <Field
-                id='numberPlate'
+                id="numberPlate"
                 label="Number Plate"
-                placeholder={"Number Plate"}
+                placeholder="Number Plate"
                 value={value}
                 onChange={onChange}
                 onBlur={onLeave}
@@ -124,7 +115,7 @@ const NumberPlateInput = ():React.ReactElement<INumberPlateInputProps> => {
                 className={classes.input}
             />
             <Typography className={classes.errorMessage} variant="caption">
-                {errors['numberPlate']}
+                {errors.numberPlate}
             </Typography>
         </>
     );

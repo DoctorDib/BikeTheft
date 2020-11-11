@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import React, { useState, useEffect } from 'react';
-import { Typography, TextField } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { useFormikContext, Field } from 'formik';
 
+import ModifiedTextfield from '../ModifiedTextfield';
 import { getToolTip, formatID } from '../helpers';
 import InputToolTip from '../../ToopTip';
-import { IInputFields } from '../../../Common/Interfaces/interfaces';
+import { IInputFields, IChip } from '../../../Common/Interfaces/interfaces';
 import { IClasses } from '../../../Common/Interfaces/IClasses';
 import styles from './styles';
 
@@ -14,23 +15,14 @@ interface IDefaultInputProps {
     addToolTip?:boolean,
 }
 
-const ModifiedTextfield = (props) => (
-    <TextField
-        {...props}
-        InputLabelProps={{
-            shrink: true,
-        }}
-    />
-);
-
 const DefaultTextInput = (props:IDefaultInputProps):React.ReactElement<IDefaultInputProps> => {
     const { label, addToolTip } = props;
-    
+
     const { values, errors, setFieldValue, setFieldError } = useFormikContext<IInputFields>();
 
-    const id = formatID(label);
+    const id:string = formatID(label);
     const classes: IClasses = styles();
-    const [value, setValue] = useState<string>(values[id]);
+    const [value, setValue] = useState<string | number | string[] | IChip[] | Date>(values[id]);
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (errors[id] === undefined) { setFieldError(id, ''); }
@@ -41,15 +33,15 @@ const DefaultTextInput = (props:IDefaultInputProps):React.ReactElement<IDefaultI
         // ensuring rerender only if value has changed
         if (value === values[id]) { return; }
         setFieldValue(id, value);
-    }
+    };
 
     const syncValue = () => {
         if (values[id] === value) { return; }
         setValue(values[id]);
-    }
+    };
 
     useEffect(syncValue, [values[id]]);
-    
+
     return (
         <>
             <Field
@@ -62,9 +54,9 @@ const DefaultTextInput = (props:IDefaultInputProps):React.ReactElement<IDefaultI
                 component={ModifiedTextfield}
                 className={classes.input}
                 InputProps={{
-                    endAdornment: addToolTip !== null 
+                    endAdornment: addToolTip !== null
                         ? <InputToolTip message={getToolTip(id)} />
-                        : null
+                        : null,
                 }}
             />
             <Typography className={classes.errorMessage} variant="caption">

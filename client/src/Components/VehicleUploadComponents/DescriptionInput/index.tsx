@@ -4,7 +4,7 @@ import { useFormikContext } from 'formik';
 import { TextField } from '@material-ui/core';
 
 import InputToolTip from '../../ToopTip';
-import { getToolTip } from '../../VehicleUploadComponents/helpers';
+import { getToolTip } from '../helpers';
 import { IInputFields } from '../../../Common/Interfaces/interfaces';
 import { IClasses } from '../../../Common/Interfaces/IClasses';
 import styles from './styles';
@@ -14,26 +14,26 @@ interface IDescriptionProps {
 
 const DescriptionInput = ():React.ReactElement<IDescriptionProps> => {
     const { values, setFieldValue } = useFormikContext<IInputFields>();
-    
+
     const classes: IClasses = styles();
-    
-    const [value, setValue] = useState<string>(values['description']);
+
+    const [value, setValue] = useState<string>(values.description);
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value);
     };
-    
+
     const onBlur = () => {
-        if (values['description'] === value) { return; }
-        setFieldValue('description', values['description']);
+        if (values.description === value) { return; }
+        setFieldValue('description', values.description);
     };
 
     const syncValue = () => {
-        if (values['description'] === value) { return; }
-        setValue(values['description']);
+        if (values.description === value) { return; }
+        setValue(values.description);
     };
 
-    useEffect(syncValue, [values['description']]);
+    useEffect(syncValue, [values.description]);
 
     return (
         <TextField
@@ -48,7 +48,7 @@ const DescriptionInput = ():React.ReactElement<IDescriptionProps> => {
             multiline
             rows={6}
             InputProps={{
-                endAdornment: <InputToolTip message={getToolTip("description")} />,
+                endAdornment: <InputToolTip message={getToolTip('description')} />,
             }}
         />
     );

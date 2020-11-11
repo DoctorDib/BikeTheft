@@ -2,18 +2,18 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import {
-    Typography, 
-    Grid, 
-    Button, 
-    Divider, 
+    Typography,
+    Grid,
+    Button,
+    Divider,
     Backdrop,
-    CircularProgress
+    CircularProgress,
 } from '@material-ui/core';
 import { useFormik, FormikProvider } from 'formik';
 
 import {
-    IImageSettings, 
-    ICreateThreadResponse 
+    IImageSettings,
+    ICreateThreadResponse,
 } from '../../Common/Interfaces/interfaces';
 import ImageUploaderComponent from '../ImageUploader';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -55,21 +55,25 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
 
     const clearEverything = (): void => {
         formik.setValues(defaultInputs);
-        console.log("Clear");
+        console.log('Clear');
     };
 
     const setNotification = (message:string, severty:NotificationEnums) => {
         setNotificationOpen(true);
         setNotificationMessage(message);
         setNotificationSeverty(severty);
-        setUploadDisabled(true);
+        setUploadDisabled(false);
+        setLoading(false);
     };
 
     const success = (response:ICreateThreadResponse | boolean) => {
-        if (typeof response === 'boolean') { return; }
+        if (
+            typeof response === 'boolean'
+            || response.thread_id === undefined
+            || response.thread_id === -1
+        ) { return; }
 
-        const message:string =
-        `Success! Your vehicle has been uploaded
+        const message = `Success! Your vehicle has been uploaded
         Your post can be found at /post/${response.thread_id}`;
 
         setNotification(message, NotificationEnums.SUCCESS);
@@ -85,44 +89,41 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
             formik.errors.numberPlate = 'Empty field';
             return;
         }
-        
+
         setLoading(true);
         setUploadDisabled(true);
 
         // currently static upload to vehicles folder only
         uploadImagesToS3('1', images, 'vehicles')
             .then((s3Response:boolean) => {
-                if (!s3Response) { 
+                if (!s3Response) {
                     setNotification('Error while uploading images... please try again later', NotificationEnums.ERROR);
                     return;
                 }
-                
+
                 // TODO - Will need to change the owner_id when login is setup
                 createNewThread('1', formik.values, images)
                     .then((threadResponse:boolean | ICreateThreadResponse) => {
+                        console.log(threadResponse);
                         if (!threadResponse) {
                             setNotification('Error while uploading to database... please try again later', NotificationEnums.ERROR);
                             return;
-                        } else if (threadResponse.thread_id === -1) {
+                        } 
+                        if (typeof threadResponse !== 'boolean' && threadResponse.thread_id === -1) {
                             const message = 'Number plate has already been found in our database, please ensure you have entered the number plate and try again, if the issues persists then please contact support.';
                             setNotification(message, NotificationEnums.ERROR);
                             return;
                         }
 
                         setLoading(false);
-                    
+
                         success(threadResponse);
                     }).catch((e) => {
-                        console.log("HERE");
+                        console.log('HERE');
                         console.log(e);
                     });
             });
     };
-
-    const createID = (value:string) => {
-        const splitLabel = value.split(' ');
-        return `${splitLabel[0].toLowerCase()}${splitLabel.slice(1).join('')}`;
-    }
 
     const confirmationPopupCallback = (response:boolean) => {
         setConfirmationPopup(false);
@@ -142,7 +143,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                 <Typography variant="h5"> Vehicle Upload </Typography>
             </section>
 
-            <section style={{width: '100%', marginBottom: '30px'}}>
+            <section style={{ width: '100%', marginBottom: '30px' }}>
                 <ImageUploaderComponent images={images} setImages={setImages} maxImages={MAXIMAGES} />
                 <Typography>
                     Things to think about when picking the right images:
@@ -166,7 +167,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
             <FormikProvider value={formik}>
                 <section className={classes.mainContainer}>
                     <Grid container spacing={3} className={classes.gridContainer}>
-                        
+
                         <Divider className={classes.divider} />
                         {/* IDENTIFICATION */}
                         <section className={classes.fieldSection}>
@@ -179,7 +180,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                                 </Grid>
 
                                 <Grid item sm={6} xs={12} className={classes.inputContainers}>
-                                    <DefaultTextInputComponent label={"Vin"} />
+                                    <DefaultTextInputComponent label="Vin" />
                                 </Grid>
                             </Grid>
                         </section>
@@ -192,11 +193,11 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                             </section>
                             <Grid container spacing={GRIDSPACING} className={classes.fieldInputs}>
                                 <Grid item sm={6} xs={12} className={classes.inputContainers}>
-                                    <DefaultTextInputComponent label={"Make"} />
+                                    <DefaultTextInputComponent label="Make" />
                                 </Grid>
 
                                 <Grid item sm={6} xs={12} className={classes.inputContainers}>
-                                    <DefaultTextInputComponent label={"Model"} />
+                                    <DefaultTextInputComponent label="Model" />
                                 </Grid>
 
                                 <Grid item xs={12} className={classes.inputContainers}>
@@ -204,7 +205,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                                 </Grid>
                             </Grid>
                         </section>
-                        
+
                         <Divider className={classes.divider} />
                         {/* VEHICLE LOOKS */}
                         <section className={classes.fieldSection}>
@@ -213,11 +214,11 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                             </section>
                             <Grid container spacing={GRIDSPACING} className={classes.fieldInputs}>
                                 <Grid item sm={6} xs={12} className={classes.inputContainers}>
-                                    <ColourInputComponent label="Primary Colour" addToolTip={true} />
+                                    <ColourInputComponent label="Primary Colour" addToolTip />
                                 </Grid>
 
                                 <Grid item sm={6} xs={12} className={classes.inputContainers}>
-                                    <ColourInputComponent label="Secondary Colour" addToolTip={true} />
+                                    <ColourInputComponent label="Secondary Colour" addToolTip />
                                 </Grid>
 
                                 <Grid item xs={12}>
@@ -250,10 +251,10 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                                 <Typography variant="h6"> Additional information </Typography>
                             </section>
                             <Grid container spacing={GRIDSPACING} className={classes.fieldInputs}>
-                                <Grid item md={12}  className={classNames(classes.inputContainers, classes.descriptionContainer)}>
+                                <Grid item md={12} className={classNames(classes.inputContainers, classes.descriptionContainer)}>
                                     <DescriptionComponent />
                                 </Grid>
-                            </Grid>  
+                            </Grid>
                         </section>
 
                         <Divider className={classes.divider} />
@@ -268,9 +269,9 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                                 >
                                     Clear
                                 </Button>
-                                <Button 
-                                    variant="contained" 
-                                    color="primary" 
+                                <Button
+                                    variant="contained"
+                                    color="primary"
                                     onClick={formik.submitForm}
                                     disabled={uploadDisabled}
                                 >
@@ -289,14 +290,14 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                 confirmationCallback={confirmationPopupCallback}
             />
 
-            <NotificationComponent 
+            <NotificationComponent
                 open={notificationOpen}
                 onClose={closeNotification}
                 message={notificationMessage}
                 severty={notificationSeverty}
             />
 
-            <Backdrop open={loading} style={{zIndex: 100}}>
+            <Backdrop open={loading} style={{ zIndex: 100 }}>
                 <CircularProgress color="inherit" />
             </Backdrop>
         </section>

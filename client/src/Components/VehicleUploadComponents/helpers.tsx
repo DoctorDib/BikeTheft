@@ -12,11 +12,11 @@ export const getToolTip = (key: string): string | boolean => {
     if (!Object.prototype.hasOwnProperty.call(toolTipMessages, key)) {
         return false;
     }
-    
+
     return toolTipMessages[key];
 };
 
-export const formatID = (value:string) => {
+export const formatID = (value:string):string => {
     const splitLabel = value.split(' ');
     return `${splitLabel[0].toLowerCase()}${splitLabel.slice(1).join('')}`;
-}
+};

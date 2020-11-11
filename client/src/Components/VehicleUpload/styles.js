@@ -5,7 +5,7 @@ export default makeStyles((theme) => ({
     ...mainStyle,
 
     body: {
-        backgroundColor: 'black'
+        backgroundColor: 'black',
     },
 
     mainContainer: {
@@ -17,8 +17,8 @@ export default makeStyles((theme) => ({
         margin: '0 30px 0 30px',
         [theme.breakpoints.up('md')]: {
             margin: '0 auto 0 auto',
-            maxWidth: '1100px',    
-        }
+            maxWidth: '1100px',
+        },
     },
 
     container: {
@@ -141,5 +141,5 @@ export default makeStyles((theme) => ({
         color: 'red',
         position: 'absolute',
         bottom: 0,
-    }
+    },
 }));
