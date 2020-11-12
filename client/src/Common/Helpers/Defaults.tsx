@@ -9,8 +9,10 @@ import {
     IChip,
     IImageSettings,
     IInputErrorMessages,
+    INotification,
 } from '../Interfaces/interfaces';
 import VehicleCategoryEnum from '../Enums/VehicleCategoryEnum';
+import NotificationEnums from '../Enums/NotificationEnum';
 
 export const defaultVehicleData: IVehicleInfo = {
     vehicle_id: -1,
@@ -109,4 +111,9 @@ export const defaultInputErrorMessages: IInputErrorMessages = {
     model: '',
     primaryColour: '',
     secondaryColour: '',
+};
+
+export const defaultNotification:INotification = {
+    message: '',
+    severty: NotificationEnums.INFO,
 };

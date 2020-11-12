@@ -15,7 +15,7 @@ import { IClasses } from '../../Common/Interfaces/IClasses';
 import ImageCropperComponent from '../ImageCropper';
 
 interface IImageUploaderProps {
-    canMakeDefault: boolean;
+    canMakeDefault?: boolean = false;
     images: Array<IImageSettings>;
     setImages: (x: Array<IImageSettings>) => void;
     maxImages: number;

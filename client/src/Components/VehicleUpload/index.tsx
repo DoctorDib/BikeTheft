@@ -14,13 +14,17 @@ import { useFormik, FormikProvider } from 'formik';
 import {
     IImageSettings,
     ICreateThreadResponse,
+    INotification,
 } from '../../Common/Interfaces/interfaces';
 import ImageUploaderComponent from '../ImageUploader';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import styles from './styles';
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
 import CountyEnum from '../../Common/Enums/CountyEnum';
-import { defaultInputs } from '../../Common/Helpers/Defaults';
+import {
+    defaultInputs,
+    defaultNotification,
+} from '../../Common/Helpers/Defaults';
 import { createNewThread } from '../../Common/Helpers/DB_Helpers';
 import { uploadImagesToS3 } from '../../Common/Helpers/helper';
 import PopupComponent from '../Popup';
@@ -48,8 +52,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
     const [confirmationPopup, setConfirmationPopup] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [notificationOpen, setNotificationOpen] = useState<boolean>(false);
-    const [notificationMessage, setNotificationMessage] = useState<string>('');
-    const [notificationSeverty, setNotificationSeverty] = useState<NotificationEnums>(NotificationEnums.INFO);
+    const [notification, setNotification] = useState<INotification>(defaultNotification);
 
     const closeNotification = () => setNotificationOpen(false);
 
@@ -58,10 +61,12 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
         console.log('Clear');
     };
 
-    const setNotification = (message:string, severty:NotificationEnums) => {
+    const setNewNotification = (message:string, severty:NotificationEnums) => {
         setNotificationOpen(true);
-        setNotificationMessage(message);
-        setNotificationSeverty(severty);
+        setNotification({
+            message,
+            severty,
+        });
         setUploadDisabled(false);
         setLoading(false);
     };
@@ -76,7 +81,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
         const message = `Success! Your vehicle has been uploaded
         Your post can be found at /post/${response.thread_id}`;
 
-        setNotification(message, NotificationEnums.SUCCESS);
+        setNewNotification(message, NotificationEnums.SUCCESS);
 
         setTimeout(() => {
             window.location.pathname = `post/${response.thread_id}`;
@@ -85,7 +90,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
 
     const uploadData = (): void => {
         if (formik.values.numberPlate === '') {
-            setNotification('Please ensure that you have filled out "Number Plate" input', NotificationEnums.ERROR);
+            setNewNotification('Please ensure that you have filled out "Number Plate" input', NotificationEnums.ERROR);
             formik.errors.numberPlate = 'Empty field';
             return;
         }
@@ -97,7 +102,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
         uploadImagesToS3('1', images, 'vehicles')
             .then((s3Response:boolean) => {
                 if (!s3Response) {
-                    setNotification('Error while uploading images... please try again later', NotificationEnums.ERROR);
+                    setNewNotification('Error while uploading images... please try again later', NotificationEnums.ERROR);
                     return;
                 }
 
@@ -106,12 +111,12 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                     .then((threadResponse:boolean | ICreateThreadResponse) => {
                         console.log(threadResponse);
                         if (!threadResponse) {
-                            setNotification('Error while uploading to database... please try again later', NotificationEnums.ERROR);
+                            setNewNotification('Error while uploading to database... please try again later', NotificationEnums.ERROR);
                             return;
                         }
                         if (typeof threadResponse !== 'boolean' && threadResponse.thread_id === -1) {
                             const message = 'Number plate has already been found in our database, please ensure you have entered the number plate and try again, if the issues persists then please contact support.';
-                            setNotification(message, NotificationEnums.ERROR);
+                            setNewNotification(message, NotificationEnums.ERROR);
                             return;
                         }
 
@@ -293,8 +298,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
             <NotificationComponent
                 open={notificationOpen}
                 onClose={closeNotification}
-                message={notificationMessage}
-                severty={notificationSeverty}
+                notification={notification}
             />
 
             <Backdrop open={loading} style={{ zIndex: 100 }}>

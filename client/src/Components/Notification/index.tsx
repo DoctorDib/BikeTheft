@@ -1,22 +1,22 @@
 import React from 'react';
 import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import NotificationEnum from '../../Common/Enums/NotificationEnum';
+
+import { INotification } from '../../Common/Interfaces/interfaces';
 
 interface INotificationProp {
     open: boolean;
     onClose: () => void;
-    message:string;
-    severty:NotificationEnum;
+    notification: INotification;
 }
 
 const NotificationComponent = (props: INotificationProp): React.ReactElement<INotificationProp> => {
-    const { open, onClose, message, severty } = props;
+    const { open, onClose, notification } = props;
 
     return (
         <Snackbar open={open} autoHideDuration={6000} onClose={onClose}>
-            <Alert onClose={onClose} severity={severty}>
-                {message}
+            <Alert onClose={onClose} severity={notification.severty}>
+                {notification.message}
             </Alert>
         </Snackbar>
     );

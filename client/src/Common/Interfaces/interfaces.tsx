@@ -1,4 +1,5 @@
 import VehicleCategories from '../Enums/VehicleCategoryEnum';
+import NotificationEnums from '../Enums/NotificationEnum';
 
 export interface IVehicleInfo {
     vehicle_id: number;
@@ -16,6 +17,11 @@ export interface IVehicleInfo {
     category: string;
     verified: boolean;
     [key: string]: string | number | Array<string> | Array<IImageSettings> | Date | boolean;
+}
+
+export interface INotification {
+    message:string,
+    severty: NotificationEnums,
 }
 
 export interface ICreateThreadResponse {
