@@ -17,20 +17,20 @@ const DescriptionInput = ():React.ReactElement<IDescriptionProps> => {
 
     const classes: IClasses = styles();
 
-    const [value, setValue] = useState<string>(values.description);
+    const [descriptionValue, setDescriptionValue] = useState<string>(values.description);
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value);
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>):void => {
+        setDescriptionValue(event.target.value);
     };
 
-    const onBlur = () => {
-        if (values.description === value) { return; }
+    const onBlur = ():void => {
+        if (values.description === descriptionValue) { return; }
         setFieldValue('description', values.description);
     };
 
-    const syncValue = () => {
-        if (values.description === value) { return; }
-        setValue(values.description);
+    const syncValue = ():void => {
+        if (values.description === descriptionValue) { return; }
+        setDescriptionValue(values.description);
     };
 
     useEffect(syncValue, [values.description]);
@@ -43,7 +43,7 @@ const DescriptionInput = ():React.ReactElement<IDescriptionProps> => {
             variant="outlined"
             onChange={onChange}
             onBlur={onBlur}
-            value={value}
+            value={descriptionValue}
             className={classes.input}
             multiline
             rows={6}

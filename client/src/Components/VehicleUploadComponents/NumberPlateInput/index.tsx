@@ -10,6 +10,7 @@ import { checkNumberPlate } from '../../../Common/Helpers/DB_Helpers';
 import { IInputFields } from '../../../Common/Interfaces/interfaces';
 import VehicleCategoryEnum from '../../../Common/Enums/VehicleCategoryEnum';
 import { IClasses } from '../../../Common/Interfaces/IClasses';
+import { isNullOrUndefinedOrEmpty } from '../../../Common/Utils/Types';
 import styles from './styles';
 
 interface INumberPlateInputProps {
@@ -22,33 +23,33 @@ const NumberPlateInput = ():React.ReactElement<INumberPlateInputProps> => {
 
     // Flag to determine if number plate has changed
     // if changed then we can make a call to DVLA
-    const [numberPlateFlag, setNumberPlateFlag] = useState<boolean>(false);
-    const [value, setValue] = useState<string>(values.numberPlate);
+    const [numberPlateValueChanged, setNumberPlateValueChanged] = useState<boolean>(false);
+    const [numberPlateValue, setNumberPlateValue] = useState<string>(values.numberPlate);
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (errors.numberPlate !== undefined && errors.numberPlate.length > 0) {
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>):void => {
+        if (isNullOrUndefinedOrEmpty(errors.numberPlate)) {
             setFieldError('numberPlate', '');
         }
-        if (!numberPlateFlag) { setNumberPlateFlag(true); }
-        setValue(event.target.value);
+        if (!numberPlateValueChanged) { setNumberPlateValueChanged(true); }
+        setNumberPlateValue(event.target.value);
     };
 
-    const onLeave = () => {
+    const onLeave = ():void => {
         // Only making API calls if number plate flat has been raised
-        if (!numberPlateFlag) { return; }
+        if (!numberPlateValueChanged) { return; }
 
-        checkNumberPlate(value)
+        checkNumberPlate(numberPlateValue)
             .then((response:number | boolean) => {
                 if (typeof response === 'number') {
                     setFieldError('numberPlate', `Vehicle post already exists at ${window.location.origin}/post/${response}`);
                     return;
                 }
 
-                getDVLAData(value)
+                getDVLAData(numberPlateValue)
                     .then((dvlaResponse:boolean):void => {
                         if (!dvlaResponse) { return; }
-                        setNumberPlateFlag(false);
-                        setFieldValue('numberPlate', value);
+                        setNumberPlateValueChanged(false);
+                        setFieldValue('numberPlate', numberPlateValue);
                     })
                     .catch((e) => {
                         console.log(e);
@@ -108,7 +109,7 @@ const NumberPlateInput = ():React.ReactElement<INumberPlateInputProps> => {
                 id="numberPlate"
                 label="Number Plate"
                 placeholder="Number Plate"
-                value={value}
+                value={numberPlateValue}
                 onChange={onChange}
                 onBlur={onLeave}
                 component={ModifiedTextfield}

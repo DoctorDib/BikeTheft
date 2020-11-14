@@ -61,11 +61,11 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
         console.log('Clear');
     };
 
-    const setNewNotification = (message:string, severty:NotificationEnums) => {
+    const setNewNotification = (message:string, severity:NotificationEnums) => {
         setNotificationOpen(true);
         setNotification({
             message,
-            severty,
+            severity,
         });
         setUploadDisabled(false);
         setLoading(false);
@@ -130,7 +130,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
             });
     };
 
-    const confirmationPopupCallback = (response:boolean) => {
+    const confirmationPopupCallback = (response:boolean):void => {
         setConfirmationPopup(false);
         if (!response) { return; }
         uploadData();

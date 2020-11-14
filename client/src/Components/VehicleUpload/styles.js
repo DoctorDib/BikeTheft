@@ -105,7 +105,6 @@ export default makeStyles((theme) => ({
         margin: '1em 0 1em 0',
         width: '100%',
         position: 'relative',
-        padding: '15px 25px 15px 25px !override',
     },
 
     fieldSection: {

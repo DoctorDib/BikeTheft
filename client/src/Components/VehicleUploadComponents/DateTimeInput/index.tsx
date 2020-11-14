@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import React from 'react';
 import { useFormikContext } from 'formik';
-
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';
+
 import { IInputFields } from '../../../Common/Interfaces/interfaces';
 import { IClasses } from '../../../Common/Interfaces/IClasses';
 import styles from './styles';
@@ -16,7 +16,7 @@ const NumberPlateInput = ():React.ReactElement<IDateTimeProps> => {
 
     const classes: IClasses = styles();
 
-    const onChange = (newTime:Date) => {
+    const onChange = (newTime:Date):void => {
         if (newTime === values.dateStolen) { return; }
         setFieldValue('dateStolen', newTime);
     };

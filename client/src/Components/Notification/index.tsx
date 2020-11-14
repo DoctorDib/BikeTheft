@@ -15,7 +15,7 @@ const NotificationComponent = (props: INotificationProp): React.ReactElement<INo
 
     return (
         <Snackbar open={open} autoHideDuration={6000} onClose={onClose}>
-            <Alert onClose={onClose} severity={notification.severty}>
+            <Alert onClose={onClose} severity={notification.severity}>
                 {notification.message}
             </Alert>
         </Snackbar>

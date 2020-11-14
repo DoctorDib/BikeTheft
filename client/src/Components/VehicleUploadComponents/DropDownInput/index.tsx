@@ -35,25 +35,21 @@ const DropDownInput = (props:IDropDownProps):React.ReactElement<IDropDownProps> 
     const { values, setFieldValue } = useFormikContext<IInputFields>();
     const classes:IClasses = styles();
 
-    const [options, setOptions] = useState<Array<React.ReactElement | undefined>>();
-    const [value, setValue] = useState<string>('');
+    const OPTIONS = categoryOptions(enumOptions);
+    const [dropDownValue, setDropDownValue] = useState<string>('');
 
-    // Ensuring that it only renders once on load.
-    const setDropOptions = () => setOptions(categoryOptions(enumOptions));
-    useEffect(setDropOptions, []);
-
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value);
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>):void => {
+        setDropDownValue(event.target.value);
     };
 
-    const onBlur = () => {
-        if (values[id] === value) { return; }
-        setFieldValue(id, value);
+    const onBlur = ():void => {
+        if (values[id] === dropDownValue) { return; }
+        setFieldValue(id, dropDownValue);
     };
 
-    const syncValue = () => {
-        if (values[id] === value) { return; }
-        setValue(Object.values(enumOptions).indexOf(values[id]));
+    const syncValue = ():void => {
+        if (values[id] === dropDownValue) { return; }
+        setDropDownValue(Object.values(enumOptions).indexOf(values[id]));
     };
 
     useEffect(syncValue, [values[id]]);
@@ -65,12 +61,12 @@ const DropDownInput = (props:IDropDownProps):React.ReactElement<IDropDownProps> 
             label={label}
             onChange={onChange}
             onBlur={onBlur}
-            value={value}
+            value={dropDownValue}
             SelectProps={{ native: true }}
             variant="outlined"
             className={classes.input}
         >
-            { options }
+            { OPTIONS }
         </TextField>
     );
 };

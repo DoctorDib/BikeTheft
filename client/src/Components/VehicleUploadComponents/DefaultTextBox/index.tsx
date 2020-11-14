@@ -22,22 +22,22 @@ const DefaultTextInput = (props:IDefaultInputProps):React.ReactElement<IDefaultI
 
     const id:string = formatID(label);
     const classes: IClasses = styles();
-    const [value, setValue] = useState<string | number | string[] | IChip[] | Date>(values[id]);
+    const [textFieldValue, setTextFieldValue] = useState<string | number | string[] | IChip[] | Date>(values[id]);
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>):void => {
         if (errors[id] === undefined) { setFieldError(id, ''); }
-        setValue(event.target.value);
+        setTextFieldValue(event.target.value);
     };
 
-    const onBlur = () => {
+    const onBlur = ():void => {
         // ensuring rerender only if value has changed
-        if (value === values[id]) { return; }
-        setFieldValue(id, value);
+        if (textFieldValue === values[id]) { return; }
+        setFieldValue(id, textFieldValue);
     };
 
-    const syncValue = () => {
-        if (values[id] === value) { return; }
-        setValue(values[id]);
+    const syncValue = ():void => {
+        if (values[id] === textFieldValue) { return; }
+        setTextFieldValue(values[id]);
     };
 
     useEffect(syncValue, [values[id]]);
@@ -48,7 +48,7 @@ const DefaultTextInput = (props:IDefaultInputProps):React.ReactElement<IDefaultI
                 id={id}
                 label={label}
                 placeholder={label}
-                value={value}
+                value={textFieldValue}
                 onChange={onChange}
                 onBlur={onBlur}
                 component={ModifiedTextfield}
