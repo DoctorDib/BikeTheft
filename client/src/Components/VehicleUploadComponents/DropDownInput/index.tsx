@@ -18,8 +18,7 @@ interface IDropDownProps {
 
 const categoryOptions = (enumOptions: CountyEnum | VehicleCategoryEnum):Array<React.ReactElement | undefined> => Object.keys(enumOptions).map(
     (key: string, i: number | any): React.ReactElement | undefined => {
-        const value: string = enumOptions[Object.keys(enumOptions)[i]];
-
+        const value: string = enumOptions[key];
         return !isNullOrUndefinedOrEmpty(value)
             ? (
                 <option key={key} value={i}>
