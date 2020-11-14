@@ -29,7 +29,7 @@ const NumberPlateInput = (props:IColourInput):React.ReactElement<IColourInput> =
     return (
         <>
             <DefaultTextInput label={label} addToolTip={addToolTip} />
-            <section className={classes.colour} style={{ 'backgroundColor': colourValue }} />
+            <section className={classes.colour} style={{ backgroundColor: colourValue }} />
         </>
     );
 };

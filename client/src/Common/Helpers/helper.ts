@@ -79,5 +79,5 @@ export const capitalizeFirstLetter = (value: string):string => {
     return value.toLowerCase().charAt(0).toUpperCase() + value.toLowerCase().slice(1);
 };
 
-export const compareArrays = (arrayOne:Array<any>, arrayTwo:Array<any>):boolean => 
+export const compareArrays = (arrayOne:Array<any>, arrayTwo:Array<any>):boolean =>
     arrayOne.length === arrayTwo.length && arrayOne.every((value, index) => value === arrayTwo[index]);

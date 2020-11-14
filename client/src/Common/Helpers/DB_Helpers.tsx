@@ -15,7 +15,7 @@ import {
 import { defaultData } from './Defaults';
 
 export const checkNumberPlate = async (numberPlate: string): Promise<boolean | number> => {
-    const body:object = {
+    const body = {
         body: { number_plate: numberPlate },
     };
 
