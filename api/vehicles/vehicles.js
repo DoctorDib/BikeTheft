@@ -11,6 +11,20 @@ let response = {
     }
 };
 
+module.exports.check_number_plate = (event, context, callback) => {
+    let body = JSON.parse(event.body);
+    body.method = 'check_number_plate'
+    
+    console.log("DATA TO SEND: ", body)
+
+    API.call(body).then(data => {
+        response.body = JSON.stringify(data);
+        context.callbackWaitsForEmptyEventLoop = false;
+        console.log("REPSONSE: ", response)
+        callback(null, response);
+    });
+};
+
 module.exports.get_vehicle = (event, context, callback) => {
     const eBody = JSON.parse(event.body);
     const body = {

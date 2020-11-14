@@ -1,13 +1,32 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { API } from 'aws-amplify';
 
-import { getDateTimeString, sortFeaturesArray } from './helper';
-
 import {
-    IPostAttributes, IData, IInputFields, IImageSettings,
+    getDateTimeString,
+    sortFeaturesArray,
+} from './helper';
+import {
+    IPostAttributes,
+    IData,
+    IInputFields,
+    IImageSettings,
+    ICreateThreadResponse,
 } from '../Interfaces/interfaces';
-
 import { defaultData } from './Defaults';
+
+export const checkNumberPlate = async (numberPlate: string): Promise<boolean | number> => {
+    const body = {
+        body: { number_plate: numberPlate },
+    };
+
+    try {
+        const resp = await API.post('base_endpoint', '/vehicles/check_number_plate', body);
+        return resp.exists;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+};
 
 export const sendPost = async (
     parentID: string,
@@ -98,11 +117,11 @@ export const createNewThread = async (
     ownerID: string,
     data: IInputFields,
     images: Array<IImageSettings>,
-): Promise<boolean> => {
+): Promise<boolean | ICreateThreadResponse> => {
     const {
-        number_plate,
         make,
         model,
+        location,
         category,
         primary_colour,
         secondary_colour,
@@ -119,11 +138,11 @@ export const createNewThread = async (
         body: {
             owner_id: ownerID,
             // TODO - Set up location / geometry
-            location: null,
+            location,
             // for now we're defaulting vehicles that get uploaded to
             // automatically be assumed as stolen
             status: 0,
-            number_plate,
+            number_plate: data.numberPlate,
             make,
             model,
             category,
@@ -142,11 +161,14 @@ export const createNewThread = async (
     };
 
     try {
-        const response = await API.post(
+        const response:ICreateThreadResponse = await API.post(
             'base_endpoint',
             '/forum/create_thread',
             serverThreadData,
         );
+
+        console.log('THREAD RESPONSE: ', response);
+
         return response;
     } catch (e) {
         console.error(e);

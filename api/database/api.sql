@@ -23,6 +23,8 @@ BEGIN
             ret_var = create_thread(api_parameters);
         WHEN api_parameters->>'method' IN ('set_vehicle') THEN
             ret_var = set_vehicle(api_parameters);
+		WHEN api_parameters->>'method' IN ('check_number_plate') THEN
+            ret_var = check_number_plate(api_parameters);
         ELSE
             RETURN json_build_object('error', 'unsupported method');
     END CASE;

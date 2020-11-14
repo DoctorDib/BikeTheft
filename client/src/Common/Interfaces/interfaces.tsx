@@ -1,4 +1,5 @@
 import VehicleCategories from '../Enums/VehicleCategoryEnum';
+import NotificationEnums from '../Enums/NotificationEnum';
 
 export interface IVehicleInfo {
     vehicle_id: number;
@@ -16,6 +17,16 @@ export interface IVehicleInfo {
     category: string;
     verified: boolean;
     [key: string]: string | number | Array<string> | Array<IImageSettings> | Date | boolean;
+}
+
+export interface INotification {
+    message:string,
+    severity: NotificationEnums,
+}
+
+export interface ICreateThreadResponse {
+    thread_id: number;
+    vehicle_id: number;
 }
 
 export interface IMemberAttributes {
@@ -94,4 +105,32 @@ export interface IImageSettings {
 
 export interface IVehicleParams {
     id: string;
+}
+
+export interface IInputErrorMessages {
+    numberPlate: string;
+    vin: string;
+    make: string;
+    model: string;
+    primaryColour: string;
+    secondaryColour: string;
+    [key: string]: string;
+}
+
+export interface IInputLimits {
+    numberPlate: number,
+    vin: number,
+    make: number,
+    model: number,
+    primaryColour: number,
+    secondaryColour: number,
+    [key: string]: number;
+}
+
+export interface IToolTipMessage {
+    primaryColour: string;
+    secondaryColour: string;
+    features: string;
+    description: string;
+    [key: string]: string;
 }

@@ -51,7 +51,7 @@ const App = (): React.ReactElement => (
         <ThemeProvider theme={mainTheme}>
             <Switch>
                 <AppliedRoute appProps={{}} exact path="/" component={HomePage} />
-                <AppliedRoute appProps={{}} path="/post/upload" component={VehicleUploadPage} />
+                <AppliedRoute appProps={{}} path="/upload" component={VehicleUploadPage} />
                 <AppliedRoute appProps={{}} path="/post/:id" component={VehicleInfoPage} />
                 <AppliedRoute appProps={{}} path="/404" component={ErrorPage} />
                 <AppliedRoute appProps={{}} path="/about" component={AboutPage} />

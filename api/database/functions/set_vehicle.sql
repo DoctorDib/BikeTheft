@@ -4,7 +4,7 @@ BEGIN
     INSERT INTO motorwatch.vehicles (owner_id, location, status, number_plate, make, model, category, vehicle_attributes, vin)
     VALUES (
 		api_parameters->>'owner_id',
-		(api_parameters->>'location')::GEOMETRY,
+		api_parameters->>'location',
 		(api_parameters->>'status')::INTEGER,
 		api_parameters->>'number_plate',
 		api_parameters->>'make',

@@ -3,7 +3,7 @@ import React from 'react';
 import NavBarComponent from '../../Components/Header';
 import FooterComponent from '../../Components/Footer';
 
-import VehicleUploadFieldsComponent from '../../Components/VehicleUploadFields';
+import VehicleUploadFieldsComponent from '../../Components/VehicleUpload';
 
 import style from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
@@ -14,7 +14,7 @@ const VehicleUploadPage = (): React.ReactElement<IHomeProps> => {
     const classes: IClasses = style();
 
     return (
-        <section className={classes.body}>
+        <section>
             <section id="menu" className={classes.menu}>
                 <NavBarComponent />
             </section>

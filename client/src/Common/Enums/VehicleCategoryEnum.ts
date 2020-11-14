@@ -1,9 +1,9 @@
 enum VehicleCategories {
-    NONE,
-    MOTORBIKE,
-    CAR,
-    TRUCK,
-    BICYCLE
+    NONE = 'None',
+    MOTORBIKE = 'Motorbike',
+    CAR = 'Car',
+    TRUCK = 'Truck',
+    BICYCLE = 'Bicycle'
 }
 
 export default VehicleCategories;
