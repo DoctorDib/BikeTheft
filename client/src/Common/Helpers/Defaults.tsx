@@ -116,7 +116,7 @@ export const defaultInputErrorMessages: IInputErrorMessages = {
 
 export const defaultNotification:INotification = {
     message: '',
-    severty: NotificationEnums.INFO,
+    severity: NotificationEnums.INFO,
 };
 
 export const defaultPopup:IPopup = {

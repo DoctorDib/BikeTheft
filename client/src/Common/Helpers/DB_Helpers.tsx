@@ -34,11 +34,8 @@ export const checkNumberPlate = async (numberPlate: string): Promise<boolean | n
         body: { number_plate: numberPlate },
     };
 
-    console.log('checking: ', numberPlate);
-
     try {
         const resp = await API.post('base_endpoint', '/vehicles/check_number_plate', body);
-        console.log('Check response: ', resp);
         return resp.exists;
     } catch (e) {
         console.error(e);

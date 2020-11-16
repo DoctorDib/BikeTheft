@@ -16,16 +16,20 @@ interface IColourInput {
 const NumberPlateInput = (props:IColourInput):React.ReactElement<IColourInput> => {
     const { label, addToolTip } = props;
     const { values } = useFormikContext<IInputFields>();
-    const [id, setID] = useState<string>('');
-    const setNewID = () => setID(formatID(label));
     const classes: IClasses = styles();
+    const [colourValue, setColourValue] = useState<string>('white');
+    const id = formatID(label);
 
-    useEffect(setNewID, []);
+    useEffect(():void => {
+        const COLOUR_VALUE = values[id];
+        if (typeof COLOUR_VALUE !== 'string') { return; }
+        setColourValue(COLOUR_VALUE);
+    }, [values[id]]);
 
     return (
         <>
             <DefaultTextInput label={label} addToolTip={addToolTip} />
-            <section className={classes.colour} style={{ backgroundColor: values[id] }} />
+            <section className={classes.colour} style={{ backgroundColor: colourValue }} />
         </>
     );
 };

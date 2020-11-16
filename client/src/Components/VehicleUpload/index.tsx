@@ -62,7 +62,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
         setNotificationOpen(true);
         setNotification({
             message,
-            severty,
+            severity,
         });
         setUploadDisabled(false);
         setLoading(false);
@@ -112,7 +112,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                             return;
                         }
                         if (typeof threadResponse !== 'boolean' && threadResponse.thread_id === -1) {
-                            const message:string = `Number plate has already been found in our database, please ensure you have entered the number 
+                            const message:string = `Number plate has already been found in our database, please ensure you have entered the number
                                 plate and try again, if the issues persists then please contact support.`;
                             setNewNotification(message, NotificationEnums.ERROR);
                             return;

@@ -21,7 +21,7 @@ export interface IVehicleInfo {
 
 export interface INotification {
     message:string,
-    severty: NotificationEnums,
+    severity: NotificationEnums,
 }
 
 export interface ICreateThreadResponse {
