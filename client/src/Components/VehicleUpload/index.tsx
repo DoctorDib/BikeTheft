@@ -58,7 +58,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
 
     const clearEverything = (): void => formik.setValues(defaultInputs);
 
-    const setNewNotification = (message:string, severty:NotificationEnums):void => {
+    const setNewNotification = (message:string, severity:NotificationEnums):void => {
         setNotificationOpen(true);
         setNotification({
             message,
@@ -75,7 +75,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
             || response.thread_id === -1
         ) { return; }
 
-        const message:string = `Success! Your vehicle has been uploaded
+        const message = `Success! Your vehicle has been uploaded
         Your post can be found at /post/${response.thread_id}`;
 
         setNewNotification(message, NotificationEnums.SUCCESS);
@@ -112,7 +112,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                             return;
                         }
                         if (typeof threadResponse !== 'boolean' && threadResponse.thread_id === -1) {
-                            const message:string = `Number plate has already been found in our database, please ensure you have entered the number
+                            const message = `Number plate has already been found in our database, please ensure you have entered the number
                                 plate and try again, if the issues persists then please contact support.`;
                             setNewNotification(message, NotificationEnums.ERROR);
                             return;
