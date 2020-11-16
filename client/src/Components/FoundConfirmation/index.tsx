@@ -104,8 +104,11 @@ const FoundConfirmation = (props: IFoundConfirmationProps): React.ReactElement<I
 
                     <PopupComponent
                         open={confirmationPopupOpen}
-                        title="Confirmation"
-                        message="Are you sure that this could be the owners vehicle?"
+                        popup={{
+                            title: 'Confirmation',
+                            message: 'Are you sure that this could be the owners vehicle?',
+                        }}
+
                         confirmationCallback={confimrationPopupCallback}
                     />
                 </Paper>

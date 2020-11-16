@@ -134,3 +134,8 @@ export interface IToolTipMessage {
     description: string;
     [key: string]: string;
 }
+
+export interface IPopup {
+    title:string,
+    message: string,
+}

@@ -10,6 +10,7 @@ export default makeStyles((theme) => ({
         justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',
+        width: '100%',
     },
 
     messageContainer: {

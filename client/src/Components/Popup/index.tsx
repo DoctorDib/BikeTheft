@@ -9,12 +9,12 @@ import {
 } from '@material-ui/core';
 
 import styles from './styles';
+import { IPopup } from '../../Common/Interfaces/interfaces';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
 interface IConfirmationProp {
     open: boolean;
-    title: string;
-    message: string;
+    popup: IPopup;
     confirmationCallback: (x: boolean) => void;
 }
 
@@ -23,8 +23,7 @@ const PopupComponent: React.FC<IConfirmationProp> = (props: IConfirmationProp) =
 
     const {
         open,
-        title,
-        message,
+        popup,
         confirmationCallback,
     } = props;
 
@@ -34,11 +33,11 @@ const PopupComponent: React.FC<IConfirmationProp> = (props: IConfirmationProp) =
     return (
         <Dialog open={open} keepMounted onClose={onClickCancel} className={classes.main}>
             <DialogTitle>
-                { title }
+                { popup.title }
             </DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    { message }
+                    { popup.message }
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

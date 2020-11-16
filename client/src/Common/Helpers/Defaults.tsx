@@ -10,6 +10,7 @@ import {
     IImageSettings,
     IInputErrorMessages,
     INotification,
+    IPopup,
 } from '../Interfaces/interfaces';
 import VehicleCategoryEnum from '../Enums/VehicleCategoryEnum';
 import NotificationEnums from '../Enums/NotificationEnum';
@@ -116,4 +117,9 @@ export const defaultInputErrorMessages: IInputErrorMessages = {
 export const defaultNotification:INotification = {
     message: '',
     severty: NotificationEnums.INFO,
+};
+
+export const defaultPopup:IPopup = {
+    title: '',
+    message: '',
 };

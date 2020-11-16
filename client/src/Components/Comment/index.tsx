@@ -330,29 +330,37 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
 
             <PopupComponent
                 open={deletePopupOpen}
-                title="Delete post"
-                message="Are you sure you wish to delete your post?"
+                popup={{
+                    title: 'Delete post',
+                    message: 'Are you sure you wish to delete your post?',
+                }}
                 confirmationCallback={deletePopupCallback}
             />
 
             <PopupComponent
                 open={postPopupOpen}
-                title="Post"
-                message="Are you sure that you wish to post your comment?"
+                popup={{
+                    title: 'Post',
+                    message: 'Are you sure that you wish to post your comment?',
+                }}
                 confirmationCallback={postPopupCallback}
             />
 
             <PopupComponent
                 open={popupVehicleConfirmation}
-                title="Vehicle confirmation"
-                message="Please ensure that this is indeed your vehicle."
+                popup={{
+                    title: 'Vehicle confirmation',
+                    message: 'Please ensure that this is indeed your vehicle.',
+                }}
                 confirmationCallback={vehicleConfirmationPopupCallback}
             />
 
             <PopupComponent
                 open={popupDenyConfirmation}
-                title="Deny confirmation"
-                message="Please ensure that this is not your vehicle."
+                popup={{
+                    title: 'Deny confirmation',
+                    message: 'Please ensure that this is not your vehicle.',
+                }}
                 confirmationCallback={vehicleDenyPopupCallback}
             />
 

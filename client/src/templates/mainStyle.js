@@ -70,6 +70,10 @@ export default {
     mainContentGap: {
         marginTop: '5vh',
         width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
     },
 
     body: {

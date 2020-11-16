@@ -14,6 +14,21 @@ import {
 } from '../Interfaces/interfaces';
 import { defaultData } from './Defaults';
 
+export const getNewVehicles = async (numberOfNewVehicles:number): Promise<boolean | number> => {
+    const body = {
+        body: { numberOfVehicles: numberOfNewVehicles },
+    };
+
+    try {
+        const resp = await API.post('base_endpoint', '/vehicles/get_new_vehicles', body);
+        console.log('Check response: ', resp);
+        return resp.vehicle_list_var;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+};
+
 export const checkNumberPlate = async (numberPlate: string): Promise<boolean | number> => {
     const body = {
         body: { number_plate: numberPlate },

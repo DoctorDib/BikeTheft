@@ -290,8 +290,10 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
 
             <PopupComponent
                 open={confirmationPopup}
-                title="Vehicle upload confirmation"
-                message="Are you sure you wish to upload your vehicle information?"
+                popup={{
+                    title: 'Vehicle upload confirmation',
+                    message: 'Are you sure you wish to upload your vehicle information?',
+                }}
                 confirmationCallback={confirmationPopupCallback}
             />
 

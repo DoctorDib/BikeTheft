@@ -4,17 +4,18 @@ import mainStyle from '../../templates/mainStyle';
 export default makeStyles((theme) => ({
     ...mainStyle,
 
-    container: {
-        width: '100%',
+    mainContainer: {
+        width: '90%',
         display: 'flex',
-        justifyContent: 'center',
-    },
 
-    logo: {
-        pointerEvents: 'none',
-        width: '100%',
         [theme.breakpoints.up('md')]: {
-            width: '100%',
+            width: '500px',
         },
     },
+
+    input: {
+        width: '100%',
+        paddingLeft: '20px',
+    },
+
 }));
