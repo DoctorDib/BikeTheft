@@ -46,7 +46,7 @@ export default makeStyles((theme) => ({
         width: '100%',
         marginBottom: '2vh',
     },
-    
+
     mainContentGap: {
         marginTop: '10vh',
         width: '100%',

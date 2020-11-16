@@ -25,15 +25,15 @@ const VehicleSlideShow = (props: ISlideShowItemProp): React.ReactElement<ISlideS
 
     const onMouseEnter = ():void => setIsHovering(true);
     const onMouseLeave = ():void => setIsHovering(false);
-    const onClick = ():string => window.location.href= `/post/${threadID}`;
+    const onClick = ():string => window.location.href = `/post/${threadID}`;
 
     const processDescription = () => {
         if (description.length === 0) {
-            return "No description...";
+            return 'No description...';
         }
-        
+
         if (description.length > MAX_DESCRIPTION_LENGTH) {
-            return description.slice(0, MAX_DESCRIPTION_LENGTH) + '...';
+            return `${description.slice(0, MAX_DESCRIPTION_LENGTH)}...`;
         }
 
         return description;
@@ -58,23 +58,30 @@ const VehicleSlideShow = (props: ISlideShowItemProp): React.ReactElement<ISlideS
     };
 
     return (
-        <section 
-            className={classes.thumbnailContainer} 
+        <section
+            className={classes.thumbnailContainer}
             onClick={onClick}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
             <div className={classes.image} style={{ backgroundImage: ` url("${image}")` }} />
-            
-            <section className={classes.overlay} style={{height: isHovering ? '100%' : '0'}}>
+
+            <section className={classes.overlay} style={{ height: isHovering ? '100%' : '0' }}>
                 <section className={classes.text}>
-                    <Typography variant="caption" style={{ textAlign: 'center' }}> Posted { formatDate(dateAdded) } </Typography>
+                    <Typography variant="caption" style={{ textAlign: 'center' }}>
+                        Posted
+                        { formatDate(dateAdded) }
+                    </Typography>
                     <section className={classes.statusContainer}>
-                        <div className={classes.statusIndicator} style={{backgroundColor: formatStatusIndicator()}} />
-                        <Typography> { formatStatus() } </Typography>
+                        <div className={classes.statusIndicator} style={{ backgroundColor: formatStatusIndicator() }} />
+                        <Typography>
+                            { formatStatus() }
+                        </Typography>
                     </section>
-                    
-                    <Typography variant="caption"> { processDescription() } </Typography>
+
+                    <Typography variant="caption">
+                        { processDescription() }
+                    </Typography>
                 </section>
             </section>
         </section>

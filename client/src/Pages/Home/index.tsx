@@ -25,7 +25,7 @@ const HomePage = ():React.ReactElement<IHomeProps> => {
 
     const windowSize = WindowSize();
 
-    console.log(windowSize)
+    console.log(windowSize);
 
     const vehicleSlideShowElement = (
         <section className={classNames(classes.mainContentGap, classes.slideContainer)}>
@@ -35,9 +35,9 @@ const HomePage = ():React.ReactElement<IHomeProps> => {
     );
 
     return (
-        <section style={{height: '100vh'}}>
+        <section style={{ height: '100vh' }}>
             <section className={classes.mainContainer}>
-                
+
                 <section className={classes.topContainer}>
                     <section className={classes.logoContainer}>
                         <LogoComponent />
@@ -48,7 +48,7 @@ const HomePage = ():React.ReactElement<IHomeProps> => {
                         <SearchComponent />
 
                         <Divider variant="middle" className={classes.divider} />
-                        
+
                         <Typography variant="caption"> Lost a vehicle? Register it today! </Typography>
                         <Button
                             variant="contained"
@@ -63,10 +63,10 @@ const HomePage = ():React.ReactElement<IHomeProps> => {
 
                 {
                     windowSize !== 'sm'
-                    ? vehicleSlideShowElement
-                    : null
+                        ? vehicleSlideShowElement
+                        : null
                 }
-                
+
             </section>
         </section>
     );

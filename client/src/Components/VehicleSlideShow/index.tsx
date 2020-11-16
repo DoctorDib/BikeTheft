@@ -38,13 +38,15 @@ const VehicleSlideShow = (props: IVehicleSlideShowProps): React.ReactElement<IVe
             ? DEFAULT_IMAGE
             : `https://images.lostmywheels.com/public/${responseData.owner_id}/vehicles/${imageData.name}.${imageData.type}`;
 
-        return <SlideShowItemComponent 
-                    threadID={responseData.thread_id}
-                    image={image}
-                    status={responseData.status}
-                    description={responseData.vehicle_attributes.description}
-                    dateAdded={responseData.date_added}
-                />
+        return (
+            <SlideShowItemComponent
+                threadID={responseData.thread_id}
+                image={image}
+                status={responseData.status}
+                description={responseData.vehicle_attributes.description}
+                dateAdded={responseData.date_added}
+            />
+        );
     });
 
     const getSlideShowValue = () => {
@@ -69,7 +71,7 @@ const VehicleSlideShow = (props: IVehicleSlideShowProps): React.ReactElement<IVe
         <Paper elevation={2} className={classes.mainContainer}>
             <Slider
                 arrows={false}
-                autoplay={true}
+                autoplay
                 autoplaySpeed={3000}
                 centerPadding={10}
                 duration={500}

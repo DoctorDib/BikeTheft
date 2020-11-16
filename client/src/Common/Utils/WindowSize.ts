@@ -1,53 +1,51 @@
 // AUTHOR: https://dev.to/3sanket3/usewindowsize-react-hook-to-handle-responsiveness-in-javascript-3dcl
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-//👇
-//a Util function that will conver the absolute width into breakpoints
+// 👇
+// a Util function that will conver the absolute width into breakpoints
 function getBreakPoint(windowWidth) {
-  if (windowWidth) {
-    if (windowWidth < 480) {
-      return "sm";
-    } else if (windowWidth < 1024) {
-      return "md";
-    } else if (windowWidth < 1200) {
-      return "lg";
-    } else if (windowWidth < 1700) {
-      return "xlg";
-    } else {
-      return "xxlg";
+    if (windowWidth) {
+        if (windowWidth < 480) {
+            return 'sm';
+        } if (windowWidth < 1024) {
+            return 'md';
+        } if (windowWidth < 1200) {
+            return 'lg';
+        } if (windowWidth < 1700) {
+            return 'xlg';
+        }
+        return 'xxlg';
     }
-  } else {
     return undefined;
-  }
 }
-//☝️
+// ☝️
 
 function useWindowSize() {
-  const isWindowClient = typeof window === "object";
+    const isWindowClient = typeof window === 'object';
 
-  const [windowSize, setWindowSize] = useState(
-    isWindowClient
-      ? getBreakPoint(window.innerWidth) //👈
-      : undefined
-  );
+    const [windowSize, setWindowSize] = useState(
+        isWindowClient
+            ? getBreakPoint(window.innerWidth) // 👈
+            : undefined,
+    );
 
-  useEffect(() => {
-    //a handler which will be called on change of the screen resize
-    function setSize() {
-      setWindowSize(getBreakPoint(window.innerWidth)); //👈
-    }
+    useEffect(() => {
+    // a handler which will be called on change of the screen resize
+        function setSize() {
+            setWindowSize(getBreakPoint(window.innerWidth)); // 👈
+        }
 
-    if (isWindowClient) {
-      //register the window resize listener
-      window.addEventListener("resize", setSize);
+        if (isWindowClient) {
+            // register the window resize listener
+            window.addEventListener('resize', setSize);
 
-      //unregister the listerner on destroy of the hook
-      return () => window.removeEventListener("resize", setSize);
-    }
-  }, [isWindowClient, setWindowSize]);
+            // unregister the listerner on destroy of the hook
+            return () => window.removeEventListener('resize', setSize);
+        }
+    }, [isWindowClient, setWindowSize]);
 
-  return windowSize;
+    return windowSize;
 }
 
 export default useWindowSize;
