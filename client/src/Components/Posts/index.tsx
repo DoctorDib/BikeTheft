@@ -101,7 +101,7 @@ const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
         setComments(mappedPost);
     };
 
-    useEffect(() => {
+    useEffect(():void => {
         layoutComments();
     }, [highlightedID, posts]);
 

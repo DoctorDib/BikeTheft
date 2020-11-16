@@ -4,24 +4,20 @@ import { useState, useEffect } from 'react';
 
 // 👇
 // a Util function that will conver the absolute width into breakpoints
-function getBreakPoint(windowWidth) {
+const getBreakPoint = (windowWidth:number):string => {
     if (windowWidth) {
-        if (windowWidth < 480) {
-            return 'sm';
-        } if (windowWidth < 1024) {
-            return 'md';
-        } if (windowWidth < 1200) {
-            return 'lg';
-        } if (windowWidth < 1700) {
-            return 'xlg';
-        }
+        if (windowWidth < 480) { return 'sm'; }
+        if (windowWidth < 1024) { return 'md'; }
+        if (windowWidth < 1200) { return 'lg'; }
+        if (windowWidth < 1700) { return 'xlg'; }
         return 'xxlg';
     }
-    return undefined;
-}
+
+    return '';
+};
 // ☝️
 
-function useWindowSize() {
+const useWindowSize = () => {
     const isWindowClient = typeof window === 'object';
 
     const [windowSize, setWindowSize] = useState(
@@ -30,22 +26,31 @@ function useWindowSize() {
             : undefined,
     );
 
-    useEffect(() => {
+    useEffect(():void | undefined => {
     // a handler which will be called on change of the screen resize
-        function setSize() {
+        const setSize = ():void => {
             setWindowSize(getBreakPoint(window.innerWidth)); // 👈
-        }
+        };
+
+        const removeEvent = ():void => {
+            window.removeEventListener('resize', setSize);
+        };
+
+        const addEvent = ():void => {
+            window.addEventListener('resize', setSize);
+        };
 
         if (isWindowClient) {
             // register the window resize listener
-            window.addEventListener('resize', setSize);
+            addEvent();
 
             // unregister the listerner on destroy of the hook
-            return () => window.removeEventListener('resize', setSize);
+            return removeEvent();
         }
+        return undefined;
     }, [isWindowClient, setWindowSize]);
 
     return windowSize;
-}
+};
 
 export default useWindowSize;

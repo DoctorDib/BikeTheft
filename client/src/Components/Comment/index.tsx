@@ -265,7 +265,7 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
     const onPostClickCallback = () => setPostPopupOpen(true);
     const toggleExpand = () => setIsExpanded(!isExpanded);
 
-    useEffect(() => {
+    useEffect(():void => {
         setReplyParent(addReplyParent());
         setInfoCard(addInfoCardFeatures());
         setAvatar(formatAvatar(comment, classes, true));

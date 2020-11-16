@@ -167,7 +167,7 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
 
     // TODO - Look into this to see if there is a better method
     // Currently re-renders all images when the speed dial is used
-    useEffect(() => mapImages(), [images, speedOpen]);
+    useEffect(():void => mapImages(), [images, speedOpen]);
 
     const hashString = (stringToHash: string) => {
         const newString = stringToHash + Date.now();

@@ -11,10 +11,6 @@ import style from './styles';
 interface IVehicleSlideShowProps {
 }
 
-interface IActive {
-    [id:number]: boolean,
-}
-
 // https://github.com/g787543/infinite-react-carousel
 
 const ITEMS_PER_SLIDE_SM = 1;
@@ -26,20 +22,22 @@ const NUMBER_OF_VEHICLES = 20;
 
 const DEFAULT_IMAGE = 'https://jsns.dealerappcenter.com/img/default_vehicle_icons/default-inventory-image-car-med.jpg';
 
-const VehicleSlideShow = (props: IVehicleSlideShowProps): React.ReactElement<IVehicleSlideShowProps> => {
+const VehicleSlideShow = (): React.ReactElement<IVehicleSlideShowProps> => {
     const classes: IClasses = style();
-    const windowSize = WindowSize();
+    const windowSize:string | undefined = WindowSize();
 
     const [vehicleElement, setVehicleElement] = useState<Array<React.ReactElement>>([]);
 
-    const formatImages = (data): Array<React.ReactElement> => data.map((responseData):React.ReactElement => {
-        const imageData = responseData.vehicle_attributes.vehicle_images[0];
-        const image = imageData === undefined
+    // Types are "any" because this is the response data from our database
+    const formatImages = (data:any): Array<React.ReactElement> => data.map((responseData:any):React.ReactElement => {
+        const imageData:string = responseData.vehicle_attributes.vehicle_images[0];
+        const image:string = imageData === undefined
             ? DEFAULT_IMAGE
             : `https://images.lostmywheels.com/public/${responseData.owner_id}/vehicles/${imageData.name}.${imageData.type}`;
 
         return (
             <SlideShowItemComponent
+                key={responseData.thread_id}
                 threadID={responseData.thread_id}
                 image={image}
                 status={responseData.status}
@@ -49,7 +47,7 @@ const VehicleSlideShow = (props: IVehicleSlideShowProps): React.ReactElement<IVe
         );
     });
 
-    const getSlideShowValue = () => {
+    const getSlideShowValue = ():number => {
         switch (windowSize) {
             case 'sm': return ITEMS_PER_SLIDE_SM;
             case 'md': return ITEMS_PER_SLIDE_MD;
@@ -59,7 +57,7 @@ const VehicleSlideShow = (props: IVehicleSlideShowProps): React.ReactElement<IVe
         }
     };
 
-    useEffect(() => {
+    useEffect(():void => {
         getNewVehicles(NUMBER_OF_VEHICLES)
             .then((responseData) => {
                 console.log(responseData);
@@ -79,7 +77,9 @@ const VehicleSlideShow = (props: IVehicleSlideShowProps): React.ReactElement<IVe
                 slidesToShow={getSlideShowValue()}
                 wheelScroll={6}
             >
-                { vehicleElement.length > 0 ? vehicleElement : <section> temp </section>}
+                { vehicleElement.length > 0
+                    ? vehicleElement
+                    : <section> temp </section>}
             </Slider>
         </Paper>
     );

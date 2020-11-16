@@ -29,10 +29,10 @@ const SearchBar = (): React.ReactElement => {
 
     const popupCallback = ():void => setOpenPopup(false);
 
-    const search = (e:React.MouseEvent<HTMLInputElement>):void => {
+    const search = (event:React.MouseEvent<HTMLInputElement>):void => {
         // https://stackoverflow.com/questions/39809943/react-preventing-form-submission
         // Prevents onSubmit redirect
-        e.preventDefault();
+        event.preventDefault();
 
         if (isEmpty(searchValue)) {
             setPopup({
@@ -48,7 +48,8 @@ const SearchBar = (): React.ReactElement => {
                 if (typeof response === 'boolean') {
                     setPopup({
                         title: 'Number plate not found',
-                        message: `"${searchValue}" has not been found in our database but this does not mean the vehicle has not been stolen. If you are suspicious then please contact your local police.`,
+                        message: `"${searchValue}" has not been found in our database but this does not mean the vehicle has not been stolen. 
+                        If you are suspicious then please contact your local police.`,
                     });
                     setOpenPopup(true);
                     return;

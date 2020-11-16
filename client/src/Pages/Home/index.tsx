@@ -21,11 +21,9 @@ const HomePage = ():React.ReactElement<IHomeProps> => {
     // TODO - Make it so it checks if user is logged in
     // if logged in redirect to /upload
     // else redirect to sign up
-    const onClick = ():string => window.location.href = '/upload';
+    const onClick = ():void => { window.location.href = '/upload'; };
 
     const windowSize = WindowSize();
-
-    console.log(windowSize);
 
     const vehicleSlideShowElement = (
         <section className={classNames(classes.mainContentGap, classes.slideContainer)}>

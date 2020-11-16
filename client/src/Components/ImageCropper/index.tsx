@@ -78,7 +78,7 @@ const ImageCropped = (props: IImageCropProps): React.Element<IImageCropProps> =>
         handleClose();
     };
 
-    useEffect(() => {
+    useEffect(():void => {
         const image = imgRef.current;
         const canvas = previewCanvasRef.current;
 

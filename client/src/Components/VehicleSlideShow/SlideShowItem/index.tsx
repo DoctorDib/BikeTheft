@@ -14,7 +14,7 @@ interface ISlideShowItemProp {
     status: number,
 }
 
-const MAX_DESCRIPTION_LENGTH = 80;
+const MAX_DESCRIPTION_LENGTH = 175;
 
 const VehicleSlideShow = (props: ISlideShowItemProp): React.ReactElement<ISlideShowItemProp> => {
     const { threadID, image, description, dateAdded, status } = props;
@@ -25,9 +25,9 @@ const VehicleSlideShow = (props: ISlideShowItemProp): React.ReactElement<ISlideS
 
     const onMouseEnter = ():void => setIsHovering(true);
     const onMouseLeave = ():void => setIsHovering(false);
-    const onClick = ():string => window.location.href = `/post/${threadID}`;
+    const onClick = ():void => { window.location.href = `/post/${threadID}`; };
 
-    const processDescription = () => {
+    const processDescription = ():string => {
         if (description.length === 0) {
             return 'No description...';
         }
@@ -39,7 +39,7 @@ const VehicleSlideShow = (props: ISlideShowItemProp): React.ReactElement<ISlideS
         return description;
     };
 
-    const formatStatus = () => {
+    const formatStatus = ():string => {
         switch (status) {
             case VehicleStatusEnum.FOUND: return 'Found';
             case VehicleStatusEnum.STOLEN: return 'Stolen';
@@ -48,7 +48,7 @@ const VehicleSlideShow = (props: ISlideShowItemProp): React.ReactElement<ISlideS
         }
     };
 
-    const formatStatusIndicator = () => {
+    const formatStatusIndicator = ():string => {
         switch (status) {
             case VehicleStatusEnum.FOUND: return '#36f900';
             case VehicleStatusEnum.STOLEN: return '#9d0000';
@@ -58,6 +58,7 @@ const VehicleSlideShow = (props: ISlideShowItemProp): React.ReactElement<ISlideS
     };
 
     return (
+        // eslint-disable-next-line
         <section
             className={classes.thumbnailContainer}
             onClick={onClick}

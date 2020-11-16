@@ -42,7 +42,7 @@ const VehiclePage = (): React.ReactElement<IVehicleProps> => {
         setPostData(data.posts);
     };
 
-    useEffect(() => {
+    useEffect(():void => {
         // Setting ID
         setThreadID(id);
 
