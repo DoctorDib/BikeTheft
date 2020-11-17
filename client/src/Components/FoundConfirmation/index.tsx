@@ -36,16 +36,18 @@ const FoundConfirmation = (props: IFoundConfirmationProps): React.ReactElement<I
         close,
     } = props;
 
-    const [[image], setImages] = useState<Array<IImageSettings>>([]);
+    const [images, setImages] = useState<Array<IImageSettings>>([]);
     const [confirmationPopupOpen, setConfirmationPopupOpen] = useState<boolean>(false);
 
     const sendFoundBike = () => {
-        const newProperties:IPostAttributes = defaultPostAttributes;
-        newProperties.message = 'A user may have found your vehicle! Please confirm the image above that this is your vehicle';
-        newProperties.confirmation_image = image;
-        newProperties.active_state = true;
+        const newProperties:IPostAttributes = {
+            ...defaultPostAttributes,
+            message: 'A user may have found your vehicle! Please confirm the image above that this is your vehicle',
+            confirmation_image: images[0],
+            active_state: true,
+        };
 
-        uploadImagesToS3(ownerID, [image], 'found');
+        uploadImagesToS3(ownerID, images, 'found');
         sendPost(threadID, '1', newProperties, PostTypeEnums.INFO);
         close();
     };
@@ -85,9 +87,10 @@ const FoundConfirmation = (props: IFoundConfirmationProps): React.ReactElement<I
                     </section>
 
                     <ImageUploaderComponent
-                        images={[image]}
+                        images={images}
                         setImages={setImages}
                         maxImages={1}
+                        canMakeDefault={false}
                     />
 
                     <section className={classes.buttonContainer}>

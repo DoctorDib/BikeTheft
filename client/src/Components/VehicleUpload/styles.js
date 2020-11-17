@@ -4,11 +4,21 @@ import mainStyle from '../../templates/mainStyle';
 export default makeStyles((theme) => ({
     ...mainStyle,
 
+    body: {
+        backgroundColor: 'black',
+    },
+
     mainContainer: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        maxWidth: '100%',
+        margin: '0 30px 0 30px',
+        [theme.breakpoints.up('md')]: {
+            margin: '0 auto 0 auto',
+            maxWidth: '1100px',
+        },
     },
 
     container: {
@@ -24,9 +34,7 @@ export default makeStyles((theme) => ({
     gridContainer: {
         display: 'flex',
         justifyContent: 'center',
-        [theme.breakpoints.up('md')]: {
-            width: '50vw',
-        },
+        width: '100%',
     },
 
     input: {
@@ -42,24 +50,6 @@ export default makeStyles((theme) => ({
         [theme.breakpoints.up('md')]: {
             width: '75%',
         },
-    },
-
-    colour: {
-        height: '5px',
-        border: '1px solid #C4C4C4',
-        borderRadius: '10px',
-        width: '100%',
-        marginTop: '5px',
-    },
-
-    inputContainers: {
-        width: '75%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignContent: 'center',
-        alignItems: 'center',
-        margin: '1em 0 1em 0',
     },
 
     descriptionContainer: {
@@ -93,12 +83,62 @@ export default makeStyles((theme) => ({
 
     controlButtons: {
         display: 'flex',
-        flexDireciton: 'row',
         marginTop: '2em',
-        width: '50%',
+        width: '100%',
         justifyContent: 'space-evenly',
         '& button': {
             width: '120px',
         },
+    },
+
+    divider: {
+        height: '1px',
+        width: '110%',
+    },
+
+    inputContainers: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
+        margin: '1em 0 1em 0',
+        width: '100%',
+        position: 'relative',
+    },
+
+    fieldSection: {
+        width: '100%',
+        padding: '10px',
+        margin: '10px 0 10px 0',
+        display: 'flex',
+        flexDirection: 'column',
+
+        [theme.breakpoints.up('md')]: {
+            flexDirection: 'row',
+        },
+    },
+
+    fieldName: {
+        display: 'flex',
+        justifyContent: 'center',
+        color: '#4a4a4a',
+        [theme.breakpoints.up('md')]: {
+            width: '33%',
+            justifyContent: 'flex-start',
+            paddingLeft: '10px',
+        },
+    },
+
+    fieldInputs: {
+        [theme.breakpoints.up('md')]: {
+            width: '66%',
+        },
+    },
+
+    errorMessage: {
+        color: 'red',
+        position: 'absolute',
+        bottom: 0,
     },
 }));

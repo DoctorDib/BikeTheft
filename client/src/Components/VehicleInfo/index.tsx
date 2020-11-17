@@ -10,8 +10,10 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
+    Divider,
 } from '@material-ui/core';
-import { Check, Report } from '@material-ui/icons';
+
+import { Check, Report, Beenhere, Cancel } from '@material-ui/icons';
 
 import VehicleCategoryEnum from '../../Common/Enums/VehicleCategoryEnum';
 import { formatDate, capitalizeFirstLetter } from '../../Common/Helpers/helper';
@@ -38,13 +40,6 @@ interface IVehicleInfoProps {
     vehicle: IVehicleInfo;
 }
 
-const formatFeatures = (features: Array<string>): ReadonlyArray<React.ReactElement> =>
-    features.map((damage: string) => (
-        <ListItem key={`damages - ${damage}`}>
-            <ListItemText primary={damage} />
-        </ListItem>
-    ));
-
 const vinInformationPopup = (vin: string): React.ReactElement => (
     <section>
         <Typography>
@@ -65,10 +60,17 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
     const handleVinClose = () => setOpenVin(false);
     const foundConfirmationResponse = () => setOpen(false);
 
+    const formatFeatures = (): ReadonlyArray<React.ReactElement> =>
+        vehicle.features.map((damage: string) => (
+            <ListItem key={`damages - ${damage}`}>
+                <ListItemText primary={damage} />
+            </ListItem>
+        ));
+
     const formatInfoValues = (
         key:string,
-        value:string | number | string[] | IImageSettings[] | Date,
-    ): string | number | string[] | IImageSettings[] | Date => {
+        value:string | number | string[] | IImageSettings[] | boolean| Date,
+    ): string | number | string[] | IImageSettings[] | boolean | Date => {
         if (key === 'category' && typeof value === 'number') {
             return capitalizeFirstLetter(VehicleCategoryEnum[value]);
         }
@@ -76,60 +78,73 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
         return value;
     };
 
-    const formatInfo = (data: IVehicleInfo) =>
-        infoKeys.map((indexKey: string) => {
-            if (indexKey === 'vin') {
-                // const value in if statement to avoid type confusion when using "vinInformationPopup"
-                const value: string = data[indexKey];
-
-                return (
-                    <Grid container key={`prop - ${indexKey}`}>
-                        <Grid item xs={6}>
-                            <Typography>
-                                {FormatInfoTitles(indexKey)}
-                            </Typography>
-                        </Grid>
-
-                        <Dialog onClose={handleVinClose} aria-labelledby="simple-dialog-title" open={openVin}>
-                            <DialogTitle className={classes.dialogTitle}> Vehicle Identification Number</DialogTitle>
-                            <DialogContent className={classes.dialogContent}>
-                                {vinInformationPopup(value)}
-                            </DialogContent>
-                        </Dialog>
-
-                        <Grid item xs={6} style={{ padding: '5px' }}>
-                            <Button
-                                size="small"
-                                variant="contained"
-                                color="primary"
-                                onClick={handleVinOpen}
-                                style={{ width: '100%' }}
-                                disabled={value === ''}
-                            >
-                                {value === '' ? 'N/A' : 'View'}
-                            </Button>
-                        </Grid>
-                    </Grid>
-                );
-            }
+    const formatInfo = () => infoKeys.map((indexKey: string) => {
+        if (indexKey === 'vin') {
+            // const value in if statement to avoid type confusion when using "vinInformationPopup"
+            const value: string = vehicle[indexKey];
 
             return (
                 <Grid container key={`prop - ${indexKey}`}>
                     <Grid item xs={6}>
-                        <Typography>{FormatInfoTitles(indexKey)}</Typography>
+                        <Typography>
+                            {FormatInfoTitles(indexKey)}
+                        </Typography>
                     </Grid>
-                    <Grid item xs={6}>
-                        <Typography>{indexKey === '' ? 'N/A' : formatInfoValues(indexKey, data[indexKey])}</Typography>
+
+                    <Dialog onClose={handleVinClose} aria-labelledby="simple-dialog-title" open={openVin}>
+                        <DialogTitle className={classes.dialogTitle}> Vehicle Identification Number</DialogTitle>
+                        <DialogContent className={classes.dialogContent}>
+                            {vinInformationPopup(value)}
+                        </DialogContent>
+                    </Dialog>
+
+                    <Grid item xs={6} style={{ padding: '5px' }}>
+                        <Button
+                            size="small"
+                            variant="contained"
+                            color="primary"
+                            onClick={handleVinOpen}
+                            style={{ width: '100%' }}
+                            disabled={value === ''}
+                        >
+                            {value === '' ? 'N/A' : 'View'}
+                        </Button>
                     </Grid>
                 </Grid>
             );
-        });
+        }
+
+        return (
+            <Grid container key={`prop - ${indexKey}`}>
+                <Grid item xs={6}>
+                    <Typography>{FormatInfoTitles(indexKey)}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography>{indexKey === '' ? 'N/A' : formatInfoValues(indexKey, vehicle[indexKey])}</Typography>
+                </Grid>
+            </Grid>
+        );
+    });
+
+    const checkVerification = () => (
+        <section className={vehicle.verified ? classes.verified : classes.unverified}>
+            { vehicle.verified ? <Beenhere /> : <Cancel />}
+            <Typography variant="body2" style={{ marginLeft: '5px' }}>
+                {vehicle.verified ? '' : 'Not '}
+                Verified Post
+            </Typography>
+        </section>
+    );
 
     return (
         <section className={classes.container}>
             <section className={classes.topSection}>
                 <section className={classes.imageContainer}>
-                    <CarouselComponent owner={owner.owner_id} images={vehicle.images} />
+                    <CarouselComponent
+                        owner={owner.owner_id}
+                        images={vehicle.images}
+                        source="vehicles"
+                    />
                 </section>
 
                 <section className={classes.rightSide}>
@@ -139,11 +154,12 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
                         </section>
                         <Typography variant="h6">{owner.member_attributes.display_name}</Typography>
                         <Typography variant="caption">{formatDate(vehicle.date_added)}</Typography>
+                        {checkVerification()}
                     </section>
 
                     <section className={classes.statusText}>
                         <Typography
-                            variant="h4"
+                            variant="h5"
                             style={{
                                 color: FormatStatusColour(vehicle.status),
                             }}
@@ -152,6 +168,8 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
                             {FormatStatusText(vehicle.status)}
                         </Typography>
                     </section>
+
+                    <Divider className={classes.divider} />
 
                     <section className={classes.buttonContainer}>
                         <Button
@@ -179,7 +197,7 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
                         <Typography className={classes.titles} variant="body1">
                             Specifications
                         </Typography>
-                        {formatInfo(vehicle)}
+                        {formatInfo()}
                     </section>
                 </section>
             </section>
@@ -192,7 +210,7 @@ const VehicleInfo = (props: IVehicleInfoProps): React.ReactElement<IVehicleInfoP
 
                 <section>
                     <Typography className={classes.titles}>Additional damages</Typography>
-                    <List dense>{formatFeatures(vehicle.features)}</List>
+                    <List dense>{ formatFeatures() }</List>
                 </section>
             </section>
         </section>

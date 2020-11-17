@@ -8,7 +8,11 @@ import {
     IInputFields,
     IChip,
     IImageSettings,
+    IInputErrorMessages,
+    INotification,
 } from '../Interfaces/interfaces';
+import VehicleCategoryEnum from '../Enums/VehicleCategoryEnum';
+import NotificationEnums from '../Enums/NotificationEnum';
 
 export const defaultVehicleData: IVehicleInfo = {
     vehicle_id: -1,
@@ -24,6 +28,7 @@ export const defaultVehicleData: IVehicleInfo = {
     model: '',
     vin: '',
     category: '',
+    verified: false,
 };
 
 export const defaultMemberAttributes: IMemberAttributes = {
@@ -88,7 +93,7 @@ export const defaultInputs: IInputFields = {
     vin: '',
     make: '',
     model: '',
-    category: 0,
+    category: VehicleCategoryEnum.NONE,
     primaryColour: '',
     secondaryColour: '',
     dateStolen: new Date(),
@@ -97,4 +102,18 @@ export const defaultInputs: IInputFields = {
     featuresArray: [],
     description: '',
     v5cVerificationDate: '',
+};
+
+export const defaultInputErrorMessages: IInputErrorMessages = {
+    numberPlate: '',
+    vin: '',
+    make: '',
+    model: '',
+    primaryColour: '',
+    secondaryColour: '',
+};
+
+export const defaultNotification:INotification = {
+    message: '',
+    severity: NotificationEnums.INFO,
 };

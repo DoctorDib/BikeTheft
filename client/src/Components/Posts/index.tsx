@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Typography } from '@material-ui/core';
-import { IClasses } from '../../Common/Interfaces/IClasses';
 
+import { IClasses } from '../../Common/Interfaces/IClasses';
 import PopupComponent from '../Popup';
-import { IComment, IPostAttributes } from '../../Common/Interfaces/interfaces';
+import { IComment, IPostAttributes, IImageSettings } from '../../Common/Interfaces/interfaces';
 import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
 import { sendPost } from '../../Common/Helpers/DB_Helpers';
+import { uploadImagesToS3 } from '../../Common/Helpers/helper';
 import TextCommentComponent from '../CommentTextBox';
 import CommentComponent from '../Comment';
 import style from './styles';
@@ -32,6 +33,7 @@ const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
     const [commentValue, setCommentValue] = useState<string>('');
     const [inputError, setInputError] = useState<boolean>(false);
     const [comments, setComments] = useState<ReadonlyArray<React.ReactNode>>([]);
+    const [images, setImages] = useState<ReadonlyArray<IImageSettings>>([]);
 
     const scrollTo = (id: number) => {
         const targetID = `#post-id-${id}`;
@@ -55,8 +57,21 @@ const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
         setPostPopupOpen(false);
         if (!response) { return; }
 
-        const newCommentAttributes:IPostAttributes = defaultPostAttributes;
-        newCommentAttributes.message = commentValue;
+        let newCommentAttributes:IPostAttributes = {
+            ...defaultPostAttributes,
+            message: commentValue,
+        };
+
+        if (images.length > 0) {
+            newCommentAttributes = {
+                ...newCommentAttributes,
+                comment_images: images,
+            };
+
+            // TODO - here
+            uploadImagesToS3('1', images, 'comments');
+        }
+
         setCommentValue('');
         sendPost(threadID, '1', newCommentAttributes, 1);
     };
@@ -64,8 +79,7 @@ const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
     const onPostClickCallback = () => setPostPopupOpen(true);
 
     const layoutComments = () => {
-        if (!posts.length) { return; }
-        if (posts[0].post_id === -1) { return; }
+        if (posts === null || !posts.length || posts[0].post_id === -1) { return; }
 
         const mappedPost = posts.map((comment: IComment): React.ReactNode => (
             <section
@@ -102,6 +116,8 @@ const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
                 <TextCommentComponent
                     isMainTextBox
                     textValue={commentValue}
+                    images={images}
+                    setImages={setImages}
                     setTextValue={setCommentValueCallback}
                     inputError={inputError}
                     setInputError={setInputErrorCallback}

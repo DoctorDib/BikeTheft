@@ -139,4 +139,25 @@ export default makeStyles((theme) => ({
         justifyContent: 'space-around',
         width: '100%',
     },
+
+    verified: {
+        color: 'green',
+        display: 'flex',
+        alignItems: 'center',
+    },
+
+    unverified: {
+        color: '#d01616',
+        display: 'flex',
+        alignItems: 'center',
+    },
+
+    divider: {
+        height: '2px',
+        width: '80%',
+        margin: '20px auto 20px auto',
+        [theme.breakpoints.up('md')]: {
+            height: '1px',
+        },
+    },
 }));

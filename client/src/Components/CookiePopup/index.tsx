@@ -26,9 +26,7 @@ const Index = ():React.ReactElement => {
             <section style={{ padding: 10 }}>
                 <section className={classes.hideOnMobileOnly}>
                     <Desktop
-                        clickTrigger={() => {
-                            saveCookie();
-                        }}
+                        clickTrigger={saveCookie}
                     />
                 </section>
 

@@ -7,9 +7,11 @@ export default makeStyles(() => ({
     mainContainer: {
         display: 'flex',
         flexWrap: 'wrap',
-        backgroundColor: '#4f4f4f',
+        backgroundColor: '#ececec',
         width: '100%',
-        borderRadius: '10px',
+        borderRadius: '5px',
+        boxShadow: '#777 0px 0px 2px',
+        marginBottom: '10px',
     },
 
     container: {

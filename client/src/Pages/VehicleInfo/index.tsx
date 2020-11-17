@@ -36,8 +36,8 @@ const VehiclePage = (): React.ReactElement<IVehicleProps> => {
     const fetch = async (thread_ID: string) => {
         const data: IData = await getThread(thread_ID);
 
-        setMemberData(data.owner);
-        setVehicleData(data.vehicle);
+        setMemberData(data.owner ?? defaultOwner);
+        setVehicleData(data.vehicle ?? defaultVehicleData);
         setVehicleID(data.vehicle.vehicle_id);
         setPostData(data.posts);
     };

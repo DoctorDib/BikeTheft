@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
-import { Paper, Accordion, AccordionDetails, Typography, CardMedia, Button } from '@material-ui/core';
-import { Reply, Delete, Clear } from '@material-ui/icons';
+import {
+    Paper,
+    Accordion,
+    AccordionDetails,
+    Typography,
+    CardMedia,
+    Button,
+} from '@material-ui/core';
+import {
+    Reply,
+    Delete,
+    Clear,
+    Attachment,
+} from '@material-ui/icons';
 
 import {
     sendPost,
@@ -12,6 +24,7 @@ import {
     formatAvatar,
     FormatPostBackground,
 } from './helper';
+import ImageComponent from '../Image';
 import PopupComponent from '../Popup';
 import { IComment, IImageSettings } from '../../Common/Interfaces/interfaces';
 import PostTypeEnum from '../../Common/Enums/PostTypeEnums';
@@ -20,6 +33,7 @@ import TextCommentComponent from '../CommentTextBox';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import style from './styles';
 import { isNullOrUndefined } from '../../Common/Utils/Types';
+import { uploadImagesToS3 } from '../../Common/Helpers/helper';
 
 interface ICommentComponentProp {
     threadID: string;
@@ -32,8 +46,6 @@ interface ICommentComponentProp {
 }
 
 const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactElement<ICommentComponentProp> => {
-    const classes: IClasses = style();
-
     const {
         ownerID,
         threadID,
@@ -44,13 +56,19 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
         isHighlighted,
     } = props;
 
+    const classes: IClasses = style();
+
     const [postPopupOpen, setPostPopupOpen] = useState<boolean>(false);
     const [popupVehicleConfirmation, setPopupVehicleConfirmation] = useState<boolean>(false);
     const [popupDenyConfirmation, setPopupDenyConfirmation] = useState<boolean>(false);
     const [deletePopupOpen, setDeletePopupOpen] = useState<boolean>(false);
     const [commentValue, setCommentValue] = useState<string>('');
     const [inputError, setInputError] = useState<boolean>(false);
-    const [isExpanded, setExpand] = useState<boolean>(false);
+    const [isExpanded, setIsExpanded] = useState<boolean>(false);
+    const [images, setImages] = useState<Array<IImageSettings>>([]);
+    const [replyParent, setReplyParent] = useState<React.ReactElement>();
+    const [infoCard, setInfoCard] = useState<React.ReactElement>();
+    const [avatar, setAvatar] = useState<React.ReactElement>();
 
     // TEMP comment in brackets
     const InfoComponent = (/* comment: IComment */) => {
@@ -93,6 +111,7 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
         return (
             <section>
                 <CardMedia
+                    key="found-vehicle"
                     className={classes.confirmationImg}
                     component="img"
                     image={`https://images.lostmywheels.com/public/${ownerID}/found/${image.name}.${image.type}`}
@@ -110,13 +129,15 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
         return message[0];
     };
 
+    const onClickScroll = (parentComment:IComment) => (() => ScrollToID(parentComment.post_id));
+
     const addReplyParent = () => {
         const parentComment: IComment | undefined = getCommentMessageFromQuote();
         if (parentComment === undefined) { return undefined; }
 
         const replyParentElement = (
             <Button
-                onClick={() => ScrollToID(parentComment.post_id)}
+                onClick={onClickScroll(parentComment)}
                 className={classes.quoteButton}
                 disableFocusRipple
                 disableRipple
@@ -129,6 +150,21 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
                 >
                     <section>
                         {formatAvatar(parentComment, classes, false)}
+                        {isNullOrUndefined(parentComment.post_attributes.comment_images)
+                            ? null
+                            : (
+                                <section className={classes.quoteAttachment}>
+                                    <Typography variant="caption">
+                                        <Attachment />
+                                    </Typography>
+                                    <Typography variant="caption">
+                                        {parentComment.post_attributes.comment_images.length}
+                                    </Typography>
+                                    <Typography variant="caption">
+                                        images attached
+                                    </Typography>
+                                </section>
+                            )}
                         <section className={classes.quotePostContainer}>
                             <Typography variant="caption">{parentComment.post_attributes.message}</Typography>
                         </section>
@@ -140,7 +176,7 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
         return replyParentElement;
     };
 
-    const onExpandClick = () => setExpand(!isExpanded);
+    const onExpandClick = () => setIsExpanded(!isExpanded);
     const onClickDelete = () => setDeletePopupOpen(true);
     const onClickVehicleConfirmation = () => setPopupVehicleConfirmation(true);
     const onClickDenyConfirmation = () => setPopupDenyConfirmation(true);
@@ -150,13 +186,27 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
 
         if (!response) { return; }
 
-        const newPostAttributes = comment.post_attributes;
-        newPostAttributes.is_deleted = true;
+        const newPostAttributes = {
+            ...comment.post_attributes,
+            is_deleted: true,
+        };
+
         updatePost(comment.post_id, newPostAttributes);
     };
 
     const postPopupCallback = (response: boolean) => {
-        dbActions(response, commentValue, 1);
+        let customAttr = { };
+
+        if (images.length > 0) {
+            customAttr = {
+                comment_images: images,
+            };
+
+            // TODO - here
+            uploadImagesToS3('1', images, 'comments');
+        }
+
+        dbActions(response, commentValue, 1, customAttr);
     };
 
     const vehicleConfirmationPopupCallback = (response: boolean) => {
@@ -178,7 +228,7 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
         userType: PostTypeEnum,
         customAttr?: Record<string, unknown>,
         shouldUpdate = false,
-    ) => {
+    ):void => {
         setPostPopupOpen(false);
         if (!response) { return; }
 
@@ -200,14 +250,20 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
         sendPost(threadID, '1', newPostAttributes, userType);
     };
 
+    const mapCommentImages = ():Array<React.ReactElement> => {
+        const commentImages:Array<IImageSettings> = comment.post_attributes.comment_images;
+        return commentImages.map((image: IImageSettings) => (
+            <ImageComponent
+                key={image.id}
+                source={`https://images.lostmywheels.com/public/${ownerID}/comments/${image.name}.${image.type}`}
+            />
+        ));
+    };
+
     const setTextValueCallback = (newVal: string) => setCommentValue(newVal);
     const setInputErrorCallback = (newVal: boolean) => setInputError(newVal);
     const onPostClickCallback = () => setPostPopupOpen(true);
-    const toggleExpand = () => setExpand(!isExpanded);
-
-    const [replyParent, setReplyParent] = useState<React.ReactElement>();
-    const [infoCard, setInfoCard] = useState<React.ReactElement>();
-    const [avatar, setAvatar] = useState<React.ReactElement>();
+    const toggleExpand = () => setIsExpanded(!isExpanded);
 
     useEffect(() => {
         setReplyParent(addReplyParent());
@@ -230,9 +286,17 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
                     {avatar}
 
                     {comment.type === 2 ? infoCard : null}
-                    {comment.post_attributes.replying_to === null || comment.post_attributes.replying_to === undefined
+                    {isNullOrUndefined(comment.post_attributes.replying_to)
                         ? null
                         : replyParent}
+
+                    {isNullOrUndefined(comment.post_attributes.comment_images)
+                        ? null
+                        : (
+                            <section className={classes.commentImageContainer}>
+                                { mapCommentImages() }
+                            </section>
+                        ) }
 
                     <section className={classes.postContainer}>
                         <Typography>{comment.post_attributes.message}</Typography>
@@ -255,6 +319,8 @@ const CommentComponent = React.memo((props: ICommentComponentProp): React.ReactE
                 <TextCommentComponent
                     isMainTextBox={false}
                     textValue={commentValue}
+                    images={images}
+                    setImages={setImages}
                     setTextValue={setTextValueCallback}
                     inputError={inputError}
                     setInputError={setInputErrorCallback}

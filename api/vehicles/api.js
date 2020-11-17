@@ -1,7 +1,6 @@
 'use strict';
 const Database = require('./database');
 let client = null;
-const s3 = require('aws-sdk');
 
 module.exports.call = (packet) => new Promise((resolve, reject) => {
     let conn = process.env.postgres;

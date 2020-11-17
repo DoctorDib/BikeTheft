@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Paper, IconButton, CardMedia, Backdrop, Typography } from '@material-ui/core';
 import { SpeedDialAction, SpeedDial, SpeedDialIcon } from '@material-ui/lab';
-import {
-    Add, Crop, Clear, StarBorder,
-} from '@material-ui/icons';
+import { Add, Crop, Clear, StarBorder } from '@material-ui/icons';
 
 import {
     fileToBase64,
     moveItemInArray,
 } from '../../Common/Helpers/helper';
+
 import { IImageSettings } from '../../Common/Interfaces/interfaces';
 import { defaultCropSettings } from '../../Common/Helpers/Defaults';
 import styles from './styles';
@@ -16,6 +15,7 @@ import { IClasses } from '../../Common/Interfaces/IClasses';
 import ImageCropperComponent from '../ImageCropper';
 
 interface IImageUploaderProps {
+    canMakeDefault?: boolean;
     images: Array<IImageSettings>;
     setImages: (x: Array<IImageSettings>) => void;
     maxImages: number;
@@ -23,10 +23,12 @@ interface IImageUploaderProps {
 
 const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUploaderProps> => {
     const {
+        canMakeDefault,
         images,
         setImages,
         maxImages,
     } = props;
+
     const classes: IClasses = styles();
 
     const [mappedImageElement, setMappedImageElement] = useState<Array<React.ReactElement>>([]);
@@ -35,7 +37,7 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
     const [cropDialog, setCropDialog] = useState<boolean>(false);
     const [croppingIndex, setCroppingIndex] = useState<number>(-1);
     const [crop, setCrop] = useState<ReactCrop.Crop>(defaultCropSettings);
-    const [picIndex, setPicIndex] = useState<number>(0);
+    const [picIndex, setPicIndex] = useState<number>(images.length);
 
     const handleOpen = () => setSpeedOpen(true);
     const handleClose = () => setSpeedOpen(false);
@@ -51,6 +53,7 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
     };
 
     const onImgRemove = (keyToRemove: number) => {
+        if (images === undefined) { return; }
         setImages(images.filter((data) => data.id !== keyToRemove));
         handleClose();
     };
@@ -106,12 +109,20 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
         setImages(newImages);
         handleClose();
     };
+
+    const onClickDefault = (image:IImageSettings) => (() => setAsMainImage(image.id));
+    const onClickRemove = (image:IImageSettings) => (() => onImgRemove(image.id));
+    const onClickCrop = (image:IImageSettings) =>
+        (() => cropImage(image.id, image.crop.original, image.crop.crop_info ?? defaultCropSettings));
+
     const mapImages = () => {
+        if (images === undefined || !images.length) { return; }
+
         const newMappedImages:Array<React.ReactElement> = images.map((image: IImageSettings):React.ReactElement => (
             <Paper
                 key={image.id}
                 className={classes.container}
-                style={{ border: image.is_main_image ? '3px solid rgb(204, 204, 4)' : '0' }}
+                style={{ border: image.is_main_image && canMakeDefault ? '3px solid rgb(204, 204, 4)' : '0' }}
             >
                 <section className={classes.speedDialContainer}>
                     <Backdrop open={speedOpen} />
@@ -128,24 +139,21 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
                             key="remove"
                             icon={<Clear style={{ color: 'rgb(176, 0, 0)' }} className={classes.smallIcon} />}
                             tooltipTitle="Remove"
-                            onClick={() => onImgRemove(image.id)}
+                            onClick={onClickRemove(image)}
                         />
                         <SpeedDialAction
                             key="crop"
                             icon={<Crop color="primary" className={classes.smallIcon} />}
                             tooltipTitle="Crop image"
-                            onClick={() =>
-                                cropImage(image.id, image.crop.original, image.crop.crop_info ?? defaultCropSettings)}
+                            onClick={onClickCrop(image)}
                         />
-                        {!image.is_main_image ? (
+                        {!image.is_main_image && canMakeDefault && (
                             <SpeedDialAction
                                 key="make-default"
                                 icon={<StarBorder color="primary" className={classes.smallIcon} />}
                                 tooltipTitle="Make default image"
-                                onClick={() => setAsMainImage(image.id)}
+                                onClick={onClickDefault(image)}
                             />
-                        ) : (
-                            ''
                         )}
                     </SpeedDial>
                 </section>
