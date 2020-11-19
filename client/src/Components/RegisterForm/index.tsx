@@ -50,12 +50,12 @@ const RegisterForm = ():React.ReactElement<IRegisterFormProps> => {
     const validate = ():void => {
         setSigninDisable(false);
 
-        const isEmailEmpty =  isNullOrUndefinedOrEmpty(formik.values.username);
+        const isEmailEmpty = isNullOrUndefinedOrEmpty(formik.values.username);
         const isPasswordEmpty = isNullOrUndefinedOrEmpty(formik.values.password);
         const isPasswordConfirmEmpty = isNullOrUndefinedOrEmpty(formik.values.passwordConfirm);
 
         if (isEmailEmpty || isPasswordEmpty || isPasswordConfirmEmpty) {
-            setSigninDisable(true);  
+            setSigninDisable(true);
             return;
         }
 
@@ -68,16 +68,16 @@ const RegisterForm = ():React.ReactElement<IRegisterFormProps> => {
 
     const formik = useFormik({
         initialValues: defaultUserDetails,
-        onSubmit: onSubmit
+        onSubmit,
     });
 
-    useEffect(():void => { validate() }, [formik.values]);
+    useEffect(():void => { validate(); }, [formik.values]);
 
     return (
         <section className={classes.mainContainer}>
             <FormikProvider value={formik}>
                 <section className={classes.mainContainer}>
-                    <Grid container spacing={3} className={classes.gridContainer}>                        
+                    <Grid container spacing={3} className={classes.gridContainer}>
                         {/* IDENTIFICATION */}
                         <section className={classes.fieldSection}>
                             <section className={classNames(classes.hideOnMobileOnly, classes.fieldName)}>
@@ -112,9 +112,12 @@ const RegisterForm = ():React.ReactElement<IRegisterFormProps> => {
 
                         <Divider className={classNames(classes.hideOnMobileOnly, classes.divider)} />
 
-                        <section className={classes.fieldSection} style={{flexDirection: 'column', justifyContent: 'center'}}>
+                        <section className={classes.fieldSection} style={{ flexDirection: 'column', justifyContent: 'center' }}>
                             <section className={classes.signInTextContainer}>
-                                <Typography> Already have an account? <a href="/signin"> Sign in </a> </Typography>
+                                <Typography variant="subtitle2">
+                                    Already have an account?
+                                    <a href="/signin"> Sign in </a>
+                                </Typography>
                             </section>
                             <section className={classes.controlButtons}>
                                 <Button
@@ -136,7 +139,7 @@ const RegisterForm = ():React.ReactElement<IRegisterFormProps> => {
                     </Grid>
                 </section>
             </FormikProvider>
-        </ section>
+        </section>
     );
 };
 

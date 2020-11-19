@@ -18,7 +18,7 @@ interface IPasswordInputProps {
     isConfirmation?:boolean,
 }
 
-interface IPasswordVerification { 
+interface IPasswordVerification {
     min: boolean,
     uppercase: boolean,
     lowercase: boolean,
@@ -46,13 +46,13 @@ const NumberPlateInput = (props:IPasswordInputProps):React.ReactElement<IPasswor
     const validate = ():void => {
         if (isNullOrUndefinedOrEmpty(values[id])) { return; }
 
-        let complete:boolean = true;
+        let complete = true;
         // Restarting
-        let newChecks:IPasswordVerification = checks;
-        
+        const newChecks:IPasswordVerification = checks;
+
         const list:ReadonlyArray<string> = PasswordSchema.validate(values.password, { list: true });
 
-        for (let key in checks) {
+        for (const key in checks) {
             if (list.includes(key)) { continue; }
 
             newChecks[key] = true;
@@ -67,28 +67,28 @@ const NumberPlateInput = (props:IPasswordInputProps):React.ReactElement<IPasswor
 
     const mainChips:React.ReactElement = (
         <>
-            <VerifiedChipComponent label="8 Chars" verified={checks['min']} />
-            <VerifiedChipComponent label="1 Num" verified={checks['digits']} />
-            <VerifiedChipComponent label="1 Symbol" verified={checks['symbols']} />
-            <VerifiedChipComponent label="Mixed cases" verified={checks['uppercase'] && checks['lowercase']} />
+            <VerifiedChipComponent label="8 Chars" verified={checks.min} />
+            <VerifiedChipComponent label="1 Num" verified={checks.digits} />
+            <VerifiedChipComponent label="1 Symbol" verified={checks.symbols} />
+            <VerifiedChipComponent label="Mixed cases" verified={checks.uppercase && checks.lowercase} />
         </>
     );
 
     const otherChips:React.ReactElement = (
         <VerifiedChipComponent
             label="Password Match"
-            verified={values.passwordConfirm === values.password && values.passwordConfirm !== ''} 
-            />
+            verified={values.passwordConfirm === values.password && values.passwordConfirm !== ''}
+        />
     );
 
     return (
         <>
             <DefaultTextInput label={label} customPlaceholder={customPlaceholder} isRequired isPassword />
-            <section 
-                className={classes.parentChipContainer} 
-                style={{display: hideChips !== null && hideChips ? 'none' : 'flex'}}
+            <section
+                className={classes.parentChipContainer}
+                style={{ display: hideChips !== null && hideChips ? 'none' : 'flex' }}
             >
-                { isConfirmation ? otherChips : mainChips  }
+                { isConfirmation ? otherChips : mainChips }
             </section>
         </>
     );

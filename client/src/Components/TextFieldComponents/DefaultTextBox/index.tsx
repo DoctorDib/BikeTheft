@@ -7,10 +7,9 @@ import ModifiedTextfield from '../ModifiedTextfield';
 import { getToolTip, formatID } from '../helpers';
 import InputToolTip from '../../ToopTip';
 import { IInputFields, IChip } from '../../../Common/Interfaces/interfaces';
-import { IUserAttributes } from '../../../Common/Interfaces/users';
+import { IUserAttributes, IUserDetails } from '../../../Common/Interfaces/users';
 import { IClasses } from '../../../Common/Interfaces/IClasses';
 import styles from './styles';
-import { IUserDetails } from '../../../Common/Interfaces/users';
 
 interface IDefaultInputProps {
     label: string,

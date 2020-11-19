@@ -26,7 +26,7 @@ export default makeStyles((theme) => ({
         [theme.breakpoints.up('md')]: {
             width: '300px',
             top: '40px',
-        }
+        },
     },
 
     leftImage: {

@@ -15,7 +15,7 @@ const RegisterPage = (): React.ReactElement<IRegisterProps> => {
     const classes: IClasses = styles();
 
     return (
-        <section style={{display: 'flex'}}>
+        <section style={{ display: 'flex' }}>
             <section className={classNames(classes.hideOnMobileOnly, classes.leftImage)}>
                 <div className={classes.backgroundImage} />
                 <div className={classes.backgroundOverlay} />

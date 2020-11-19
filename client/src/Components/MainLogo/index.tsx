@@ -22,12 +22,16 @@ const MainLogo = (props:IMainLogoProps):React.ReactElement<IMainLogoProps> => {
     };
 
     return (
-        <section className={classes.container} onClick={onClick}
-        style={{cursor: homeOnClick ? 'pointer' : 'arrow'}}>
-            <img 
-                className={classes.logo} 
-                src={Logo} alt="Main Logo" 
-                
+        <section
+            className={classes.container}
+            onClick={onClick}
+            style={{ cursor: homeOnClick ? 'pointer' : 'arrow' }}
+        >
+            <img
+                className={classes.logo}
+                src={Logo}
+                alt="Main Logo"
+
             />
         </section>
     );

@@ -92,7 +92,7 @@ export default makeStyles((theme) => ({
             '& button': {
                 width: '120px',
             },
-        }
+        },
     },
 
     divider: {
