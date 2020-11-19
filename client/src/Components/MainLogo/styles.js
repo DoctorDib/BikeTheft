@@ -13,8 +13,5 @@ export default makeStyles((theme) => ({
     logo: {
         pointerEvents: 'none',
         width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '25%',
-        },
     },
 }));

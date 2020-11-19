@@ -1,9 +1,10 @@
 import React from 'react';
-import Divider from '@material-ui/core/Divider';
-import NavBarComponent from '../../Components/Header';
-import FooterComponent from '../../Components/Footer';
-import RegisterComponent from '../../Components/RegisterForm';
+import { Paper } from '@material-ui/core';
+import classNames from 'classnames';
 
+import MainLogoContainer from '../../Components/MainLogo';
+import RegisterComponent from '../../Components/RegisterForm';
+import FooterComponent from '../../Components/Footer';
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 
@@ -14,22 +15,21 @@ const RegisterPage = (): React.ReactElement<IRegisterProps> => {
     const classes: IClasses = styles();
 
     return (
-        <section className={classes.body}>
-            <section id="menu" className={classes.menu}>
-                <NavBarComponent />
+        <section style={{display: 'flex'}}>
+            <section className={classNames(classes.hideOnMobileOnly, classes.leftImage)}>
+                <div className={classes.backgroundImage} />
+                <div className={classes.backgroundOverlay} />
             </section>
 
-            <section style={{ width: '100%' }}>
+            <Paper elevation={1} className={classes.mainContainer}>
+                <section className={classes.titleContainer}>
+                    <MainLogoContainer homeOnClick />
+                </section>
+
                 <RegisterComponent />
-            </section>
 
-            <section className={classes.mainContentGap}>
-                <Divider variant="middle" />
-            </section>
-
-            <section className={classes.mainContentGap}>
                 <FooterComponent />
-            </section>
+            </Paper>
         </section>
     );
 };

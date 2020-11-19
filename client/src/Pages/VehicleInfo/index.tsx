@@ -11,7 +11,7 @@ import {
 } from '../../Common/Interfaces/interfaces';
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
-import { defaultComment, defaultOwner, defaultVehicleData } from '../../Common/Helpers/Defaults';
+import { defaultComment, defaultOwner, defaultVehicleData } from '../../Common/Defaults/main';
 import { getThread } from '../../Common/Helpers/DB_Helpers';
 
 interface IVehicleProps {

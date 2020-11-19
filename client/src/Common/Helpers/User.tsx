@@ -1,6 +1,7 @@
 import React from 'react';
 import { Auth } from 'aws-amplify';
 import validator from 'validator';
+
 import {
     IUserDetails,
     IErrors,
@@ -37,20 +38,22 @@ const useAuthentication = ():((user: IUserDetails) => Promise<unknown>)[] => {
 
         if (hasErrors) return reject(errors);
 
-        return Auth.signUp(user).then((response) => resolve(response));
+        return Auth.signUp(user)
+            .then((response) => resolve(response));
     });
 
-    const signIn = (user: IUserDetails):Promise<unknown | IErrors> => new Promise((resolve, reject) => {
-        Auth.signIn(user.username, user.password).then((response) => {
-            dispatch({
-                method: UserMethodEnum.LogIn,
-                data: response.attributes,
-            });
+    const signIn = (user: IUserDetails):Promise<unknown | IErrors> => new Promise((resolve, reject):void => {
+        Auth.signIn(user.username, user.password)
+            .then((response):void => {
+                dispatch({
+                    method: UserMethodEnum.LogIn,
+                    data: response.attributes,
+                });
 
-            resolve(response);
-        }).catch((e) => {
-            reject(e);
-        });
+                resolve(response);
+            }).catch((e):void => {
+                reject(e);
+            });
     });
 
     return [signIn, signUp];

@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+
 import UserMethodEnum from '../Enums/UserMethodEnum';
 
 export interface IReducerAction {
@@ -36,6 +37,7 @@ export interface IUserDetails {
     password: string;
     passwordConfirm?: string;
     attributes: IUserAttributes;
+    [key: string]: undefined | IUserAttributes | string;
 }
 
 export interface IErrors {

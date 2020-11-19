@@ -1,150 +1,143 @@
-import React from 'react';
-
-import {
-    Formik,
-    Form,
-    Field,
-} from 'formik';
+/* eslint-disable @typescript-eslint/no-namespace */
+import React, { useEffect, useState } from 'react';
 import {
     Typography,
+    Grid,
     Button,
-    LinearProgress,
+    Divider,
 } from '@material-ui/core';
+import { useFormik, FormikProvider } from 'formik';
+import classNames from 'classnames';
 import validator from 'validator';
-import PasswordValidator from 'password-validator';
-import { TextField } from 'formik-material-ui';
-import style from './styles';
+
+import {
+    defaultUserDetails,
+} from '../../Common/Defaults/users';
 import { IClasses } from '../../Common/Interfaces/IClasses';
+import styles from './styles';
+import DefaultTextInputComponent from '../TextFieldComponents/DefaultTextBox';
+import PasswordInputComponent from '../TextFieldComponents/PasswordInput';
 import useAuthentication from '../../Common/Helpers/User';
+import { IUserDetails } from '../../Common/Interfaces/users';
+import { isNullOrUndefinedOrEmpty } from '../../Common/Utils/Types';
 
-interface Values {
-    username: string,
-    nickname: string,
-    password: string,
-    passwordConfirm: string,
-}
+interface IRegisterFormProps {}
 
-const SCHEMA = new PasswordValidator()
-    .is().min(8) // Minimum length 8
-    .is()
-    .max(100) // Maximum length 100
-    .has()
-    .uppercase() // Must have uppercase letters
-    .has()
-    .lowercase() // Must have lowercase letters
-    .has()
-    .digits(2) // Must have at least 2 digits
-    .has()
-    .symbols()
-    .has()
-    .not()
-    .spaces(); // Should not have spaces
+const GRIDSPACING = 6;
 
-const ModifiedTextfield = (props) => (
-    <TextField
-        {...props}
-        InputLabelProps={{
-            shrink: true,
-        }}
-    />
-);
+const RegisterForm = ():React.ReactElement<IRegisterFormProps> => {
+    const classes: IClasses = styles();
 
-const Register = (): React.ReactElement => {
-    const classes: IClasses = style();
     // signIn has been temporarily removed
     const [signUp] = useAuthentication();
 
+    const [isPasswordComplete, setIsPasswordComplete] = useState<boolean>(false);
+    const [isPassConfirmComplete, setIsPassConfirmComplete] = useState<boolean>(false);
+    const [disableSignin, setSigninDisable] = useState<boolean>(true);
+
+    const onSubmit = ():void => {
+        alert(JSON.stringify(formik.values, null, 2));
+        signUp(formik.values)
+            .then((result):void => {
+                formik.setSubmitting(false);
+                console.log(result);
+                // todo add redirect to index / show confirmation here
+            }).catch((errors):void => {
+                console.error(errors);
+            });
+    };
+
+    const validate = ():void => {
+        setSigninDisable(false);
+
+        const isEmailEmpty =  isNullOrUndefinedOrEmpty(formik.values.username);
+        const isPasswordEmpty = isNullOrUndefinedOrEmpty(formik.values.password);
+        const isPasswordConfirmEmpty = isNullOrUndefinedOrEmpty(formik.values.passwordConfirm);
+
+        if (isEmailEmpty || isPasswordEmpty || isPasswordConfirmEmpty) {
+            setSigninDisable(true);  
+            return;
+        }
+
+        if (!validator.isEmail(formik.values.username)) { setSigninDisable(true); }
+
+        setSigninDisable(false);
+    };
+
+    const goBack = ():void => window.history.back();
+
+    const formik = useFormik({
+        initialValues: defaultUserDetails,
+        onSubmit: onSubmit
+    });
+
+    useEffect(():void => { validate() }, [formik.values]);
+
     return (
-        <section className={classes.container}>
+        <section className={classes.mainContainer}>
+            <FormikProvider value={formik}>
+                <section className={classes.mainContainer}>
+                    <Grid container spacing={3} className={classes.gridContainer}>                        
+                        {/* IDENTIFICATION */}
+                        <section className={classes.fieldSection}>
+                            <section className={classNames(classes.hideOnMobileOnly, classes.fieldName)}>
+                                <Typography variant="h6"> User Information </Typography>
+                            </section>
+                            <Grid container spacing={GRIDSPACING} className={classes.fieldInputs}>
+                                <Grid item xs={12} lg={6} className={classes.inputContainers}>
+                                    <DefaultTextInputComponent label="Nickname" />
+                                </Grid>
 
-            <Typography variant="h5" gutterBottom> Register </Typography>
-            <Formik
-                initialValues={{
-                    username: '',
-                    attributes: {
-                        nickname: '',
-                    },
-                    password: '',
-                    passwordConfirm: '',
-                }}
-                validate={(values) => {
-                    const errors: Partial<Values> = {};
+                                <Grid item xs={12} className={classes.inputContainers}>
+                                    <DefaultTextInputComponent label="Username" customPlaceholder="Email" isRequired />
+                                </Grid>
+                            </Grid>
+                        </section>
 
-                    if (!validator.isEmail(values.username)) {
-                        errors.username = 'Invalid email address';
-                    } else if (!SCHEMA.validate(values.password)) {
-                        errors.password = 'Password requires between 8 to 100 characters with at least 1 lowercase and uppcase alphabet and 2 number and 1 special character';
-                    } else if (values.password !== values.passwordConfirm) {
-                        errors.password = 'Passwords do not match';
-                        errors.passwordConfirm = 'Passwords do not match';
-                    }
-                    return errors;
-                }}
-                onSubmit={(values, { setSubmitting }) => {
-                    alert(JSON.stringify(values, null, 2));
-                    signUp(values).then((result) => {
-                        setSubmitting(false);
-                        console.log(result);
-                        // todo add redirect to index / show confirmation here
-                    }).catch((errors) => {
-                        console.error(errors);
-                    });
-                }}
+                        <Divider className={classNames(classes.hideOnMobileOnly, classes.divider)} />
+                        {/* PASSWORD SECTION */}
+                        <section className={classes.fieldSection}>
+                            <section className={classNames(classes.hideOnMobileOnly, classes.fieldName)}>
+                                <Typography variant="h6"> Password </Typography>
+                            </section>
+                            <Grid container spacing={GRIDSPACING} className={classes.fieldInputs}>
+                                <Grid item xs={12} className={classes.inputContainers}>
+                                    <PasswordInputComponent label="Password" confirmation={setIsPasswordComplete} />
+                                </Grid>
+                                <Grid item xs={12} className={classes.inputContainers}>
+                                    <PasswordInputComponent label="Password Confirm" customPlaceholder="Password Confirmation" isConfirmation confirmation={setIsPassConfirmComplete} />
+                                </Grid>
+                            </Grid>
+                        </section>
 
-            >
-                {({ submitForm, isSubmitting }) => (
-                    <Form className={classes.form}>
-                        <Field
-                            component={ModifiedTextfield}
-                            name="attributes.nickname"
-                            type="text"
-                            label="Nickname"
-                            placeholder="Your nickname.."
-                        />
-                        <br />
-                        <Field
-                            component={ModifiedTextfield}
-                            name="username"
-                            type="email"
-                            label="Username"
-                            placeholder="Your email address.."
-                            required
-                        />
-                        <br />
-                        <Field
-                            component={ModifiedTextfield}
-                            type="password"
-                            label="Password"
-                            name="password"
-                            placeholder="Your password.."
-                            required
-                        />
-                        <br />
-                        <Field
-                            component={ModifiedTextfield}
-                            type="password"
-                            label="Password Confirmation"
-                            name="passwordConfirm"
-                            placeholder="Your password again.."
-                            required
+                        <Divider className={classNames(classes.hideOnMobileOnly, classes.divider)} />
 
-                        />
-                        <br />
-                        {isSubmitting && <LinearProgress />}
-                        <br />
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            disabled={isSubmitting}
-                            onClick={submitForm}
-                        >
-                            Register
-                        </Button>
-                    </Form>
-                )}
-            </Formik>
-        </section>
+                        <section className={classes.fieldSection} style={{flexDirection: 'column', justifyContent: 'center'}}>
+                            <section className={classes.signInTextContainer}>
+                                <Typography> Already have an account? <a href="/signin"> Sign in </a> </Typography>
+                            </section>
+                            <section className={classes.controlButtons}>
+                                <Button
+                                    color="primary"
+                                    onClick={goBack}
+                                >
+                                    Back
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={formik.submitForm}
+                                    disabled={disableSignin && !isPasswordComplete && !isPassConfirmComplete}
+                                >
+                                    Sign up
+                                </Button>
+                            </section>
+                        </section>
+                    </Grid>
+                </section>
+            </FormikProvider>
+        </ section>
     );
 };
 
-export default Register;
+export default RegisterForm;
