@@ -52,12 +52,11 @@ const NumberPlateInput = (props:IPasswordInputProps):React.ReactElement<IPasswor
 
         const list:ReadonlyArray<string> = PasswordSchema.validate(values.password, { list: true });
 
-        for (const key in checks) {
-            if (list.includes(key)) { continue; }
-
+        Object.keys(checks).forEach((key:string) => {
+            if (list.includes(key)) { return; }
             newChecks[key] = true;
             complete = false;
-        }
+        });
 
         confirmation(complete);
         setChecks(newChecks);

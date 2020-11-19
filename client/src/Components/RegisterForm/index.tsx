@@ -18,7 +18,6 @@ import styles from './styles';
 import DefaultTextInputComponent from '../TextFieldComponents/DefaultTextBox';
 import PasswordInputComponent from '../TextFieldComponents/PasswordInput';
 import useAuthentication from '../../Common/Helpers/User';
-import { IUserDetails } from '../../Common/Interfaces/users';
 import { isNullOrUndefinedOrEmpty } from '../../Common/Utils/Types';
 
 interface IRegisterFormProps {}
