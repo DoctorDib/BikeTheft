@@ -31,7 +31,6 @@ const RegisterForm = ():React.ReactElement<IRegisterFormProps> => {
     const [signUp] = useAuthentication();
 
     const [isPasswordComplete, setIsPasswordComplete] = useState<boolean>(false);
-    const [isPassConfirmComplete, setIsPassConfirmComplete] = useState<boolean>(false);
     const [disableSignin, setSigninDisable] = useState<boolean>(true);
 
     const onSubmit = ():void => {
@@ -53,14 +52,8 @@ const RegisterForm = ():React.ReactElement<IRegisterFormProps> => {
         const isPasswordEmpty = isNullOrUndefinedOrEmpty(formik.values.password);
         const isPasswordConfirmEmpty = isNullOrUndefinedOrEmpty(formik.values.passwordConfirm);
 
-        if (isEmailEmpty || isPasswordEmpty || isPasswordConfirmEmpty) {
-            setSigninDisable(true);
-            return;
-        }
-
+        if (isEmailEmpty || isPasswordEmpty || isPasswordConfirmEmpty) { setSigninDisable(true); }
         if (!validator.isEmail(formik.values.username)) { setSigninDisable(true); }
-
-        setSigninDisable(false);
     };
 
     const goBack = ():void => window.history.back();
@@ -101,10 +94,7 @@ const RegisterForm = ():React.ReactElement<IRegisterFormProps> => {
                             </section>
                             <Grid container spacing={GRIDSPACING} className={classes.fieldInputs}>
                                 <Grid item xs={12} className={classes.inputContainers}>
-                                    <PasswordInputComponent label="Password" confirmation={setIsPasswordComplete} />
-                                </Grid>
-                                <Grid item xs={12} className={classes.inputContainers}>
-                                    <PasswordInputComponent label="Password Confirm" customPlaceholder="Password Confirmation" isConfirmation confirmation={setIsPassConfirmComplete} />
+                                    <PasswordInputComponent label="Password" confirmation={setIsPasswordComplete} useConfirmation />
                                 </Grid>
                             </Grid>
                         </section>
@@ -129,7 +119,7 @@ const RegisterForm = ():React.ReactElement<IRegisterFormProps> => {
                                     variant="contained"
                                     color="primary"
                                     onClick={formik.submitForm}
-                                    disabled={disableSignin && !isPasswordComplete && !isPassConfirmComplete}
+                                    disabled={disableSignin || !isPasswordComplete}
                                 >
                                     Sign up
                                 </Button>

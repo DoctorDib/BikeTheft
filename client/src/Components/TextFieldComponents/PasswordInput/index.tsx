@@ -15,7 +15,7 @@ interface IPasswordInputProps {
     confirmation:(key:boolean) => void,
     hideChips?: boolean,
     customPlaceholder?:string,
-    isConfirmation?:boolean,
+    useConfirmation?:boolean
 }
 
 interface IPasswordVerification {
@@ -36,7 +36,7 @@ const DEFAULTCHECKS:IPasswordVerification = {
 };
 
 const NumberPlateInput = (props:IPasswordInputProps):React.ReactElement<IPasswordInputProps> => {
-    const { label, confirmation, hideChips, customPlaceholder, isConfirmation } = props;
+    const { label, confirmation, hideChips, customPlaceholder, useConfirmation } = props;
     const { values } = useFormikContext<IUserDetails>();
     const classes: IClasses = styles();
     const id = formatID(label);
@@ -53,16 +53,24 @@ const NumberPlateInput = (props:IPasswordInputProps):React.ReactElement<IPasswor
         const list:ReadonlyArray<string> = PasswordSchema.validate(values.password, { list: true });
 
         Object.keys(checks).forEach((key:string) => {
-            if (list.includes(key)) { return; }
+            if (list.includes(key)) {
+                newChecks[key] = false;
+                complete = false;
+                return;
+            }
+
             newChecks[key] = true;
-            complete = false;
         });
 
-        confirmation(complete);
+        const passwordConfirmation = values.passwordConfirm === values.password && !isNullOrUndefinedOrEmpty(values.passwordConfirm);
+
+        confirmation(complete && useConfirmation ? passwordConfirmation : true);
         setChecks(newChecks);
     };
 
-    useEffect(validate, [values[id]]);
+    // Linking both confirmations
+    useEffect(validate, [values.password]);
+    useEffect(validate, [values.passwordConfirm]);
 
     const mainChips:React.ReactElement = (
         <>
@@ -76,7 +84,7 @@ const NumberPlateInput = (props:IPasswordInputProps):React.ReactElement<IPasswor
     const otherChips:React.ReactElement = (
         <VerifiedChipComponent
             label="Password Match"
-            verified={values.passwordConfirm === values.password && values.passwordConfirm !== ''}
+            verified={values.passwordConfirm === values.password && !isNullOrUndefinedOrEmpty(values.passwordConfirm)}
         />
     );
 
@@ -87,8 +95,22 @@ const NumberPlateInput = (props:IPasswordInputProps):React.ReactElement<IPasswor
                 className={classes.parentChipContainer}
                 style={{ display: hideChips !== null && hideChips ? 'none' : 'flex' }}
             >
-                { isConfirmation ? otherChips : mainChips }
+                { mainChips }
             </section>
+
+            { useConfirmation
+                ? (
+                    <section style={{ marginTop: '25px', width: '100%' }}>
+                        <DefaultTextInput label="Password Confirm" customPlaceholder="Password Confirmation" isRequired isPassword />
+                        <section
+                            className={classes.parentChipContainer}
+                            style={{ display: hideChips !== null && hideChips ? 'none' : 'flex' }}
+                        >
+                            { otherChips }
+                        </section>
+                    </section>
+                )
+                : null}
         </>
     );
 };
