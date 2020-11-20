@@ -17,10 +17,18 @@ interface IDefaultInputProps {
     addToolTip?:boolean,
     isPassword?:boolean,
     isRequired?:boolean,
+    customComponent?: React.ReactElement<HTMLInputElement>,
 }
 
 const DefaultTextInput = (props:IDefaultInputProps):React.ReactElement<IDefaultInputProps> => {
-    const { label, customPlaceholder, addToolTip, isPassword, isRequired } = props;
+    const {
+        label,
+        customPlaceholder,
+        addToolTip,
+        isPassword,
+        isRequired,
+        customComponent,
+    } = props;
 
     const { values, errors, setFieldValue, setFieldError } = useFormikContext<IInputFields | IUserDetails>();
 
@@ -55,7 +63,7 @@ const DefaultTextInput = (props:IDefaultInputProps):React.ReactElement<IDefaultI
                 value={textFieldValue}
                 onChange={onChange}
                 onBlur={onBlur}
-                component={ModifiedTextfield}
+                component={customComponent || ModifiedTextfield}
                 className={classes.input}
                 type={isPassword ? 'password' : 'text'}
                 required={isRequired}

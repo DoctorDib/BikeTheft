@@ -58,7 +58,6 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
 
     const clearEverything = (): void => {
         formik.setValues(defaultInputs);
-        console.log('Clear');
     };
 
     const setNewNotification = (message:string, severity:NotificationEnums) => {
