@@ -4,6 +4,7 @@ import validator from 'validator';
 
 import {
     IUserDetails,
+    ISignIn,
     IErrors,
     IErrorResults,
 } from '../Interfaces/users';
@@ -30,7 +31,7 @@ const verify = (user: IUserDetails):IErrorResults => {
     return { hasErrors, errors };
 };
 
-const useAuthentication = ():((user: IUserDetails) => Promise<unknown>)[] => {
+const useAuthentication = ():((user: IUserDetails | ISignIn) => Promise<unknown>)[] => {
     const { dispatch } = React.useContext(UserContext);
 
     const signUp = (user: IUserDetails):Promise<unknown | IErrors> => new Promise((resolve, reject) => {

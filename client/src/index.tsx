@@ -15,6 +15,7 @@ import VehicleUploadPage from './Pages/VehicleUpload';
 import AboutPage from './Pages/About';
 import ErrorPage from './Pages/Error';
 import RegisterPage from './Pages/Register';
+import SignInPage from './Pages/SignIn';
 
 Amplify.configure({
     // OPTIONAL - if your API requires authentication
@@ -55,6 +56,7 @@ const App = (): React.ReactElement => (
                 <Switch>
                     <AppliedRoute appProps={{}} exact path="/" component={HomePage} />
                     <AppliedRoute appProps={{}} exact path="/register" component={RegisterPage} />
+                    <AppliedRoute appProps={{}} exact path="/signin" component={SignInPage} />
                     <AppliedRoute appProps={{}} path="/upload" component={VehicleUploadPage} />
                     <AppliedRoute appProps={{}} path="/post/:id" component={VehicleInfoPage} />
                     <AppliedRoute appProps={{}} path="/404" component={ErrorPage} />

@@ -40,6 +40,11 @@ export interface IUserDetails {
     [key: string]: undefined | IUserAttributes | string;
 }
 
+export interface ISignIn {
+    username: string;
+    password: string;
+}
+
 export interface IErrors {
     password: boolean;
     passwordConfirm: boolean;
