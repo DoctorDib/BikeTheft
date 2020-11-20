@@ -67,7 +67,7 @@ const SignInForm = ():React.ReactElement<ISignInFormProps> => {
         <section className={classes.mainContainer}>
             <FormikProvider value={formik}>
                 <section className={classes.mainContainer}>
-                    
+
                     <section className={classes.fieldSection}>
                         <div className={classes.inputContainers}>
                             <DefaultTextInputComponent label="Username" customPlaceholder="Email" isRequired />
@@ -83,7 +83,7 @@ const SignInForm = ():React.ReactElement<ISignInFormProps> => {
                     <section className={classes.fieldSection} style={{ flexDirection: 'column', justifyContent: 'center' }}>
                         <section className={classes.signUpTextContainer}>
                             <Typography variant="subtitle2">
-                                Don't have an account?
+                                Do not have an account?
                                 <a href="/register"> Sign up </a>
                             </Typography>
                         </section>
@@ -104,7 +104,7 @@ const SignInForm = ():React.ReactElement<ISignInFormProps> => {
                             </Button>
                         </section>
                     </section>
-                    
+
                 </section>
             </FormikProvider>
         </section>
