@@ -101,7 +101,7 @@ const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
         setComments(mappedPost);
     };
 
-    useEffect(() => {
+    useEffect(():void => {
         layoutComments();
     }, [highlightedID, posts]);
 
@@ -131,8 +131,10 @@ const Forum = (props: IForumProps): React.ReactElement<IForumProps> => {
 
             <PopupComponent
                 open={postPopupOpen}
-                title="Post"
-                message="Are you sure that you wish to post your comment?"
+                popup={{
+                    title: 'Post',
+                    message: 'Are you sure that you wish to post your comment?',
+                }}
                 confirmationCallback={postPopupCallback}
             />
         </section>

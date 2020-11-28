@@ -11,6 +11,18 @@ let response = {
     }
 };
 
+module.exports.get_new_vehicles = (event, context, callback) => {
+    let body = JSON.parse(event.body);
+    body.method = 'get_new_vehicles'
+    
+    API.call(body).then(data => {
+        response.body = JSON.stringify(data);
+        context.callbackWaitsForEmptyEventLoop = false;
+        console.log("REPSONSE: ", response)
+        callback(null, response);
+    });
+};
+
 module.exports.check_number_plate = (event, context, callback) => {
     let body = JSON.parse(event.body);
     body.method = 'check_number_plate'

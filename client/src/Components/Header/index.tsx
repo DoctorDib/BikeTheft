@@ -25,7 +25,7 @@ const DesktopHeader = (): React.ReactElement => {
     const [scrolled, setScrolled] = React.useState(false);
     const handleScroll = () => setScrolled(window.scrollY > 100);
 
-    useEffect(() => {
+    useEffect(():void => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);

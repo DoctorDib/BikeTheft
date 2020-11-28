@@ -89,3 +89,10 @@ functions:
           path: check_number_plate
           method: POST
           cors: {$self:custom.cors}
+  get_new_vehicles:
+    handler: vehicles.get_new_vehicles
+    events:
+      - http:
+          path: get_new_vehicles
+          method: POST
+          cors: {$self:custom.cors}

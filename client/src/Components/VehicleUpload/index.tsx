@@ -54,14 +54,11 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
     const [notificationOpen, setNotificationOpen] = useState<boolean>(false);
     const [notification, setNotification] = useState<INotification>(defaultNotification);
 
-    const closeNotification = () => setNotificationOpen(false);
+    const closeNotification = ():void => setNotificationOpen(false);
 
-    const clearEverything = (): void => {
-        formik.setValues(defaultInputs);
-        console.log('Clear');
-    };
+    const clearEverything = (): void => formik.setValues(defaultInputs);
 
-    const setNewNotification = (message:string, severity:NotificationEnums) => {
+    const setNewNotification = (message:string, severity:NotificationEnums):void => {
         setNotificationOpen(true);
         setNotification({
             message,
@@ -71,7 +68,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
         setLoading(false);
     };
 
-    const success = (response:ICreateThreadResponse | boolean) => {
+    const success = (response:ICreateThreadResponse | boolean):void => {
         if (
             typeof response === 'boolean'
             || response.thread_id === undefined
@@ -83,7 +80,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
 
         setNewNotification(message, NotificationEnums.SUCCESS);
 
-        setTimeout(() => {
+        setTimeout(():void => {
             window.location.pathname = `post/${response.thread_id}`;
         }, 2000);
     };
@@ -100,7 +97,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
 
         // currently static upload to vehicles folder only
         uploadImagesToS3('1', images, 'vehicles')
-            .then((s3Response:boolean) => {
+            .then((s3Response:boolean):void => {
                 if (!s3Response) {
                     setNewNotification('Error while uploading images... please try again later', NotificationEnums.ERROR);
                     return;
@@ -108,14 +105,15 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
 
                 // TODO - Will need to change the owner_id when login is setup
                 createNewThread('1', formik.values, images)
-                    .then((threadResponse:boolean | ICreateThreadResponse) => {
+                    .then((threadResponse:boolean | ICreateThreadResponse):void => {
                         console.log(threadResponse);
                         if (!threadResponse) {
                             setNewNotification('Error while uploading to database... please try again later', NotificationEnums.ERROR);
                             return;
                         }
                         if (typeof threadResponse !== 'boolean' && threadResponse.thread_id === -1) {
-                            const message = 'Number plate has already been found in our database, please ensure you have entered the number plate and try again, if the issues persists then please contact support.';
+                            const message = `Number plate has already been found in our database, please ensure you have entered the number
+                                plate and try again, if the issues persists then please contact support.`;
                             setNewNotification(message, NotificationEnums.ERROR);
                             return;
                         }
@@ -123,9 +121,9 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
                         setLoading(false);
 
                         success(threadResponse);
-                    }).catch((e) => {
+                    }).catch((error):void => {
                         console.log('HERE');
-                        console.log(e);
+                        console.log(error);
                     });
             });
     };
@@ -290,8 +288,10 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
 
             <PopupComponent
                 open={confirmationPopup}
-                title="Vehicle upload confirmation"
-                message="Are you sure you wish to upload your vehicle information?"
+                popup={{
+                    title: 'Vehicle upload confirmation',
+                    message: 'Are you sure you wish to upload your vehicle information?',
+                }}
                 confirmationCallback={confirmationPopupCallback}
             />
 
