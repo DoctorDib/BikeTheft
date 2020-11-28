@@ -11,15 +11,14 @@ export default makeStyles((theme) => ({
 
         '& .image-gallery-thumbnail .image-gallery-thumbnail-image': {
             height: '80px',
-            width: '100%',
+            width: 'auto',
         },
 
         '& .image-gallery-thumbnail': {
-            width: 'inherit',
+            width: 'auto',
         },
 
         '& .image-gallery-slide img': {
-            width: '100%',
             height: '45vh',
         },
 
