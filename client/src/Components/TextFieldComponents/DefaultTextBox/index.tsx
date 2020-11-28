@@ -7,22 +7,34 @@ import ModifiedTextfield from '../ModifiedTextfield';
 import { getToolTip, formatID } from '../helpers';
 import InputToolTip from '../../ToopTip';
 import { IInputFields, IChip } from '../../../Common/Interfaces/interfaces';
+import { IUserAttributes, IUserDetails } from '../../../Common/Interfaces/users';
 import { IClasses } from '../../../Common/Interfaces/IClasses';
 import styles from './styles';
 
 interface IDefaultInputProps {
     label: string,
+    customPlaceholder?: string,
     addToolTip?:boolean,
+    isPassword?:boolean,
+    isRequired?:boolean,
+    customComponent?: React.ReactElement<HTMLInputElement>,
 }
 
 const DefaultTextInput = (props:IDefaultInputProps):React.ReactElement<IDefaultInputProps> => {
-    const { label, addToolTip } = props;
+    const {
+        label,
+        customPlaceholder,
+        addToolTip,
+        isPassword,
+        isRequired,
+        customComponent,
+    } = props;
 
-    const { values, errors, setFieldValue, setFieldError } = useFormikContext<IInputFields>();
+    const { values, errors, setFieldValue, setFieldError } = useFormikContext<IInputFields | IUserDetails>();
 
     const id:string = formatID(label);
     const classes: IClasses = styles();
-    const [textFieldValue, setTextFieldValue] = useState<string | number | string[] | IChip[] | Date>(values[id]);
+    const [textFieldValue, setTextFieldValue] = useState<string | number | string[] | IChip[] | undefined | IUserAttributes | Date>(values[id]);
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>):void => {
         if (errors[id] === undefined) { setFieldError(id, ''); }
@@ -47,12 +59,14 @@ const DefaultTextInput = (props:IDefaultInputProps):React.ReactElement<IDefaultI
             <Field
                 id={id}
                 label={label}
-                placeholder={label}
+                placeholder={customPlaceholder ?? label}
                 value={textFieldValue}
                 onChange={onChange}
                 onBlur={onBlur}
-                component={ModifiedTextfield}
+                component={customComponent || ModifiedTextfield}
                 className={classes.input}
+                type={isPassword ? 'password' : 'text'}
+                required={isRequired}
                 InputProps={{
                     endAdornment: addToolTip !== null
                         ? <InputToolTip message={getToolTip(id)} />

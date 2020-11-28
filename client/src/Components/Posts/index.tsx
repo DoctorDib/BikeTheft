@@ -4,7 +4,7 @@ import { Typography } from '@material-ui/core';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import PopupComponent from '../Popup';
 import { IComment, IPostAttributes, IImageSettings } from '../../Common/Interfaces/interfaces';
-import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
+import { defaultPostAttributes } from '../../Common/Defaults/main';
 import { sendPost } from '../../Common/Helpers/DB_Helpers';
 import { uploadImagesToS3 } from '../../Common/Helpers/helper';
 import TextCommentComponent from '../CommentTextBox';

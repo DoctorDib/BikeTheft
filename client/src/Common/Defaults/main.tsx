@@ -58,6 +58,7 @@ export const defaultImageSettings: IImageSettings = {
 
 export const defaultPostAttributes: IPostAttributes = {
     message: '',
+    comment_images: [],
     confirmation_image: defaultImageSettings,
     active_state: false,
     is_deleted: false,
