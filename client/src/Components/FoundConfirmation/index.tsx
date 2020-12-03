@@ -10,7 +10,7 @@ import {
 import { CheckCircle, Cancel } from '@material-ui/icons';
 
 import { IPostAttributes, IImageSettings } from '../../Common/Interfaces/interfaces';
-import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
+import { defaultPostAttributes } from '../../Common/Defaults/main';
 import { uploadImagesToS3 } from '../../Common/Helpers/helper';
 import { sendPost } from '../../Common/Helpers/DB_Helpers';
 import PostTypeEnums from '../../Common/Enums/PostTypeEnums';

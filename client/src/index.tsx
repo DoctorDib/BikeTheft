@@ -7,12 +7,14 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import Env from './Common/Utils/Env';
 import mainTheme from './templates/theme';
 import AppliedRoute from './Components/Routing/Applied';
+import { UserContextProvider } from './Components/Routing/UserContext';
 
 import HomePage from './Pages/Home';
 import VehicleInfoPage from './Pages/VehicleInfo';
 import VehicleUploadPage from './Pages/VehicleUpload';
 import AboutPage from './Pages/About';
 import ErrorPage from './Pages/Error';
+import RegisterPage from './Pages/Register';
 
 Amplify.configure({
     // OPTIONAL - if your API requires authentication
@@ -47,18 +49,21 @@ Amplify.configure({
 });
 
 const App = (): React.ReactElement => (
-    <Router>
-        <ThemeProvider theme={mainTheme}>
-            <Switch>
-                <AppliedRoute appProps={{}} exact path="/" component={HomePage} />
-                <AppliedRoute appProps={{}} path="/upload" component={VehicleUploadPage} />
-                <AppliedRoute appProps={{}} path="/post/:id" component={VehicleInfoPage} />
-                <AppliedRoute appProps={{}} path="/404" component={ErrorPage} />
-                <AppliedRoute appProps={{}} path="/about" component={AboutPage} />
-                <Redirect to="/404" />
-            </Switch>
-        </ThemeProvider>
-    </Router>
+    <UserContextProvider>
+        <Router>
+            <ThemeProvider theme={mainTheme}>
+                <Switch>
+                    <AppliedRoute appProps={{}} exact path="/" component={HomePage} />
+                    <AppliedRoute appProps={{}} exact path="/register" component={RegisterPage} />
+                    <AppliedRoute appProps={{}} path="/upload" component={VehicleUploadPage} />
+                    <AppliedRoute appProps={{}} path="/post/:id" component={VehicleInfoPage} />
+                    <AppliedRoute appProps={{}} path="/404" component={ErrorPage} />
+                    <AppliedRoute appProps={{}} path="/about" component={AboutPage} />
+                    <Redirect to="/404" />
+                </Switch>
+            </ThemeProvider>
+        </Router>
+    </UserContextProvider>
 );
 
 ReactDom.render(<App />, document.getElementById('importContent'));
