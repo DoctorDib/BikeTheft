@@ -78,6 +78,7 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
         const newMappedImages:Array<React.ReactElement> = images.map(
             (image: IImageSettings):React.ReactElement => (
                 <ImageItemComponent
+                    key={image.id}
                     image={image}
                     canMakeDefault={canMakeDefault}
                     onClickDefault={onClickDefault}
@@ -102,12 +103,12 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
         return Array.prototype.map.call(range, (i):string => newString.charCodeAt(i).toString(16)).join('');
     };
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>): Promise<boolean | void> | void => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         if (!event.target.files) { return; }
 
         const fileImage = event.target.files[0];
 
-        return fileToBase64(fileImage)
+        fileToBase64(fileImage)
             .then((image: string | ArrayBuffer | null): boolean => {
                 const imageDetails: ReadonlyArray<string> = fileImage.name.split('.');
 

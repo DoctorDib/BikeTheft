@@ -1,8 +1,8 @@
 import React from 'react';
 import { Paper, CardMedia } from '@material-ui/core';
 
-import { IImageSettings } from '../../../Common/Interfaces/interfaces';
 import styles from './styles';
+import { IImageSettings } from '../../../Common/Interfaces/interfaces';
 import { IClasses } from '../../../Common/Interfaces/IClasses';
 import ImageToolsComponent from '../ImageTools';
 

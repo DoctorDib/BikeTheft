@@ -66,8 +66,8 @@ export const fileToBase64 = (file: File):Promise<string | ArrayBuffer | null> =>
 });
 
 export const moveItemInArray = (array:Array<IImageSettings>, from:number, to:number):Array<IImageSettings> => {
-    to = ((to % array.length) + array.length) % array.length;
-    array.splice(to, 0, array.splice(from, 1)[0]);
+    const startingIndex = ((to % array.length) + array.length) % array.length;
+    array.splice(startingIndex, 0, array.splice(from, 1)[0]);
     return array; // for testing
 };
 
