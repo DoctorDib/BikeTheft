@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Paper, IconButton, CardMedia, Backdrop, Typography } from '@material-ui/core';
-import { SpeedDialAction, SpeedDial, SpeedDialIcon } from '@material-ui/lab';
-import { Add, Crop, Clear, StarBorder } from '@material-ui/icons';
+import { Paper, IconButton, Typography } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
 
 import {
     fileToBase64,
     moveItemInArray,
 } from '../../Common/Helpers/helper';
-
-import { IImageSettings } from '../../Common/Interfaces/interfaces';
-import { defaultCropSettings } from '../../Common/Helpers/Defaults';
 import styles from './styles';
+import { IImageSettings } from '../../Common/Interfaces/interfaces';
 import { IClasses } from '../../Common/Interfaces/IClasses';
-import ImageCropperComponent from '../ImageCropper';
+import { defaultImageSettings } from '../../Common/Helpers/Defaults';
+import ImageItemComponent from './ImageItem';
+import ImageCroppedComponent from '../ImageCropper';
 
 interface IImageUploaderProps {
     canMakeDefault?: boolean;
@@ -23,67 +22,28 @@ interface IImageUploaderProps {
 
 const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUploaderProps> => {
     const {
-        canMakeDefault,
         images,
         setImages,
+        canMakeDefault,
         maxImages,
     } = props;
+
+    const [cropDialog, setCropDialog] = useState<boolean>(false);
+    const [imageToCrop, setImageToCrop] = useState<IImageSettings>(defaultImageSettings);
+    const [removableKey, setRemovableKey] = useState<number>(-1);
+    const [defaultKey, setDefaultKey] = useState<number>(-1);
 
     const classes: IClasses = styles();
 
     const [mappedImageElement, setMappedImageElement] = useState<Array<React.ReactElement>>([]);
-    const [speedOpen, setSpeedOpen] = useState<boolean>(true);
-    const [imageCropSrc, setImageCropSrc] = useState<string>('');
-    const [cropDialog, setCropDialog] = useState<boolean>(false);
-    const [croppingIndex, setCroppingIndex] = useState<number>(-1);
-    const [crop, setCrop] = useState<ReactCrop.Crop>(defaultCropSettings);
     const [picIndex, setPicIndex] = useState<number>(images.length);
 
-    const handleOpen = () => setSpeedOpen(true);
-    const handleClose = () => setSpeedOpen(false);
-    const onSaveCropData = (data64: string, cropInfo: ReactCrop.Crop) => saveCroppedData(data64, cropInfo);
-    const onHandleClose = () => setCropDialog(false);
-
-    const cropImage = (id: number, imgSrc: string, cropInfo: ReactCrop.Crop) => {
-        setCroppingIndex(id);
-        setImageCropSrc(imgSrc);
-        setCrop(cropInfo);
-        setCropDialog(true);
-        handleClose();
-    };
-
-    const onImgRemove = (keyToRemove: number) => {
+    const onImgRemove = ():void => {
         if (images === undefined) { return; }
-        setImages(images.filter((data) => data.id !== keyToRemove));
-        handleClose();
+        setImages(images.filter((data) => data.id !== removableKey));
     };
 
-    const saveCroppedData = (newImageData64: string, newCropInfo: ReactCrop.Crop) => {
-        if (croppingIndex === -1) {
-            return;
-        }
-
-        const newImages = images;
-
-        const imageLength: number = newImages.length;
-        for (let index = 0; index < imageLength; index++) {
-            const imageData = newImages[index];
-            if (imageData.id !== croppingIndex) {
-                continue;
-            }
-
-            imageData.data64 = newImageData64;
-            imageData.crop.crop_info = newCropInfo;
-
-            newImages[index] = imageData;
-            break;
-        }
-
-        setImages(newImages);
-        setCroppingIndex(-1);
-    };
-
-    const setAsMainImage = (id:number) => {
+    const setAsMainImage = ():void => {
         let newImages = [...images];
         let chosenIndex = -1;
 
@@ -91,85 +51,46 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
         for (let index = 0; index < newImagesLength; index++) {
             const imageData = newImages[index];
 
-            if (imageData.id === id) {
+            if (imageData.id === defaultKey) {
                 chosenIndex = index;
             }
 
-            imageData.is_main_image = imageData.id === id;
+            imageData.is_main_image = imageData.id === defaultKey;
             newImages[index] = imageData;
         }
 
-        if (chosenIndex === -1) {
-            console.error('Setting image an may caused an error...');
-            return;
-        }
+        if (chosenIndex === -1) { return; }
 
         newImages = moveItemInArray(newImages, chosenIndex, 0);
-
         setImages(newImages);
-        handleClose();
     };
 
-    const onClickDefault = (image:IImageSettings) => (() => setAsMainImage(image.id));
-    const onClickRemove = (image:IImageSettings) => (() => onImgRemove(image.id));
-    const onClickCrop = (image:IImageSettings) =>
-        (() => cropImage(image.id, image.crop.original, image.crop.crop_info ?? defaultCropSettings));
+    const onClickDefault = (image:IImageSettings):void => setDefaultKey(image.id);
+    const onClickRemove = (image:IImageSettings):void => setRemovableKey(image.id);
+    const onClickCrop = (image:IImageSettings):void => {
+        setImageToCrop(image);
+        setCropDialog(true);
+    };
 
-    const mapImages = () => {
+    const mapImages = ():void => {
         if (images === undefined || !images.length) { return; }
 
-        const newMappedImages:Array<React.ReactElement> = images.map((image: IImageSettings):React.ReactElement => (
-            <Paper
-                key={image.id}
-                className={classes.container}
-                style={{ border: image.is_main_image && canMakeDefault ? '3px solid rgb(204, 204, 4)' : '0' }}
-            >
-                <section className={classes.speedDialContainer}>
-                    <Backdrop open={speedOpen} />
-                    <SpeedDial
-                        ariaLabel="SpeedDial tooltip"
-                        className={classes.speedDial}
-                        icon={<SpeedDialIcon className={classes.smallIcon} />}
-                        onClose={handleClose}
-                        onOpen={handleOpen}
-                        open={speedOpen}
-                        direction="down"
-                    >
-                        <SpeedDialAction
-                            key="remove"
-                            icon={<Clear style={{ color: 'rgb(176, 0, 0)' }} className={classes.smallIcon} />}
-                            tooltipTitle="Remove"
-                            onClick={onClickRemove(image)}
-                        />
-                        <SpeedDialAction
-                            key="crop"
-                            icon={<Crop color="primary" className={classes.smallIcon} />}
-                            tooltipTitle="Crop image"
-                            onClick={onClickCrop(image)}
-                        />
-                        {!image.is_main_image && canMakeDefault && (
-                            <SpeedDialAction
-                                key="make-default"
-                                icon={<StarBorder color="primary" className={classes.smallIcon} />}
-                                tooltipTitle="Make default image"
-                                onClick={onClickDefault(image)}
-                            />
-                        )}
-                    </SpeedDial>
-                </section>
-
-                <CardMedia component="img" image={image.data64} />
-            </Paper>
-        ));
+        const newMappedImages:Array<React.ReactElement> = images.map(
+            (image: IImageSettings):React.ReactElement => (
+                <ImageItemComponent
+                    image={image}
+                    canMakeDefault={canMakeDefault}
+                    onClickDefault={onClickDefault}
+                    onClickCrop={onClickCrop}
+                    onClickRemove={onClickRemove}
+                />
+            ),
+        );
 
         setMappedImageElement(newMappedImages);
     };
 
-    // TODO - Look into this to see if there is a better method
-    // Currently re-renders all images when the speed dial is used
-    useEffect(() => mapImages(), [images, speedOpen]);
-
-    const hashString = (stringToHash: string) => {
+    const hashString = (stringToHash: string):string => {
         const newString = stringToHash + Date.now();
         const newStringLength = newString.length;
         const range = Array(newStringLength);
@@ -178,19 +99,17 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
             range[i] = i;
         }
 
-        return Array.prototype.map.call(range, (i) => newString.charCodeAt(i).toString(16)).join('');
+        return Array.prototype.map.call(range, (i):string => newString.charCodeAt(i).toString(16)).join('');
     };
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (!event.target.files) {
-            return;
-        }
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>): Promise<boolean | void> | void => {
+        if (!event.target.files) { return; }
 
         const fileImage = event.target.files[0];
 
-        fileToBase64(fileImage)
+        return fileToBase64(fileImage)
             .then((image: string | ArrayBuffer | null): boolean => {
-                const imageDetails = fileImage.name.split('.');
+                const imageDetails: ReadonlyArray<string> = fileImage.name.split('.');
 
                 if (image === null || image instanceof ArrayBuffer) {
                     return false;
@@ -211,7 +130,6 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
 
                 // For the deleting capability
                 setPicIndex(picIndex + 1);
-
                 setImages([...images, newImage]);
                 return true;
             })
@@ -221,10 +139,31 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
             });
     };
 
+    const onCropDialogClose = (newImage:IImageSettings|null):void => {
+        if (newImage === null) { return; }
+
+        const newImages = [...images];
+
+        const imagesLength = images.length;
+        for (let index = 0; index < imagesLength; index++) {
+            const currentImage = newImages[index];
+            if (currentImage.name !== newImage.name) { continue; }
+
+            newImages[index] = newImage;
+            break;
+        }
+
+        setImages(newImages);
+        setCropDialog(false);
+    };
+
+    useEffect(mapImages, [images]);
+    useEffect(onImgRemove, [removableKey]);
+    useEffect(setAsMainImage, [defaultKey]);
+
     return (
         <section className={classes.mainContainer}>
-
-            {mappedImageElement}
+            { mappedImageElement }
 
             <label htmlFor="icon-button-file">
                 <input
@@ -255,13 +194,10 @@ const ImageUploader = (props:IImageUploaderProps): React.ReactElement<IImageUplo
                 </IconButton>
             </label>
 
-            <ImageCropperComponent
-                imageSrc={imageCropSrc}
+            <ImageCroppedComponent
+                image={imageToCrop}
                 open={cropDialog}
-                handleClose={onHandleClose}
-                crop={crop}
-                setCrop={setCrop}
-                saveCroppedData={onSaveCropData}
+                handleClose={onCropDialogClose}
             />
         </section>
     );
