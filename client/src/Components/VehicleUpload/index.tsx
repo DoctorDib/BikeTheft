@@ -149,7 +149,7 @@ const VehicleUploadInputs = ():React.ReactElement<IVehicleUploadProps> => {
             </section>
 
             <section style={{ width: '100%', marginBottom: '30px' }}>
-                <ImageUploaderComponent images={images} setImages={setImages} maxImages={MAXIMAGES} />
+                <ImageUploaderComponent images={images} setImages={setImages} maxImages={MAXIMAGES} canMakeDefault />
                 <Typography>
                     Things to think about when picking the right images:
                 </Typography>
