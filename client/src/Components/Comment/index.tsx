@@ -28,7 +28,7 @@ import ImageComponent from '../Image';
 import PopupComponent from '../Popup';
 import { IComment, IImageSettings } from '../../Common/Interfaces/interfaces';
 import PostTypeEnum from '../../Common/Enums/PostTypeEnums';
-import { defaultPostAttributes } from '../../Common/Helpers/Defaults';
+import { defaultPostAttributes } from '../../Common/Defaults/main';
 import TextCommentComponent from '../CommentTextBox';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import style from './styles';

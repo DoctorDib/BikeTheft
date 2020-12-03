@@ -12,7 +12,7 @@ import {
     IImageSettings,
     ICreateThreadResponse,
 } from '../Interfaces/interfaces';
-import { defaultData } from './Defaults';
+import { defaultData } from '../Defaults/main';
 
 export const checkNumberPlate = async (numberPlate: string): Promise<boolean | number> => {
     const body = {

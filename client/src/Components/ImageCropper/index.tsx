@@ -8,7 +8,7 @@ import {
     Dialog,
     Button,
 } from '@material-ui/core';
-import { defaultCropSettings } from '../../Common/Helpers/Defaults';
+import { defaultCropSettings } from '../../Common/Defaults/main';
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import { isNullOrUndefined } from '../../Common/Utils/Types';

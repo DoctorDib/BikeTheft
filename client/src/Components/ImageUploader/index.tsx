@@ -9,7 +9,7 @@ import {
 } from '../../Common/Helpers/helper';
 
 import { IImageSettings } from '../../Common/Interfaces/interfaces';
-import { defaultCropSettings } from '../../Common/Helpers/Defaults';
+import { defaultCropSettings } from '../../Common/Defaults/main';
 import styles from './styles';
 import { IClasses } from '../../Common/Interfaces/IClasses';
 import ImageCropperComponent from '../ImageCropper';

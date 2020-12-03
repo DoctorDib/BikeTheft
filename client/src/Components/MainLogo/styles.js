@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import mainStyle from '../../templates/mainStyle';
 
-export default makeStyles((theme) => ({
+export default makeStyles(() => ({
     ...mainStyle,
 
     container: {
@@ -13,8 +13,5 @@ export default makeStyles((theme) => ({
     logo: {
         pointerEvents: 'none',
         width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '25%',
-        },
     },
 }));

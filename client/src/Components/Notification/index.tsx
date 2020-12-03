@@ -8,13 +8,14 @@ interface INotificationProp {
     open: boolean;
     onClose: () => void;
     notification: INotification;
+    customTime?: number;
 }
 
 const NotificationComponent = (props: INotificationProp): React.ReactElement<INotificationProp> => {
-    const { open, onClose, notification } = props;
+    const { open, onClose, notification, customTime } = props;
 
     return (
-        <Snackbar open={open} autoHideDuration={6000} onClose={onClose}>
+        <Snackbar open={open} autoHideDuration={customTime ?? 6000} onClose={onClose}>
             <Alert onClose={onClose} severity={notification.severity}>
                 {notification.message}
             </Alert>

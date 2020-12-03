@@ -24,20 +24,20 @@ import CountyEnum from '../../Common/Enums/CountyEnum';
 import {
     defaultInputs,
     defaultNotification,
-} from '../../Common/Helpers/Defaults';
+} from '../../Common/Defaults/main';
 import { createNewThread } from '../../Common/Helpers/DB_Helpers';
 import { uploadImagesToS3 } from '../../Common/Helpers/helper';
 import PopupComponent from '../Popup';
 import NotificationComponent from '../Notification';
 import NotificationEnums from '../../Common/Enums/NotificationEnum';
 /* INPUT */
-import DefaultTextInputComponent from '../VehicleUploadComponents/DefaultTextBox';
-import ColourInputComponent from '../VehicleUploadComponents/ColourInput';
-import DropDownInput from '../VehicleUploadComponents/DropDownInput';
-import ChipFeaturesComponent from '../VehicleUploadComponents/ChipFeatures';
-import NumberPlateComponent from '../VehicleUploadComponents/NumberPlateInput';
-import DescriptionComponent from '../VehicleUploadComponents/DescriptionInput';
-import DateTimeComponent from '../VehicleUploadComponents/DateTimeInput';
+import DefaultTextInputComponent from '../TextFieldComponents/DefaultTextBox';
+import ColourInputComponent from '../TextFieldComponents/ColourInput';
+import DropDownInput from '../TextFieldComponents/DropDownInput';
+import ChipFeaturesComponent from '../TextFieldComponents/ChipFeatures';
+import NumberPlateComponent from '../TextFieldComponents/NumberPlateInput';
+import DescriptionComponent from '../TextFieldComponents/DescriptionInput';
+import DateTimeComponent from '../TextFieldComponents/DateTimeInput';
 
 interface IVehicleUploadProps {}
 
